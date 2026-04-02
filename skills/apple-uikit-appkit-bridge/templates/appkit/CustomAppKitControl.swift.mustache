@@ -1,0 +1,9 @@
+// {{Name}} - Custom AppKit control bridge
+import SwiftUI
+import AppKit
+
+public struct {{Name}}: NSViewRepresentable {
+    public typealias NSViewType = NSView
+    public func makeNSView(context: Context) -> NSView { NSView() }
+    public func updateNSView(_ nsView: NSView, context: Context) { }
+}

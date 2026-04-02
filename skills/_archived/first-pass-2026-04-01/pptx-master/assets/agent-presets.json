@@ -1,0 +1,34 @@
+{
+  "agent_polished": {
+    "description": "Recommended default for autonomous agents: preflight checks enabled, animation injector enabled, auto-build sequence disabled for reliability.",
+    "skipPreflight": false,
+    "skipAnimations": false,
+    "autoAnimations": false,
+    "strictPreflight": false,
+    "visionQa": false
+  },
+  "agent_polished_animated": {
+    "description": "Animation-forward polished preset: keep curated animation injection on while avoiding auto target inference unless explicitly requested.",
+    "skipPreflight": false,
+    "skipAnimations": false,
+    "autoAnimations": false,
+    "strictPreflight": false,
+    "visionQa": false
+  },
+  "agent_strict": {
+    "description": "Fail fast mode for CI or quality gates. Any preflight hard failure exits non-zero.",
+    "skipPreflight": false,
+    "skipAnimations": false,
+    "autoAnimations": false,
+    "strictPreflight": true,
+    "visionQa": false
+  },
+  "agent_fast": {
+    "description": "Fast draft mode. Skips preflight and animation pass for iteration speed.",
+    "skipPreflight": true,
+    "skipAnimations": true,
+    "autoAnimations": false,
+    "strictPreflight": false,
+    "visionQa": false
+  }
+}

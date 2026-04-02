@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Game Base Template</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100dvh;
+      overflow: hidden;
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    #container {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas {
+      display: block;
+      touch-action: none; /* Prevent browser gestures */
+      image-rendering: pixelated; /* For pixel art - remove for smooth graphics */
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas id="game"></canvas>
+  </div>
+
+  <script>
+    // ========================================
+    // GAME BASE TEMPLATE
+    // Fixed timestep, responsive canvas, unified input
+    // ========================================
+
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d', { alpha: false });
+
+    // Virtual resolution (design resolution)
+    const VIRTUAL_W = 360;
+    const VIRTUAL_H = 640;
+
+    // Virtual canvas (render target)
+    const vCanvas = document.createElement('canvas');
+    vCanvas.width = VIRTUAL_W;
+    vCanvas.height = VIRTUAL_H;
+    const vCtx = vCanvas.getContext('2d', { alpha: false });
+
+    // Game state
+    const STEP = 1/60;
+    const MAX_ACC = 0.25;
+    let acc = 0;
+    let last = performance.now() / 1000;
+    let paused = false;
+
+    // ========================================
+    // CANVAS SETUP (Responsive + DPR)
+    // ========================================
+    function fitCanvas() {
+      const container = canvas.parentElement;
+      const rect = container.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      // Calculate scale to fit virtual resolution
+      const scale = Math.min(rect.width / VIRTUAL_W, rect.height / VIRTUAL_H);
+      const displayW = VIRTUAL_W * scale;
+      const displayH = VIRTUAL_H * scale;
+      
+      // Set canvas size
+      canvas.width = Math.round(displayW * dpr);
+      canvas.height = Math.round(displayH * dpr);
+      canvas.style.width = displayW + 'px';
+      canvas.style.height = displayH + 'px';
+      
+      // Scale context for DPR
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    window.addEventListener('resize', fitCanvas);
+    fitCanvas();
+
+    // ========================================
+    // INPUT (Unified Pointer Events + Keyboard)
+    // ========================================
+    const input = {
+      pointers: new Map(),
+      keys: new Set(),
+      
+      init() {
+        canvas.addEventListener('pointerdown', e => this.onDown(e));
+        canvas.addEventListener('pointermove', e => this.onMove(e));
+        canvas.addEventListener('pointerup', e => this.onUp(e));
+        canvas.addEventListener('pointercancel', e => this.onUp(e));
+        window.addEventListener('keydown', e => {
+          this.keys.add(e.key.toLowerCase());
+          if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+          }
+        });
+        window.addEventListener('keyup', e => this.keys.delete(e.key.toLowerCase()));
+      },
+      
+      onDown(e) {
+        canvas.setPointerCapture?.(e.pointerId);
+        const rect = canvas.getBoundingClientRect();
+        // Convert to virtual coordinates
+        const scale = Math.min(rect.width / VIRTUAL_W, rect.height / VIRTUAL_H);
+        const offsetX = (rect.width - VIRTUAL_W * scale) / 2;
+        const offsetY = (rect.height - VIRTUAL_H * scale) / 2;
+        const x = (e.clientX - rect.left - offsetX) / scale;
+        const y = (e.clientY - rect.top - offsetY) / scale;
+        this.pointers.set(e.pointerId, { x, y, pressed: true });
+      },
+      
+      onMove(e) {
+        const p = this.pointers.get(e.pointerId);
+        if (!p) return;
+        const rect = canvas.getBoundingClientRect();
+        const scale = Math.min(rect.width / VIRTUAL_W, rect.height / VIRTUAL_H);
+        const offsetX = (rect.width - VIRTUAL_W * scale) / 2;
+        const offsetY = (rect.height - VIRTUAL_H * scale) / 2;
+        p.x = (e.clientX - rect.left - offsetX) / scale;
+        p.y = (e.clientY - rect.top - offsetY) / scale;
+      },
+      
+      onUp(e) {
+        this.pointers.delete(e.pointerId);
+      },
+      
+      primary() {
+        return [...this.pointers.values()][0] || null;
+      },
+      
+      isKeyPressed(key) {
+        return this.keys.has(key.toLowerCase());
+      }
+    };
+
+    input.init();
+
+    // ========================================
+    // PAGE VISIBILITY (Pause when tab hidden)
+    // ========================================
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        paused = true;
+      } else {
+        paused = false;
+        last = performance.now() / 1000; // Reset timer
+      }
+    });
+
+    // ========================================
+    // GAME LOGIC (Modify this section!)
+    // ========================================
+    
+    // Example game state
+    const player = {
+      x: VIRTUAL_W / 2,
+      y: VIRTUAL_H / 2,
+      vx: 0,
+      vy: 0,
+      w: 32,
+      h: 32,
+      speed: 200
+    };
+
+    function fixedUpdate(dt) {
+      // Input handling
+      player.vx = 0;
+      player.vy = 0;
+      
+      if (input.isKeyPressed('arrowleft') || input.isKeyPressed('a')) player.vx = -player.speed;
+      if (input.isKeyPressed('arrowright') || input.isKeyPressed('d')) player.vx = player.speed;
+      if (input.isKeyPressed('arrowup') || input.isKeyPressed('w')) player.vy = -player.speed;
+      if (input.isKeyPressed('arrowdown') || input.isKeyPressed('s')) player.vy = player.speed;
+      
+      // Update player
+      player.x += player.vx * dt;
+      player.y += player.vy * dt;
+      
+      // Bounds
+      player.x = Math.max(0, Math.min(VIRTUAL_W - player.w, player.x));
+      player.y = Math.max(0, Math.min(VIRTUAL_H - player.h, player.y));
+    }
+
+    function render(alpha) {
+      // Clear virtual canvas
+      vCtx.fillStyle = '#1a1a2e';
+      vCtx.fillRect(0, 0, VIRTUAL_W, VIRTUAL_H);
+      
+      // Draw player
+      vCtx.fillStyle = '#0f3460';
+      vCtx.fillRect(player.x, player.y, player.w, player.h);
+      
+      // Draw instructions
+      vCtx.fillStyle = '#eee';
+      vCtx.font = '16px sans-serif';
+      vCtx.textAlign = 'center';
+      vCtx.fillText('Arrow keys or WASD to move', VIRTUAL_W/2, 30);
+      
+      // Blit virtual canvas to display canvas
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const scale = Math.min(rect.width / VIRTUAL_W, rect.height / VIRTUAL_H);
+      const displayW = VIRTUAL_W * scale;
+      const displayH = VIRTUAL_H * scale;
+      const offsetX = (rect.width - displayW) / 2;
+      const offsetY = (rect.height - displayH) / 2;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.imageSmoothingEnabled = false; // Pixel-perfect (set true for smooth)
+      ctx.drawImage(vCanvas, 0, 0, VIRTUAL_W, VIRTUAL_H, 
+                    offsetX, offsetY, displayW, displayH);
+    }
+
+    // ========================================
+    // GAME LOOP (Fixed timestep)
+    // ========================================
+    function loop(nowMs) {
+      requestAnimationFrame(loop);
+      
+      if (paused) return;
+      
+      const now = nowMs / 1000;
+      acc += Math.min(MAX_ACC, now - last);
+      last = now;
+      
+      while (acc >= STEP) {
+        fixedUpdate(STEP);
+        acc -= STEP;
+      }
+      
+      const alpha = acc / STEP;
+      render(alpha);
+    }
+
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

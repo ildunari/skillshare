@@ -1,0 +1,189 @@
+{
+  "name": "business_report_modern",
+  "page": {
+    "size": "Letter",
+    "margins_in": {
+      "top": 1.0,
+      "bottom": 1.0,
+      "left": 0.9,
+      "right": 0.9
+    }
+  },
+  "fonts": {
+    "heading": {
+      "family": "Aptos Display",
+      "fallback": [
+        "Calibri",
+        "Arial"
+      ]
+    },
+    "body": {
+      "family": "Aptos",
+      "fallback": [
+        "Calibri",
+        "Arial"
+      ],
+      "size_pt": 11
+    },
+    "mono": {
+      "family": "Consolas",
+      "fallback": [
+        "Courier New"
+      ],
+      "size_pt": 9.5
+    }
+  },
+  "colors": {
+    "accent": "#2F5597",
+    "mutedText": "#444444",
+    "lightFill": "#F2F4F8",
+    "tableHeaderFill": "#E9EEF7"
+  },
+  "paragraphStyles": {
+    "Title": {
+      "font": {
+        "size_pt": 30,
+        "bold": true,
+        "family": "heading"
+      },
+      "alignment": "center",
+      "space_after_pt": 18
+    },
+    "Subtitle": {
+      "font": {
+        "size_pt": 16,
+        "family": "heading"
+      },
+      "alignment": "center",
+      "space_after_pt": 24,
+      "color": "mutedText"
+    },
+    "Heading1": {
+      "font": {
+        "size_pt": 18,
+        "bold": true,
+        "family": "heading"
+      },
+      "space_before_pt": 24,
+      "space_after_pt": 8,
+      "keep_with_next": true,
+      "outline_level": 1,
+      "color": "accent"
+    },
+    "Heading2": {
+      "font": {
+        "size_pt": 14,
+        "bold": true,
+        "family": "heading"
+      },
+      "space_before_pt": 18,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 2
+    },
+    "Heading3": {
+      "font": {
+        "size_pt": 11,
+        "bold": true
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 4,
+      "keep_with_next": true,
+      "outline_level": 3
+    },
+    "Body": {
+      "font": {
+        "size_pt": 11
+      },
+      "space_after_pt": 6,
+      "line_spacing_multiple": 1.15,
+      "widow_control": true
+    },
+    "BodyCompact": {
+      "font": {
+        "size_pt": 10.5
+      },
+      "space_after_pt": 3,
+      "line_spacing_multiple": 1.05
+    },
+    "Quote": {
+      "font": {
+        "size_pt": 10.5,
+        "italic": true
+      },
+      "left_indent_in": 0.35,
+      "space_before_pt": 6,
+      "space_after_pt": 6
+    },
+    "Callout": {
+      "font": {
+        "size_pt": 10.5
+      },
+      "space_before_pt": 6,
+      "space_after_pt": 6
+    },
+    "TableCaption": {
+      "font": {
+        "size_pt": 10,
+        "bold": true
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 3,
+      "keep_with_next": true
+    },
+    "FigureCaption": {
+      "font": {
+        "size_pt": 9.5
+      },
+      "space_after_pt": 10,
+      "keep_together": true
+    }
+  },
+  "characterStyles": {
+    "Emphasis": {
+      "italic": true
+    },
+    "Strong": {
+      "bold": true
+    },
+    "InlineCode": {
+      "font": {
+        "family": "mono"
+      },
+      "shading": "lightFill"
+    }
+  },
+  "tableStyles": {
+    "TableModern": {
+      "font": {
+        "size_pt": 10.5
+      },
+      "cell_padding_pt": {
+        "top": 6,
+        "bottom": 6,
+        "left": 6,
+        "right": 6
+      },
+      "borders": "light_horizontal",
+      "table_look": {
+        "firstRow": true,
+        "bandedRows": true
+      },
+      "header_row": {
+        "bold": true,
+        "shading": "tableHeaderFill"
+      },
+      "numeric_alignment": "right"
+    }
+  },
+  "headersFooters": {
+    "running_header": {
+      "font_size_pt": 9,
+      "content": "ShortTitle \u2014 {SectionTitle}"
+    },
+    "footer": {
+      "font_size_pt": 9,
+      "content": "Page {PAGE} of {NUMPAGES}"
+    }
+  }
+}

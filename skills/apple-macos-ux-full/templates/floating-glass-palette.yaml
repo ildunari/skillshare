@@ -1,0 +1,15 @@
+## floating-glass-palette.yaml
+#
+# Template describing a floating palette window that uses Liquid Glass.  It
+# floats above other windows, does not activate the app when clicked and
+# contains a set of buttons.  Use this spec with your own code generator
+# to create inspectors or tool palettes.
+
+identifier: FloatingGlassPalette
+title: "Floating Palette"
+floating: true
+glass: true
+cornerRadius: 12
+buttons:
+  - title: Action One
+  - title: Action Two

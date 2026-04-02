@@ -1,0 +1,12 @@
+
+--allman false
+--self insert
+--indent 4
+--maxwidth 120
+--wraparguments after-first
+--wrapcollections before-first
+--stripunusedargs closure-only
+--stripunusedimports enabled
+--commas inline
+--ifdef no-indent
+--disable redundantSelf

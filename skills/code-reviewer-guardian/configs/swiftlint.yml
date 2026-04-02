@@ -1,0 +1,97 @@
+
+disabled_rules:
+  - trailing_newline # handled by formatter
+  - todo
+
+opt_in_rules:
+  - force_unwrapping
+  - force_try
+  - force_cast
+  - empty_count
+  - first_where
+  - sorted_imports
+  - closure_spacing
+  - discouraged_optional_boolean
+  - redundant_nil_coalescing
+  - switch_case_alignment
+  - opening_brace
+  - vertical_parameter_alignment
+  - cyclomatic_complexity
+  - file_length
+  - function_body_length
+  - type_body_length
+  - identifier_name
+  - explicit_self
+
+included:
+  - Sources
+  - App
+  - Modules
+  - examples
+  - scripts # for Swift in scripts if any
+
+excluded:
+  - Pods
+  - Carthage
+  - .build
+  - DerivedData
+  - vendor
+  - Generated
+
+force_cast: warning
+force_try: warning
+force_unwrapping: error
+
+cyclomatic_complexity:
+  warning: 10
+  error: 20
+
+function_body_length:
+  warning: 60
+  error: 100
+
+type_body_length:
+  warning: 400
+  error: 800
+
+identifier_name:
+  min_length: 3
+  excluded: [id, url, x, y, rx, tx]
+
+custom_rules:
+  no_dispatch_main_sync:
+    included: ".*\.swift"
+    name: "No main.sync"
+    regex: "DispatchQueue\.main\.sync\b"
+    message: "Avoid DispatchQueue.main.sync; can deadlock."
+    severity: error
+  no_print_in_prod:
+    included: ".*\.swift"
+    name: "No print in prod"
+    regex: "\bprint\s*\("
+    message: "Use a logging abstraction instead of print()."
+    severity: warning
+  no_ats_disable:
+    included: ".*\.plist"
+    name: "No ATS disable"
+    regex: "NSAllowsArbitraryLoads\s*<true/>"
+    message: "Avoid disabling ATS globally."
+    severity: error
+  weak_self_in_escaping:
+    included: ".*\.swift"
+    name: "Weak self in escaping closure"
+    regex: "@escaping[\s\S]{0,120}self\."
+    message: "Use [weak self] when capturing self in escaping closures, if appropriate."
+    severity: warning
+  no_hardcoded_secrets:
+    included: ".*\.swift"
+    name: "No hardcoded secrets"
+    regex: "(?i)(api[_-]?key|secret|token|password)\s*[:=]\s*['\"][A-Za-z0-9_\-\./+=]{12,}['\"]"
+    message: "Do not commit credentials; use secure storage."
+    severity: error
+  no_md5_or_sha1:
+    included: ".*\.swift"
+    name: "No MD5/SHA1"
+    regex: "(?i)(MD5|sha1|CC_MD5|kCCAlgorithmMD5)"
+    message: "Use CryptoKit SHA256+."
+    severity: error

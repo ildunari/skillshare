@@ -1,0 +1,23 @@
+{
+  "skill_name": "Skill-Lib-Cleanup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit the canonical skill library under ~/.config/skillshare/skills and tell me which targets are missing installs or drifted.",
+      "expected_output": "Canonical source report with target drift matrix and sync-aware actions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Find overlapping source skills without confusing them with downstream runtime installs.",
+      "expected_output": "Duplicate / near-duplicate families plus merge-safe analysis.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Show me what can be archived or deleted safely in the skill ecosystem.",
+      "expected_output": "Delete/archive candidate dashboard with canonical-source protection.",
+      "files": []
+    }
+  ]
+}

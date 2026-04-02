@@ -1,0 +1,4 @@
+interface:
+  display_name: "MCP Proxy Builder"
+  short_description: "Operate mcpproxy-go connectors and Cloudflare /mcp routes."
+  default_prompt: "Set up or troubleshoot an mcpproxy-go MCP connector end-to-end: confirm routing, validate initialize/tools flow, and apply safe rollback if checks fail."

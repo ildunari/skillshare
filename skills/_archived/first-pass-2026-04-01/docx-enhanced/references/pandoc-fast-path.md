@@ -1,0 +1,191 @@
+# Pandoc fast path (Markdown → DOCX)
+
+Use this when you want a *good-looking Word doc quickly* and you **don’t** need complex layout control.
+
+Pandoc’s DOCX writer can take a Markdown source and generate a Word document in one command. Styling comes from a **reference DOCX** (`--reference-doc=...`). Pandoc ignores the reference document’s content; it only uses its **styles and document properties** (margins, page size, header/footer, etc.).
+
+This skill ships **prebuilt reference DOCX files** under `assets/pandoc/` plus a builder script (`scripts/build_pandoc_reference.py`) that regenerates them from the style-spec JSON profiles.
+
+---
+
+## When to use Pandoc vs docx-js
+
+Use **Pandoc fast path** when:
+- The document is mostly headings + paragraphs + lists + simple tables + inline figures.
+- You’re okay with “Word-normal” layout (no complex cover pages, no layout tricks).
+- You want speed and simplicity (single command, easy iteration).
+
+Use **docx-js path** when:
+- You need multi-section documents with different headers/footers, page numbering rules, or first-page exceptions.
+- You need precise table layouts (merged cells, custom borders per-cell, matrix/key-value tables).
+- You need custom cover pages, callout blocks, legal numbering, tracked-change generation, field logic, etc.
+- You need deterministic layout across Word versions.
+
+---
+
+## The command
+
+Basic (no TOC):
+
+```bash
+pandoc input.md \
+  --reference-doc=assets/pandoc/reference_business_report_modern.docx \
+  -o output.docx
+```
+
+With a TOC:
+
+```bash
+pandoc input.md \
+  --reference-doc=assets/pandoc/reference_business_report_modern.docx \
+  --toc --toc-depth=3 \
+  -o output.docx
+```
+
+Optional “report-y” extras:
+
+```bash
+pandoc input.md \
+  --reference-doc=assets/pandoc/reference_technical_report_engineering.docx \
+  --number-sections \
+  --toc --toc-depth=3 \
+  -o output.docx
+```
+
+Profile choices (shipped):
+- Business: `assets/pandoc/reference_business_report_modern.docx`
+- Technical: `assets/pandoc/reference_technical_report_engineering.docx`
+- Academic: `assets/pandoc/reference_academic_manuscript_generic.docx`
+- NIH grant: `assets/pandoc/reference_nih_grant_basic.docx`
+
+---
+
+## What the reference DOCX actually controls
+
+Pandoc uses the reference DOCX for:
+- **Page geometry**: margins, page size.
+- **Header/footer parts** (if present in the reference): they can carry over.
+- **Style definitions** (by *style name*): font, size, spacing, borders, shading, etc.
+
+Pandoc does **not** use the reference doc’s *content*.
+
+---
+
+## Pandoc’s style-name mapping (DOCX writer)
+
+Pandoc maps document elements to **Word style names**.
+
+Key points:
+- Pandoc matches by **style name** (“Heading 1”, “Body Text”, …), not by your internal style IDs.
+- If a style name is missing in your reference DOCX, Pandoc falls back to defaults or synthesizes something.
+
+Pandoc’s manual lists the default styles it expects you to customize in `reference.docx` (DOCX output). Highlights:
+
+Paragraph styles (subset):
+- Normal
+- Body Text
+- First Paragraph
+- Compact
+- Title / Subtitle / Author / Date
+- Heading 1 … Heading 9
+- Block Text (block quotes)
+- Source Code (code blocks)
+- Table Caption / Image Caption
+- Figure / Captioned Figure
+
+Character styles (subset):
+- Verbatim Char (inline code)
+- Hyperlink
+
+Table style:
+- Table
+
+### Code blocks nuance
+
+In some Pandoc versions, the paragraph style `Source Code` is created dynamically (depending on syntax highlighting) and based on `Verbatim Char`. If you care about code appearance, **always** style `Verbatim Char` in your reference doc.
+
+---
+
+## Custom styles from Markdown
+
+Pandoc supports a `custom-style` attribute on **Div**, **Span**, and **Table** elements.
+
+- `Span` → applies a **character** style.
+- `Div` → applies a **paragraph** style to contained blocks.
+- `Table` → applies a **table** style.
+
+Important nuance: Pandoc won’t let you override styles that carry structural meaning (e.g., headings, code blocks, block quotes, links) via `custom-style`.
+
+Examples:
+
+Character style (bracketed spans):
+
+```markdown
+Normal text with [inline code]{custom-style="Verbatim Char"}.
+```
+
+Paragraph style (fenced divs):
+
+```markdown
+::: {custom-style="Block Text"}
+A callout or quote block.
+:::
+```
+
+Table style:
+- In Pandoc’s AST, a table can carry `{custom-style="MyTableStyle"}`.
+- In Markdown, applying that cleanly can be awkward depending on your authoring pipeline; a tiny Lua filter is often the cleanest way.
+
+---
+
+## Known limitations of the Pandoc fast path
+
+Tradeoffs vs docx-js:
+
+- **Precise layout**: no deterministic placement of figures, side-by-side layouts, cover-page designs, or multi-column sections.
+- **Tables**: Pandoc tables are limited. You get basic structure + a table style; advanced constructions (merged cells, nested tables, asymmetric borders, “matrix” tables) are better done with docx-js tooling.
+- **List numbering**: Word list formatting is generated by Pandoc; controlling multi-level numbering schemes is limited compared with a dedicated numbering kit.
+- **Fields**: Pandoc can generate some fields (TOC), but not the full range of Word field behaviors.
+- **Tracked changes**: Pandoc can’t author tracked changes. If you need redlining, use docx-js + OOXML.
+
+---
+
+## Regenerating the reference docs
+
+Run:
+
+```bash
+python scripts/build_pandoc_reference.py
+```
+
+This reads:
+- `assets/style-specs/*.json`
+
+…and writes:
+- `assets/pandoc/reference_*.docx`
+
+If you want to diff against Pandoc’s default reference doc:
+
+```bash
+pandoc -o reference_default.docx --print-default-data-file reference.docx
+```
+
+---
+
+## If you used Pandoc and now need docx-js features
+
+Common approaches:
+
+1) **Convert Markdown → DOCX with Pandoc**, then switch to OOXML/docx-js tooling for targeted edits (tables, cover page, tracked changes, etc.).
+
+2) **Use Pandoc output as a base** and run QA + post-processing scripts.
+
+If the document already has tracked changes, run a change report and resolve/normalize before applying new redlines.
+
+---
+
+## Sources worth reading
+
+- Pandoc manual: https://pandoc.org/MANUAL.html
+- Pandoc releases: https://pandoc.org/releases.html
+- Pandoc discussion on `Source Code` and `Verbatim Char`: https://github.com/jgm/pandoc/discussions/10803

@@ -1,0 +1,411 @@
+{
+  "deck": {
+    "tokens": {
+      "fonts": {
+        "headline": {
+          "family": "Arial",
+          "weight": 700
+        },
+        "body": {
+          "family": "Arial",
+          "weight": 400
+        }
+      },
+      "sizes": {
+        "h1": 40,
+        "h2": 30,
+        "body": 20,
+        "caption": 14
+      },
+      "radii": {
+        "sm": 6,
+        "md": 12,
+        "lg": 18
+      },
+      "spacing": {
+        "xs": 4,
+        "sm": 8,
+        "md": 12,
+        "lg": 16,
+        "xl": 24
+      },
+      "colors": {
+        "bg": "#FFFFFF",
+        "fg": "#111111",
+        "muted": "#6B7280",
+        "primary": "#2563EB",
+        "accent": "#F59E0B",
+        "surface": "#F3F4F6",
+        "border": "#D1D5DB",
+        "primary_light": "#DBEAFE",
+        "accent_bg": "#FFFBEB",
+        "accent_border": "#F59E0B"
+      },
+      "grid": {
+        "canvas": {
+          "w_in": 13.333,
+          "h_in": 7.5
+        },
+        "margins_in": {
+          "t": 0.7,
+          "r": 0.7,
+          "b": 0.7,
+          "l": 0.7
+        },
+        "columns": 12,
+        "gutter_in": 0.25
+      }
+    },
+    "slides": [
+      {
+        "id": "S01",
+        "archetype": "A2_section_divider",
+        "headline": "Why this quarter is a turning point",
+        "elements": [
+          {
+            "semantic_type": "headline",
+            "role": "h1",
+            "content": "Why this quarter is a turning point",
+            "bbox": {
+              "x": 0.7,
+              "y": 0.6,
+              "w": 11.9,
+              "h": 1.4
+            },
+            "style_tokens": {
+              "font": "headline",
+              "size": 44,
+              "color": "fg",
+              "align": "center"
+            }
+          },
+          {
+            "semantic_type": "text",
+            "role": "caption",
+            "content": "Q1 update \u2022 Confidential",
+            "bbox": {
+              "x": 0.7,
+              "y": 6.75,
+              "w": 11.9,
+              "h": 0.25
+            },
+            "style_tokens": {
+              "font": "body",
+              "size": 14,
+              "color": "muted",
+              "align": "center"
+            }
+          }
+        ]
+      },
+      {
+        "id": "S02",
+        "archetype": "A7_big_number_callout",
+        "headline": "Support cost is up 38% YoY",
+        "elements": [
+          {
+            "semantic_type": "headline",
+            "role": "h1",
+            "content": "Support cost is up 38% YoY",
+            "bbox": {
+              "x": 0.7,
+              "y": 0.6,
+              "w": 11.9,
+              "h": 0.9
+            },
+            "style_tokens": {
+              "font": "headline",
+              "size": 36,
+              "color": "fg"
+            }
+          },
+          {
+            "semantic_type": "metric",
+            "role": "hero_metric",
+            "content": "38%",
+            "bbox": {
+              "x": 0.7,
+              "y": 1.9,
+              "w": 6.2,
+              "h": 2.4
+            },
+            "style_tokens": {
+              "font": "headline",
+              "size": 120,
+              "color": "primary"
+            }
+          },
+          {
+            "semantic_type": "text",
+            "role": "supporting",
+            "content": "Drivers:\n\u2022 Ticket volume +22%\n\u2022 Escalations +14%\n\u2022 New hires still ramping",
+            "bbox": {
+              "x": 7.2,
+              "y": 2.1,
+              "w": 5.4,
+              "h": 2.2
+            },
+            "style_tokens": {
+              "font": "body",
+              "size": 20,
+              "color": "fg"
+            }
+          },
+          {
+            "semantic_type": "caption",
+            "role": "caption",
+            "content": "Source: Zendesk, Jan\u2013Mar",
+            "bbox": {
+              "x": 0.7,
+              "y": 6.75,
+              "w": 11.9,
+              "h": 0.25
+            },
+            "style_tokens": {
+              "font": "body",
+              "size": 14,
+              "color": "muted"
+            }
+          }
+        ]
+      },
+      {
+        "id": "S03",
+        "archetype": "A10_comparison",
+        "headline": "We can cut cost without slowing response",
+        "elements": [
+          {
+            "semantic_type": "headline",
+            "role": "h1",
+            "content": "We can cut cost without slowing response",
+            "bbox": {
+              "x": 0.7,
+              "y": 0.6,
+              "w": 11.9,
+              "h": 0.9
+            },
+            "style_tokens": {
+              "font": "headline",
+              "size": 36,
+              "color": "fg"
+            }
+          },
+          {
+            "semantic_type": "card",
+            "role": "left",
+            "bbox": {
+              "x": 0.7,
+              "y": 1.8,
+              "w": 5.4,
+              "h": 4.1
+            },
+            "style_tokens": {
+              "fill": "surface",
+              "stroke": "border",
+              "radius": 14
+            },
+            "children": [
+              {
+                "semantic_type": "text",
+                "role": "h2",
+                "content": "Status quo",
+                "bbox": {
+                  "x": 1.0,
+                  "y": 2.2,
+                  "w": 4.8,
+                  "h": 0.6
+                },
+                "style_tokens": {
+                  "font": "headline",
+                  "size": 24,
+                  "color": "fg"
+                }
+              },
+              {
+                "semantic_type": "text",
+                "role": "body",
+                "content": "\u2022 Pay for peak staffing\n\u2022 Inconsistent triage\n\u2022 Escalations are manual",
+                "bbox": {
+                  "x": 1.0,
+                  "y": 2.95,
+                  "w": 4.8,
+                  "h": 1.55
+                },
+                "style_tokens": {
+                  "font": "body",
+                  "size": 18,
+                  "color": "fg"
+                }
+              }
+            ]
+          },
+          {
+            "semantic_type": "card",
+            "role": "right",
+            "bbox": {
+              "x": 7.233,
+              "y": 1.8,
+              "w": 5.4,
+              "h": 4.1
+            },
+            "style_tokens": {
+              "fill": "accent_bg",
+              "stroke": "accent_border",
+              "radius": 14
+            },
+            "children": [
+              {
+                "semantic_type": "text",
+                "role": "h2",
+                "content": "Proposed",
+                "bbox": {
+                  "x": 7.533,
+                  "y": 2.2,
+                  "w": 4.8,
+                  "h": 0.6
+                },
+                "style_tokens": {
+                  "font": "headline",
+                  "size": 24,
+                  "color": "fg"
+                }
+              },
+              {
+                "semantic_type": "text",
+                "role": "body",
+                "content": "\u2022 Predictive staffing\n\u2022 Automated routing\n\u2022 Self-serve for top issues",
+                "bbox": {
+                  "x": 7.533,
+                  "y": 2.95,
+                  "w": 4.8,
+                  "h": 1.55
+                },
+                "style_tokens": {
+                  "font": "body",
+                  "size": 18,
+                  "color": "fg"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "S04",
+        "archetype": "A12_timeline_horizontal",
+        "headline": "We can ship the fix in 6 weeks",
+        "elements": [
+          {
+            "semantic_type": "headline",
+            "role": "h1",
+            "content": "We can ship the fix in 6 weeks",
+            "bbox": {
+              "x": 0.7,
+              "y": 0.6,
+              "w": 11.9,
+              "h": 0.9
+            },
+            "style_tokens": {
+              "font": "headline",
+              "size": 36,
+              "color": "fg"
+            }
+          },
+          {
+            "semantic_type": "timeline_node",
+            "role": "timeline_node",
+            "content": "Week 1\nInstrument",
+            "bbox": {
+              "x": 1.1,
+              "y": 2.6,
+              "w": 2.7,
+              "h": 1.2
+            },
+            "style_tokens": {
+              "fill": "surface",
+              "stroke": "border",
+              "radius": 12,
+              "font": "body",
+              "size": 18,
+              "color": "fg",
+              "align": "center"
+            }
+          },
+          {
+            "semantic_type": "timeline_node",
+            "role": "timeline_node",
+            "content": "Week 2\u20133\nRoute",
+            "bbox": {
+              "x": 4.1,
+              "y": 2.6,
+              "w": 2.7,
+              "h": 1.2
+            },
+            "style_tokens": {
+              "fill": "surface",
+              "stroke": "border",
+              "radius": 12,
+              "font": "body",
+              "size": 18,
+              "color": "fg",
+              "align": "center"
+            }
+          },
+          {
+            "semantic_type": "timeline_node",
+            "role": "timeline_node",
+            "content": "Week 4\u20135\nSelf-serve",
+            "bbox": {
+              "x": 7.1,
+              "y": 2.6,
+              "w": 2.7,
+              "h": 1.2
+            },
+            "style_tokens": {
+              "fill": "surface",
+              "stroke": "border",
+              "radius": 12,
+              "font": "body",
+              "size": 18,
+              "color": "fg",
+              "align": "center"
+            }
+          },
+          {
+            "semantic_type": "timeline_node",
+            "role": "timeline_node",
+            "content": "Week 6\nLaunch",
+            "bbox": {
+              "x": 10.1,
+              "y": 2.6,
+              "w": 2.2,
+              "h": 1.2
+            },
+            "style_tokens": {
+              "fill": "primary_light",
+              "stroke": "primary",
+              "radius": 12,
+              "font": "body",
+              "size": 18,
+              "color": "primary",
+              "align": "center"
+            }
+          },
+          {
+            "semantic_type": "arrow",
+            "role": "connector",
+            "bbox": {
+              "x": 1.1,
+              "y": 3.25,
+              "w": 11.2,
+              "h": 0.01
+            },
+            "style_tokens": {
+              "color": "border"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

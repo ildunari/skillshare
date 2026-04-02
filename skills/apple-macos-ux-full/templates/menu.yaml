@@ -1,0 +1,19 @@
+mode: swiftui
+menus:
+  - title: File
+    items:
+      - label: New Window
+        action: newWindow:
+        key: n
+        modifiers: [command]
+      - separator: true
+      - label: Close Window
+        action: performClose:
+        key: w
+        modifiers: [command]
+  - title: View
+    items:
+      - label: Show Sidebar
+        action: toggleSidebar:
+        key: s
+        modifiers: [command, option]

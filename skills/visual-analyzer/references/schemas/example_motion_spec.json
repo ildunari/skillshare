@@ -1,0 +1,287 @@
+{
+  "version": "1.0",
+  "sourceVideo": {
+    "uri": "recording_home_flow.mp4",
+    "durationSec": 22.4,
+    "fps": 60,
+    "resolution": { "width": 1170, "height": 2532 }
+  },
+  "platformGuess": {
+    "value": "ios",
+    "confidence": 0.82,
+    "cues": ["iOS status bar", "SF-like icons", "spring-based tab indicator", "home bar visible"]
+  },
+  "groups": [
+    {
+      "groupId": "tab_switch",
+      "name": "Tab switch orchestration",
+      "category": "navigation",
+      "tokenIds": ["tab_indicator_slide", "tab_content_exit", "tab_content_enter"]
+    },
+    {
+      "groupId": "card_reveal",
+      "name": "Scroll-triggered card reveal",
+      "category": "scroll_linked",
+      "tokenIds": ["scroll_reveal_card_1", "scroll_reveal_card_2", "scroll_reveal_card_3"]
+    }
+  ],
+  "tokens": [
+    {
+      "id": "tab_indicator_slide",
+      "name": "Active tab indicator slides to new position",
+      "screenId": "home",
+      "trigger": { "type": "click", "elementId": "TabBar.Tab2" },
+      "orchestration": { "kind": "parallel", "groupId": "tab_switch" },
+      "tracks": [
+        {
+          "targetId": "TabBar.Indicator",
+          "targetPart": "indicator",
+          "property": "transform.translateX",
+          "from": { "kind": "number", "value": 0, "unit": "px" },
+          "to": { "kind": "number", "value": 96, "unit": "px" },
+          "timing": {
+            "durationMs": 350,
+            "easing": {
+              "type": "spring",
+              "params": {
+                "stiffness": 420,
+                "damping": 38,
+                "mass": 1,
+                "platformHints": {
+                  "ios": { "response": 0.35, "dampingFraction": 0.72 },
+                  "framerMotion": { "stiffness": 420, "damping": 38, "mass": 1 }
+                },
+                "presetName": "snappy"
+              }
+            },
+            "fillMode": "forwards"
+          },
+          "confidence": {
+            "overall": 0.78,
+            "fields": {
+              "durationMs": 0.85,
+              "easing": 0.68,
+              "to": 0.92
+            }
+          }
+        }
+      ],
+      "libraryGuess": {
+        "swiftUI": 0.45,
+        "framerMotion": 0.25,
+        "compose": 0.15,
+        "reactSpring": 0.10,
+        "cssTransition": 0.05
+      },
+      "overallConfidence": 0.78,
+      "evidence": {
+        "videoSegment": { "startSec": 6.35, "endSec": 6.92 },
+        "sampledFps": 60,
+        "measurementMethod": "point_tracking",
+        "progressCurve": [
+          { "tNorm": 0.0, "progress": 0.0 },
+          { "tNorm": 0.1, "progress": 0.18 },
+          { "tNorm": 0.2, "progress": 0.52 },
+          { "tNorm": 0.3, "progress": 0.81 },
+          { "tNorm": 0.4, "progress": 0.96 },
+          { "tNorm": 0.5, "progress": 1.04 },
+          { "tNorm": 0.6, "progress": 1.02 },
+          { "tNorm": 0.7, "progress": 1.0 },
+          { "tNorm": 0.8, "progress": 1.0 },
+          { "tNorm": 1.0, "progress": 1.0 }
+        ],
+        "fitResidual": 0.023,
+        "notes": ["Overshoot detected at t=0.4-0.5 → spring model selected over cubic-bezier"]
+      },
+      "reducedMotion": {
+        "strategy": "simplify",
+        "fallbackEasing": { "type": "cubic-bezier", "x1": 0.4, "y1": 0.0, "x2": 0.2, "y2": 1.0, "presetName": "material-standard" }
+      },
+      "notes": "Spring overshoot is subtle (~4%) — classify as 'snappy' not 'bouncy'"
+    },
+    {
+      "id": "tab_content_exit",
+      "name": "Outgoing tab content fades out",
+      "screenId": "home",
+      "trigger": { "type": "click", "elementId": "TabBar.Tab2" },
+      "orchestration": { "kind": "parallel", "groupId": "tab_switch" },
+      "tracks": [
+        {
+          "targetId": "TabContent.ScreenA",
+          "property": "opacity",
+          "from": { "kind": "opacity", "value": 1 },
+          "to": { "kind": "opacity", "value": 0 },
+          "timing": {
+            "durationMs": 150,
+            "easing": { "type": "cubic-bezier", "x1": 0.4, "y1": 0.0, "x2": 1.0, "y2": 1.0, "presetName": "material-accelerate" }
+          },
+          "confidence": { "overall": 0.88 }
+        }
+      ],
+      "overallConfidence": 0.88,
+      "evidence": {
+        "videoSegment": { "startSec": 6.35, "endSec": 6.50 },
+        "sampledFps": 60,
+        "measurementMethod": "frame_diff"
+      }
+    },
+    {
+      "id": "tab_content_enter",
+      "name": "Incoming tab content fades in with slide",
+      "screenId": "home",
+      "trigger": { "type": "click", "elementId": "TabBar.Tab2" },
+      "orchestration": { "kind": "parallel", "groupId": "tab_switch" },
+      "tracks": [
+        {
+          "targetId": "TabContent.ScreenB",
+          "property": "opacity",
+          "from": { "kind": "opacity", "value": 0 },
+          "to": { "kind": "opacity", "value": 1 },
+          "timing": {
+            "durationMs": 200,
+            "delayMs": 50,
+            "easing": { "type": "cubic-bezier", "x1": 0.0, "y1": 0.0, "x2": 0.2, "y2": 1.0, "presetName": "material-decelerate" }
+          },
+          "confidence": { "overall": 0.85 }
+        },
+        {
+          "targetId": "TabContent.ScreenB",
+          "property": "transform.translateX",
+          "from": { "kind": "number", "value": 24, "unit": "px" },
+          "to": { "kind": "number", "value": 0, "unit": "px" },
+          "timing": {
+            "durationMs": 200,
+            "delayMs": 50,
+            "easing": { "type": "cubic-bezier", "x1": 0.0, "y1": 0.0, "x2": 0.2, "y2": 1.0, "presetName": "material-decelerate" }
+          },
+          "confidence": { "overall": 0.80, "fields": { "from": 0.70 } }
+        }
+      ],
+      "overallConfidence": 0.82,
+      "evidence": {
+        "videoSegment": { "startSec": 6.40, "endSec": 6.73 },
+        "sampledFps": 60,
+        "measurementMethod": "point_tracking"
+      }
+    },
+    {
+      "id": "primary_button_press",
+      "name": "Button press scale feedback",
+      "screenId": "home",
+      "trigger": { "type": "click", "elementId": "PrimaryButton" },
+      "tracks": [
+        {
+          "targetId": "PrimaryButton",
+          "targetPart": "container",
+          "property": "transform.scale",
+          "from": { "kind": "number", "value": 1.0 },
+          "to": { "kind": "number", "value": 0.96 },
+          "timing": {
+            "durationMs": 80,
+            "easing": { "type": "cubic-bezier", "x1": 0.0, "y1": 0.0, "x2": 0.2, "y2": 1.0, "presetName": "material-decelerate" },
+            "direction": "alternate",
+            "iterations": 2
+          },
+          "confidence": { "overall": 0.75, "fields": { "to": 0.65, "durationMs": 0.80 } }
+        }
+      ],
+      "overallConfidence": 0.75,
+      "evidence": {
+        "videoSegment": { "startSec": 8.10, "endSec": 8.30 },
+        "sampledFps": 60,
+        "measurementMethod": "point_tracking",
+        "notes": ["Short duration — only ~5 frames of scale-down visible"]
+      },
+      "reducedMotion": {
+        "strategy": "remove"
+      }
+    },
+    {
+      "id": "scroll_reveal_card_1",
+      "name": "Product card reveals on scroll (first in stagger)",
+      "screenId": "home",
+      "trigger": {
+        "type": "scroll",
+        "containerId": "MainScroll",
+        "timeline": {
+          "mode": "triggered",
+          "start": { "type": "viewport", "at": 0.85 },
+          "end": { "type": "viewport", "at": 0.55 }
+        }
+      },
+      "orchestration": {
+        "kind": "stagger",
+        "groupId": "card_reveal",
+        "eachDelayMs": 60,
+        "direction": "forward"
+      },
+      "tracks": [
+        {
+          "targetId": "ProductCard.1",
+          "property": "opacity",
+          "from": { "kind": "opacity", "value": 0 },
+          "to": { "kind": "opacity", "value": 1 },
+          "timing": {
+            "durationMs": 250,
+            "easing": { "type": "cubic-bezier", "x1": 0.0, "y1": 0.0, "x2": 0.2, "y2": 1.0, "presetName": "material-decelerate" }
+          },
+          "confidence": { "overall": 0.72 }
+        },
+        {
+          "targetId": "ProductCard.1",
+          "property": "transform.translateY",
+          "from": { "kind": "number", "value": 20, "unit": "px" },
+          "to": { "kind": "number", "value": 0, "unit": "px" },
+          "timing": {
+            "durationMs": 250,
+            "easing": { "type": "cubic-bezier", "x1": 0.0, "y1": 0.0, "x2": 0.2, "y2": 1.0, "presetName": "material-decelerate" }
+          },
+          "confidence": { "overall": 0.68, "fields": { "from": 0.60 } }
+        }
+      ],
+      "overallConfidence": 0.68,
+      "evidence": {
+        "videoSegment": { "startSec": 12.20, "endSec": 12.70 },
+        "sampledFps": 60,
+        "measurementMethod": "frame_diff",
+        "notes": ["Scroll-trigger threshold estimated from intersection timing — low confidence"]
+      },
+      "reducedMotion": {
+        "strategy": "crossfade",
+        "maxDurationMs": 100
+      }
+    },
+    {
+      "id": "shimmer_skeleton",
+      "name": "Skeleton shimmer loading indicator",
+      "screenId": "search",
+      "trigger": { "type": "load", "scope": "component" },
+      "tracks": [
+        {
+          "targetId": "SkeletonRow",
+          "targetPart": "shimmerOverlay",
+          "property": "transform.translateX",
+          "from": { "kind": "number", "value": -100, "unit": "%" },
+          "to": { "kind": "number", "value": 100, "unit": "%" },
+          "timing": {
+            "durationMs": 1500,
+            "easing": { "type": "linear" },
+            "iterations": "infinite",
+            "fillMode": "none"
+          },
+          "confidence": { "overall": 0.60, "fields": { "durationMs": 0.55 } }
+        }
+      ],
+      "overallConfidence": 0.60,
+      "evidence": {
+        "videoSegment": { "startSec": 15.0, "endSec": 17.5 },
+        "sampledFps": 30,
+        "measurementMethod": "frame_diff",
+        "notes": ["Looping animation — duration estimated from cycle count over 2.5s window"]
+      },
+      "reducedMotion": {
+        "strategy": "remove"
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+// {{Name}} - NSTableView bridge
+import SwiftUI
+import AppKit
+
+public struct {{Name}}: NSViewRepresentable {
+    public typealias NSViewType = NSScrollView
+    public var items: [String]
+    public init(items: [String]) { self.items = items }
+
+    public func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    public func makeNSView(context: Context) -> NSScrollView {
+        let scroll = NSScrollView()
+        let table = NSTableView()
+        let col = NSTableColumn(identifier: .init("col"))
+        table.addTableColumn(col)
+        table.headerView = nil
+        table.delegate = context.coordinator
+        table.dataSource = context.coordinator
+        scroll.documentView = table
+        return scroll
+    }
+
+    public func updateNSView(_ nsView: NSScrollView, context: Context) {
+        context.coordinator.parent = self
+        (nsView.documentView as? NSTableView)?.reloadData()
+    }
+
+    public static func dismantleNSView(_ nsView: NSScrollView, coordinator: Coordinator) {
+        if let t = nsView.documentView as? NSTableView { t.delegate = nil; t.dataSource = nil }
+    }
+
+    public final class Coordinator: NSObject, NSTableViewDelegate, NSTableViewDataSource {
+        public var parent: {{Name}}
+        public init(_ parent: {{Name}}) { self.parent = parent }
+        public func numberOfRows(in tableView: NSTableView) -> Int { parent.items.count }
+        public func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+            let tf = NSTextField(labelWithString: parent.items[row])
+            return tf
+        }
+    }
+}

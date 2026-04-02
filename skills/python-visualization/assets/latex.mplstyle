@@ -1,0 +1,44 @@
+# LaTeX-compatible publication defaults (Computer Modern)
+# Usage: plt.style.use('assets/latex.mplstyle')
+#
+# NOTE: text.usetex requires a LaTeX installation. If unavailable,
+# comment out text.usetex and text.latex.preamble lines —
+# mathtext.fontset: cm provides a reasonable fallback.
+
+text.usetex: True
+text.latex.preamble: \usepackage{amsmath}\usepackage{amssymb}
+
+font.family: serif
+font.serif: Computer Modern
+font.size: 8
+mathtext.fontset: cm
+
+axes.labelsize: 9
+axes.titlesize: 9
+axes.linewidth: 0.5
+axes.spines.top: False
+axes.spines.right: False
+
+xtick.labelsize: 7
+ytick.labelsize: 7
+xtick.major.width: 0.5
+ytick.major.width: 0.5
+xtick.minor.width: 0.3
+ytick.minor.width: 0.3
+xtick.direction: in
+ytick.direction: in
+
+legend.fontsize: 7
+legend.frameon: False
+
+lines.linewidth: 1.0
+lines.markersize: 4
+
+figure.figsize: 3.504, 2.165
+figure.dpi: 150
+
+savefig.dpi: 300
+savefig.bbox: tight
+savefig.format: pdf
+
+image.cmap: viridis

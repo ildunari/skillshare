@@ -1,0 +1,82 @@
+{
+  "summary": {
+    "hard_fail": 0,
+    "warnings": 4,
+    "slides": 4
+  },
+  "slides": [
+    {
+      "slide_id": "S01",
+      "archetype": "A2_section_divider",
+      "metrics": {
+        "headline_words": 7,
+        "words": 11,
+        "bullets": 0,
+        "whitespace_ratio": 0.789
+      },
+      "hard_fail": [],
+      "warnings": []
+    },
+    {
+      "slide_id": "S02",
+      "archetype": "A7_big_number_callout",
+      "metrics": {
+        "headline_words": 6,
+        "words": 23,
+        "bullets": 3,
+        "whitespace_ratio": 0.492
+      },
+      "hard_fail": [],
+      "warnings": []
+    },
+    {
+      "slide_id": "S03",
+      "archetype": "A10_comparison",
+      "metrics": {
+        "headline_words": 7,
+        "words": 7,
+        "bullets": 0,
+        "whitespace_ratio": 0.257
+      },
+      "hard_fail": [],
+      "warnings": []
+    },
+    {
+      "slide_id": "S04",
+      "archetype": "A12_timeline_horizontal",
+      "metrics": {
+        "headline_words": 8,
+        "words": 20,
+        "bullets": 0,
+        "whitespace_ratio": 0.693
+      },
+      "hard_fail": [],
+      "warnings": [
+        {
+          "code": "G3_ELEMENT_OVERLAP",
+          "target": "S04:1 vs S04:5",
+          "evidence": "overlap area ~0.03in^2",
+          "fix": "Separate or redesign layout; overlaps should be intentional and rare"
+        },
+        {
+          "code": "G3_ELEMENT_OVERLAP",
+          "target": "S04:2 vs S04:5",
+          "evidence": "overlap area ~0.03in^2",
+          "fix": "Separate or redesign layout; overlaps should be intentional and rare"
+        },
+        {
+          "code": "G3_ELEMENT_OVERLAP",
+          "target": "S04:3 vs S04:5",
+          "evidence": "overlap area ~0.03in^2",
+          "fix": "Separate or redesign layout; overlaps should be intentional and rare"
+        },
+        {
+          "code": "G3_ELEMENT_OVERLAP",
+          "target": "S04:4 vs S04:5",
+          "evidence": "overlap area ~0.02in^2",
+          "fix": "Separate or redesign layout; overlaps should be intentional and rare"
+        }
+      ]
+    }
+  ]
+}

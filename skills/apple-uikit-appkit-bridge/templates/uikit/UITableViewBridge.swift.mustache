@@ -1,0 +1,50 @@
+// {{Name}} - UITableView bridge
+import SwiftUI
+import UIKit
+
+public struct {{Name}}: UIViewRepresentable {
+    public typealias UIViewType = UITableView
+    public var items: [String]
+    public var onSelect: ((Int) -> Void)?
+
+    public init(items: [String], onSelect: ((Int) -> Void)? = nil) {
+        self.items = items
+        self.onSelect = onSelect
+    }
+
+    public func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    public func makeUIView(context: Context) -> UITableView {
+        let tv = UITableView(frame: .zero, style: .plain)
+        tv.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tv.dataSource = context.coordinator
+        tv.delegate = context.coordinator
+        return tv
+    }
+
+    public func updateUIView(_ uiView: UITableView, context: Context) {
+        context.coordinator.parent = self
+        uiView.reloadData()
+    }
+
+    public static func dismantleUIView(_ uiView: UITableView, coordinator: Coordinator) {
+        uiView.dataSource = nil
+        uiView.delegate = nil
+    }
+
+    public final class Coordinator: NSObject, UITableViewDataSource, UITableViewDelegate {
+        public var parent: {{Name}}
+        public init(_ parent: {{Name}}) { self.parent = parent }
+        public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { parent.items.count }
+        public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            var config = UIListContentConfiguration.cell()
+            config.text = parent.items[indexPath.row]
+            cell.contentConfiguration = config
+            return cell
+        }
+        public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            parent.onSelect?(indexPath.row)
+        }
+    }
+}

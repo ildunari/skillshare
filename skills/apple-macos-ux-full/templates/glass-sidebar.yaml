@@ -1,0 +1,13 @@
+## glass-sidebar.yaml
+#
+# Template describing a window with a Liquid Glass sidebar.  Use this as
+# inspiration for building your own generator or for manual configuration.
+
+identifier: GlassSidebarWindow
+title: "Glass Sidebar Window"
+sidebar:
+  width: 240
+  glass: true
+  cornerRadius: 12
+content:
+  background: windowBackground

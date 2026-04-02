@@ -1,0 +1,50 @@
+{
+  "deck": {
+    "title": "Visual Features Spot Check",
+    "theme": { "id": "atlas" },
+    "slides": [
+      {
+        "id": "vf-cover",
+        "archetype": "A1_cover",
+        "headline": "Visual Features Test Deck",
+        "subtitle": "Gradient fills, shadows, icons, opacity",
+        "footer": "pptx-master v2 merge validation"
+      },
+      {
+        "id": "vf-section",
+        "archetype": "A2_section_divider",
+        "headline": "Section with Gradient Master",
+        "subtitle": "This slide uses MASTER_SECTION with heroGradient background"
+      },
+      {
+        "id": "vf-big-number",
+        "archetype": "A7_big_number_callout",
+        "headline": "Revenue Growth",
+        "big_number": "+42%",
+        "delta": "+12% vs. Q3",
+        "body": "Year-over-year improvement driven by new product launches"
+      },
+      {
+        "id": "vf-icon-grid",
+        "archetype": "A8_icon_grid",
+        "headline": "Our Core Capabilities",
+        "items": [
+          { "title": "Strategy", "body": "Long-term vision and roadmap", "icon": "target" },
+          { "title": "Security", "body": "Enterprise-grade protection", "icon": "shield" },
+          { "title": "Analytics", "body": "Data-driven decision making", "icon": "trend-up" },
+          { "title": "Collaboration", "body": "Cross-functional alignment", "icon": "users" }
+        ]
+      },
+      {
+        "id": "vf-card-grid",
+        "archetype": "A9_card_grid",
+        "headline": "Cards with Shadows",
+        "cards": [
+          { "title": "Card One", "body": "This card should have a shadow effect applied from the theme token system" },
+          { "title": "Card Two", "body": "Shadow rendering uses PptxGenJS native shadow support via StyleResolver" },
+          { "title": "Card Three", "body": "Card fill and border colors resolve from theme palette tokens" }
+        ]
+      }
+    ]
+  }
+}

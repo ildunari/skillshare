@@ -1,0 +1,181 @@
+{
+  "skill_name": "project-context-seeder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just cloned a medium-size TypeScript repo with a web app and an API. Please inspect it and create both AGENTS.md and CLAUDE.md. I want agents to act on their own for normal code changes, but they should ask before adding dependencies, changing CI, or touching database migrations.",
+      "expected_output": "The skill should inspect the repository, separate grounded repo facts from user policy, and produce distinct AGENTS.md and CLAUDE.md drafts rather than one shared generic draft.",
+      "files": [],
+      "expectations": [
+        "The workflow begins with repo inspection rather than guessing commands or architecture.",
+        "The result distinguishes Codex/GPT guidance from Claude-specific guidance.",
+        "Approval gates for dependencies, CI, and migrations are preserved in the output."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We already have AGENTS.md and CLAUDE.md in this monorepo, but they're stale and too generic. Audit them against the actual repo, keep anything still true, and rewrite whatever is misleading. Add scoped package-level instruction files only if the packages really behave differently.",
+      "expected_output": "The skill should choose an audit or layered-update strategy, compare existing files to current repo evidence, and avoid unnecessary duplication across monorepo packages.",
+      "files": [],
+      "expectations": [
+        "The skill decides whether to rewrite, patch, or layer files instead of always generating from scratch.",
+        "The skill prefers root rules plus scoped overrides for genuinely different packages.",
+        "The skill explicitly avoids copying stale or unverified conventions forward."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm going to give you a pretty opinionated brief: I want agents to be aggressive about implementation, very careful around production and secrets, and concise in their docs. Use that brief, inspect the repo, ask me only what the repo can't tell you, then write strong agent instruction files.",
+      "expected_output": "The skill should treat the user's brief as a policy overlay, ask only for missing strategic context, and write concise but grounded instruction files.",
+      "files": [],
+      "expectations": [
+        "The skill asks only for missing strategic context rather than re-asking obvious repo facts.",
+        "The user brief influences policy and tone without overriding inspectable repo facts.",
+        "The final files label assumptions instead of inventing hidden conventions."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review my AGENTS.md and tell me whether it's still accurate for the repo, then propose a full rewrite if it's too stale.",
+      "expected_output": "The skill should treat this as an in-scope review/audit request and compare the file to repo reality.",
+      "files": [],
+      "expectations": [
+        "The skill recognizes review/audit language as in scope.",
+        "The skill compares existing instruction content against repo evidence.",
+        "The skill can choose between patching and full rewrite."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Set up this repo so Claude Code and Codex both work well. I don't care what the files are called as long as the instructions are solid.",
+      "expected_output": "The skill should treat this as an in-scope repo-preparation request even though the file names are not specified directly.",
+      "files": [],
+      "expectations": [
+        "The skill triggers on repo-preparation language without needing explicit file names.",
+        "The skill still produces grounded dual-surface guidance.",
+        "The skill does not overfocus on filenames instead of the underlying task."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Create a .cursorrules file for this project using the actual repo structure and commands, and also tell me if we should regenerate AGENTS.md while we're at it.",
+      "expected_output": "The skill should treat adjacent AI-instruction outputs as in-scope or at least recognize the same underlying repo-analysis task.",
+      "files": [],
+      "expectations": [
+        "The skill recognizes adjacent instruction-file requests as conceptually in scope.",
+        "The skill preserves grounded repo analysis rather than generic editor-specific boilerplate.",
+        "The skill can discuss whether AGENTS.md should also be refreshed."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Add one sentence to CLAUDE.md saying to never use console.log.",
+      "expected_output": "This is a should-not-trigger boundary case because it is a narrow targeted edit rather than a holistic create/rewrite/audit request.",
+      "files": [],
+      "expectations": [
+        "The skill identifies this as a small targeted edit boundary case.",
+        "The skill does not treat every CLAUDE.md edit as a full-skill invocation.",
+        "The trigger boundary remains scoped to holistic project-wide instruction work."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Analyze this codebase for security vulnerabilities and tell me what to fix first.",
+      "expected_output": "This is a should-not-trigger case because it is general repo analysis, not agent-instruction creation or audit work.",
+      "files": [],
+      "expectations": [
+        "The skill does not overmatch on generic analysis language.",
+        "The trigger remains tied to agent-instruction work.",
+        "The boundary against unrelated project analysis remains clear."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Is my CLAUDE.md any good, or should I redo it from scratch based on the actual repo?",
+      "expected_output": "The skill should treat this question-style prompt as an in-scope review/audit request rather than missing it because the user asked in question form.",
+      "files": [],
+      "expectations": [
+        "The skill recognizes question-style review requests as in scope.",
+        "The skill can move from evaluation into rewrite recommendation when appropriate.",
+        "The trigger is not limited to imperative phrasing."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Update my CLAUDE.md to reflect all the changes we made this sprint. It's basically fallen behind the repo.",
+      "expected_output": "This is a should-trigger boundary case because update here clearly means a holistic refresh, not a narrow edit.",
+      "files": [],
+      "expectations": [
+        "The skill treats holistic update requests as in scope.",
+        "The narrow-edit exclusion does not incorrectly block a whole-file refresh.",
+        "The skill can frame this as a review/rewrite workflow."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Fix a typo in AGENTS.md.",
+      "expected_output": "This is a should-not-trigger boundary case because the request is a tiny targeted edit despite using the word fix.",
+      "files": [],
+      "expectations": [
+        "The skill does not overtrigger on the word fix alone.",
+        "The exclusion for tiny edits still holds.",
+        "The trigger boundary stays tied to holistic instruction work."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Add our new lint command to CLAUDE.md and nothing else.",
+      "expected_output": "This is a should-not-trigger boundary case because it is a narrow factual update, not a create/rewrite/audit request.",
+      "files": [],
+      "expectations": [
+        "The skill recognizes single-fact updates as out of scope.",
+        "The narrow-edit exclusion remains strong.",
+        "The skill does not treat all update wording as a holistic refresh."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "This repo has almost nothing in it — just a few Python scripts and a requirements.txt. Create AGENTS.md and CLAUDE.md anyway, but be honest about what you can and can't verify.",
+      "expected_output": "The skill should handle sparse repos without inventing structure and should mark low-confidence areas honestly.",
+      "files": [],
+      "expectations": [
+        "The skill handles sparse repos gracefully without hallucinating structure.",
+        "The output labels low-confidence areas appropriately.",
+        "The files stay proportional to the repo's real complexity."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "This monorepo has three packages: a React frontend, a Go API, and a shared proto package. Create root instructions plus scoped instructions only where genuinely needed.",
+      "expected_output": "The skill should use the monorepo threshold to decide what belongs at the root and what warrants scoped package files.",
+      "files": [],
+      "expectations": [
+        "The skill creates root-level files for shared rules.",
+        "Scoped files are added only where packages differ enough to justify them.",
+        "Root and scoped files avoid duplication."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "My current AGENTS.md says we use npm and Jest, but the repo has moved to pnpm and Vitest. Audit the file, fix the stale parts, and flag anything workflow-related you can't verify from the repo itself.",
+      "expected_output": "The skill should verify stale factual claims against the repo and explicitly ask or flag non-inspectable workflow claims.",
+      "files": [],
+      "expectations": [
+        "The skill re-verifies commands and tooling claims instead of carrying them forward.",
+        "The skill distinguishes inspectable facts from policy/workflow claims.",
+        "The output flags anything it cannot verify directly."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "Be aggressive and proactive, but also ask before every code change. Inspect the repo and turn that into AGENTS.md and CLAUDE.md without papering over the contradiction.",
+      "expected_output": "The skill should surface the contradiction in the user's brief instead of forcing an incoherent instruction file.",
+      "files": [],
+      "expectations": [
+        "The skill identifies contradictory policy requests.",
+        "The skill asks for clarification or clearly flags the contradiction.",
+        "The output does not silently collapse both instructions into vague mush."
+      ]
+    }
+  ]
+}

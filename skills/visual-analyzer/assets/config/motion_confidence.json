@@ -1,0 +1,64 @@
+{
+  "$comment": "Motion extraction confidence thresholds. Used by validators and the convergence loop.",
+
+  "perProperty": {
+    "timestamp": { "accept": 0.90, "iterate": 0.70, "reject": 0.40 },
+    "duration": { "accept": 0.85, "iterate": 0.65, "reject": 0.35 },
+    "delay": { "accept": 0.80, "iterate": 0.60, "reject": 0.30 },
+    "easing_bezier": { "accept": 0.75, "iterate": 0.55, "reject": 0.25 },
+    "easing_spring": { "accept": 0.70, "iterate": 0.50, "reject": 0.25 },
+    "position_from_to": { "accept": 0.80, "iterate": 0.60, "reject": 0.30 },
+    "opacity_from_to": { "accept": 0.85, "iterate": 0.65, "reject": 0.35 },
+    "scale_from_to": { "accept": 0.80, "iterate": 0.60, "reject": 0.30 },
+    "color_transition": { "accept": 0.75, "iterate": 0.55, "reject": 0.25 },
+    "trigger_type": { "accept": 0.80, "iterate": 0.60, "reject": 0.30 },
+    "scroll_mapping": { "accept": 0.65, "iterate": 0.45, "reject": 0.20 },
+    "library_guess": { "accept": 0.50, "iterate": 0.30, "reject": 0.10 }
+  },
+
+  "perToken": {
+    "accept": 0.70,
+    "iterate": 0.50,
+    "reject": 0.25,
+    "maxIterations": 4
+  },
+
+  "easingFit": {
+    "bezier_rms_accept": 0.04,
+    "bezier_rms_iterate": 0.08,
+    "bezier_rms_reject": 0.15,
+    "spring_rms_accept": 0.05,
+    "spring_rms_iterate": 0.10,
+    "spring_rms_reject": 0.20,
+    "preset_snap_distance": 0.15,
+    "preset_exact_distance": 0.02
+  },
+
+  "frameRate": {
+    "min_for_easing_fit": 24,
+    "preferred_for_easing_fit": 60,
+    "min_for_duration_only": 10,
+    "min_samples_for_bezier_fit": 8,
+    "min_samples_for_spring_fit": 12
+  },
+
+  "stopConditions": {
+    "all_tokens_above_accept": true,
+    "max_total_iterations": 6,
+    "no_improvement_after": 2,
+    "cost_budget_gemini_calls": 15
+  },
+
+  "failureActions": {
+    "low_confidence_timestamp": "re-run segment_detect with tighter threshold",
+    "low_confidence_easing": "re-track at native FPS, try alternative tracking method",
+    "low_confidence_duration": "verify CFR normalization, check VFR flag",
+    "low_confidence_position": "try template matching if feature tracking failed (or vice versa)",
+    "low_confidence_opacity": "re-measure with tighter bbox crop around element",
+    "low_confidence_spring": "increase FPS to capture oscillation peaks, try 120fps if available",
+    "low_confidence_scroll": "isolate scroll segment, compute scroll velocity independently",
+    "element_tracking_lost": "re-detect element bbox via Gemini targeted crop, retry with larger search window",
+    "bezier_residual_high": "check for multi-phase animation (may need keyframes instead of single curve)",
+    "spring_residual_high": "verify overshoot detection, may be a CSS back() ease instead of true spring"
+  }
+}

@@ -1,0 +1,50 @@
+// {{Name}} - WKWebView bridge
+import SwiftUI
+import WebKit
+import Combine
+
+public struct {{Name}}: UIViewRepresentable {
+    public typealias UIViewType = WKWebView
+    public var url: URL
+    @Binding public var isLoading: Bool
+    @Binding public var progress: Double
+
+    public init(url: URL, isLoading: Binding<Bool>, progress: Binding<Double>) {
+        self.url = url
+        self._isLoading = isLoading
+        self._progress = progress
+    }
+
+    public func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    public func makeUIView(context: Context) -> WKWebView {
+        let web = WKWebView()
+        web.navigationDelegate = context.coordinator
+        context.coordinator.progress = web.publisher(for: \\.estimatedProgress).sink { [weak context] value in
+            context?.coordinator.parent.progress = value
+        }
+        web.load(URLRequest(url: url))
+        return web
+    }
+
+    public func updateUIView(_ uiView: WKWebView, context: Context) {
+        context.coordinator.parent = self
+    }
+
+    public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.navigationDelegate = nil
+        coordinator.progress?.cancel()
+    }
+
+    public final class Coordinator: NSObject, WKNavigationDelegate {
+        public var parent: {{Name}}
+        public var progress: AnyCancellable?
+        public init(_ parent: {{Name}}) { self.parent = parent }
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+            parent.isLoading = true
+        }
+        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            parent.isLoading = false
+        }
+    }
+}

@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-02-19T19:10:00Z",
+  "source_report": "/Users/kosta/Downloads/pptx-master-audit-report.md",
+  "summary": {
+    "issues_tracked": 31,
+    "status_counts": {
+      "fixed": 30,
+      "improved": 1,
+      "open": 0
+    }
+  },
+  "issues": [
+    {"issue_id":"1.1","status":"fixed","evidence_file":"FEEDBACK.md","evidence_command":"head -n 1 FEEDBACK.md"},
+    {"issue_id":"1.2","status":"fixed","evidence_file":"references/ppt-design-guide.md","evidence_command":"rg -n '^## ' references/ppt-design-guide.md"},
+    {"issue_id":"1.3","status":"fixed","evidence_file":"references/ppt-design-guide.md","evidence_command":"rg -n 'Canonical reference map|source-of-truth' references/ppt-design-guide.md"},
+    {"issue_id":"1.4","status":"fixed","evidence_file":"references/ppt-design-guide.md","evidence_command":"rg -n '\"id\"\\s*:\\s*\"A[0-9]+' references/ppt-design-guide.md"},
+    {"issue_id":"1.5","status":"fixed","evidence_file":"sample.deck.ir.json","evidence_command":"ls -lh sample.deck.ir.json evals/files/sample.deck.ir.json"},
+    {"issue_id":"1.6","status":"fixed","evidence_file":"evals/evals.json","evidence_command":"jq '.evals | length' evals/evals.json"},
+
+    {"issue_id":"2.1","status":"fixed","evidence_file":"scripts/text_metrics.py","evidence_command":"python3 scripts/preflight_ir.py evals/files/sample.deck.ir.json --out /tmp/qa.ir.json"},
+    {"issue_id":"2.2","status":"fixed","evidence_file":"references/composition-principles.md","evidence_command":"ls references/composition-principles.md"},
+    {"issue_id":"2.3","status":"fixed","evidence_file":"references/asset-planning.md","evidence_command":"ls references/asset-planning.md scripts/asset_planning.py"},
+    {"issue_id":"2.4","status":"fixed","evidence_file":"references/typography-color.md","evidence_command":"wc -l references/typography-color.md"},
+    {"issue_id":"2.5","status":"fixed","evidence_file":"references/ir.schema.json","evidence_command":"rg -n 'speaker_notes' references/ir.schema.json scripts/render_pptx.js scripts/auto_fix_ir.py"},
+    {"issue_id":"2.6","status":"fixed","evidence_file":"assets/agent-presets.json","evidence_command":"rg -n 'agent_polished_animated|autoAnimations' assets/agent-presets.json"},
+
+    {"issue_id":"3.1","status":"fixed","evidence_file":"references/narrative-arcs.md","evidence_command":"ls references/narrative-arcs.md"},
+    {"issue_id":"3.2","status":"fixed","evidence_file":"references/content-segmentation.md","evidence_command":"rg -n 'hierarch|parent_slide' references/content-segmentation.md"},
+    {"issue_id":"3.3","status":"fixed","evidence_file":"references/content-segmentation.md","evidence_command":"rg -n 'section break|section boundary|section' references/content-segmentation.md"},
+    {"issue_id":"3.4","status":"fixed","evidence_file":"references/transformation-patterns.md","evidence_command":"ls references/transformation-patterns.md"},
+
+    {"issue_id":"4.1","status":"improved","evidence_file":"scripts/render_pptx.js","evidence_command":"rg -n 'buildRenderRuntime|createSlideContext|renderSlides' scripts/render_pptx.js"},
+    {"issue_id":"4.2","status":"fixed","evidence_file":"html2pptx.md","evidence_command":"rg -n 'draft-quality fallback|not ship-ready' html2pptx.md"},
+    {"issue_id":"4.3","status":"fixed","evidence_file":"assets/themes.json","evidence_command":"rg -n '\"family\": \"Arial\"' assets/themes.json"},
+    {"issue_id":"4.4","status":"fixed","evidence_file":"scripts/render_pptx.js","evidence_command":"rg -n 'highlightSeries|chartColors' scripts/render_pptx.js"},
+    {"issue_id":"4.5","status":"fixed","evidence_file":"scripts/auto_fix_ir.py","evidence_command":"ls scripts/auto_fix_ir.py"},
+
+    {"issue_id":"5.1","status":"fixed","evidence_file":"scripts/preflight_ir.py","evidence_command":"rg -n 'THEME_PALETTE|palette' scripts/preflight_ir.py"},
+    {"issue_id":"5.2","status":"fixed","evidence_file":"references/visual-themes.md","evidence_command":"rg -n 'decision tree|best for|avoid when' references/visual-themes.md"},
+    {"issue_id":"5.3","status":"fixed","evidence_file":"references/visual-themes.md","evidence_command":"rg -n 'dark mode|dark-mode' references/visual-themes.md"},
+
+    {"issue_id":"6.1","status":"fixed","evidence_file":"scripts/render_thumbnails.py","evidence_command":"ls scripts/render_thumbnails.py scripts/vision_qa.py references/vision_critique_prompt.md"},
+    {"issue_id":"6.2","status":"fixed","evidence_file":"scripts/preflight_ir.py","evidence_command":"rg -n 'schema_hard_fail|validate_instance|S1_SCHEMA_INVALID' scripts/preflight_ir.py"},
+    {"issue_id":"6.3","status":"fixed","evidence_file":"scripts/preflight_ir.py","evidence_command":"rg -n 'ARCHETYPE_REPEAT_RUN|DENSITY_DISTRIBUTION|ARCHETYPE_DISTRIBUTION' scripts/preflight_ir.py"},
+
+    {"issue_id":"7.1","status":"fixed","evidence_file":"scripts/preflight_ir.py","evidence_command":"rg -n 'A4_HEADLINE_TOO_LONG|A5_TOO_MANY_FONTS|C2_MULTI_ACCENT' scripts/preflight_ir.py"},
+    {"issue_id":"7.2","status":"fixed","evidence_file":"scripts/pipeline.js","evidence_command":"rg -n 'asset_planning.py|asset-planning stage' scripts/pipeline.js"},
+    {"issue_id":"7.3","status":"fixed","evidence_file":"scripts/preflight_ir.py","evidence_command":"rg -n 'TY1_CENTER_BODY_TEXT|TY2_LOW_LINE_SPACING|TY3_TOO_MANY_FONT_SIZES|TY4_LONG_LINE_EST' scripts/preflight_ir.py"},
+    {"issue_id":"7.4","status":"fixed","evidence_file":"scripts/preflight_ir.py","evidence_command":"rg -n 'I2_IMAGE_DOMINANT_TOO_SMALL|I3_IMAGE_DOMINANT_UNDERSIZED' scripts/preflight_ir.py"}
+  ]
+}

@@ -1,0 +1,14 @@
+
+custom_rules:
+  no_force_cast:
+    included: ".*\.swift"
+    name: "No force cast"
+    regex: "\bas!\b"
+    message: "Avoid force casting; use safe patterns."
+    severity: error
+  no_force_try:
+    included: ".*\.swift"
+    name: "No force try"
+    regex: "\btry!\b"
+    message: "Avoid try!; handle or propagate errors."
+    severity: error

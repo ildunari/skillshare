@@ -1,0 +1,14 @@
+# Machine-specific config (has local target paths)
+config.yaml
+
+# macOS
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Temp/cache
+*.tmp
+*.bak
+*.swp

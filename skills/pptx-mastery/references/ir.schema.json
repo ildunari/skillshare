@@ -1,0 +1,678 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "pptx-master IR schema (v1.0)",
+  "type": "object",
+  "required": [
+    "deck"
+  ],
+  "properties": {
+    "deck": {
+      "$ref": "#/$defs/deck"
+    }
+  },
+  "$defs": {
+    "bbox": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "w",
+        "h"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "w": {
+          "type": "number"
+        },
+        "h": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    },
+    "gradientStop": {
+      "type": "object",
+      "required": [
+        "pos",
+        "color"
+      ],
+      "properties": {
+        "pos": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "color": {
+          "type": "string"
+        },
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "gradientFill": {
+      "type": "object",
+      "required": [
+        "type",
+        "stops"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "linear",
+            "radial"
+          ]
+        },
+        "angle_deg": {
+          "type": "number"
+        },
+        "stops": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/gradientStop"
+          }
+        },
+        "origin": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "fillToken": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/gradientFill"
+        }
+      ]
+    },
+    "iconRef": {
+      "type": "object",
+      "required": [
+        "set",
+        "name"
+      ],
+      "properties": {
+        "set": {
+          "type": "string",
+          "description": "Icon set identifier, e.g. 'lucide'"
+        },
+        "name": {
+          "type": "string",
+          "description": "Icon name within the set"
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "outline",
+            "solid",
+            "duotone"
+          ],
+          "default": "outline"
+        }
+      },
+      "additionalProperties": true
+    },
+    "styleTokens": {
+      "type": "object",
+      "properties": {
+        "font": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        },
+        "color": {
+          "type": "string"
+        },
+        "align": {
+          "type": "string",
+          "enum": [
+            "left",
+            "center",
+            "right",
+            "justify"
+          ]
+        },
+        "valign": {
+          "type": "string",
+          "enum": [
+            "top",
+            "mid",
+            "bottom"
+          ]
+        },
+        "bold": {
+          "type": "boolean"
+        },
+        "italic": {
+          "type": "boolean"
+        },
+        "underline": {
+          "type": "boolean"
+        },
+        "fill": {
+          "$ref": "#/$defs/fillToken"
+        },
+        "stroke": {
+          "type": "string"
+        },
+        "stroke_width": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "shadow": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "opacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "blur_pt": {
+              "type": "number"
+            },
+            "offset_pt": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "chart": {
+          "type": "object",
+          "description": "Chart styling overrides",
+          "additionalProperties": true
+        },
+        "table": {
+          "type": "object",
+          "description": "Table styling overrides",
+          "additionalProperties": true
+        },
+        "icon": {
+          "type": "object",
+          "description": "Icon styling overrides",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "element": {
+      "type": "object",
+      "required": [
+        "semantic_type",
+        "bbox"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable element id within the slide (recommended for animation targeting)."
+        },
+        "semantic_type": {
+          "type": "string",
+          "enum": [
+            "headline",
+            "text",
+            "caption",
+            "quote",
+            "image",
+            "picture",
+            "icon",
+            "logo",
+            "shape",
+            "divider",
+            "line",
+            "arrow",
+            "connector",
+            "card",
+            "panel",
+            "badge",
+            "footer",
+            "number",
+            "node",
+            "kpi",
+            "metric",
+            "sparkline",
+            "chart",
+            "table",
+            "axis",
+            "legend",
+            "callout",
+            "annotation",
+            "timeline_node",
+            "step",
+            "process_step",
+            "person"
+          ]
+        },
+        "role": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string",
+          "description": "Text content (for text-like elements)."
+        },
+        "bbox": {
+          "$ref": "#/$defs/bbox"
+        },
+        "style_tokens": {
+          "$ref": "#/$defs/styleTokens"
+        },
+        "iconRef": {
+          "$ref": "#/$defs/iconRef"
+        },
+        "src": {
+          "type": "string",
+          "description": "Image source (path or URL)."
+        },
+        "data": {
+          "type": "object",
+          "description": "Chart/table data payload (renderer-specific).",
+          "additionalProperties": true
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/element"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "animationTarget": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "spid": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "name_regex": {
+              "type": "string"
+            },
+            "bbox": {
+              "$ref": "#/$defs/bbox"
+            },
+            "text_contains": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "animationStep": {
+      "type": "object",
+      "required": [
+        "targets"
+      ],
+      "properties": {
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/animationTarget"
+          }
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "appear",
+            "fade",
+            "wipe",
+            "zoom"
+          ],
+          "default": "fade"
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "up",
+            "down"
+          ]
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000
+        },
+        "stagger_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "delay_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        }
+      },
+      "additionalProperties": true
+    },
+    "animations": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "none"
+          ]
+        },
+        "defaults": {
+          "type": "object",
+          "properties": {
+            "effect": {
+              "type": "string",
+              "enum": [
+                "appear",
+                "fade",
+                "wipe",
+                "zoom"
+              ]
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right",
+                "up",
+                "down"
+              ]
+            },
+            "duration_ms": {
+              "type": "integer"
+            },
+            "stagger_ms": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": true
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/animationStep"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "speakerNotes": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        }
+      ]
+    },
+    "slide": {
+      "type": "object",
+      "required": [
+        "id",
+        "archetype",
+        "headline",
+        "elements"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "archetype": {
+          "type": "string"
+        },
+        "headline": {
+          "type": "string"
+        },
+        "theme": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "light",
+                "dark"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "density_profile": {
+          "type": "string",
+          "enum": [
+            "sparse",
+            "comfortable",
+            "dense"
+          ]
+        },
+        "section": {
+          "type": "string",
+          "description": "Narrative section tag used for deck-level rhythm/distribution checks."
+        },
+        "parent_slide": {
+          "type": "string",
+          "description": "Optional parent slide id used to express hierarchy/continuation."
+        },
+        "speaker_notes": {
+          "$ref": "#/$defs/speakerNotes"
+        },
+        "animations": {
+          "$ref": "#/$defs/animations"
+        },
+        "constraints": {
+          "type": "object",
+          "description": "Optional per-slide constraint overrides / hints.",
+          "additionalProperties": true
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/element"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "tokens": {
+      "type": "object",
+      "required": [
+        "colors",
+        "fonts",
+        "sizes",
+        "radii",
+        "spacing"
+      ],
+      "properties": {
+        "colors": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "fonts": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "sizes": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "radii": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "spacing": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "gradients": {
+          "type": "object",
+          "description": "Optional named gradients used by style_tokens.fill objects.",
+          "additionalProperties": true
+        },
+        "charts": {
+          "type": "object",
+          "description": "Optional chart style tokens (axis, gridline, legend).",
+          "additionalProperties": true
+        },
+        "tables": {
+          "type": "object",
+          "description": "Optional table style tokens (header fill, zebra striping).",
+          "additionalProperties": true
+        },
+        "icons": {
+          "type": "object",
+          "description": "Optional icon tokens (set, default stroke, sizes).",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "deck": {
+      "type": "object",
+      "required": [
+        "slides",
+        "tokens"
+      ],
+      "properties": {
+        "theme": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "light",
+                "dark"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "density_profile": {
+          "type": "string",
+          "enum": [
+            "sparse",
+            "comfortable",
+            "dense"
+          ]
+        },
+        "narrative_arc": {
+          "type": "array",
+          "description": "Optional ordered narrative sections for deck planning and QA.",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "section": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "goal": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": true
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "speaker_notes_defaults": {
+          "$ref": "#/$defs/speakerNotes"
+        },
+        "constraints": {
+          "type": "object",
+          "description": "Deck-level constraint configuration.",
+          "additionalProperties": true
+        },
+        "tokens": {
+          "$ref": "#/$defs/tokens"
+        },
+        "slides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slide"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

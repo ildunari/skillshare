@@ -1,0 +1,69 @@
+
+name: swift-quality
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  quality:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          brew install swiftlint swiftformat python@3
+
+      - name: SwiftFormat (lint only)
+        run: swiftformat --lint . || true
+
+      - name: SwiftLint
+        run: swiftlint --config configs/swiftlint.yml
+
+      - name: Run Python analyzers
+        run: |
+          python3 scripts/code_analyzer.py --path . --out findings.json
+          python3 scripts/code_smell_detector.py --path . --out smells.json
+          python3 scripts/complexity_analyzer.py --path . --out complexity.json
+          python3 scripts/retain_cycle_detector.py --path . --out retains.json
+          python3 scripts/documentation_checker.py --path . --out docs.json
+          python3 scripts/naming_validator.py --path . --out names.json
+          python3 scripts/security_scanner.py --path . --out security.json
+          python3 scripts/architecture_validator.py --path . --out arch.json
+        shell: bash
+
+      - name: Upload analyzer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: analyzer-results
+          path: |
+            findings.json
+            smells.json
+            complexity.json
+            retains.json
+            docs.json
+            names.json
+            security.json
+            arch.json
+
+  tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build & test with coverage
+        run: |
+          xcodebuild -scheme YourApp -destination 'platform=iOS Simulator,name=iPhone 15' -enableCodeCoverage YES test | xcpretty
+      - name: Export coverage json
+        run: |
+          mkdir -p build_cov
+          xcrun xccov view --report --json $(ls -t ~/Library/Developer/Xcode/DerivedData/*/Logs/Test/*.xcresult | head -n1) > build_cov/coverage.json
+      - name: Analyze coverage
+        run: |
+          python3 scripts/test_coverage_analyzer.py --coverage build_cov/coverage.json --out coverage_findings.json
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: build_cov/*

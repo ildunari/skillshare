@@ -1,0 +1,1 @@
+# Docs for code-reviewer-guardian\n\nSee individual files for focused guidance.

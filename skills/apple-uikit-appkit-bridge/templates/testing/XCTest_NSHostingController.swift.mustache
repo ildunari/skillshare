@@ -1,0 +1,12 @@
+import XCTest
+import SwiftUI
+
+final class NSHostingEmbeddingTests: XCTestCase {
+    func testEmbedSwiftUIView() {
+        let vc = NSViewController()
+        let container = NSView(frame: .init(x: 0, y: 0, width: 300, height: 300))
+        vc.view.addSubview(container)
+        let host = vc.embed(Text("Hello"), in: container)
+        XCTAssertNotNil(host.view.superview)
+    }
+}

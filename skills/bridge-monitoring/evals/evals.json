@@ -1,0 +1,23 @@
+{
+  "skill_name": "bridge-monitoring",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Check whether OpenWord Hybrid is connected on the hybrid bridge, show me the runtime summary, and tell me if the side panel needs focus first.",
+      "expected_output": "Uses the hybrid bridge URL, checks session health, reports summary/state, and recommends focus-word-pane when relevant.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Run a live review-heavy smoke pass against comments.docx on the Hybrid Word add-in and save artifacts under a scenario-tagged output folder.",
+      "expected_output": "Uses wait-and-check on 4018, corpus-aware smoke-test flags, and preserves scenario/fixture-labeled artifacts.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The OpenWord Hybrid taskpane is visible but not focused. Focus the composer area and then inspect the current document metadata on the live Word session.",
+      "expected_output": "Uses focus-word-pane with the input target, then runs bridge metadata/state commands against the same live session.",
+      "files": []
+    }
+  ]
+}

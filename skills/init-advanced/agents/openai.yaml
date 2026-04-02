@@ -1,0 +1,4 @@
+interface:
+  display_name: "Init Advanced"
+  short_description: "Create or audit grounded AI repo instructions"
+  default_prompt: "Use $init-advanced to create or refresh grounded AGENTS.md and CLAUDE.md files for this repository."

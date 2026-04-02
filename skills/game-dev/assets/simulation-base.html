@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; display: flex; justify-content: center; align-items: center; min-height: 100dvh; overflow: hidden; }
+  canvas { display: block; max-width: 100vw; max-height: 100dvh; touch-action: none; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<!-- Fullscreen quad vertex shader (shared by all passes) -->
+<script id="vs-quad" type="x-shader/x-vertex">#version 300 es
+in vec2 a_pos;
+out vec2 v_uv;
+void main() {
+  v_uv = a_pos * 0.5 + 0.5;
+  gl_Position = vec4(a_pos, 0.0, 1.0);
+}
+</script>
+
+<!-- SIMULATION FRAGMENT SHADER — customize this -->
+<script id="fs-sim" type="x-shader/x-fragment">#version 300 es
+precision highp float;
+in vec2 v_uv;
+uniform sampler2D u_state;   // previous frame state
+uniform vec2 u_resolution;
+uniform float u_time;
+uniform vec2 u_mouse;        // normalized mouse position (0-1)
+uniform float u_mouseDown;   // 1.0 when pressed, 0.0 otherwise
+out vec4 fragColor;
+
+void main() {
+  vec2 texel = 1.0 / u_resolution;
+  vec4 state = texture(u_state, v_uv);
+
+  // === YOUR SIMULATION LOGIC HERE ===
+  // Example: simple diffusion
+  vec4 sum = texture(u_state, v_uv + vec2(texel.x, 0.0))
+           + texture(u_state, v_uv - vec2(texel.x, 0.0))
+           + texture(u_state, v_uv + vec2(0.0, texel.y))
+           + texture(u_state, v_uv - vec2(0.0, texel.y));
+  state = mix(state, sum * 0.25, 0.1);
+
+  // Mouse interaction: paint on click
+  float dist = length(v_uv - u_mouse);
+  if (u_mouseDown > 0.5 && dist < 0.02) {
+    state = vec4(1.0, 0.0, 0.0, 1.0);
+  }
+
+  fragColor = state;
+}
+</script>
+
+<!-- DISPLAY FRAGMENT SHADER — maps simulation state to visual output -->
+<script id="fs-display" type="x-shader/x-fragment">#version 300 es
+precision highp float;
+in vec2 v_uv;
+uniform sampler2D u_state;
+out vec4 fragColor;
+
+void main() {
+  vec4 state = texture(u_state, v_uv);
+
+  // === YOUR VISUALIZATION LOGIC HERE ===
+  // Example: map red channel to grayscale
+  vec3 color = vec3(state.r);
+
+  fragColor = vec4(color, 1.0);
+}
+</script>
+
+<script>
+// ============================================================
+// WebGL2 Ping-Pong FBO Simulation Template
+// ============================================================
+// Customize: fs-sim (simulation rules) and fs-display (visualization)
+// State is stored in floating-point textures, swapped each frame.
+
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl2', { alpha: false, antialias: false, premultipliedAlpha: false });
+if (!gl) { document.body.textContent = 'WebGL2 required'; throw new Error('No WebGL2'); }
+
+// Enable float textures for render targets
+const ext = gl.getExtension('EXT_color_buffer_float');
+if (!ext) { document.body.textContent = 'EXT_color_buffer_float required'; throw new Error('No float FBO'); }
+
+// --- Configuration ---
+const SIM_WIDTH = 512;   // Simulation resolution (independent of display)
+const SIM_HEIGHT = 512;
+const SIM_STEPS = 1;     // Steps per frame (increase for faster evolution)
+
+// --- Canvas sizing ---
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio, 2);
+  const size = Math.min(window.innerWidth, window.innerHeight, 800);
+  canvas.style.width = canvas.style.height = size + 'px';
+  canvas.width = canvas.height = size * dpr;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// --- Shader compilation ---
+function compileShader(type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+function createProgram(vsId, fsId) {
+  const p = gl.createProgram();
+  gl.attachShader(p, compileShader(gl.VERTEX_SHADER, document.getElementById(vsId).textContent));
+  gl.attachShader(p, compileShader(gl.FRAGMENT_SHADER, document.getElementById(fsId).textContent));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  return p;
+}
+
+const simProgram = createProgram('vs-quad', 'fs-sim');
+const displayProgram = createProgram('vs-quad', 'fs-display');
+
+// --- Fullscreen quad VAO ---
+const quadVao = gl.createVertexArray();
+gl.bindVertexArray(quadVao);
+const quadBuf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+// Bind a_pos for both programs
+[simProgram, displayProgram].forEach(prog => {
+  const loc = gl.getAttribLocation(prog, 'a_pos');
+  if (loc >= 0) { gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0); }
+});
+
+// --- FBO creation ---
+function createFBO(w, h) {
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, w, h, 0, gl.RGBA, gl.FLOAT, null);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const fbo = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+  return { fbo, texture: tex };
+}
+
+let fboA = createFBO(SIM_WIDTH, SIM_HEIGHT);
+let fboB = createFBO(SIM_WIDTH, SIM_HEIGHT);
+let read = fboA, write = fboB;
+
+// --- Uniform locations ---
+const simUniforms = {
+  state: gl.getUniformLocation(simProgram, 'u_state'),
+  resolution: gl.getUniformLocation(simProgram, 'u_resolution'),
+  time: gl.getUniformLocation(simProgram, 'u_time'),
+  mouse: gl.getUniformLocation(simProgram, 'u_mouse'),
+  mouseDown: gl.getUniformLocation(simProgram, 'u_mouseDown'),
+};
+const displayUniforms = {
+  state: gl.getUniformLocation(displayProgram, 'u_state'),
+};
+
+// --- Mouse tracking ---
+let mouse = [0.5, 0.5], mouseDown = 0;
+canvas.addEventListener('pointermove', e => {
+  const rect = canvas.getBoundingClientRect();
+  mouse = [(e.clientX - rect.left) / rect.width, 1.0 - (e.clientY - rect.top) / rect.height];
+});
+canvas.addEventListener('pointerdown', e => { mouseDown = 1; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointerup', () => { mouseDown = 0; });
+
+// --- Render loop ---
+let startTime = performance.now();
+function frame(now) {
+  const t = (now - startTime) / 1000;
+
+  gl.bindVertexArray(quadVao);
+
+  // Simulation passes
+  for (let i = 0; i < SIM_STEPS; i++) {
+    gl.viewport(0, 0, SIM_WIDTH, SIM_HEIGHT);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, write.fbo);
+    gl.useProgram(simProgram);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, read.texture);
+    gl.uniform1i(simUniforms.state, 0);
+    gl.uniform2f(simUniforms.resolution, SIM_WIDTH, SIM_HEIGHT);
+    gl.uniform1f(simUniforms.time, t);
+    gl.uniform2fv(simUniforms.mouse, mouse);
+    gl.uniform1f(simUniforms.mouseDown, mouseDown);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    [read, write] = [write, read]; // swap
+  }
+
+  // Display pass (render to canvas)
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.useProgram(displayProgram);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, read.texture);
+  gl.uniform1i(displayUniforms.state, 0);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+// {{Name}} - Custom UIKit control bridge
+import SwiftUI
+import UIKit
+
+public struct {{Name}}: UIViewRepresentable {
+    public typealias UIViewType = UIControl
+    public func makeUIView(context: Context) -> UIControl { UIControl() }
+    public func updateUIView(_ uiView: UIControl, context: Context) { }
+}

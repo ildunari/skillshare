@@ -1,0 +1,851 @@
+{
+  "version": "1.0",
+  "description": "Renderable visual themes for pptx-master. A theme selects a palette+mode and defines typography scale and shape treatments.",
+  "themes": [
+    {
+      "id": "atlas",
+      "name": "Atlas",
+      "palette": {
+        "id": "consulting_blue",
+        "mode": "light"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 700
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 40,
+          "h2": 30,
+          "body": 20,
+          "caption": 14
+        },
+        "line_height": {
+          "headline": 1.05,
+          "body": 1.2
+        }
+      },
+      "layout": {
+        "density": "comfortable",
+        "grid": {
+          "margins_in": {
+            "t": 0.7,
+            "r": 0.7,
+            "b": 0.7,
+            "l": 0.7
+          },
+          "columns": 12,
+          "gutter_in": 0.25
+        }
+      },
+      "shapes": {
+        "corner_radius": 14,
+        "border_width": 1,
+        "shadow": {
+          "enabled": true,
+          "opacity": 0.18,
+          "blur_pt": 10,
+          "offset_pt": {
+            "x": 0,
+            "y": 2
+          }
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 14
+      },
+      "charts": {
+        "gridline_opacity": 0.25,
+        "axis_label_size_pt": 14,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 12,
+        "frame": {
+          "enabled": false
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.8
+      },
+      "motion": {
+        "transitions": {
+          "slide": "fade",
+          "duration_ms": 280
+        },
+        "builds": {
+          "default_effect": "fade",
+          "duration_ms": 320,
+          "stagger_ms": 60
+        }
+      },
+      "fills": {
+        "heroGradient": {
+          "type": "linear",
+          "angle": 35,
+          "stops": [
+            {
+              "pos": 0,
+              "color": "primary",
+              "alpha": 1
+            },
+            {
+              "pos": 100,
+              "color": "accent_1",
+              "alpha": 1
+            }
+          ]
+        }
+      },
+      "shadows": {
+        "card": {
+          "type": "outer",
+          "color": "000000",
+          "opacity": 0.18,
+          "blur": 10,
+          "angle": 90,
+          "distance": 2
+        },
+        "pop": {
+          "type": "outer",
+          "color": "000000",
+          "opacity": 0.26,
+          "blur": 18,
+          "angle": 90,
+          "distance": 4
+        }
+      },
+      "masters": {
+        "DEFAULT": {
+          "backgroundFill": "bg",
+          "accentBar": {
+            "enabled": true,
+            "position": "top",
+            "height": 0.04,
+            "fill": "primary"
+          },
+          "slideNumber": {
+            "enabled": true,
+            "x": 12.55,
+            "y": 7.16,
+            "w": 0.7,
+            "h": 0.28,
+            "fontSize": 10,
+            "color": "muted",
+            "align": "right"
+          }
+        },
+        "SECTION": {
+          "backgroundFill": "heroGradient",
+          "accentBar": {
+            "enabled": true,
+            "position": "bottom",
+            "height": 0.08,
+            "fill": "accent_1"
+          },
+          "slideNumber": {
+            "enabled": false
+          }
+        },
+        "COVER": {
+          "backgroundFill": "bg",
+          "accentBar": {
+            "enabled": false
+          },
+          "slideNumber": {
+            "enabled": false
+          }
+        }
+      }
+    },
+    {
+      "id": "noir",
+      "name": "Noir",
+      "palette": {
+        "id": "midnight_cyan",
+        "mode": "dark"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 700
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 42,
+          "h2": 32,
+          "body": 20,
+          "caption": 14
+        },
+        "line_height": {
+          "headline": 1.05,
+          "body": 1.22
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 16,
+        "border_width": 1,
+        "shadow": {
+          "enabled": true,
+          "opacity": 0.28,
+          "blur_pt": 14,
+          "offset_pt": {
+            "x": 0,
+            "y": 3
+          }
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 16
+      },
+      "charts": {
+        "gridline_opacity": 0.22,
+        "axis_label_size_pt": 14,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 14,
+        "frame": {
+          "enabled": false
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.8
+      },
+      "motion": {
+        "transitions": {
+          "slide": "fade",
+          "duration_ms": 280
+        },
+        "builds": {
+          "default_effect": "fade",
+          "duration_ms": 320,
+          "stagger_ms": 60
+        }
+      },
+      "fills": {
+        "heroGradient": {
+          "type": "linear",
+          "angle": 35,
+          "stops": [
+            {
+              "pos": 0,
+              "color": "primary",
+              "alpha": 1
+            },
+            {
+              "pos": 100,
+              "color": "accent_1",
+              "alpha": 1
+            }
+          ]
+        }
+      },
+      "shadows": {
+        "card": {
+          "type": "outer",
+          "color": "000000",
+          "opacity": 0.28,
+          "blur": 14,
+          "angle": 90,
+          "distance": 3
+        },
+        "pop": {
+          "type": "outer",
+          "color": "000000",
+          "opacity": 0.26,
+          "blur": 18,
+          "angle": 90,
+          "distance": 4
+        }
+      },
+      "masters": {
+        "DEFAULT": {
+          "backgroundFill": "bg",
+          "accentBar": {
+            "enabled": true,
+            "position": "top",
+            "height": 0.04,
+            "fill": "primary"
+          },
+          "slideNumber": {
+            "enabled": true,
+            "x": 12.55,
+            "y": 7.16,
+            "w": 0.7,
+            "h": 0.28,
+            "fontSize": 10,
+            "color": "muted",
+            "align": "right"
+          }
+        },
+        "SECTION": {
+          "backgroundFill": "heroGradient",
+          "accentBar": {
+            "enabled": true,
+            "position": "bottom",
+            "height": 0.08,
+            "fill": "accent_1"
+          },
+          "slideNumber": {
+            "enabled": false
+          }
+        },
+        "COVER": {
+          "backgroundFill": "bg",
+          "accentBar": {
+            "enabled": false
+          },
+          "slideNumber": {
+            "enabled": false
+          }
+        }
+      }
+    },
+    {
+      "id": "paper",
+      "name": "Paper",
+      "palette": {
+        "id": "sand_navy",
+        "mode": "light"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 700
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 38,
+          "h2": 28,
+          "body": 19,
+          "caption": 13
+        },
+        "line_height": {
+          "headline": 1.05,
+          "body": 1.22
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 10,
+        "border_width": 1,
+        "shadow": {
+          "enabled": false
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 10
+      },
+      "charts": {
+        "gridline_opacity": 0.22,
+        "axis_label_size_pt": 13,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 8,
+        "frame": {
+          "enabled": true,
+          "stroke": "border",
+          "width": 1
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.6
+      },
+      "motion": {
+        "transitions": {
+          "slide": "none",
+          "duration_ms": 0
+        },
+        "builds": {
+          "default_effect": "appear",
+          "duration_ms": 1,
+          "stagger_ms": 0
+        }
+      },
+      "fills": {
+        "heroGradient": {
+          "type": "linear",
+          "angle": 35,
+          "stops": [
+            {
+              "pos": 0,
+              "color": "primary",
+              "alpha": 1
+            },
+            {
+              "pos": 100,
+              "color": "accent_1",
+              "alpha": 1
+            }
+          ]
+        }
+      },
+      "shadows": {
+        "card": {
+          "type": "outer",
+          "color": "000000",
+          "opacity": 0.18,
+          "blur": 10,
+          "angle": 90,
+          "distance": 2
+        },
+        "pop": {
+          "type": "outer",
+          "color": "000000",
+          "opacity": 0.26,
+          "blur": 18,
+          "angle": 90,
+          "distance": 4
+        }
+      },
+      "masters": {
+        "DEFAULT": {
+          "backgroundFill": "bg",
+          "accentBar": {
+            "enabled": true,
+            "position": "top",
+            "height": 0.04,
+            "fill": "primary"
+          },
+          "slideNumber": {
+            "enabled": true,
+            "x": 12.55,
+            "y": 7.16,
+            "w": 0.7,
+            "h": 0.28,
+            "fontSize": 10,
+            "color": "muted",
+            "align": "right"
+          }
+        },
+        "SECTION": {
+          "backgroundFill": "heroGradient",
+          "accentBar": {
+            "enabled": true,
+            "position": "bottom",
+            "height": 0.08,
+            "fill": "accent_1"
+          },
+          "slideNumber": {
+            "enabled": false
+          }
+        },
+        "COVER": {
+          "backgroundFill": "bg",
+          "accentBar": {
+            "enabled": false
+          },
+          "slideNumber": {
+            "enabled": false
+          }
+        }
+      }
+    },
+    {
+      "id": "pulse",
+      "name": "Pulse",
+      "palette": {
+        "id": "warm_gray_coral",
+        "mode": "light"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 800
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 42,
+          "h2": 32,
+          "body": 20,
+          "caption": 14
+        },
+        "line_height": {
+          "headline": 1.02,
+          "body": 1.2
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 18,
+        "border_width": 0,
+        "shadow": {
+          "enabled": true,
+          "opacity": 0.2,
+          "blur_pt": 16,
+          "offset_pt": {
+            "x": 0,
+            "y": 3
+          }
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 18
+      },
+      "charts": {
+        "gridline_opacity": 0.18,
+        "axis_label_size_pt": 14,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 18,
+        "frame": {
+          "enabled": false
+        }
+      },
+      "icons": {
+        "style": "solid",
+        "stroke_width_pt": 0
+      },
+      "motion": {
+        "transitions": {
+          "slide": "fade",
+          "duration_ms": 320
+        },
+        "builds": {
+          "default_effect": "wipe",
+          "direction": "right",
+          "duration_ms": 360,
+          "stagger_ms": 70
+        }
+      }
+    },
+    {
+      "id": "sage",
+      "name": "Sage",
+      "palette": {
+        "id": "forest_amber",
+        "mode": "light"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 700
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 40,
+          "h2": 30,
+          "body": 19,
+          "caption": 13
+        },
+        "line_height": {
+          "headline": 1.05,
+          "body": 1.22
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 14,
+        "border_width": 1,
+        "shadow": {
+          "enabled": false
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 14
+      },
+      "charts": {
+        "gridline_opacity": 0.22,
+        "axis_label_size_pt": 13,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 12,
+        "frame": {
+          "enabled": true,
+          "stroke": "border",
+          "width": 1
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.6
+      },
+      "motion": {
+        "transitions": {
+          "slide": "fade",
+          "duration_ms": 280
+        },
+        "builds": {
+          "default_effect": "fade",
+          "duration_ms": 320,
+          "stagger_ms": 60
+        }
+      }
+    },
+    {
+      "id": "plasma",
+      "name": "Plasma",
+      "palette": {
+        "id": "plum",
+        "mode": "dark"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 800
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 44,
+          "h2": 34,
+          "body": 20,
+          "caption": 14
+        },
+        "line_height": {
+          "headline": 1.02,
+          "body": 1.2
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 16,
+        "border_width": 1,
+        "shadow": {
+          "enabled": true,
+          "opacity": 0.3,
+          "blur_pt": 18,
+          "offset_pt": {
+            "x": 0,
+            "y": 3
+          }
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 16
+      },
+      "charts": {
+        "gridline_opacity": 0.18,
+        "axis_label_size_pt": 14,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 14,
+        "frame": {
+          "enabled": false
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.8
+      },
+      "motion": {
+        "transitions": {
+          "slide": "fade",
+          "duration_ms": 320
+        },
+        "builds": {
+          "default_effect": "zoom",
+          "duration_ms": 360,
+          "stagger_ms": 70
+        }
+      }
+    },
+    {
+      "id": "mono",
+      "name": "Mono",
+      "palette": {
+        "id": "mono_ink",
+        "mode": "light"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 700
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 38,
+          "h2": 28,
+          "body": 19,
+          "caption": 13
+        },
+        "line_height": {
+          "headline": 1.05,
+          "body": 1.22
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 8,
+        "border_width": 1,
+        "shadow": {
+          "enabled": false
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 8
+      },
+      "charts": {
+        "gridline_opacity": 0.18,
+        "axis_label_size_pt": 13,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 6,
+        "frame": {
+          "enabled": true,
+          "stroke": "border",
+          "width": 1
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.4
+      },
+      "motion": {
+        "transitions": {
+          "slide": "none",
+          "duration_ms": 0
+        },
+        "builds": {
+          "default_effect": "appear",
+          "duration_ms": 1,
+          "stagger_ms": 0
+        }
+      }
+    },
+    {
+      "id": "clinical",
+      "name": "Clinical",
+      "palette": {
+        "id": "clinical_green",
+        "mode": "light"
+      },
+      "typography": {
+        "fonts": {
+          "headline": {
+            "family": "Arial",
+            "weight": 700
+          },
+          "body": {
+            "family": "Arial",
+            "weight": 400
+          }
+        },
+        "sizes_pt": {
+          "h1": 40,
+          "h2": 30,
+          "body": 19,
+          "caption": 13
+        },
+        "line_height": {
+          "headline": 1.05,
+          "body": 1.22
+        }
+      },
+      "layout": {
+        "density": "comfortable"
+      },
+      "shapes": {
+        "corner_radius": 12,
+        "border_width": 1,
+        "shadow": {
+          "enabled": false
+        }
+      },
+      "cards": {
+        "fill": "surface",
+        "stroke": "border",
+        "radius": 12
+      },
+      "charts": {
+        "gridline_opacity": 0.22,
+        "axis_label_size_pt": 13,
+        "legend_size_pt": 12
+      },
+      "images": {
+        "corner_radius": 10,
+        "frame": {
+          "enabled": true,
+          "stroke": "border",
+          "width": 1
+        }
+      },
+      "icons": {
+        "style": "outline",
+        "stroke_width_pt": 1.6
+      },
+      "motion": {
+        "transitions": {
+          "slide": "fade",
+          "duration_ms": 240
+        },
+        "builds": {
+          "default_effect": "fade",
+          "duration_ms": 280,
+          "stagger_ms": 50
+        }
+      }
+    }
+  ]
+}

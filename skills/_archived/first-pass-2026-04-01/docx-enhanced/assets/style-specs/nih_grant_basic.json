@@ -1,0 +1,174 @@
+{
+  "name": "nih_grant_basic",
+  "page": {
+    "size": "Letter",
+    "margins_in": {
+      "top": 0.5,
+      "bottom": 0.5,
+      "left": 0.5,
+      "right": 0.5
+    }
+  },
+  "fonts": {
+    "heading": {
+      "family": "Arial",
+      "fallback": [
+        "Helvetica",
+        "Calibri"
+      ]
+    },
+    "body": {
+      "family": "Arial",
+      "fallback": [
+        "Helvetica",
+        "Calibri"
+      ],
+      "size_pt": 11
+    },
+    "mono": {
+      "family": "Courier New",
+      "fallback": [
+        "Consolas"
+      ],
+      "size_pt": 10
+    }
+  },
+  "paragraphStyles": {
+    "Title": {
+      "font": {
+        "size_pt": 16,
+        "bold": true,
+        "family": "heading"
+      },
+      "alignment": "center",
+      "space_after_pt": 12
+    },
+    "Subtitle": {
+      "font": {
+        "size_pt": 12,
+        "family": "heading"
+      },
+      "alignment": "center",
+      "space_after_pt": 18
+    },
+    "Heading1": {
+      "font": {
+        "size_pt": 12,
+        "bold": true,
+        "family": "heading"
+      },
+      "space_before_pt": 18,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 1
+    },
+    "Heading2": {
+      "font": {
+        "size_pt": 11,
+        "bold": true,
+        "family": "heading"
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 4,
+      "keep_with_next": true,
+      "outline_level": 2
+    },
+    "Heading3": {
+      "font": {
+        "size_pt": 11,
+        "bold": true
+      },
+      "space_before_pt": 10,
+      "space_after_pt": 3,
+      "keep_with_next": true,
+      "outline_level": 3
+    },
+    "Body": {
+      "font": {
+        "size_pt": 11,
+        "family": "body"
+      },
+      "space_after_pt": 3,
+      "line_spacing_multiple": 1.15,
+      "widow_control": true
+    },
+    "BodyCompact": {
+      "based_on": "Body",
+      "space_after_pt": 0,
+      "line_spacing_multiple": 1.15
+    },
+    "BlockQuote": {
+      "based_on": "Body",
+      "left_indent_in": 0.5,
+      "right_indent_in": 0.5,
+      "space_before_pt": 6,
+      "space_after_pt": 6
+    },
+    "CodeBlock": {
+      "font": {
+        "family": "mono",
+        "size_pt": 10
+      },
+      "space_before_pt": 6,
+      "space_after_pt": 6,
+      "line_spacing_multiple": 1.0,
+      "shading": "F2F2F2"
+    },
+    "TableCaption": {
+      "font": {
+        "size_pt": 10.5,
+        "bold": true
+      },
+      "space_before_pt": 8,
+      "space_after_pt": 2,
+      "keep_with_next": true
+    },
+    "FigureCaption": {
+      "font": {
+        "size_pt": 10
+      },
+      "space_after_pt": 6,
+      "keep_together": true
+    }
+  },
+  "characterStyles": {
+    "Emphasis": {
+      "italic": true
+    },
+    "Strong": {
+      "bold": true
+    },
+    "InlineCode": {
+      "font": {
+        "family": "mono",
+        "size_pt": 10
+      },
+      "shading": "F2F2F2"
+    }
+  },
+  "tableStyles": {
+    "TableNIH": {
+      "font": {
+        "size_pt": 10.5
+      },
+      "cell_padding_pt": {
+        "top": 4,
+        "bottom": 4,
+        "left": 5,
+        "right": 5
+      },
+      "borders": "minimal_horizontal",
+      "table_look": {
+        "firstRow": true,
+        "bandedRows": false
+      },
+      "header_row": {
+        "bold": true,
+        "shading": "EDEDED"
+      }
+    }
+  },
+  "headersFooters": {
+    "footer": " "
+  }
+}

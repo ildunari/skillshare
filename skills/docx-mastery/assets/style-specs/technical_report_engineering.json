@@ -1,0 +1,136 @@
+{
+  "name": "technical_report_engineering",
+  "page": {
+    "size": "Letter",
+    "margins_in": {
+      "top": 1.0,
+      "bottom": 1.0,
+      "left": 0.95,
+      "right": 0.95
+    }
+  },
+  "fonts": {
+    "body": {
+      "family": "Aptos",
+      "fallback": [
+        "Calibri",
+        "Arial"
+      ],
+      "size_pt": 11
+    },
+    "mono": {
+      "family": "Consolas",
+      "fallback": [
+        "Courier New"
+      ],
+      "size_pt": 9.5
+    }
+  },
+  "paragraphStyles": {
+    "Heading1": {
+      "font": {
+        "size_pt": 16,
+        "bold": true
+      },
+      "space_before_pt": 20,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 1
+    },
+    "Heading2": {
+      "font": {
+        "size_pt": 13,
+        "bold": true
+      },
+      "space_before_pt": 16,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 2
+    },
+    "Heading3": {
+      "font": {
+        "size_pt": 11,
+        "bold": true
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 4,
+      "keep_with_next": true,
+      "outline_level": 3
+    },
+    "Body": {
+      "font": {
+        "size_pt": 11
+      },
+      "space_after_pt": 6,
+      "line_spacing_multiple": 1.15,
+      "widow_control": true
+    },
+    "ProcedureStep": {
+      "based_on": "Body",
+      "hanging_indent_in": 0.25,
+      "space_after_pt": 2
+    },
+    "NoteCallout": {
+      "based_on": "Body",
+      "space_before_pt": 6,
+      "space_after_pt": 6
+    },
+    "WarningCallout": {
+      "based_on": "Body",
+      "space_before_pt": 6,
+      "space_after_pt": 6
+    },
+    "CodeBlock": {
+      "font": {
+        "family": "mono",
+        "size_pt": 9.5
+      },
+      "space_before_pt": 6,
+      "space_after_pt": 6,
+      "line_spacing_multiple": 1.0,
+      "shading": "F2F2F2"
+    },
+    "TableCaption": {
+      "font": {
+        "size_pt": 10,
+        "bold": true
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 3,
+      "keep_with_next": true
+    }
+  },
+  "characterStyles": {
+    "InlineCode": {
+      "font": {
+        "family": "mono",
+        "size_pt": 9.5
+      },
+      "shading": "F2F2F2"
+    },
+    "UILabel": {
+      "bold": true
+    }
+  },
+  "tableStyles": {
+    "TableTech": {
+      "font": {
+        "size_pt": 10.5
+      },
+      "cell_padding_pt": {
+        "top": 5,
+        "bottom": 5,
+        "left": 6,
+        "right": 6
+      },
+      "table_look": {
+        "firstRow": true,
+        "bandedRows": true
+      },
+      "header_row": {
+        "bold": true,
+        "shading": "EDEDED"
+      }
+    }
+  }
+}

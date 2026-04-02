@@ -1,0 +1,98 @@
+{
+  "description": "Confidence thresholds and failure-action routing for screenshot-to-design-spec extraction",
+  "thresholds": {
+    "color": {
+      "accept": 0.85,
+      "iterate": 0.65,
+      "reject": 0.40,
+      "notes": "Colors measured by palette_extract are high confidence; LLM-only roles are lower"
+    },
+    "typography": {
+      "accept": 0.80,
+      "iterate": 0.60,
+      "reject": 0.35,
+      "notes": "Font family is unreliable from screenshots; size/weight are measurable"
+    },
+    "space": {
+      "accept": 0.75,
+      "iterate": 0.55,
+      "reject": 0.30,
+      "notes": "Grid detection gives solid measurements; off-grid values need iteration"
+    },
+    "radius": {
+      "accept": 0.75,
+      "iterate": 0.55,
+      "reject": 0.30,
+      "notes": "Anti-aliasing adds ±1-2px uncertainty on corner detection"
+    },
+    "shadow": {
+      "accept": 0.70,
+      "iterate": 0.50,
+      "reject": 0.25,
+      "notes": "Shadow params are the hardest to extract computationally; often LLM-only"
+    },
+    "gradient": {
+      "accept": 0.65,
+      "iterate": 0.45,
+      "reject": 0.20,
+      "notes": "Gradient fitting works for 2-3 stops; complex gradients may be images"
+    },
+    "default": {
+      "accept": 0.80,
+      "iterate": 0.60,
+      "reject": 0.40
+    }
+  },
+
+  "failureActions": {
+    "low_confidence_color": {
+      "action": "run_tool",
+      "tool": "palette_extract.py",
+      "description": "Re-run palette extraction and cross-check with LLM output"
+    },
+    "near_duplicate_colors": {
+      "action": "merge_or_keep",
+      "description": "If ΔE < 5, merge tokens. If 5-8, flag for user decision."
+    },
+    "spacing_off_grid": {
+      "action": "snap_to_grid",
+      "description": "Check for sub-pixel rendering; snap to nearest 4px grid value"
+    },
+    "gradient_poor_fit": {
+      "action": "reclassify",
+      "description": "Region may be an image, not a CSS gradient. Re-examine with LLM."
+    },
+    "shadow_uncertain": {
+      "action": "request_ground_truth",
+      "description": "Shadow params can't be reliably extracted from screenshots. Request Figma/DevTools access."
+    },
+    "font_family_unknown": {
+      "action": "apply_platform_prior",
+      "description": "Use platform detection (iOS→SF Pro, Android→Roboto, Web→system-ui). Flag as low confidence."
+    },
+    "component_type_ambiguous": {
+      "action": "multi_hypothesis",
+      "description": "Store top-2 hypotheses with confidence. Let downstream consumer decide."
+    },
+    "bbox_overlap": {
+      "action": "re_crop",
+      "description": "Crop the overlapping region and re-run segmentation on the crop."
+    }
+  },
+
+  "stopConditions": {
+    "maxPasses": 4,
+    "maxVisionCalls": 8,
+    "overallScoreTarget": 0.85,
+    "convergenceThreshold": 0.02,
+    "notes": "Stop if score doesn't improve by convergenceThreshold between passes"
+  },
+
+  "scoringWeights": {
+    "token_role_stability": 0.30,
+    "layout_grid_spacing": 0.25,
+    "component_inventory": 0.20,
+    "typography_accuracy": 0.15,
+    "visual_parity": 0.10
+  }
+}

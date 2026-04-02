@@ -1,0 +1,24 @@
+{
+  "identifier": "MainToolbar",
+  "unified": true,
+  "centered": "com.example.search",
+  "allowed": [
+    {
+      "id": "com.example.new",
+      "label": "New",
+      "image": "plus",
+      "action": "newDocument:"
+    },
+    {
+      "id": "com.example.search",
+      "label": "Search",
+      "image": "magnifyingglass",
+      "selectable": true
+    }
+  ],
+  "default": [
+    "com.example.new",
+    "flexibleSpace",
+    "com.example.search"
+  ]
+}

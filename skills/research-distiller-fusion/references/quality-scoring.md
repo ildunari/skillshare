@@ -1,0 +1,108 @@
+# Quality Scoring
+
+5-dimension rubric for assessing research report quality before extraction. Score each dimension 1-5, compute a weighted composite. The composite determines extraction depth and processing priority.
+
+## Dimensions
+
+### 1. Specificity (weight: 1.5x)
+
+Does the report contain concrete values, configurations, code, or measurements? Or just general advice?
+
+| Score | Anchor Example |
+|---|---|
+| **1** | "Use appropriate fonts for your project." "Consider the user experience when designing." |
+| **2** | "Sans-serif fonts generally work better for digital interfaces." "Use a limited color palette." |
+| **3** | "Sans-serif fonts work best for UI text; serif fonts for long-form reading. Keep body text at 14-16px minimum." |
+| **4** | "Use Inter or system-ui for UI text at 14-16px, with font-weight 400 for body and 500-600 for labels. Line-height 1.5 for body, 1.2-1.3 for headings." |
+| **5** | "Use Inter 400/500/600 at 14px for controls, 16px for body. Set `line-height: 1.5` for body, `1.2` for headings. Enable `font-optical-sizing: auto`. Tracking: `-0.011em` for 16px body, `-0.022em` for 32px headings." |
+
+**Quick test:** Count concrete values (numbers, named tools, code snippets, specific configurations) per 1000 words. <2 = score 1-2. 2-5 = score 3. 5-10 = score 4. >10 = score 5.
+
+### 2. Sourcing (weight: 1.0x)
+
+Are claims backed by citations, data, benchmarks, or named expert opinions?
+
+| Score | Anchor Example |
+|---|---|
+| **1** | No sources. All assertions are unsupported. "Studies show..." without naming any. |
+| **2** | Occasional vague attribution ("according to experts," "research suggests") but no specific citations or links. |
+| **3** | Some named sources (tool documentation, specific blog posts, named researchers) but not consistently. Key claims may be unsourced. |
+| **4** | Most claims cite specific sources. Mix of official docs, research papers, and practitioner posts. Some claims still unsourced but reasonable. |
+| **5** | Rigorous sourcing. Claims cite specific papers (with authors/dates), link to official documentation, reference specific benchmarks with methodology. Unsourced claims are clearly labeled as author opinion. |
+
+**Quick test:** Sample 5 substantive claims. How many have a traceable source? 0 = score 1. 1-2 = score 2-3. 3-4 = score 4. 5 = score 5.
+
+### 3. Actionability (weight: 1.5x)
+
+Could someone implement recommendations right now? Or would they need additional research?
+
+| Score | Anchor Example |
+|---|---|
+| **1** | "Design should be user-centered." "Consider accessibility." No implementation path. |
+| **2** | "Use ARIA labels for screen readers." Names the technique but doesn't show how to apply it in context. |
+| **3** | "Add `aria-label` to icon buttons that lack visible text. Example: `<button aria-label='Close dialog'>×</button>`." Shows one example but the reader would need to extrapolate. |
+| **4** | Provides rules with specific conditions, values, AND examples. "For icon-only buttons: add `aria-label`. For buttons with visible text: no `aria-label` needed — the text serves as the label. For toggle buttons: use `aria-pressed`." Covers common cases. |
+| **5** | Complete implementation guide. Rules, conditions, examples, edge cases, common mistakes, and verification steps. Someone could implement it in a production codebase without leaving the document. |
+
+**Quick test:** Pick the report's most prominent recommendation. Could you implement it RIGHT NOW with only the information in the report? Definitely not = 1-2. With some googling = 3. Probably yes = 4. Absolutely yes = 5.
+
+### 4. Depth (weight: 1.0x)
+
+Does it go beyond surface level? Does it cover edge cases, failure modes, tradeoffs?
+
+| Score | Anchor Example |
+|---|---|
+| **1** | Covers only the happy path. No mention of limitations, alternatives, or when the advice doesn't apply. |
+| **2** | Acknowledges that alternatives exist but doesn't explore them. "There are other approaches but this is recommended." |
+| **3** | Discusses 2-3 alternatives with basic tradeoffs. Mentions some edge cases. "This works well for most cases, but for X scenario, consider Y instead." |
+| **4** | Thorough coverage of alternatives with specific tradeoffs. Discusses failure modes and when recommendations break down. Includes "what if" scenarios. |
+| **5** | Exhaustive. Covers the main approach, alternatives, edge cases, failure modes, performance implications, migration paths from other approaches, and explicit "when NOT to use this" guidance. |
+
+**Quick test:** Does the report ever say "however," "except when," "this breaks if," or "don't use this for"? Never = 1-2. Occasionally = 3. Regularly = 4. Systematically = 5.
+
+### 5. Originality (weight: 0.75x)
+
+Does it provide novel insights, unique combinations, or practitioner experience? Or just restate documentation?
+
+| Score | Anchor Example |
+|---|---|
+| **1** | Pure documentation regurgitation. Could be generated by summarizing official docs. No practitioner voice. |
+| **2** | Mostly documentation-derived but with occasional practical notes ("in my experience, X tends to..."). |
+| **3** | Mix of documentation and practitioner knowledge. Includes opinions, lessons learned, or community consensus not found in official docs. |
+| **4** | Substantial original analysis. Compares tools from hands-on experience. Includes failure stories, performance measurements, or workflow optimizations the author discovered. |
+| **5** | Highly original. Novel frameworks, unique cross-domain connections, original benchmarks, or practitioner-derived patterns that don't exist elsewhere. The report itself is a primary source. |
+
+**Quick test:** If you deleted all content that's available in official documentation, how much would remain? Nothing = 1. A few paragraphs = 2-3. Significant content = 4. Most of it = 5.
+
+## Composite Score
+
+Weighted average:
+
+```
+composite = (specificity × 1.5 + sourcing × 1.0 + actionability × 1.5 + depth × 1.0 + originality × 0.75) / 5.75
+```
+
+Specificity and actionability get 1.5x weight because they matter most for distillation — vague, unimplementable content is noise regardless of how well-sourced or original it is.
+
+## Score Interpretation
+
+| Composite | Label | Extraction Guidance |
+|---|---|---|
+| 4.0 - 5.0 | Gold standard | Extract exhaustively. This report sets the quality bar. |
+| 3.0 - 3.9 | Solid | Standard extraction. Good material with some filler to filter. |
+| 2.0 - 2.9 | Marginal | Selective extraction only — high-confidence concrete items. |
+| 1.0 - 1.9 | Poor | Flag to user with exclusion recommendation. Inclusion risks quality pollution. |
+
+## Scoring Procedure
+
+1. Skim the full report (~2 min for a 5k word report, ~5 min for 15k+)
+2. Score each dimension using the anchors and quick tests
+3. Compute composite
+4. Write scores to the Report Registry in the working document
+5. If any report scores below 2.0, flag it immediately: present the scores and recommend exclusion with a specific reason
+
+## Quality Pollution Effect
+
+A marginal report (1.5-2.5) in a set of solid reports (3.5-4.5) creates a specific risk: even after filtering, trace amounts of vague language from the bad report tend to contaminate adjacent good content during the architecture phase. The mechanism is that vague items, even if tagged low-confidence, influence the framing and level of abstraction when you're writing section introductions or connecting items.
+
+Mitigation: if a marginal report is included, process it LAST and apply the slop filter with extra scrutiny to items from that report. Consider tagging all its items with a `[marginal-source]` flag so you can audit them during Pass 4.

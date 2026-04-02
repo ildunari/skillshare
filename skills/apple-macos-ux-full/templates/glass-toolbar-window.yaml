@@ -1,0 +1,21 @@
+## glass-toolbar-window.yaml
+#
+# Template spec describing a window with a unified toolbar that uses
+# Liquid Glass on macOS 26.  This file is not consumed directly by the
+# existing generators but serves as an example for how you might define
+# glass‑aware toolbars in your own generator scripts.
+
+identifier: GlassToolbarWindow
+title: "Glass Toolbar Window"
+windowStyle: unified
+toolbar:
+  identifier: GlassToolbar
+  unified: true
+  allowed:
+    - id: compose
+      label: Compose
+      image: square.and.pencil
+      style: prominent
+      tint: systemBlue
+  default:
+    - compose

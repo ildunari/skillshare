@@ -1,0 +1,23 @@
+{
+  "skill_name": "agentmd-optimizer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit a directory containing exact duplicate AGENTS.md files across multiple runtimes and identify the canonical source plus safe delete candidates.",
+      "expected_output": "Exact duplicate cluster report with canonical-source guess and delete safety buckets.",
+      "files": ["fixtures/exact-duplicate"]
+    },
+    {
+      "id": 2,
+      "prompt": "Explain what actually loads together in a mixed CLAUDE.md/AGENTS.md tree and show the heaviest session stacks.",
+      "expected_output": "Load-stack simulation with runtime-aware stack summaries and visuals.",
+      "files": ["fixtures/active-vs-archive"]
+    },
+    {
+      "id": 3,
+      "prompt": "Find near-duplicate skills, distinguish them from semantic overlap, and avoid unsafe delete recommendations.",
+      "expected_output": "Near-duplicate pairs, confidence labels, and conservative action recommendations.",
+      "files": ["fixtures/near-duplicate", "fixtures/semantic-overlap"]
+    }
+  ]
+}

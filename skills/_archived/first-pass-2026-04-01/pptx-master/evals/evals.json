@@ -1,0 +1,207 @@
+{
+  "skill_name": "pptx-master",
+  "evals": [
+    {
+      "id": 1,
+      "mode": "A",
+      "prompt": "Turn the attached 1-page product brief into a 12-slide investor pitch deck. Keep it clean, modern, and readable on a projector. Output a PPTX.",
+      "expected_output": "A 12-slide plan, deck.ir.json, and computed QA report; if rendering is available, deck.pptx is produced. Hard requirements: 0 overflow violations, body font >=18pt, and <=2 consecutive repeated archetypes.",
+      "files": [],
+      "assertions": [
+        "Produces 12 slide-plan lines with one idea per slide",
+        "Produces deck.ir.json valid against references/ir.schema.json",
+        "Runs preflight_ir.py and reports hard_fail count",
+        "All content headlines are assertion style with <=12 words",
+        "If rendering available, writes deck.pptx via scripts/pipeline.js or scripts/render_pptx.js"
+      ]
+    },
+    {
+      "id": 2,
+      "mode": "A",
+      "prompt": "This slide is a bullet wall and overflows in PowerPoint. Redesign it into a structured layout and fix overflow without shrinking body text below 18pt.",
+      "expected_output": "Converts bullet wall into A8/A9 or splits into 2 slides. Output includes updated IR and QA report with 0 overflow hard fails and body text floor preserved at 18pt.",
+      "files": [],
+      "assertions": [
+        "Uses overflow ladder in order before font reduction",
+        "Maintains body font >=18pt after repair",
+        "Reduces bullet count to <=7 per slide or converts bullets to cards/icons",
+        "Re-runs preflight_ir.py after modifications"
+      ]
+    },
+    {
+      "id": 3,
+      "mode": "C",
+      "prompt": "Review this deck for professional polish. Identify the top 10 issues by severity and propose concrete fixes.",
+      "expected_output": "Produces ranked issue list with at least 10 findings, each mapped to issue code and concrete fix. Includes computed preflight output when a PPTX is available.",
+      "files": [],
+      "assertions": [
+        "Finds >=10 specific issues with evidence",
+        "Maps findings to issue codes (for example OVERFLOW, MISALIGNED_EDGES, RAINBOW_SLIDE)",
+        "Provides fix action per issue, not only descriptions",
+        "Runs preflight_pptx.py if PPTX file is provided"
+      ]
+    },
+    {
+      "id": 4,
+      "mode": "B",
+      "prompt": "Use our branded 40-slide template to build a 10-slide product launch deck targeting enterprise financial services buyers. Topic: ML-powered fraud detection.",
+      "expected_output": "Creates template-inventory.md, outline.md with template_mapping, working.pptx via rearrange.py, replacement-text.json, output.pptx, and thumbnail QA output. replace.py reports 0 overflow violations.",
+      "files": ["template.pptx"],
+      "reference": "evals/files/sample.mode-b-template.md",
+      "assertions": [
+        "template-inventory.md catalogs every template slide with 0-based indices",
+        "Applies segmentation heuristics before mapping templates",
+        "All content headlines are assertion style with <=12 words",
+        "replacement-text.json references only shapes from inventory",
+        "replace.py output reports 0 overflow violations",
+        "Thumbnail grid is generated for output.pptx"
+      ]
+    },
+    {
+      "id": 5,
+      "mode": "B",
+      "prompt": "Fix the overflow on slides 3 and 5, add speaker notes to all 6 slides, and move the logo inside safe margins.",
+      "expected_output": "Uses OOXML workflow (unpack -> edit -> validate -> repack). Final preflight_pptx output has 0 hard fails, logo respects >=0.5in safe margins, and speaker notes exist for all 6 slides.",
+      "files": ["client.pptx"],
+      "reference": "evals/files/sample.mode-b-ooxml.md",
+      "assertions": [
+        "Reads ooxml.md before XML edits",
+        "Runs ooxml/scripts/validate.py after each structural change",
+        "Fixes overflow without reducing body text below 18pt",
+        "Logo x/y offsets are >=457200 EMU",
+        "Adds speaker notes to all target slides",
+        "Runs preflight_pptx.py and reports hard_fail=0"
+      ]
+    },
+    {
+      "id": 6,
+      "mode": "A",
+      "prompt": "Plan a 14-slide strategy deck with clear section transitions and no monotony. Include section-break slides explicitly.",
+      "expected_output": "Produces a 14-slide plan with 3-6 sections, at least 2 explicit section-break slides, and no run longer than 2 of the same archetype.",
+      "files": [],
+      "assertions": [
+        "Slide plan contains exactly 14 slides",
+        "Includes >=2 section-break slides using A2, A22, or A4",
+        "No archetype repeats more than 2 times consecutively",
+        "Section objectives are stated for each section"
+      ]
+    },
+    {
+      "id": 7,
+      "mode": "A",
+      "prompt": "Segment this long memo into hierarchical sections, beats, and slides before generating any IR.",
+      "expected_output": "Returns a hierarchy with L1 sections, L2 beats, and L3 slide mappings. Includes split rationale and score-based break signals.",
+      "files": [],
+      "assertions": [
+        "Defines 3-6 L1 sections with one-sentence objective each",
+        "Defines 2-4 L2 beats per section",
+        "Maps each beat to one or more slide IDs",
+        "Cites segmentation signals and threshold rule for splits"
+      ]
+    },
+    {
+      "id": 8,
+      "mode": "A",
+      "prompt": "Choose a narrative arc for a board update deck and map it into slide roles and archetypes.",
+      "expected_output": "Selects 1 narrative arc and maps it to 10-14 slide roles and archetypes, with transition rationale and a final explicit ask slide.",
+      "files": [],
+      "assertions": [
+        "Names one arc from references/narrative-arcs.md",
+        "Maps arc stages to at least 10 slide roles",
+        "Uses at least 5 distinct archetypes",
+        "Includes explicit final recommendation/ask slide"
+      ]
+    },
+    {
+      "id": 9,
+      "mode": "A",
+      "prompt": "Transform a dense feature list plus risk paragraph into a structured mini-deck using deterministic pattern rules.",
+      "expected_output": "Applies at least 2 transformation patterns from references/transformation-patterns.md and outputs a 4-6 slide structured plan.",
+      "files": [],
+      "assertions": [
+        "Identifies pattern IDs used (for example P002, P003)",
+        "Outputs 4-6 slides with matching archetypes",
+        "Keeps headline length <=12 words on all content slides",
+        "Reports why chosen patterns fit input signals"
+      ]
+    },
+    {
+      "id": 10,
+      "mode": "A",
+      "prompt": "Apply composition rules to improve alignment and spacing on this draft IR without changing the story.",
+      "expected_output": "Produces revised IR with <=3 dominant edge clusters per slide, spacing rhythm aligned to archetype cues, and preserved narrative intent.",
+      "files": ["evals/files/sample.deck.ir.json"],
+      "assertions": [
+        "Uses consistent left-edge clusters per slide",
+        "Preserves original narrative sequence",
+        "Maintains whitespace ratio >=0.22 on each revised slide",
+        "Re-runs preflight_ir.py after composition updates"
+      ]
+    },
+    {
+      "id": 11,
+      "mode": "A",
+      "prompt": "Select an appropriate theme for a dark-room keynote and enforce dark-mode readability rules.",
+      "expected_output": "Chooses Noir or Plasma via decision tree, documents rationale, and confirms 5 dark-mode QA checks including contrast and chart readability.",
+      "files": [],
+      "assertions": [
+        "Selects theme using references/visual-themes.md decision tree",
+        "Uses palette.mode=dark with one deck-level theme",
+        "Includes dark-mode QA checklist results",
+        "Ensures one dominant accent color per slide"
+      ]
+    },
+    {
+      "id": 12,
+      "mode": "A",
+      "prompt": "Build an asset plan for a product launch section with photos, icons, and a chart-first slide.",
+      "expected_output": "Produces per-slide asset planning table for at least 5 slides with role, required/optional status, style family, and fallback strategy for each asset.",
+      "files": [],
+      "assertions": [
+        "Includes asset roles for each planned slide",
+        "Marks required vs optional assets",
+        "Defines one icon family and one photo treatment per section",
+        "Includes fallback strategy for missing assets"
+      ]
+    },
+    {
+      "id": 13,
+      "mode": "C",
+      "prompt": "Run vision critique on rendered thumbnails and return schema-valid JSON fixes.",
+      "expected_output": "Uses references/vision_critique_prompt.md contract and returns schema-valid JSON with 9 scores, <=5 issues per slide, and actionable repair steps.",
+      "files": [],
+      "assertions": [
+        "Uses all 9 scoring categories",
+        "Returns overall_score and verdict",
+        "Provides <=5 top_issues per slide with evidence",
+        "Includes recommended_fixes with actionable instructions"
+      ]
+    },
+    {
+      "id": 14,
+      "mode": "A",
+      "prompt": "Run strict preflight and fail the pipeline on any hard-fail. Report exact failing checks.",
+      "expected_output": "Runs scripts/pipeline.js with --strict-preflight and returns non-zero on hard-fail inputs, including failing codes and slide IDs in <=8 log lines.",
+      "files": ["evals/files/sample.deck.ir.json"],
+      "assertions": [
+        "Uses --strict-preflight flag when invoking pipeline",
+        "Reports command exit code explicitly",
+        "Reports failing rule codes and affected slide IDs",
+        "Does not claim success when hard_fail > 0"
+      ]
+    },
+    {
+      "id": 15,
+      "mode": "A",
+      "prompt": "Improve typography on this draft while preserving content: fix hierarchy, spacing, and anti-patterns.",
+      "expected_output": "Returns typography adjustments with body floor >=18pt, limited type-size variance, and archetype-appropriate spacing cues applied.",
+      "files": ["evals/files/sample.deck.ir.json"],
+      "assertions": [
+        "Maintains body text >=18pt",
+        "Uses <=3 type sizes per slide excluding caption/labels",
+        "Applies archetype spacing cues from references/typography-color.md",
+        "Removes typography anti-patterns (for example centered body paragraphs)"
+      ]
+    }
+  ]
+}

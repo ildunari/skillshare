@@ -1,0 +1,39 @@
+// {{Name}} - MKMapView bridge
+import SwiftUI
+import MapKit
+
+public struct {{Name}}: UIViewRepresentable {
+    public typealias UIViewType = MKMapView
+    @Binding public var region: MKCoordinateRegion
+    public init(region: Binding<MKCoordinateRegion>) { self._region = region }
+
+    public func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    public func makeUIView(context: Context) -> MKMapView {
+        let map = MKMapView(frame: .zero)
+        map.delegate = context.coordinator
+        map.setRegion(region, animated: false)
+        return map
+    }
+
+    public func updateUIView(_ uiView: MKMapView, context: Context) {
+        context.coordinator.parent = self
+        if uiView.region.center != region.center || uiView.region.span != region.span {
+            uiView.setRegion(region, animated: true)
+        }
+    }
+
+    public static func dismantleUIView(_ uiView: MKMapView, coordinator: Coordinator) {
+        uiView.delegate = nil
+    }
+
+    public final class Coordinator: NSObject, MKMapViewDelegate {
+        public var parent: {{Name}}
+        public init(_ parent: {{Name}}) { self.parent = parent }
+        public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            if parent.region.center != mapView.region.center || parent.region.span != mapView.region.span {
+                parent.region = mapView.region
+            }
+        }
+    }
+}

@@ -1,0 +1,141 @@
+{
+  "name": "academic_manuscript_generic",
+  "page": {
+    "size": "Letter",
+    "margins_in": {
+      "top": 1.0,
+      "bottom": 1.0,
+      "left": 1.0,
+      "right": 1.0
+    }
+  },
+  "fonts": {
+    "body": {
+      "family": "Times New Roman",
+      "size_pt": 12
+    },
+    "mono": {
+      "family": "Courier New",
+      "size_pt": 10
+    }
+  },
+  "paragraphStyles": {
+    "Title": {
+      "font": {
+        "size_pt": 16,
+        "bold": true
+      },
+      "alignment": "center",
+      "space_after_pt": 12,
+      "line_spacing_multiple": 2.0
+    },
+    "Heading1": {
+      "font": {
+        "size_pt": 12,
+        "bold": true
+      },
+      "space_before_pt": 24,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 1
+    },
+    "Heading2": {
+      "font": {
+        "size_pt": 12,
+        "bold": true
+      },
+      "space_before_pt": 18,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 2
+    },
+    "Heading3": {
+      "font": {
+        "size_pt": 12,
+        "bold": true
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 6,
+      "keep_with_next": true,
+      "outline_level": 3
+    },
+    "Body": {
+      "font": {
+        "size_pt": 12
+      },
+      "first_line_indent_in": 0.5,
+      "space_after_pt": 0,
+      "line_spacing_multiple": 2.0,
+      "widow_control": true
+    },
+    "BlockQuote": {
+      "font": {
+        "size_pt": 12
+      },
+      "left_indent_in": 0.5,
+      "right_indent_in": 0.5,
+      "space_before_pt": 6,
+      "space_after_pt": 6,
+      "line_spacing_multiple": 2.0
+    },
+    "FigureCaption": {
+      "font": {
+        "size_pt": 10
+      },
+      "space_before_pt": 6,
+      "space_after_pt": 12,
+      "keep_together": true
+    },
+    "TableCaption": {
+      "font": {
+        "size_pt": 10,
+        "bold": true
+      },
+      "space_before_pt": 12,
+      "space_after_pt": 3,
+      "keep_with_next": true
+    },
+    "References": {
+      "font": {
+        "size_pt": 12
+      },
+      "hanging_indent_in": 0.5,
+      "line_spacing_multiple": 2.0
+    }
+  },
+  "characterStyles": {
+    "Emphasis": {
+      "italic": true
+    },
+    "Strong": {
+      "bold": true
+    },
+    "InlineCode": {
+      "font": {
+        "family": "Courier New",
+        "size_pt": 10
+      },
+      "shading": "F2F2F2"
+    }
+  },
+  "tableStyles": {
+    "TableBase": {
+      "font": {
+        "family": "Times New Roman",
+        "size_pt": 11
+      },
+      "cell_padding_pt": {
+        "top": 4,
+        "bottom": 4,
+        "left": 4,
+        "right": 4
+      },
+      "borders": "minimal_horizontal",
+      "header_row": {
+        "bold": true,
+        "shading": "EDEDED"
+      },
+      "banded_rows": false
+    }
+  }
+}

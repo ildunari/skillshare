@@ -1,0 +1,46 @@
+# LaTeX-compatible publication defaults (Arial / Helvetica)
+# For Nature, many biology journals that require sans-serif fonts.
+# Usage: plt.style.use('assets/latex-arial.mplstyle')
+#
+# NOTE: text.usetex requires LaTeX + helvet package. If unavailable,
+# comment out text.usetex and text.latex.preamble lines —
+# mathtext.fontset: dejavusans provides a reasonable fallback.
+
+text.usetex: True
+text.latex.preamble: \usepackage{amsmath}\usepackage{amssymb}\usepackage{helvet}\renewcommand{\familydefault}{\sfdefault}
+
+font.family: sans-serif
+font.sans-serif: Arial, Helvetica, DejaVu Sans
+font.size: 7
+mathtext.fontset: dejavusans
+
+axes.labelsize: 8
+axes.titlesize: 8
+axes.linewidth: 0.5
+axes.spines.top: False
+axes.spines.right: False
+
+xtick.labelsize: 6
+ytick.labelsize: 6
+xtick.major.width: 0.5
+ytick.major.width: 0.5
+xtick.minor.width: 0.3
+ytick.minor.width: 0.3
+xtick.direction: in
+ytick.direction: in
+
+legend.fontsize: 6
+legend.frameon: False
+
+lines.linewidth: 1.0
+lines.markersize: 3
+
+# Nature single column
+figure.figsize: 3.504, 2.165
+figure.dpi: 150
+
+savefig.dpi: 300
+savefig.bbox: tight
+savefig.format: pdf
+
+image.cmap: viridis

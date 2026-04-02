@@ -1,0 +1,128 @@
+{
+  "file": "/mnt/data/slide-deck-designer/evals/files/sample.deck.pptx",
+  "slide_size_in": {
+    "w": 13.333,
+    "h": 7.5
+  },
+  "safe_margin_in": 0.5,
+  "summary": {
+    "slides": 4,
+    "violations": 0,
+    "warnings": 4
+  },
+  "violations": [],
+  "warnings": [
+    {
+      "code": "T1_FONT_BELOW_BODY_MIN",
+      "slide": 1,
+      "message": "1 shape(s) have text < 18pt",
+      "evidence": [
+        {
+          "shape": "Text 1",
+          "min_font_pt": 14.0
+        }
+      ],
+      "fix_hint": "If this is body/supporting content, raise to \u226518pt or split slide."
+    },
+    {
+      "code": "T1_FONT_BELOW_BODY_MIN",
+      "slide": 2,
+      "message": "1 shape(s) have text < 18pt",
+      "evidence": [
+        {
+          "shape": "Text 3",
+          "min_font_pt": 14.0
+        }
+      ],
+      "fix_hint": "If this is body/supporting content, raise to \u226518pt or split slide."
+    },
+    {
+      "code": "G3_POTENTIAL_OVERLAP",
+      "slide": 3,
+      "message": "6 potential overlap(s) detected",
+      "evidence": [
+        {
+          "a": "Shape 1",
+          "b": "Text 2",
+          "intersection_area_in2": 14.4
+        },
+        {
+          "a": "Shape 1",
+          "b": "Text 3",
+          "intersection_area_in2": 14.4
+        },
+        {
+          "a": "Text 2",
+          "b": "Text 3",
+          "intersection_area_in2": 14.4
+        },
+        {
+          "a": "Shape 4",
+          "b": "Text 5",
+          "intersection_area_in2": 14.4
+        },
+        {
+          "a": "Shape 4",
+          "b": "Text 6",
+          "intersection_area_in2": 14.4
+        },
+        {
+          "a": "Text 5",
+          "b": "Text 6",
+          "intersection_area_in2": 14.4
+        }
+      ],
+      "fix_hint": "Confirm overlaps are intentional (e.g., headline over hero image). Otherwise separate and align."
+    },
+    {
+      "code": "G3_POTENTIAL_OVERLAP",
+      "slide": 4,
+      "message": "4 potential overlap(s) detected",
+      "evidence": [
+        {
+          "a": "Shape 1",
+          "b": "Shape 5",
+          "intersection_area_in2": 0.027
+        },
+        {
+          "a": "Shape 2",
+          "b": "Shape 5",
+          "intersection_area_in2": 0.027
+        },
+        {
+          "a": "Shape 3",
+          "b": "Shape 5",
+          "intersection_area_in2": 0.027
+        },
+        {
+          "a": "Shape 4",
+          "b": "Shape 5",
+          "intersection_area_in2": 0.022
+        }
+      ],
+      "fix_hint": "Confirm overlaps are intentional (e.g., headline over hero image). Otherwise separate and align."
+    }
+  ],
+  "per_slide": [
+    {
+      "slide": 1,
+      "shapes": 2,
+      "min_font_pt": 14.0
+    },
+    {
+      "slide": 2,
+      "shapes": 4,
+      "min_font_pt": 14.0
+    },
+    {
+      "slide": 3,
+      "shapes": 7,
+      "min_font_pt": 20.0
+    },
+    {
+      "slide": 4,
+      "shapes": 6,
+      "min_font_pt": 36.0
+    }
+  ]
+}
