@@ -14,17 +14,28 @@ def main():
     parser = argparse.ArgumentParser(description="Render Mermaid-ready visuals for skill library cleanup outputs.")
     parser.add_argument("--topology", required=True)
     parser.add_argument("--output", "-o", required=True)
+    parser.add_argument("--max-skills", type=int, default=8)
     args = parser.parse_args()
 
     topo = load(args.topology)
     sections = []
-    for idx, skill in enumerate(topo.get('skills', [])[:8], start=1):
-        lines = ["graph TD", f"    SRC{idx}[\"{skill['skill_slug']} source\"]"]
-        for j, target in enumerate(skill.get('targets', []), start=1):
-            node = f"T{idx}_{j}"
-            label = f"{target['target']}\\n{target['status']}"
-            lines.append(f"    SRC{idx} --> {node}[\"{label}\"]")
-        sections.append({"type": "skill-topology", "title": skill['skill_slug'], "mermaid": "\n".join(lines)})
+    mode = topo.get("summary", {}).get("mode", "canonical-source")
+    for idx, skill in enumerate(topo.get('skills', [])[: args.max_skills], start=1):
+        if mode == "canonical-source":
+            lines = ["graph TD", f"    SRC{idx}[\"{skill['skill_slug']} source\"]"]
+            for j, target in enumerate(skill.get('targets', []), start=1):
+                node = f"T{idx}_{j}"
+                label = f"{target['target']}\\n{target['status']}"
+                lines.append(f"    SRC{idx} --> {node}[\"{label}\"]")
+            mermaid = "\n".join(lines)
+        else:
+            lines = ["graph TD", f"    SK{idx}[\"{skill['skill_slug']}\"]"]
+            for j, placement in enumerate(skill.get("placements", [])[:6], start=1):
+                node = f"P{idx}_{j}"
+                label = f"{placement.get('runtime', 'unknown')}\\n{placement.get('role', 'other')}"
+                lines.append(f"    SK{idx} --> {node}[\"{label}\"]")
+            mermaid = "\n".join(lines)
+        sections.append({"type": "skill-topology", "title": skill['skill_slug'], "mermaid": mermaid})
     Path(args.output).write_text(json.dumps({"sections": sections}, indent=2))
     print(args.output)
 

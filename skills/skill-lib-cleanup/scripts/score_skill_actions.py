@@ -15,9 +15,15 @@ def main():
     parser.add_argument("--output", "-o", required=True)
     args = parser.parse_args()
 
-    drift = load_json(args.drift).get("rows", [])
-    dup_clusters = load_json(args.duplicates).get("clusters", [])
-    routing = load_json(args.routing).get("collisions", [])
+    drift_payload = load_json(args.drift)
+    drift = drift_payload.get("rows", [])
+    drift_summary = drift_payload.get("summary", {})
+    dup_payload = load_json(args.duplicates)
+    dup_clusters = dup_payload.get("duplicate_clusters", dup_payload.get("clusters", []))
+    routing_payload = load_json(args.routing)
+    routing = routing_payload.get("collisions", [])
+    mode = drift_summary.get("mode", "canonical-source")
+    drift_not_applicable = bool(drift_summary.get("not_applicable"))
 
     dup_slugs = defaultdict(int)
     for c in dup_clusters:
@@ -32,27 +38,33 @@ def main():
     for row in drift:
         by_skill[row["skill_slug"]].append(row)
 
+    # Broad-sweep mode can still produce action recommendations from duplicates
+    # and routing collisions even when canonical-vs-install drift is not applicable.
+    if drift_not_applicable:
+        for slug in set(dup_slugs) | set(routing_slugs):
+            by_skill.setdefault(slug, [])
+
     actions = []
     for slug, rows in sorted(by_skill.items()):
         statuses = {r["drift_status"] for r in rows}
         action = "KEEP"
         reason = "healthy or not enough evidence for change"
         confidence = "medium"
-        if "out-of-sync" in statuses:
+        if not drift_not_applicable and "out-of-sync" in statuses:
             action = "SYNC FROM SOURCE"
             reason = "canonical source and installed copies differ"
             confidence = "high"
-        elif "install-only" in statuses:
+        elif not drift_not_applicable and "install-only" in statuses:
             action = "PROMOTE TO SOURCE"
             reason = "runtime install exists without a canonical source copy"
             confidence = "medium"
-        elif "undistributed-source" in statuses:
+        elif not drift_not_applicable and "undistributed-source" in statuses:
             action = "PUSH TO TARGETS"
             reason = "canonical source exists but expected targets are missing installs"
             confidence = "high"
         if dup_slugs[slug] > 0 and action == "KEEP":
-            action = "MERGE INTO REVIEW GROUP"
-            reason = "exact duplicate family detected"
+            action = "KEEP + REWRITE" if routing_slugs[slug] > 0 else "MERGE INTO"
+            reason = "duplicate family detected among scanned skills"
             confidence = "medium"
         if routing_slugs[slug] > 0 and action == "KEEP":
             action = "FIX ROUTING"
@@ -68,7 +80,14 @@ def main():
             "statuses": sorted(statuses),
         })
 
-    payload = {"summary": {"skill_count": len(actions)}, "actions": actions}
+    payload = {
+        "summary": {
+            "skill_count": len(actions),
+            "mode": mode,
+            "drift_not_applicable": drift_not_applicable,
+        },
+        "actions": actions,
+    }
     write_json(args.output, payload)
     print(args.output)
 

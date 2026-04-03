@@ -181,6 +181,24 @@ class SkillCleanupPipelineTests(unittest.TestCase):
             collisions = json.loads(collisions_path.read_text())
             self.assertGreaterEqual(collisions["summary"]["collision_count"], 1)
 
+            duplicates_path = tmp_path / "duplicates.json"
+            duplicates_path.write_text(json.dumps({"summary": {"cluster_count": 0}, "duplicate_clusters": []}))
+
+            actions_path = tmp_path / "actions.json"
+            run_script(
+                "score_skill_actions.py",
+                str(drift_path),
+                str(duplicates_path),
+                str(collisions_path),
+                "--output",
+                str(actions_path),
+                env=env,
+            )
+            actions = json.loads(actions_path.read_text())
+            self.assertTrue(actions["summary"]["drift_not_applicable"])
+            self.assertEqual(actions["summary"]["mode"], "broad-sweep")
+            self.assertGreaterEqual(len(actions["actions"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
