@@ -180,6 +180,7 @@ class SkillCleanupPipelineTests(unittest.TestCase):
             run_script("detect_routing_collisions.py", str(capabilities_path), "--output", str(collisions_path), env=env)
             collisions = json.loads(collisions_path.read_text())
             self.assertGreaterEqual(collisions["summary"]["collision_count"], 1)
+            self.assertGreaterEqual(len(collisions.get("families", [])), 1)
 
             duplicates_path = tmp_path / "duplicates.json"
             duplicates_path.write_text(json.dumps({"summary": {"cluster_count": 0}, "duplicate_clusters": []}))
@@ -198,6 +199,20 @@ class SkillCleanupPipelineTests(unittest.TestCase):
             self.assertTrue(actions["summary"]["drift_not_applicable"])
             self.assertEqual(actions["summary"]["mode"], "broad-sweep")
             self.assertGreaterEqual(len(actions["actions"]), 1)
+
+            visual_path = tmp_path / "visual.json"
+            run_script(
+                "render_skill_visual_data.py",
+                "--topology",
+                str(topology_path),
+                "--output",
+                str(visual_path),
+                env=env,
+            )
+            visual = json.loads(visual_path.read_text())
+            self.assertEqual(visual["sections"][0]["type"], "summary")
+            self.assertEqual(visual["sections"][0]["data"]["mode"], "broad-sweep")
+            self.assertGreaterEqual(len(visual["sections"]), 2)
 
 
 if __name__ == "__main__":

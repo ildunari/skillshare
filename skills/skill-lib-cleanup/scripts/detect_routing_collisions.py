@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
 from itertools import combinations
 
 from _shared import jaccard_similarity, load_json, write_json
@@ -14,6 +15,11 @@ def normalized_trigger_lines(skill: dict) -> set[str]:
         if normalized:
             lines.append(normalized)
     return set(lines)
+
+
+def slug_family(slug: str) -> str:
+    parts = str(slug).replace("_", "-").split("-")
+    return parts[0] if parts and parts[0] else str(slug)
 
 
 def main():
@@ -50,6 +56,13 @@ def main():
         key=lambda c: (c["score"], c["shared_trigger_count"], c["left"], c["right"]),
         reverse=True,
     )
+    family_counts = defaultdict(int)
+    for collision in collisions:
+        left_family = slug_family(collision["left"])
+        right_family = slug_family(collision["right"])
+        key = tuple(sorted((left_family, right_family)))
+        family_counts[key] += 1
+
     payload = {
         "summary": {
             "collision_count": len(collisions),
@@ -57,6 +70,10 @@ def main():
             "returned_collisions": min(len(collisions), args.max_collisions),
             "truncated": len(collisions) > args.max_collisions,
         },
+        "families": [
+            {"family_pair": list(pair), "collision_count": count}
+            for pair, count in sorted(family_counts.items(), key=lambda item: item[1], reverse=True)[:20]
+        ],
         "collisions": collisions[: args.max_collisions],
     }
     write_json(args.output, payload)

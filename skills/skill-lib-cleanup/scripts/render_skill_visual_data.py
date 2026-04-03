@@ -18,7 +18,21 @@ def main():
     args = parser.parse_args()
 
     topo = load(args.topology)
+    summary = topo.get("summary", {})
     sections = []
+    sections.append(
+        {
+            "type": "summary",
+            "title": "Audit Mode",
+            "data": {
+                "mode": summary.get("mode", "unknown"),
+                "canonical_source": summary.get("canonical_source"),
+                "target_count": summary.get("target_count", 0),
+                "skill_count": summary.get("skill_count", 0),
+                "runtime_count": summary.get("runtime_count", 0),
+            },
+        }
+    )
     mode = topo.get("summary", {}).get("mode", "canonical-source")
     for idx, skill in enumerate(topo.get('skills', [])[: args.max_skills], start=1):
         if mode == "canonical-source":
