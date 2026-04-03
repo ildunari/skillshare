@@ -12,6 +12,25 @@ def main():
     args = parser.parse_args()
 
     topo = load_json(args.topology)
+    mode = topo.get("summary", {}).get("mode", "canonical-source")
+    if mode != "canonical-source":
+        payload = {
+            "summary": {
+                "mode": mode,
+                "row_count": 0,
+                "in_sync": 0,
+                "out_of_sync": 0,
+                "install_only": 0,
+                "undistributed_source": 0,
+                "not_applicable": True,
+                "reason": "Canonical-vs-install drift only applies in canonical-source mode.",
+            },
+            "rows": [],
+        }
+        write_json(args.output, payload)
+        print(args.output)
+        return
+
     rows = []
     for skill in topo.get("skills", []):
         source_hash = skill.get("source_hash")
@@ -38,6 +57,7 @@ def main():
             })
     payload = {
         "summary": {
+            "mode": mode,
             "row_count": len(rows),
             "in_sync": sum(1 for r in rows if r["drift_status"] == "in-sync"),
             "out_of_sync": sum(1 for r in rows if r["drift_status"] == "out-of-sync"),

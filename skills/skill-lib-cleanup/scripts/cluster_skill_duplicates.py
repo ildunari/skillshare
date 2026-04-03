@@ -5,7 +5,7 @@ import argparse
 from collections import defaultdict
 from pathlib import Path
 
-from _shared import load_json, write_json
+from _shared import load_json, normalized_discovery_items, write_json
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     args = parser.parse_args()
 
     data = load_json(args.discovery)
-    items = [i for i in data.get("items", data.get("files", [])) if i.get("entity_type") == "skill" or str(i.get("path", "")).endswith("SKILL.md")]
+    items = [i for i in normalized_discovery_items(data) if i.get("entity_type") == "skill" or str(i.get("path", "")).endswith("SKILL.md")]
     groups = defaultdict(list)
     for item in items:
         groups[item.get("content_hash")].append(item)
@@ -31,7 +31,7 @@ def main():
             "roles": sorted({c.get("role", "unknown") for c in copies}),
             "runtimes": sorted({c.get("runtime", "unknown") for c in copies}),
         })
-    payload = {"summary": {"cluster_count": len(clusters)}, "clusters": sorted(clusters, key=lambda c: c["copy_count"], reverse=True)}
+    payload = {"summary": {"cluster_count": len(clusters)}, "duplicate_clusters": sorted(clusters, key=lambda c: c["copy_count"], reverse=True)}
     write_json(args.output, payload)
     print(args.output)
 

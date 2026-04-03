@@ -18,6 +18,12 @@
       "prompt": "Show me what can be archived or deleted safely in the skill ecosystem.",
       "expected_output": "Delete/archive candidate dashboard with canonical-source protection.",
       "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Sweep my machine-wide skill installs across Claude, Codex, Cursor, and Gemini and show me overlaps without assuming there is one canonical source of truth.",
+      "expected_output": "Broad-sweep runtime inventory with overlap and routing analysis that does not require a skillshare source root.",
+      "files": []
     }
   ]
 }

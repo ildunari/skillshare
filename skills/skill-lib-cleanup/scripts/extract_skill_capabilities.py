@@ -4,7 +4,17 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from _shared import estimate_capability_count, headings, load_json, likely_capability_lines, safe_read_text, stale_hits, trigger_phrases, write_json
+from _shared import (
+    estimate_capability_count,
+    headings,
+    load_json,
+    likely_capability_lines,
+    normalized_discovery_items,
+    safe_read_text,
+    stale_hits,
+    trigger_phrases,
+    write_json,
+)
 
 
 def main():
@@ -14,7 +24,7 @@ def main():
     args = parser.parse_args()
 
     data = load_json(args.discovery)
-    items = data.get("items", data.get("files", []))
+    items = normalized_discovery_items(data)
     rows = []
     for item in items:
         if item.get("entity_type") != "skill" and not str(item.get("path", "")).endswith("SKILL.md"):

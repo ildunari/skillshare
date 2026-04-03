@@ -8,7 +8,9 @@ description: >
   safe merge/archive/delete plans. Also use for requests about the canonical source of
   truth under ~/.config/skillshare/skills, sync drift against downstream installs, skill
   inventory, overlap analysis, canonical-vs-install reports, or any rollback-safe skill
-  ecosystem maintenance task.
+  ecosystem maintenance task. This skill should cover both machine-wide broad sweeps
+  where skills live across many runtimes and unified skillshare setups where one source
+  library distributes to downstream targets.
 ---
 
 # Skill Library Curator
@@ -54,6 +56,12 @@ Questions this mode answers:
 
 When in doubt, ask whether the user wants a **runtime view** or a **canonical source view**. If they mention `skillshare` or `~/.config`, prefer canonical mode.
 
+The bundled scripts should support both paths:
+- **broad-sweep** — mixed runtime locations with no single source of truth
+- **canonical-source** — one editable source plus distributed installs
+
+Default behavior should auto-detect canonical mode when the scanned data includes the configured skillshare source. Otherwise, fall back to broad-sweep.
+
 ## Modes
 
 Choose the lightest mode that answers the user’s question.
@@ -75,6 +83,10 @@ Use when the user wants archive/delete/promote/regenerate recommendations.
 
 ### `full-library-audit`
 Run the whole upgraded pipeline.
+
+If the user does not specify a mode:
+- prefer `canonical-audit` when the request names `skillshare`, `~/.config/skillshare/skills`, or downstream target drift
+- prefer `runtime-audit` for machine-wide cleanup or “what is installed where?” questions
 
 ## Feedback loop
 

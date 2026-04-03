@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Iterable
 
 SKILL_FILES = {"SKILL.md", "CLAUDE.md", "AGENTS.md", "GEMINI.md"}
-SKILLSHARE_CONFIG = Path("/Users/kosta/.config/skillshare/config.yaml")
+DEFAULT_SKILLSHARE_CONFIG = Path("/Users/kosta/.config/skillshare/config.yaml")
 STALE_MODEL_PATTERNS = [
     (re.compile(r"Claude\s*3(?:\.5)?|Sonnet\s*3|Opus\s*4\.1", re.I), "stale-claude-model"),
     (re.compile(r"GPT-4(?:o| Turbo)?", re.I), "stale-gpt4-model"),
@@ -24,6 +24,14 @@ ROLE_MARKERS = {
     "archive": ["/archive/", "/archives/", "/_archived/"],
     "mirror": ["/Documents - Kosta", "/mirror/", "/mirrors/", "/sync/"],
 }
+
+
+def _env_path(name: str, default: Path) -> Path:
+    value = os.environ.get(name)
+    return Path(value).expanduser() if value else default
+
+
+SKILLSHARE_CONFIG = _env_path("SKILLSHARE_CONFIG_PATH", DEFAULT_SKILLSHARE_CONFIG)
 
 
 def load_json(path: str | Path):
@@ -62,6 +70,16 @@ def jaccard_similarity(a: Iterable[str], b: Iterable[str]) -> float:
     if not sa or not sb:
         return 0.0
     return len(sa & sb) / len(sa | sb)
+
+
+def normalize_path(path: str | Path) -> str:
+    return str(path).replace("\\", "/").rstrip("/")
+
+
+def path_startswith(path: str | Path, root: str | Path) -> bool:
+    norm_path = normalize_path(path).lower()
+    norm_root = normalize_path(root).lower()
+    return norm_path == norm_root or norm_path.startswith(norm_root + "/")
 
 
 def classify_role(path: str) -> str:
@@ -107,6 +125,39 @@ def skill_slug_from_path(path: str) -> str | None:
         if idx + 1 < len(parts):
             return parts[idx + 1]
     return p.parent.name if p.name == "SKILL.md" else None
+
+
+def normalized_target_map(cfg: dict) -> dict[str, str]:
+    targets = {}
+    for name, meta in (cfg.get("targets") or {}).items():
+        if not isinstance(meta, dict):
+            continue
+        path = None
+        if isinstance(meta.get("skills"), dict):
+            path = meta["skills"].get("path")
+        path = path or meta.get("path")
+        if path:
+            targets[name] = path
+    return targets
+
+
+def normalized_discovery_items(data: dict) -> list[dict]:
+    raw_items = data.get("skills") or data.get("items") or data.get("files") or []
+    items = []
+    for raw in raw_items:
+        path = raw.get("path")
+        if not path:
+            continue
+        item = dict(raw)
+        item["path"] = path
+        item["slug"] = raw.get("slug") or raw.get("name") or raw.get("directory") or skill_slug_from_path(path)
+        item["content_hash"] = raw.get("content_hash") or raw.get("hash")
+        item["runtime"] = raw.get("runtime") or raw.get("agent_runtime") or infer_runtime(path)
+        item["role"] = raw.get("role") or classify_role(path)
+        item["reference_count"] = raw.get("reference_count", raw.get("ref_count", 0))
+        item["entity_type"] = raw.get("entity_type") or ("skill" if str(path).endswith("SKILL.md") else "unknown")
+        items.append(item)
+    return items
 
 
 def headings(text: str) -> list[str]:
@@ -159,17 +210,35 @@ def load_skillshare_config() -> dict:
     except Exception:
         cfg = {}
         current_target = None
+        in_targets = False
+        in_skills_block = False
         for raw in SKILLSHARE_CONFIG.read_text().splitlines():
             line = raw.rstrip()
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
             if line.startswith("source:"):
                 cfg["source"] = line.split(":", 1)[1].strip()
             elif line.startswith("mode:"):
                 cfg["mode"] = line.split(":", 1)[1].strip()
-            elif re.match(r"^  [A-Za-z0-9_.-]+:", line):
+            elif line.startswith("targets:"):
+                in_targets = True
+                cfg.setdefault("targets", {})
+            elif in_targets and re.match(r"^  [A-Za-z0-9_.-]+:\s*$", line):
                 current_target = line.strip().rstrip(":")
                 cfg.setdefault("targets", {})[current_target] = {}
-            elif current_target and "path:" in line:
+                in_skills_block = False
+            elif current_target and re.match(r"^    skills:\s*$", line):
+                cfg["targets"][current_target].setdefault("skills", {})
+                in_skills_block = True
+            elif current_target and in_skills_block and re.match(r"^      path:\s*", line):
+                cfg["targets"][current_target]["skills"]["path"] = line.split(":", 1)[1].strip()
+            elif current_target and re.match(r"^    path:\s*", line):
                 cfg["targets"][current_target]["path"] = line.split(":", 1)[1].strip()
+            elif not line.startswith(" "):
+                in_targets = False
+                current_target = None
+                in_skills_block = False
         return cfg
 
 

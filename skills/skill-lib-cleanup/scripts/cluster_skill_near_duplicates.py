@@ -5,7 +5,16 @@ import argparse
 from itertools import combinations
 from pathlib import Path
 
-from _shared import headings, jaccard_similarity, load_json, normalize_text, safe_read_text, sequence_similarity, write_json
+from _shared import (
+    headings,
+    jaccard_similarity,
+    load_json,
+    normalize_text,
+    normalized_discovery_items,
+    safe_read_text,
+    sequence_similarity,
+    write_json,
+)
 
 
 def main():
@@ -17,7 +26,11 @@ def main():
     args = parser.parse_args()
 
     data = load_json(args.discovery)
-    items = [i for i in data.get("items", data.get("files", [])) if i.get("entity_type") == "skill" or str(i.get("path", "")).endswith("SKILL.md")][:args.max_files]
+    items = [
+        i
+        for i in normalized_discovery_items(data)
+        if i.get("entity_type") == "skill" or str(i.get("path", "")).endswith("SKILL.md")
+    ][:args.max_files]
     texts = {i["path"]: safe_read_text(i["path"]) for i in items}
     pairs = []
     for left, right in combinations(items, 2):
