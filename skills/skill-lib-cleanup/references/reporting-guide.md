@@ -17,6 +17,8 @@ Every cleanup report should separate these questions:
 - delete/archive ladder
 - visuals
 
+If `references/blocklist.md` contains entries, add a short protected-skills note to the executive summary and make sure blocked skills are clearly marked in action and delete/archive outputs.
+
 ## Guardrails
 - Do not present all same-name copies as merge candidates.
 - Do not recommend deleting canonical source by default.

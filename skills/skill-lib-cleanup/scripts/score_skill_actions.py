@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 from collections import defaultdict
 
-from _shared import load_json, write_json
+from _shared import load_json, load_skill_blocklist, write_json
 
 
 def main():
@@ -24,6 +24,7 @@ def main():
     routing = routing_payload.get("collisions", [])
     mode = drift_summary.get("mode", "canonical-source")
     drift_not_applicable = bool(drift_summary.get("not_applicable"))
+    blocked_skills = load_skill_blocklist()
 
     dup_slugs = defaultdict(int)
     for c in dup_clusters:
@@ -50,6 +51,7 @@ def main():
         action = "KEEP"
         reason = "healthy or not enough evidence for change"
         confidence = "medium"
+        is_blocked = slug in blocked_skills
         if not drift_not_applicable and "out-of-sync" in statuses:
             action = "SYNC FROM SOURCE"
             reason = "canonical source and installed copies differ"
@@ -70,11 +72,16 @@ def main():
             action = "FIX ROUTING"
             reason = "trigger overlap detected"
             confidence = "medium"
+        if is_blocked:
+            action = "KEEP"
+            reason = "skill is listed in references/blocklist.md and should not be changed automatically"
+            confidence = "high"
         actions.append({
             "skill_slug": slug,
             "action": action,
             "reason": reason,
             "confidence": confidence,
+            "blocklisted": is_blocked,
             "duplicate_family_count": dup_slugs[slug],
             "routing_collision_count": routing_slugs[slug],
             "statuses": sorted(statuses),

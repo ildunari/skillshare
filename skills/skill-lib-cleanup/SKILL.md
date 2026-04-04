@@ -112,6 +112,7 @@ Load only the references needed for the active question.
 | `references/distribution-drift.md` | Sync drift / canonical-vs-install questions |
 | `references/capability-taxonomy.md` | Capability extraction and overlap analysis |
 | `references/routing-collision-guide.md` | Trigger and routing collision analysis |
+| `references/blocklist.md` | Skills that should be treated as hands-off by cleanup actions |
 | `references/action-scoring.md` | Merge/archive/delete/sync/promote scoring |
 | `references/reporting-guide.md` | Final report and visual structure |
 | `references/merge-protocol.md` | Execute phase only |
@@ -128,6 +129,7 @@ Do not collapse these into one concept:
 
 Two same-named skills in different places are not automatically merge candidates.
 A drifted install is primarily a sync problem, not a merge problem.
+Skills named in `references/blocklist.md` should be treated as protected: report on them if needed, but do not recommend merge, rewrite, archive, or delete actions by default.
 
 ## Pipeline overview
 

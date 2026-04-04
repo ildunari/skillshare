@@ -244,3 +244,24 @@ def load_skillshare_config() -> dict:
 
 def estimate_capability_count(text: str) -> int:
     return len(likely_capability_lines(text))
+
+
+def load_skill_blocklist(base_dir: str | Path | None = None) -> set[str]:
+    root = Path(base_dir) if base_dir else _env_path("SKILL_LIB_CLEANUP_ROOT", Path(__file__).resolve().parent.parent)
+    blocklist_path = root / "references" / "blocklist.md"
+    if not blocklist_path.exists():
+        return set()
+
+    blocked = set()
+    for raw in blocklist_path.read_text(errors="ignore").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("- "):
+            line = line[2:].strip()
+        if line.startswith("`") and line.endswith("`") and len(line) > 2:
+            line = line[1:-1].strip()
+        if not line or " " in line:
+            continue
+        blocked.add(line)
+    return blocked

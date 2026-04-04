@@ -214,6 +214,82 @@ class SkillCleanupPipelineTests(unittest.TestCase):
             self.assertEqual(visual["sections"][0]["data"]["mode"], "broad-sweep")
             self.assertGreaterEqual(len(visual["sections"]), 2)
 
+    def test_blocklisted_skill_is_protected_in_actions_and_delete_candidates(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            references_dir = tmp_path / "references"
+            references_dir.mkdir(parents=True, exist_ok=True)
+            (references_dir / "blocklist.md").write_text("alpha\n")
+
+            drift_path = tmp_path / "drift.json"
+            drift_path.write_text(
+                json.dumps(
+                    {
+                        "summary": {"mode": "canonical-source"},
+                        "rows": [
+                            {
+                                "skill_slug": "alpha",
+                                "drift_status": "out-of-sync",
+                                "target": "codex",
+                                "source_present": True,
+                            }
+                        ],
+                    }
+                )
+            )
+            duplicates_path = tmp_path / "duplicates.json"
+            duplicates_path.write_text(json.dumps({"summary": {"cluster_count": 0}, "duplicate_clusters": []}))
+            collisions_path = tmp_path / "collisions.json"
+            collisions_path.write_text(json.dumps({"summary": {"collision_count": 0}, "collisions": []}))
+
+            discovery_path = tmp_path / "discovery.json"
+            discovery_path.write_text(
+                json.dumps(
+                    {
+                        "items": [
+                            {
+                                "path": str(tmp_path / ".claude" / "skills" / "alpha" / "SKILL.md"),
+                                "slug": "alpha",
+                                "entity_type": "skill",
+                                "content_hash": "hash-alpha",
+                                "runtime": "claude-code",
+                                "role": "backup",
+                            }
+                        ]
+                    }
+                )
+            )
+
+            env = os.environ.copy()
+            env["SKILLSHARE_CONFIG_PATH"] = str(tmp_path / "missing-config.yaml")
+            env["SKILL_LIB_CLEANUP_ROOT"] = str(tmp_path)
+
+            actions_path = tmp_path / "actions.json"
+            run_script(
+                "score_skill_actions.py",
+                str(drift_path),
+                str(duplicates_path),
+                str(collisions_path),
+                "--output",
+                str(actions_path),
+                env=env,
+            )
+            actions = json.loads(actions_path.read_text())
+            self.assertTrue(actions["actions"][0]["blocklisted"])
+            self.assertEqual(actions["actions"][0]["action"], "KEEP")
+
+            delete_path = tmp_path / "delete.json"
+            run_script(
+                "score_skill_delete_candidates.py",
+                str(discovery_path),
+                "--output",
+                str(delete_path),
+                env=env,
+            )
+            delete_data = json.loads(delete_path.read_text())
+            self.assertEqual(delete_data["summary"]["protected"], 1)
+            self.assertEqual(delete_data["candidates"][0]["bucket"], "protected")
+
 
 if __name__ == "__main__":
     unittest.main()
