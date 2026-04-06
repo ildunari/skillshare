@@ -10,6 +10,8 @@ description: |
 
 # Planning Protocol
 
+<!-- Merged from: writing-plans, executing-plans, workflow-protocols (2026-04-05). Legacy material preserved under merged/. -->
+
 ## Purpose
 
 Never jump into complex changes without a plan. This skill provides templates and triggers for two planning levels:

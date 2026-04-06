@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-design-lab.skill/design-spec.schema.json",
+  "title": "VisualAnalyzerDesignSpec",
+  "description": "Hybrid schema for screenshot/video → design spec extraction. DTCG 2025.10 compatible tokens with separate confidence/evidence layer.",
+  "type": "object",
+  "required": ["meta", "screens", "tokens", "components", "layout"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["createdAt", "schemaVersion"],
+      "properties": {
+        "schemaVersion": { "type": "string", "const": "2.0" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "agentVersion": { "type": "string" },
+        "notes": { "type": "string" },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["screenshot", "figma", "url", "video", "lottie", "gif", "other"]
+              },
+              "id": { "type": "string" },
+              "notes": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "pipeline": {
+          "type": "object",
+          "description": "Which extraction tier was used",
+          "properties": {
+            "tier": {
+              "type": "string",
+              "enum": ["ground_truth", "hybrid", "screenshot_only"]
+            },
+            "groundTruthSources": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["figma_mcp", "devtools_mcp", "dom_inspection", "view_hierarchy"] }
+            },
+            "passesRun": { "type": "integer", "minimum": 1 },
+            "totalIterations": { "type": "integer", "minimum": 1 }
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+
+    "screens": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "widthPx", "heightPx", "platformGuess"],
+        "properties": {
+          "id": { "type": "string" },
+          "filename": { "type": "string" },
+          "widthPx": { "type": "integer", "minimum": 1 },
+          "heightPx": { "type": "integer", "minimum": 1 },
+          "devicePixelRatio": { "type": "number", "minimum": 0.1 },
+          "platformGuess": {
+            "type": "object",
+            "required": ["value", "confidence"],
+            "properties": {
+              "value": {
+                "type": "string",
+                "enum": ["web", "ios", "android", "desktop_app", "design_tool", "unknown"]
+              },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "cues": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "calibration": {
+            "type": "object",
+            "properties": {
+              "unit": { "type": "string", "enum": ["px", "dp", "pt", "unknown"] },
+              "scaleToPx": { "type": "number", "minimum": 0 }
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+
+    "tokens": {
+      "description": "DTCG 2025.10 compatible token tree. Uses $value, $type, $description. Keep confidence/evidence in tokenMeta, NOT here.",
+      "$ref": "#/$defs/TokenNode"
+    },
+
+    "tokenMeta": {
+      "description": "Confidence + evidence keyed by dot-path (e.g. 'color.brand.primary'). Separate from tokens so Style Dictionary transforms work cleanly.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "source": {
+            "type": "string",
+            "description": "How this value was obtained: ground_truth | measured | inferred | llm_semantic"
+          },
+          "evidence": {
+            "type": "object",
+            "description": "Sample points, bbox IDs, tool outputs, crop references"
+          },
+          "tolerance": {
+            "type": "object",
+            "properties": {
+              "value": { "type": "number" },
+              "unit": { "type": "string" }
+            }
+          },
+          "warnings": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "bbox"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "type": "string", "description": "Button, TextField, Card, NavBar, Text, Image, Icon, Container, etc." },
+          "name": { "type": "string" },
+          "screenId": { "type": "string" },
+          "bbox": { "$ref": "#/$defs/BBox" },
+          "children": { "type": "array", "items": { "type": "string" } },
+          "text": { "type": "string" },
+          "styles": {
+            "type": "object",
+            "properties": {
+              "tokenRefs": {
+                "type": "object",
+                "description": "Map of style property → token path. E.g. {background: 'color.brand.primary', radius: 'radius.md'}",
+                "additionalProperties": { "type": "string" }
+              },
+              "raw": {
+                "type": "object",
+                "description": "Pixel-derived fallback values when tokenization is uncertain",
+                "additionalProperties": true
+              },
+              "states": {
+                "type": "object",
+                "description": "Variant styles keyed by state: hover, focus, disabled, active, pressed",
+                "additionalProperties": true
+              }
+            }
+          },
+          "hypotheses": {
+            "type": "array",
+            "description": "When component type is ambiguous, list alternatives with confidence",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "confidence": { "type": "number" },
+                "reason": { "type": "string" }
+              }
+            }
+          },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+
+    "layout": {
+      "type": "object",
+      "properties": {
+        "hierarchy": { "$ref": "#/$defs/LayoutNode" },
+        "grid": {
+          "type": "object",
+          "properties": {
+            "spacingUnitPx": { "type": "number", "minimum": 0 },
+            "columnCount": { "type": "integer", "minimum": 1 },
+            "gutterPx": { "type": "number", "minimum": 0 },
+            "marginPx": { "type": "number", "minimum": 0 }
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["alignment", "spacing", "containment", "repetition"] },
+              "elements": { "type": "array", "items": { "type": "string" } },
+              "value": {},
+              "confidence": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+
+    "motion": {
+      "description": "Video-extracted motion tokens. See schemas/motion_tokens.ts for full TypeScript types.",
+      "type": "object",
+      "properties": {
+        "tokens": {
+          "type": "array",
+          "description": "Array of MotionToken objects extracted from video analysis"
+        },
+        "orchestration": {
+          "type": "array",
+          "description": "Groups of concurrent/sequenced motion tokens"
+        },
+        "libraryGuess": {
+          "type": "object",
+          "description": "Probability distribution over animation libraries"
+        },
+        "reducedMotionStrategy": {
+          "type": "string",
+          "enum": ["remove", "crossfade", "shorten", "simplify"]
+        }
+      }
+    },
+
+    "validation": {
+      "type": "object",
+      "properties": {
+        "passed": { "type": "boolean" },
+        "overallScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "category": { "type": "string", "enum": ["token_consistency", "layout_consistency", "component_sanity", "visual_parity"] },
+              "passed": { "type": "boolean" },
+              "score": { "type": "number" },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "visualDiff": {
+          "type": "object",
+          "properties": {
+            "method": { "type": "string", "enum": ["pixelmatch", "ssim", "percy", "backstopjs", "other"] },
+            "score": { "type": "number" },
+            "diffImage": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "openQuestions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "needsScreenshotsForStates": {
+      "type": "array",
+      "description": "Specific screenshots the agent needs to reduce uncertainty",
+      "items": {
+        "type": "object",
+        "properties": {
+          "componentId": { "type": "string" },
+          "state": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  },
+
+  "$defs": {
+    "BBox": {
+      "type": "object",
+      "required": ["x", "y", "w", "h", "unit"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "w": { "type": "number", "minimum": 0 },
+        "h": { "type": "number", "minimum": 0 },
+        "unit": { "type": "string", "enum": ["px", "norm"] }
+      },
+      "additionalProperties": false
+    },
+    "Token": {
+      "type": "object",
+      "required": ["$type", "$value"],
+      "properties": {
+        "$type": { "type": "string" },
+        "$value": {},
+        "$description": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "TokenNode": {
+      "anyOf": [
+        { "$ref": "#/$defs/Token" },
+        { "type": "object", "additionalProperties": { "$ref": "#/$defs/TokenNode" } }
+      ]
+    },
+    "LayoutNode": {
+      "type": "object",
+      "required": ["id", "children"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["root", "section", "container", "element"] },
+        "direction": { "type": "string", "enum": ["vertical", "horizontal"] },
+        "alignment": { "type": "string", "enum": ["start", "center", "end", "stretch"] },
+        "spacingToken": { "type": "string" },
+        "children": { "type": "array", "items": { "$ref": "#/$defs/LayoutNode" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

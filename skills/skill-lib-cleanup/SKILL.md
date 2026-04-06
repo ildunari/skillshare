@@ -384,7 +384,7 @@ The final report should include:
 - It does not auto-sync skillshare targets.
 - It does not auto-delete source or installed skills without approval.
 - It does not treat all same-name copies as merge candidates.
-- It does not replace deep single-skill review (`skill-review`) or skill creation work (`skill-creator`).
+- It does not replace deep single-skill review and skill creation work (`skill-creator`).
 - It does not assume project-local exceptions should be promoted unless the user asks.
 
 ## Quick-start recipes

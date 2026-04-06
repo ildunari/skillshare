@@ -19,8 +19,8 @@ Use when:
 
 ## Skill Activation Order
 - Load `minidiff-refactor` for incremental migration mechanics.
-- Load `testing-protocol` for stepwise verification after each change.
-- Load `verification-before-completion` before merge/ship claims.
+- Load `test-driven-development` for stepwise verification after each change.
+- Load `completion-verification-gate` before merge/ship claims.
 
 ## Required Behavior
 - Split into small mechanical steps.

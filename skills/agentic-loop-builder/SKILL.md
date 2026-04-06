@@ -116,7 +116,7 @@ Dispatch a platform-specialist review agent (read-only). Choose based on domain:
 |--------|----------|
 | iOS/Swift | `apple-swift-language-expert`, `apple-swiftui-mastery`, `apple-networking-apis` |
 | macOS | `apple-macos-ux-full`, `apple-architecture-patterns` |
-| Web frontend | `design-maestro`, `nextjs-app-router-patterns` |
+| Web frontend | `design-maestro`, `nextjs-app-router-architecture` |
 | General | `code-reviewer-guardian` |
 
 The reviewer receives: phase goal, diff, spec/protocol reference, and instructions to rate findings by severity.

@@ -1,6 +1,6 @@
 ---
 name: integration-regression-sentinel
-description: Use when a legacy prompt, old workflow, or older skill reference explicitly names `integration-regression-sentinel`; this retired skill exists to redirect that request to `master-orchestrator-agent` for integration and regression gating across multi-track work. Do not select it for new tasks.
+description: Use when a legacy prompt, old workflow, or older skill reference explicitly names `integration-regression-sentinel`; this retired skill exists to redirect that request to `orchestration-router` for integration and regression gating across multi-track work. Do not select it for new tasks.
 ---
 
 # Integration Regression Sentinel
@@ -9,10 +9,10 @@ description: Use when a legacy prompt, old workflow, or older skill reference ex
 Retired from active routing.
 
 ## Why Retired
-Integration/regression gating is now owned by `master-orchestrator-agent` so one coordinator can route and verify end-to-end without extra handoff overhead.
+Integration/regression gating is now owned by `orchestration-router` so one coordinator can route and verify end-to-end without extra handoff overhead.
 
 ## Replacement
-Use `master-orchestrator-agent` and include an explicit final integration verification phase in its loop.
+Use `orchestration-router` and include an explicit final integration verification phase in its loop.
 
 ## Notes
 - Keep this file only as a migration pointer for older references.

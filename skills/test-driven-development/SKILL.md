@@ -1,6 +1,6 @@
 ---
 name: "Test-Driven Development"
-description: "Use when implementing any feature or bugfix, before writing implementation code"
+description: "Use when implementing any feature or bugfix, before writing implementation code. This skill now also owns the broader verification workflow that was previously split into `testing-protocol`."
 ---
 
 # Test-Driven Development (TDD)
@@ -8,6 +8,8 @@ description: "Use when implementing any feature or bugfix, before writing implem
 ## Overview
 
 Write the test first. Watch it fail. Write minimal code to pass.
+
+The preserved browser-verification and broader test-checklist material from `testing-protocol` now lives under `merged/testing-protocol/`.
 
 **Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
 

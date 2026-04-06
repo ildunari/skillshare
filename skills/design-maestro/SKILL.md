@@ -92,11 +92,11 @@ For pattern vocabulary (dock magnification, bento grid, parallax tilt, etc.), lo
 | **Need UI patterns** (heroes, navs, cards, forms, dashboards) | `references/patterns-and-recipes.md` |
 | **Need visual effects** (CSS atmosphere, WebGL, shaders) | `references/advanced-effects.md` |
 | **Need animations** (which animation, choreography, aesthetic decisions) | `references/motion-library.md` |
-| **Need animation implementation** (tool selection, GSAP/FM/WAAPI code, failure modes) | Load **userinterface-wiki** skill |
+| **Need animation implementation** (tool selection, GSAP/FM/WAAPI code, failure modes) | Load **ui-motion-wiki** skill |
 | **Need AI/chat UI** (streaming, citations, tool use, agents) | `references/ai-ui-patterns.md` |
 | **Need data visualizations** | `references/patterns-and-recipes.md` (data viz section) |
 | **Need fonts/theming** | `references/themes.md` |
-| **Need a complete visual theme** (21 production themes) | `visual-themes/INDEX.md` |
+| **Need a complete visual theme** (merged theme library plus extraction workflow) | `visual-design-lab/` |
 | **Iterating on a design** | `references/design-iteration.md` |
 | **Received vague/conflicting feedback** | `references/design-feedback.md` |
 | **Design review** (formal visual QA) | `references/design-review.md` |

@@ -64,7 +64,7 @@ Use tools in this priority order — escalate only when the previous step is ins
 ## Skill activation order
 
 - Load `openai-docs` for OpenAI API/SDK questions before broad web search.
-- Load `mcp-operations` if MCP docs/search tooling is misconfigured or failing.
+- Load `mcp-server-builder` if MCP docs/search tooling is misconfigured or failing.
 
 ---
 

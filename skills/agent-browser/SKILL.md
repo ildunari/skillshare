@@ -11,7 +11,6 @@ description: >
   or any task requiring programmatic web interaction. Also use when the user
   needs to access authenticated pages using their real Chrome sessions via CDP.
   Do not use for simple curl/wget fetches of public URLs or API calls.
-targets: [claude, codex, cursor, windsurf]
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---
 

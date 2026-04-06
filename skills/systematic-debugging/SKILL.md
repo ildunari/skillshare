@@ -152,4 +152,4 @@ These techniques are available in this skill directory:
 
 **Related skills:**
 - **[skill:test-driven-development]** - For creating failing test case (Phase 4, Step 1)
-- **[skill:verification-before-completion]** - Verify fix worked before claiming success
+- **[skill:completion-verification-gate]** - Verify fix worked before claiming success

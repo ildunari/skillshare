@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/runkids/skillshare/main/schemas/registry.schema.json
+skills:
+  - name: officecli-docx
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-docx
+  - name: skillshare
+    source: github.com/runkids/skillshare/skills/skillshare
+  - name: officecli-xlsx
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-xlsx
+  - name: officecli-pptx
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-pptx
+  - name: officecli-pitch-deck
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-pitch-deck
+  - name: morph-ppt
+    source: github.com/iOfficeAI/OfficeCLI/skills/morph-ppt
+  - name: officecli-academic-paper
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-academic-paper
+  - name: officecli-data-dashboard
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-data-dashboard
+  - name: officecli-financial-model
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-financial-model

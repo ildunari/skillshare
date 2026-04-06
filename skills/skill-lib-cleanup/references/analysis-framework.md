@@ -22,11 +22,11 @@ selection, rendering pipeline).
 blurry, recommend sharpening their descriptions — not collapsing them.
 
 **Examples from a typical library:**
-- design-maestro (aesthetics) + userinterface-wiki (animation engineering)
+- design-maestro (aesthetics) + ui-motion-wiki (animation engineering)
 - design-maestro (what it looks like) + game-dev (rendering/physics)
-- docx-enhanced (Word file mechanics) + word-mastery (document design
+- word-docx-production (Word file mechanics) + document-design-mastery (document design
   intelligence)
-- skill-review (audit one skill) + skill-library-curator (audit the whole
+- skill-creator (deep audit or iteration for one skill) + skill-library-curator (audit the whole
   library)
 
 ### Override Chains
@@ -81,7 +81,7 @@ domain.
 - Another assumes Codex CLI or OpenClaw (AGENTS.md, different conventions)
 
 **Rule:** Platform-scoped skills are distinct even if they do "the same
-thing." A prompt-writing skill for Claude (prompt-architect) and one for
+thing." A prompt-writing skill for Claude (claude-prompt-architect) and one for
 GPT (gpt-prompt-architect) are not duplicates — they're calibrated for
 different model families.
 
@@ -235,7 +235,7 @@ from the library's contents, not be forced onto it.
 | **prompting** | Prompt engineering, skill creation, system prompt design |
 | **media** | Image generation, TTS, algorithmic art, photography |
 | **automation** | MCP servers, agent builders, workflow orchestration |
-| **meta** | Skills about skills — this skill, skill-review, skill-creator |
+| **meta** | Skills about skills — this skill and skill-creator |
 
 Skills can have one primary category and optional secondary tags.
 Don't force everything into these buckets — if a skill genuinely straddles

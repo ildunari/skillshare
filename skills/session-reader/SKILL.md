@@ -6,6 +6,8 @@ alwaysAllow: ["Bash", "Read"]
 
 # Session Reader
 
+<!-- Merged from: session-classifier, memory-summarizer (2026-04-05). Legacy material preserved under merged/. -->
+
 Extract clean user/assistant dialogue from Craft Agent session `.jsonl` files, removing tool calls and results that dominate the raw data (typically 50-90% of session size).
 
 ## Session JSONL Format

@@ -5,6 +5,8 @@ description: Build production-quality MCP servers — both standard tool servers
 
 # MCP Server Builder
 
+<!-- Merged from: mcp-proxy-builder, mcp-operations (2026-04-05). Legacy material preserved under merged/. -->
+
 > Build standard MCP tool servers and MCP App servers (with inline interactive UI) for Claude.ai, Claude Desktop, and other MCP hosts. Covers both Streamable HTTP remote servers and stdio local servers.
 
 ## Feedback Loop

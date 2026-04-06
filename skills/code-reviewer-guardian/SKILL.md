@@ -14,6 +14,8 @@ allowed-tools: Read, Grep, Glob, Write, Bash
 
 # Code Reviewer Guardian (Swift / iOS / macOS)
 
+<!-- Merged from: receiving-code-review, requesting-code-review (2026-04-05). Legacy material preserved under merged/. -->
+
 > **Purpose**: Provide rigorous, actionable reviews for Swift codebases. Detect problems early,
 > propose safe refactors, and elevate overall engineering quality with repeatable checklists,
 > analyzers, and configuration templates.
@@ -404,4 +406,3 @@ security (ATS), performance (N+1), threading, documentation, and Massive View Co
 ## License
 
 MIT for the analyzers & templates. Adapt to your org’s policy as needed.
-

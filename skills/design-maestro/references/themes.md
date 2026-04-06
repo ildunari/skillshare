@@ -6,7 +6,7 @@
 
 Apply these to simulations, games, generative art, and interactive artifacts.
 
-> **21 additional themes** are available in the **visual-themes** skill (`visual-themes/INDEX.md`). That skill provides full palettes, typography, animation philosophy, UI component styling, and dark mode variants for each theme. The 5 themes below are quick-access favorites for common simulation types. For themed work, load visual-themes alongside this file.
+> **Additional curated themes** are available in the **visual-design-lab** skill. That skill now combines the old design-theme-library packs with screenshot-to-token extraction and broader design-system guidance. The 5 themes below are quick-access favorites for common simulation types. For themed work, load visual-design-lab alongside this file.
 
 ### 1. Alchemist's Journal
 **Best for:** Reaction-diffusion, slime mold, organic simulations

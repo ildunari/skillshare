@@ -1,0 +1,13 @@
+{
+  "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-financial-model",
+  "type": "github-subdir",
+  "installed_at": "2026-04-03T09:12:35.580083-04:00",
+  "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
+  "subdir": "skills/officecli-financial-model",
+  "version": "9cc0541",
+  "tree_hash": "acfb556a5af6edb5f530c904368caf5cfe91b78a",
+  "file_hashes": {
+    "SKILL.md": "sha256:b2f7fb3aba968e6534c308f32785abaf72696b091dcf690d6cda9445ed8a73fe",
+    "creating.md": "sha256:5dc162c21aeb38f24faeca2c2779df5d62d028e9c9838232cb655e58f32bb447"
+  }
+}

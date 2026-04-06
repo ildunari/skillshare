@@ -147,5 +147,5 @@ Install to /opt/homebrew/bin/telegram.
 - `[skill:agent-browser]` — Browser/CDP automation commands
 - `[skill:electron]` — Electron app CDP connection patterns
 - `[skill:discord]` — Working reference implementation
-- `[skill:prompt-architect]` — For calibrating the skill's SKILL.md description
+- `[skill:claude-prompt-architect]` — For calibrating the skill's SKILL.md description
 - `macos-automator` source — For AppleScript/Accessibility fallback

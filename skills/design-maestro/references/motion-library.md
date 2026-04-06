@@ -1,6 +1,6 @@
 # Motion Library
 
-> Animation aesthetic guidance — which animations to use and why. For implementation details (tool selection, library-specific code, production patterns, failure modes), load the **userinterface-wiki** skill.
+> Animation aesthetic guidance — which animations to use and why. For implementation details (tool selection, library-specific code, production patterns, failure modes), load the **ui-motion-wiki** skill.
 
 ---
 
@@ -29,7 +29,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | Spring Physics | Modals, popovers, interactive elements | Feels alive and responsive |
 | Slide + Fade | Section entries, page loads | Clean, professional reveal |
 
-→ Implementation: userinterface-wiki `references/framer-motion.md` (variants, staggerChildren) or `references/css-native.md` (@starting-style)
+→ Implementation: ui-motion-wiki `references/framer-motion.md` (variants, staggerChildren) or `references/css-native.md` (@starting-style)
 
 ### 2. Scroll-Triggered
 
@@ -39,7 +39,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | Intersection Observer + FM | Cross-browser scroll reveals | Reliable, predictable entry |
 | Sticky + Progress | Storytelling sections, timelines | Guided narrative flow |
 
-→ Implementation: userinterface-wiki `references/css-native.md` (scroll-driven) or `references/gsap-production.md` (ScrollTrigger)
+→ Implementation: ui-motion-wiki `references/css-native.md` (scroll-driven) or `references/gsap-production.md` (ScrollTrigger)
 
 ### 3. Micro-Interactions
 
@@ -49,7 +49,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | Like/Heart Burst | Social actions, favorites | Delight, emotional reward |
 | Hover Card Tilt | Featured cards, portfolio items | Depth, premium feel |
 
-→ Implementation: userinterface-wiki `references/pattern-recipes.md` (particle button, spotlight border)
+→ Implementation: ui-motion-wiki `references/pattern-recipes.md` (particle button, spotlight border)
 
 ### 4. Page Transitions
 
@@ -59,7 +59,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | View Transitions API | Modern browsers, progressive | Native-feeling navigation |
 | Shared Element Morph | List→detail, card→page | Identity preservation |
 
-→ Implementation: userinterface-wiki `references/css-native.md` (view transitions) or `references/framer-motion.md` (layoutId)
+→ Implementation: ui-motion-wiki `references/css-native.md` (view transitions) or `references/framer-motion.md` (layoutId)
 
 ### 5. Loading States
 
@@ -77,7 +77,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | Swipe Gestures | Card stacks, dismissable items | Mobile-native feel |
 | Pinch-to-Zoom | Image viewers, maps | Spatial exploration |
 
-→ Implementation: userinterface-wiki `references/framer-motion.md` (drag, gesture system)
+→ Implementation: ui-motion-wiki `references/framer-motion.md` (drag, gesture system)
 
 ### 7. Text Animations
 
@@ -87,7 +87,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | Character Stagger | Hero headlines, dramatic reveals | Theatrical entrance |
 | Counting Number | Stats, dashboards, metrics | Data coming alive |
 
-→ Implementation: userinterface-wiki `references/pattern-recipes.md` (text scramble, char reveal)
+→ Implementation: ui-motion-wiki `references/pattern-recipes.md` (text scramble, char reveal)
 
 ### 8. Layout Animations
 
@@ -97,7 +97,7 @@ Framer Motion is available in Claude React artifacts — `import { motion, Anima
 | Accordion | FAQ, settings, expandable | Content breathing |
 | Tab Transitions | Tabbed content, wizards | Directional context |
 
-→ Implementation: userinterface-wiki `references/flip-technique.md` or `references/css-native.md` (interpolate-size)
+→ Implementation: ui-motion-wiki `references/flip-technique.md` or `references/css-native.md` (interpolate-size)
 
 ---
 
@@ -133,4 +133,4 @@ Load `references/deep/motion-performance.md` for:
 | `interpolate-size` | ✅ 129+ | ✅ 26+ | Not yet |
 | Framer Motion | ✅ | ✅ | ✅ |
 
-For detailed support data: load userinterface-wiki → browser support matrix.
+For detailed support data: load ui-motion-wiki -> browser support matrix.

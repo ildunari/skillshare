@@ -12,6 +12,7 @@ description: >
 ---
 
 <!-- Merged from agentic-web-research and web-research-orchestrator. research-agent-protocol also archived (absorbed). Both source directories archived. -->
+<!-- Merged from: research-prompt-writer, research-report-distiller (2026-04-05). Legacy material preserved under merged/. -->
 
 # Web Research
 

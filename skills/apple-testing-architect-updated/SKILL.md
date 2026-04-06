@@ -14,10 +14,6 @@ capabilities:
   - coverage_parsing_reporting
   - flaky_test_detection
   - framework_migration_guidance
-targets:
-  - ios
-  - macos
-  - swift-packages
 requires:
   - Xcode 15+ (XCTest); Xcode 16+ (Swift Testing)
   - Python 3.10+

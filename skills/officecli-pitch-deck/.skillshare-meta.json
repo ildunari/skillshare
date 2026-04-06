@@ -1,0 +1,13 @@
+{
+  "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-pitch-deck",
+  "type": "github-subdir",
+  "installed_at": "2026-04-03T09:12:28.699597-04:00",
+  "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
+  "subdir": "skills/officecli-pitch-deck",
+  "version": "9cc0541",
+  "tree_hash": "a8c87ff271002b9cd27aacefb196b623efde6713",
+  "file_hashes": {
+    "SKILL.md": "sha256:0a4e45aaa2c3fe7c9e762c4834a2070f433b04430bbef1ea7ea15736f450fd29",
+    "creating.md": "sha256:b8ed481d93af13558ab30c2845a6d67a67b82abd27e6d1d37c502078cbc6b9af"
+  }
+}

@@ -211,7 +211,7 @@ droid exec --mission --auto high "Build a complete REST API with auth, CRUD, and
 
 ## Droid's Own Ecosystem
 
-Droid has its own subagents ("droids"), skills, plugins, and MCP servers configured at `~/.factory/`. Notable custom droids: `code-reviewer`, `debugger`, `logic-bug-hunter`, `refactor-safety-auditor`, `worker`. These are automatically used by Droid when relevant — you don't need to invoke them manually.
+Droid has its own subagents ("droids"), skills, plugins, and MCP servers configured at `~/.factory/`. Notable custom droids: `code-reviewer`, `debugger`, `correctness-bug-hunter`, `refactor-safety-auditor`, `worker`. These are automatically used by Droid when relevant — you don't need to invoke them manually.
 
 ## Decision Flowchart
 

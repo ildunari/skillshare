@@ -1,0 +1,14 @@
+{
+  "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-pptx",
+  "type": "github-subdir",
+  "installed_at": "2026-04-03T09:12:27.000876-04:00",
+  "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
+  "subdir": "skills/officecli-pptx",
+  "version": "9cc0541",
+  "tree_hash": "e29c851dcc451b3429801bdee339b052a5b4d269",
+  "file_hashes": {
+    "SKILL.md": "sha256:877a5cca4eec83350f4ff3dfef5d36c1d04b4c1a8b52a3ee81e6282fe0476cfe",
+    "creating.md": "sha256:c26939f949a5676b3718c9475d5393eef6ef3d1230eff409ecae3ad60ff19139",
+    "editing.md": "sha256:de02145affdf824b75ac91c48151862083f5ba3e67041a2518f55a38ec163623"
+  }
+}

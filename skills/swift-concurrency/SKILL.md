@@ -1,12 +1,14 @@
 ---
 name: swift-concurrency
-description: 'Expert guidance on Swift Concurrency best practices, patterns, and implementation. Use when developers mention: (1) Swift Concurrency, async/await, actors, or tasks, (2) "use Swift Concurrency" or "modern concurrency patterns", (3) migrating to Swift 6 or Swift 6.2+, (4) data races or thread safety issues, (5) refactoring closures to async/await, (6) @MainActor, Sendable, or actor isolation, (7) concurrent code architecture or performance optimization, (8) concurrency-related linter warnings (SwiftLint or similar; e.g. async_without_await, Sendable/actor isolation/MainActor lint), (9) reviewing or remediating Swift Concurrency compliance in a feature or file.'
+description: 'Expert guidance on Swift Concurrency best practices, patterns, and implementation. Use when developers mention: (1) Swift Concurrency, async/await, actors, or tasks, (2) "use Swift Concurrency" or "modern concurrency patterns", (3) migrating to Swift 6 or Swift 6.2+, (4) data races or thread safety issues, (5) refactoring closures to async/await, (6) @MainActor, Sendable, or actor isolation, (7) concurrent code architecture or performance optimization, (8) concurrency-related linter warnings (SwiftLint or similar; e.g. async_without_await, Sendable/actor isolation/MainActor lint), (9) reviewing or remediating Swift Concurrency compliance in a feature or file. This is the canonical keeper for Swift concurrency review and remediation and supersedes `swift-concurrency-expert`.'
 ---
 # Swift Concurrency
 
 ## Overview
 
 This skill provides expert guidance on Swift Concurrency, covering modern async/await patterns, actors, tasks, Sendable conformance, and migration to Swift 6. Use this skill to help developers write safe, performant concurrent code and navigate the complexities of Swift's structured concurrency model.
+
+This is the canonical merged entrypoint for Swift concurrency guidance, including Swift 6.2 review and remediation work previously split into `swift-concurrency-expert`.
 
 ## Agent Behavior Contract (Follow These Rules)
 

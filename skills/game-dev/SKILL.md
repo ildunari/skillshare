@@ -5,6 +5,8 @@ description: Use when building browser games, simulations, shader art, GPU parti
 
 # Game Dev (Web Sim Engine)
 
+<!-- Merged from: develop-web-game (2026-04-05). Legacy material preserved under merged/. -->
+
 > Build production-quality browser games, simulations, GPU particle systems, physics engines, and generative art — from simple Canvas 2D platformers to advanced WebGL2/WebGPU compute pipelines. Everything ships as a single-file HTML artifact.
 
 ## Claude.ai Artifact Constraints
@@ -182,7 +184,7 @@ Production-ready JS utilities in `scripts/` — inline into your single-file art
   if (navigator.gpu) { /* WebGPU path */ } else { /* WebGL2 fallback */ }
   ```
 - **Font loading:** Google Fonts `<link>` when UI labels needed.
-- **Visual themes:** For simulation aesthetics, reference the user's visual themes in `design-maestro` skill's `references/themes.md` or the `visual-themes` skill.
+- **Visual themes:** For simulation aesthetics, reference the user's visual themes in `design-maestro` skill's `references/themes.md` or the `visual-design-lab` skill.
 - **Game feel:** Layer juice on last, not first. Get the simulation correct, then add screen shake / particles / trails.
 - **Responsive:** Use virtual canvas pattern for games (see `assets/game-base.html`). Use `100dvh`/`100dvw` for fullscreen sims.
 
@@ -291,8 +293,8 @@ For iterative game development with automated testing (especially when building 
 ### Setup
 
 ```bash
-export WEB_GAME_CLIENT="$HOME/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js"
-export WEB_GAME_ACTIONS="$HOME/.codex/skills/develop-web-game/references/action_payloads.json"
+export WEB_GAME_CLIENT="$HOME/.codex/skills/game-dev/merged/develop-web-game/scripts/web_game_playwright_client.js"
+export WEB_GAME_ACTIONS="$HOME/.codex/skills/game-dev/merged/develop-web-game/references/action_payloads.json"
 ```
 
 Verify Playwright is available: `command -v npx >/dev/null 2>&1`
@@ -397,4 +399,4 @@ Inline JSON actions (no file needed):
 ## Relationship to Other Skills
 
 - **`algorithmic-art-enhanced`** — Use for p5.js generative art with seeded randomness. Use *this* skill for WebGL/WebGPU shader-based generative art (reaction-diffusion, fractals, Physarum, fluid art).
-- **`design-maestro`** / **`visual-themes`** — Reference for simulation aesthetics and UI polish.
+- **`design-maestro`** / **`visual-design-lab`** — Reference for simulation aesthetics and UI polish.

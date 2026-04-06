@@ -1,6 +1,6 @@
 ---
 name: github
-description: "Use when the task centers on GitHub repositories, issues, pull requests, Actions runs, or `gh` CLI workflows. Trigger on requests to inspect or update issues and PRs, check CI status or logs, query repository metadata, or take a GitHub issue through branch, fix, test, commit, and push. Do not use for generic local git work that does not involve GitHub."
+description: "Use when the task centers on GitHub repositories, issues, pull requests, Actions runs, or `gh` CLI workflows. Trigger on requests to inspect or update issues and PRs, check CI status or logs, query repository metadata, or take a GitHub issue through branch, fix, test, commit, and push. Supersedes `gh-issue-fix-flow`. Do not use for generic local git work that does not involve GitHub."
 ---
 
 # GitHub Skill
@@ -47,6 +47,8 @@ gh issue list --repo owner/repo --json number,title --jq '.[] | "\(.number): \(.
 ```
 
 ## Issue Fix Workflow
+
+This skill now owns the issue-fix lane that previously lived in `gh-issue-fix-flow`.
 
 End-to-end flow for resolving a GitHub issue through fix, validation, and push.
 

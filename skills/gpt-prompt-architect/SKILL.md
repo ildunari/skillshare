@@ -9,7 +9,7 @@ description: >
   "Codex skill", or any task producing instructions that a GPT model will follow
   in Codex or ChatGPT. Do not use for API system prompts, Responses API architecture,
   Structured Outputs, or tool/function description engineering. Do not use for
-  Claude-family prompt work; use prompt-architect there.
+  Claude-family prompt work; use claude-prompt-architect there.
 ---
 
 # GPT Prompt Architect
@@ -264,8 +264,8 @@ For Codex AGENTS.md, the Context section often lives at the project root level a
 
 ## When This Skill Pairs With Others
 
-- After writing an AGENTS.md, the user may want `superpowers-methodology` for the development workflow
+- After writing an AGENTS.md, the user may want `workflow-methodology` for the development workflow
 - After writing a Custom GPT, the user may want to test it and iterate — suggest structured testing prompts
 - When the user reports a prompt "isn't working," start with this skill's Audit mode before assuming the problem is elsewhere
-- For prompts targeting Claude instead of GPT, use `prompt-architect` (the Claude-specific skill)
-- For cross-model translation (Claude ↔ GPT migration), load both this skill and `prompt-architect` for accurate platform-specific guidance
+- For prompts targeting Claude instead of GPT, use `claude-prompt-architect` (the Claude-specific skill)
+- For cross-model translation (Claude ↔ GPT migration), load both this skill and `claude-prompt-architect` for accurate platform-specific guidance

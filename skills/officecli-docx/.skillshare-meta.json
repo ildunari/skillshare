@@ -1,0 +1,14 @@
+{
+  "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-docx",
+  "type": "github-subdir",
+  "installed_at": "2026-04-03T09:12:23.651166-04:00",
+  "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
+  "subdir": "skills/officecli-docx",
+  "version": "9cc0541",
+  "tree_hash": "3ce90efb9174058b5efa36d7546327aec11830e9",
+  "file_hashes": {
+    "SKILL.md": "sha256:3a43223c2e354f290f53504d8ce2eb55236bda567ef2d160bb8d05d3d5988ffc",
+    "creating.md": "sha256:2bccf89c97c2f7c97a70aa1dc28f115f7eabf4a8ee1071448107934501c29dd0",
+    "editing.md": "sha256:bc28c9a9f7679759d1001bf4cd8b2bf9f4291fd3dede16973468104fa6c537ce"
+  }
+}

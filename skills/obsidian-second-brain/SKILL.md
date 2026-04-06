@@ -13,6 +13,7 @@ description: >-
 ---
 
 <!-- Merged from: obsidian-markdown (2026-03-31). Source directory archived 2026-04-01. -->
+<!-- Merged from: obsidian-bases, obsidian-cli (2026-04-05). Legacy material preserved under merged/. -->
 
 # Obsidian Second Brain
 

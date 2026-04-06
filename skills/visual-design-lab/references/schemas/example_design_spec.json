@@ -1,0 +1,346 @@
+{
+  "meta": {
+    "schemaVersion": "2.0",
+    "createdAt": "2026-02-08T04:30:00Z",
+    "agentVersion": "visual-design-lab-1.0",
+    "sources": [
+      { "type": "screenshot", "id": "login_ios.png" }
+    ],
+    "pipeline": {
+      "tier": "hybrid",
+      "groundTruthSources": [],
+      "passesRun": 5,
+      "totalIterations": 2
+    }
+  },
+
+  "screens": [
+    {
+      "id": "screen.login",
+      "filename": "login_ios.png",
+      "widthPx": 1170,
+      "heightPx": 2532,
+      "devicePixelRatio": 3,
+      "platformGuess": {
+        "value": "ios",
+        "confidence": 0.82,
+        "cues": ["iOS 17 status bar", "SF Pro typography", "home indicator bar"]
+      },
+      "calibration": { "unit": "pt", "scaleToPx": 3.0 }
+    }
+  ],
+
+  "tokens": {
+    "color": {
+      "surface": {
+        "default": { "$type": "color", "$value": "#FFFFFF", "$description": "Main background" },
+        "elevated": { "$type": "color", "$value": "#F8F9FA", "$description": "Card/input background" }
+      },
+      "text": {
+        "primary": { "$type": "color", "$value": "#111827", "$description": "Headings and body text" },
+        "secondary": { "$type": "color", "$value": "#6B7280", "$description": "Placeholder and helper text" },
+        "inverse": { "$type": "color", "$value": "#FFFFFF", "$description": "Text on brand backgrounds" }
+      },
+      "brand": {
+        "primary": { "$type": "color", "$value": "#2563EB", "$description": "Primary brand / CTA fill" },
+        "primaryHover": { "$type": "color", "$value": "#1D4ED8", "$description": "CTA hover state (inferred)" }
+      },
+      "border": {
+        "default": { "$type": "color", "$value": "#D1D5DB", "$description": "Input border" },
+        "focus": { "$type": "color", "$value": "#2563EB", "$description": "Focus ring" }
+      }
+    },
+    "space": {
+      "1": { "$type": "dimension", "$value": "4px", "$description": "Micro spacing" },
+      "2": { "$type": "dimension", "$value": "8px", "$description": "Tight spacing" },
+      "3": { "$type": "dimension", "$value": "12px", "$description": "Compact spacing" },
+      "4": { "$type": "dimension", "$value": "16px", "$description": "Default spacing / margin" },
+      "5": { "$type": "dimension", "$value": "24px", "$description": "Section spacing" },
+      "6": { "$type": "dimension", "$value": "32px", "$description": "Large section gap" },
+      "8": { "$type": "dimension", "$value": "48px", "$description": "Hero spacing" }
+    },
+    "radius": {
+      "sm": { "$type": "dimension", "$value": "8px", "$description": "Input fields, small cards" },
+      "md": { "$type": "dimension", "$value": "12px", "$description": "Buttons, modals" },
+      "full": { "$type": "dimension", "$value": "9999px", "$description": "Pill shape" }
+    },
+    "typography": {
+      "display": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": ["SF Pro Display", "system-ui"],
+          "fontSize": "28px",
+          "fontWeight": 700,
+          "lineHeight": "34px",
+          "letterSpacing": "-0.02em"
+        },
+        "$description": "Page title"
+      },
+      "body": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": ["SF Pro Text", "system-ui"],
+          "fontSize": "16px",
+          "fontWeight": 400,
+          "lineHeight": "24px",
+          "letterSpacing": "0"
+        },
+        "$description": "Body text and input values"
+      },
+      "caption": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": ["SF Pro Text", "system-ui"],
+          "fontSize": "13px",
+          "fontWeight": 400,
+          "lineHeight": "18px",
+          "letterSpacing": "0"
+        },
+        "$description": "Helper text, links"
+      },
+      "button": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": ["SF Pro Text", "system-ui"],
+          "fontSize": "17px",
+          "fontWeight": 600,
+          "lineHeight": "22px",
+          "letterSpacing": "0"
+        },
+        "$description": "Button labels"
+      }
+    },
+    "shadow": {
+      "sm": {
+        "$type": "shadow",
+        "$value": {
+          "color": "#0000000D",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "3px",
+          "spread": "0px"
+        },
+        "$description": "Subtle elevation for inputs"
+      }
+    }
+  },
+
+  "tokenMeta": {
+    "color.brand.primary": {
+      "confidence": 0.94,
+      "source": "measured",
+      "evidence": { "tool": "palette_extract", "frequency": 0.07, "deltaE_from_pixel": 1.1 }
+    },
+    "color.text.primary": {
+      "confidence": 0.91,
+      "source": "measured",
+      "evidence": { "tool": "palette_extract", "frequency": 0.22 }
+    },
+    "color.brand.primaryHover": {
+      "confidence": 0.45,
+      "source": "inferred",
+      "evidence": { "method": "darken_10pct_hsl" },
+      "warnings": ["Hover state not visible in screenshot — inferred by darkening"]
+    },
+    "space.4": {
+      "confidence": 0.88,
+      "source": "measured",
+      "evidence": { "tool": "grid_detect", "on_grid": true, "grid": "8px" }
+    },
+    "radius.md": {
+      "confidence": 0.72,
+      "source": "measured",
+      "evidence": { "tool": "corner_detect", "fitted_radius_px": 11.6 },
+      "tolerance": { "value": 2, "unit": "px" },
+      "warnings": ["Anti-aliasing adds ±1px uncertainty"]
+    },
+    "typography.display": {
+      "confidence": 0.78,
+      "source": "measured",
+      "evidence": { "tool": "ocr_extract", "bbox_height_px": 37, "dpr": 3 },
+      "warnings": ["Font family is a guess based on iOS platform prior"]
+    },
+    "shadow.sm": {
+      "confidence": 0.42,
+      "source": "llm_semantic",
+      "evidence": { "method": "vision_pass_inference" },
+      "warnings": ["Shadow params are rough estimates — no computational validation available"]
+    }
+  },
+
+  "components": [
+    {
+      "id": "cmp.logo",
+      "type": "Image",
+      "name": "App logo",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.38, "y": 0.10, "w": 0.24, "h": 0.06, "unit": "norm" },
+      "styles": { "raw": { "contentMode": "aspectFit" } },
+      "confidence": 0.75,
+      "notes": "Logo detected as image region; actual asset not extractable from screenshot"
+    },
+    {
+      "id": "cmp.title",
+      "type": "Text",
+      "name": "Welcome heading",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.08, "y": 0.20, "w": 0.84, "h": 0.03, "unit": "norm" },
+      "text": "Welcome back",
+      "styles": {
+        "tokenRefs": { "typography": "typography.display", "color": "color.text.primary" },
+        "raw": { "textAlign": "left" }
+      },
+      "confidence": 0.90
+    },
+    {
+      "id": "cmp.subtitle",
+      "type": "Text",
+      "name": "Subtitle",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.08, "y": 0.24, "w": 0.84, "h": 0.02, "unit": "norm" },
+      "text": "Sign in to continue",
+      "styles": {
+        "tokenRefs": { "typography": "typography.body", "color": "color.text.secondary" }
+      },
+      "confidence": 0.87
+    },
+    {
+      "id": "cmp.emailInput",
+      "type": "TextField",
+      "name": "Email input",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.08, "y": 0.32, "w": 0.84, "h": 0.06, "unit": "norm" },
+      "styles": {
+        "tokenRefs": {
+          "background": "color.surface.elevated",
+          "borderColor": "color.border.default",
+          "radius": "radius.sm",
+          "typography": "typography.body"
+        },
+        "raw": { "placeholder": "Email address", "borderWidth": 1 },
+        "states": {
+          "focus": { "tokenRefs": { "borderColor": "color.border.focus" } }
+        }
+      },
+      "confidence": 0.80
+    },
+    {
+      "id": "cmp.passwordInput",
+      "type": "TextField",
+      "name": "Password input",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.08, "y": 0.40, "w": 0.84, "h": 0.06, "unit": "norm" },
+      "styles": {
+        "tokenRefs": {
+          "background": "color.surface.elevated",
+          "borderColor": "color.border.default",
+          "radius": "radius.sm",
+          "typography": "typography.body"
+        },
+        "raw": { "placeholder": "Password", "borderWidth": 1, "secureTextEntry": true }
+      },
+      "confidence": 0.80
+    },
+    {
+      "id": "cmp.cta",
+      "type": "Button",
+      "name": "Sign in CTA",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.08, "y": 0.52, "w": 0.84, "h": 0.065, "unit": "norm" },
+      "text": "Sign in",
+      "styles": {
+        "tokenRefs": {
+          "background": "color.brand.primary",
+          "radius": "radius.md",
+          "textColor": "color.text.inverse",
+          "typography": "typography.button",
+          "shadow": "shadow.sm"
+        },
+        "states": {
+          "hover": { "tokenRefs": { "background": "color.brand.primaryHover" } }
+        }
+      },
+      "confidence": 0.88
+    },
+    {
+      "id": "cmp.forgotLink",
+      "type": "Text",
+      "name": "Forgot password link",
+      "screenId": "screen.login",
+      "bbox": { "x": 0.30, "y": 0.60, "w": 0.40, "h": 0.02, "unit": "norm" },
+      "text": "Forgot your password?",
+      "styles": {
+        "tokenRefs": { "typography": "typography.caption", "color": "color.brand.primary" },
+        "raw": { "textAlign": "center", "textDecoration": "none" }
+      },
+      "confidence": 0.82
+    }
+  ],
+
+  "layout": {
+    "hierarchy": {
+      "id": "root",
+      "type": "root",
+      "direction": "vertical",
+      "alignment": "stretch",
+      "children": [
+        { "id": "cmp.logo", "type": "element", "children": [] },
+        { "id": "cmp.title", "type": "element", "children": [] },
+        { "id": "cmp.subtitle", "type": "element", "children": [] },
+        {
+          "id": "form_group",
+          "type": "container",
+          "direction": "vertical",
+          "spacingToken": "space.4",
+          "children": [
+            { "id": "cmp.emailInput", "type": "element", "children": [] },
+            { "id": "cmp.passwordInput", "type": "element", "children": [] }
+          ]
+        },
+        { "id": "cmp.cta", "type": "element", "children": [] },
+        { "id": "cmp.forgotLink", "type": "element", "children": [] }
+      ]
+    },
+    "grid": {
+      "spacingUnitPx": 8,
+      "columnCount": 1,
+      "marginPx": 16,
+      "gutterPx": 0
+    },
+    "constraints": [
+      { "type": "spacing", "elements": ["cmp.title", "cmp.subtitle"], "value": "space.2", "confidence": 0.85 },
+      { "type": "spacing", "elements": ["cmp.subtitle", "form_group"], "value": "space.6", "confidence": 0.78 },
+      { "type": "spacing", "elements": ["form_group", "cmp.cta"], "value": "space.5", "confidence": 0.80 },
+      { "type": "alignment", "elements": ["cmp.forgotLink"], "value": "center-horizontal", "confidence": 0.90 }
+    ]
+  },
+
+  "validation": {
+    "passed": true,
+    "overallScore": 0.86,
+    "checks": [
+      { "name": "token_role_consistency", "category": "token_consistency", "passed": true, "score": 0.92 },
+      { "name": "spacing_scale_consistency", "category": "token_consistency", "passed": true, "score": 0.88, "notes": "All values on 4px grid" },
+      { "name": "color_near_duplicates", "category": "token_consistency", "passed": true, "score": 0.95 },
+      { "name": "component_token_refs", "category": "component_sanity", "passed": true, "score": 0.90 },
+      { "name": "layout_hierarchy_complete", "category": "layout_consistency", "passed": true, "score": 0.85 },
+      { "name": "shadow_plausibility", "category": "component_sanity", "passed": false, "score": 0.42, "notes": "Shadow params are vision-only estimates" }
+    ],
+    "visualDiff": {
+      "method": "ssim",
+      "score": 0.91,
+      "notes": "Diff primarily in text anti-aliasing and shadow rendering"
+    }
+  },
+
+  "openQuestions": [
+    "Font family unconfirmed — SF Pro assumed from iOS platform detection",
+    "Hover/focus states inferred, not observed — need interaction screenshots",
+    "Shadow parameters are rough LLM estimates (confidence 0.42)"
+  ],
+
+  "needsScreenshotsForStates": [
+    { "componentId": "cmp.cta", "state": "hover", "reason": "Hover background inferred by darkening" },
+    { "componentId": "cmp.emailInput", "state": "focus", "reason": "Focus border color inferred from brand primary" }
+  ]
+}

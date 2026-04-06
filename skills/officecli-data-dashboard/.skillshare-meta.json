@@ -1,0 +1,13 @@
+{
+  "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-data-dashboard",
+  "type": "github-subdir",
+  "installed_at": "2026-04-03T09:12:33.917703-04:00",
+  "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
+  "subdir": "skills/officecli-data-dashboard",
+  "version": "9cc0541",
+  "tree_hash": "4701dfd84f23c55a016bf20a7d9178b715fb7d0e",
+  "file_hashes": {
+    "SKILL.md": "sha256:2a41706c73a2ba23a79c6a7554d688175129046a40bc98ddee62aa28ffa3de50",
+    "creating.md": "sha256:3f7b5682b04acd393491422d31ca06f09bd730cb153fb2466b0b6506c7443d9b"
+  }
+}

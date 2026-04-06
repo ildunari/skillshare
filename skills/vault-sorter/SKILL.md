@@ -216,4 +216,4 @@ All editable sections (Preferences, Feedback, Learned Patterns) and all referenc
 
 The automation may also use these skills for enhanced capabilities:
 - `obsidian-markdown` — Obsidian-flavored markdown syntax (if available)
-- `obsidian-cli` — Vault CLI operations (if available)
+- `obsidian-second-brain` — Vault operations and Obsidian workflow guidance

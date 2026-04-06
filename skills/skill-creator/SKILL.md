@@ -4,6 +4,7 @@ description: Create new skills, modify and improve existing skills, and measure 
 ---
 
 <!-- Canonical skill-authoring workflow. writing-skills was archived as a legacy predecessor on 2026-04-01. -->
+<!-- Merged from: skill-review (2026-04-05). Legacy material preserved under merged/. -->
 
 # Skill Creator
 
