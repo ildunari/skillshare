@@ -170,7 +170,52 @@ Uses sparse clone to fetch only the subdirectory.
 
 ## Common Mistakes
 
-### 1. Referencing a marketplace as a plugin source
+### 1. Top-level `version` / `description` / `$schema` instead of `metadata.*`
+
+**The most dangerous mistake — seen in the wild in 2026-04, it partially
+breaks plugin discovery.** The official schema puts `description`, `version`,
+and `pluginRoot` under a `metadata` object. Do **not** hoist them to the top
+level, and do **not** add a `$schema` field — it is not part of the spec.
+
+```json
+// ❌ WRONG — Claude Code won't load the marketplace cleanly
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "my-plugins",
+  "version": "1.0.3",
+  "description": "My plugins",
+  "owner": { "name": "me" },
+  "plugins": [ ... ]
+}
+
+// ✅ RIGHT
+{
+  "name": "my-plugins",
+  "owner": { "name": "me" },
+  "metadata": {
+    "description": "My plugins",
+    "version": "1.0.3"
+  },
+  "plugins": [ ... ]
+}
+```
+
+**Symptom:** the marketplace refuses to add, or adds but only a partial set
+of plugins resolves and users see whatever was last successfully cached.
+This exact bug was introduced into `ildunari/kosta-plugins` by an automated
+Copilot PR that "fixed" the manifest by flattening `metadata`. Always diff
+Copilot-authored marketplace PRs against the schema, and run
+`claude plugin validate .` before merging.
+
+### 2. Stray `marketplace.json` inside a plugin folder
+
+A plugin directory (`plugins/<name>/.claude-plugin/`) must contain
+`plugin.json`, never `marketplace.json`. If you inline a plugin that used to
+be its own marketplace, delete the old `marketplace.json` from inside the
+plugin folder as part of the inlining. Leaving both files produces a
+malformed plugin that some loaders will reject.
+
+### 3. Referencing a marketplace as a plugin source
 
 If a plugin entry's `source` points to a repo that only has a
 `marketplace.json` (no `plugin.json` and no auto-discoverable components at
@@ -178,18 +223,57 @@ root), Claude Code will clone it and fail to find a plugin. Fix: either add a
 root `plugin.json` to the target repo, or use `git-subdir` to point at the
 specific plugin directory inside it.
 
-### 2. Version not bumped after changes
+### 4. Version not bumped after changes
 
 Claude Code uses the version to decide whether to update cached plugins. If
 you change code but don't bump the version, existing users won't see changes.
 Set version in either plugin.json or the marketplace entry — avoid setting it
-in both (plugin.json wins silently).
+in both (plugin.json wins silently). For cache-invalidation purposes, bumping
+`metadata.version` in `marketplace.json` is the cleanest lever.
 
-### 3. Relative paths in URL-based marketplaces
+### 5. Relative paths in URL-based marketplaces
 
 URL-based marketplaces (`marketplace add https://...`) only download the JSON
 file, not the repo. Relative paths won't resolve. Use GitHub, npm, or git URL
 sources instead, or add the marketplace via Git.
+
+### 6. Broken YAML frontmatter in any skill / agent / command
+
+A single malformed frontmatter block in any skill, agent, or command file
+prevents the **entire plugin** from loading — not just that file. Same goes
+for a malformed `hooks/hooks.json`. Always run `claude plugin validate .`
+before committing, and prefer a CI job that fails the build on validation
+errors.
+
+### 7. `${CLAUDE_PLUGIN_ROOT}` mistakes
+
+Plugins are copied to `~/.claude/plugins/cache/...` on install, so any
+reference outside the plugin directory (via `..`) breaks. Use
+`${CLAUDE_PLUGIN_ROOT}` inside hooks and MCP server configs to point at
+plugin-local files. Use `${CLAUDE_PLUGIN_DATA}` (not `${CLAUDE_PLUGIN_ROOT}`)
+for persistent state that should survive plugin upgrades.
+
+### 8. Reserved marketplace names
+
+These names cannot be used and attempting to register them will fail:
+`claude-code-marketplace`, `claude-code-plugins`, `claude-plugins-official`,
+`anthropic-marketplace`, `anthropic-plugins`, `agent-skills`,
+`knowledge-work-plugins`, `life-sciences`. Names that *impersonate* official
+marketplaces (like `official-claude-plugins`) are also blocked.
+
+## Pre-Distribution Checklist
+
+Before pushing a marketplace update:
+
+- [ ] `claude plugin validate .` returns clean
+- [ ] `marketplace.json` has `name`, `owner`, `plugins` at top level —
+      nothing else at top level except `metadata`
+- [ ] `metadata.version` bumped since last release
+- [ ] Every plugin in `plugins/` has a `.claude-plugin/plugin.json` with a
+      `name` field and no stray `marketplace.json` alongside it
+- [ ] No `$schema`, no top-level `version`, no top-level `description`
+- [ ] CI runs `claude plugin validate .` or an equivalent schema check on
+      every PR — this catches automated "fix" PRs that flatten `metadata`
 
 ## Distribution
 

@@ -9,11 +9,10 @@ description: |
   modes. Also use when: adding new AI tool targets (Claude, Cursor, Windsurf, etc.),
   setting target include/exclude filters or copy vs symlink mode, using backup/restore
   or trash recovery, piping skillshare output to scripts (--json), setting up CI/CD
-  audit pipelines, or building/sharing skill hubs (hub index, hub add). Do not use
-  for local SkillSync Dash or localhost:3849 workflows; use skill-manager there.
+  audit pipelines, or building/sharing skill hubs (hub index, hub add).
 argument-hint: "[command] [target] [--json] [--dry-run] [-p|-g]"
 metadata:
-  version: v0.18.6
+  version: v0.18.9
 ---
 
 # Skillshare CLI
