@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/runkids/skillshare/main/schemas/registry.schema.json
+skills:
+  - name: morph-ppt
+    source: github.com/iOfficeAI/OfficeCLI/skills/morph-ppt
+  - name: officecli-academic-paper
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-academic-paper
+  - name: officecli-data-dashboard
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-data-dashboard
+  - name: officecli-docx
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-docx
+  - name: officecli-financial-model
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-financial-model
+  - name: officecli-pitch-deck
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-pitch-deck
+  - name: officecli-pptx
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-pptx
+  - name: officecli-xlsx
+    source: github.com/iOfficeAI/OfficeCLI/skills/officecli-xlsx
+  - name: skillshare
+    source: github.com/runkids/skillshare/skills/skillshare
+  - name: swiftui-expert-skill
+    source: github.com/AvdLee/SwiftUI-Agent-Skill/swiftui-expert-skill
+  - name: _AvdLee-SwiftUI-Agent-Skill
+    source: https://github.com/AvdLee/SwiftUI-Agent-Skill.git
+    tracked: true
+    branch: main
+  - name: asc-app-create-ui
+    source: github.com/rudrankriyam/asc-skills/skills/asc-app-create-ui
+  - name: asc-aso-audit
+    source: github.com/rudrankriyam/asc-skills/skills/asc-aso-audit
+  - name: asc-build-lifecycle
+    source: github.com/rudrankriyam/asc-skills/skills/asc-build-lifecycle
+  - name: asc-cli-usage
+    source: github.com/rudrankriyam/asc-skills/skills/asc-cli-usage
+  - name: asc-crash-triage
+    source: github.com/rudrankriyam/asc-skills/skills/asc-crash-triage
+  - name: asc-id-resolver
+    source: github.com/rudrankriyam/asc-skills/skills/asc-id-resolver
+  - name: asc-localize-metadata
+    source: github.com/rudrankriyam/asc-skills/skills/asc-localize-metadata
+  - name: asc-metadata-sync
+    source: github.com/rudrankriyam/asc-skills/skills/asc-metadata-sync
+  - name: asc-notarization
+    source: github.com/rudrankriyam/asc-skills/skills/asc-notarization
+  - name: asc-ppp-pricing
+    source: github.com/rudrankriyam/asc-skills/skills/asc-ppp-pricing
+  - name: asc-release-flow
+    source: github.com/rudrankriyam/asc-skills/skills/asc-release-flow
+  - name: asc-revenuecat-catalog-sync
+    source: github.com/rudrankriyam/asc-skills/skills/asc-revenuecat-catalog-sync
+  - name: asc-screenshot-resize
+    source: github.com/rudrankriyam/asc-skills/skills/asc-screenshot-resize
+  - name: asc-shots-pipeline
+    source: github.com/rudrankriyam/asc-skills/skills/asc-shots-pipeline
+  - name: asc-signing-setup
+    source: github.com/rudrankriyam/asc-skills/skills/asc-signing-setup
+  - name: asc-submission-health
+    source: github.com/rudrankriyam/asc-skills/skills/asc-submission-health
+  - name: asc-subscription-localization
+    source: github.com/rudrankriyam/asc-skills/skills/asc-subscription-localization
+  - name: asc-testflight-orchestration
+    source: github.com/rudrankriyam/asc-skills/skills/asc-testflight-orchestration
+  - name: asc-wall-submit
+    source: github.com/rudrankriyam/asc-skills/skills/asc-wall-submit
+  - name: asc-whats-new-writer
+    source: github.com/rudrankriyam/asc-skills/skills/asc-whats-new-writer
+  - name: asc-workflow
+    source: github.com/rudrankriyam/asc-skills/skills/asc-workflow
+  - name: asc-xcode-build
+    source: github.com/rudrankriyam/asc-skills/skills/asc-xcode-build
+  - name: _rudrankriyam-asc-skills
+    source: https://github.com/rudrankriyam/asc-skills.git
+    tracked: true
+    branch: main

@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-xcode-build",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.564535-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-xcode-build",
+  "version": "6b31882",
+  "tree_hash": "f35488cd60f541c0d788040bf54fa371858b1f4e",
+  "file_hashes": {
+    "SKILL.md": "sha256:9854797f2b18ff7b2d128909d26d2e069e2872cf346a97631ae15c328d5347ea"
+  }
+}

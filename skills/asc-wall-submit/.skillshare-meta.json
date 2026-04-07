@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-wall-submit",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.50591-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-wall-submit",
+  "version": "6b31882",
+  "tree_hash": "80e3a2f914a7f07aa7641d523eadab226f869f41",
+  "file_hashes": {
+    "SKILL.md": "sha256:d19bfaff35f88b516ee90a4a6a1f645d0255c6192578d0c3fdb05a6227efe999"
+  }
+}

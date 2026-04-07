@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-localize-metadata",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.27275-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-localize-metadata",
+  "version": "6b31882",
+  "tree_hash": "1e87ce90ca6947562c838b38130fd56e3c0dfbba",
+  "file_hashes": {
+    "SKILL.md": "sha256:236ea1c1a659b4d8dcd3bd745c3af30018f6fa140596c61110e989a6a398aa5c"
+  }
+}

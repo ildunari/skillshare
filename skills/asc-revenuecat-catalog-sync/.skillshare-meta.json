@@ -1,0 +1,14 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-revenuecat-catalog-sync",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.375446-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-revenuecat-catalog-sync",
+  "version": "6b31882",
+  "tree_hash": "f31c9607b4568fff8eef9cca0d7797694a06c984",
+  "file_hashes": {
+    "SKILL.md": "sha256:86189201f4f861601fb5af89f3ef596f133d0fc7ce8efc19d07474ef988cb359",
+    "examples.md": "sha256:a2ab7fd2988dbaee1065f53f345d6f8934cd4ccf44b195f5ff23628eebcf48ad",
+    "references.md": "sha256:65e3a19da5381583145d6eb9ef721cd39a7a9a2fb6b92372ee143f3886a67ee9"
+  }
+}

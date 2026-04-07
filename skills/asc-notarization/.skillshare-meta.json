@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-notarization",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.308962-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-notarization",
+  "version": "6b31882",
+  "tree_hash": "36d8850790528df621beafcd6e511a6d24d685c0",
+  "file_hashes": {
+    "SKILL.md": "sha256:e719161403467be2990421519ae7934b28458f5cd055443d3e0ef8f1bd83e043"
+  }
+}

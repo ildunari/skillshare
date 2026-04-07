@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-screenshot-resize",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.39362-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-screenshot-resize",
+  "version": "6b31882",
+  "tree_hash": "d3fa2b7cafb77b3a71b119c9fa24a45c29d3cc1c",
+  "file_hashes": {
+    "SKILL.md": "sha256:323f10f56daf484b19d59bef0ed8fc603d95d963a572d3d45f5d272d9ca45102"
+  }
+}

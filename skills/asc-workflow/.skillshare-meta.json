@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-workflow",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.547415-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-workflow",
+  "version": "6b31882",
+  "tree_hash": "4bcebb36b1957d8fefb0332fbb57dcd7bb9825d3",
+  "file_hashes": {
+    "SKILL.md": "sha256:5c6bd0aff3ec38b310043132c2a16b2109ec0256be60ae77e7dc74b308ca2e8e"
+  }
+}

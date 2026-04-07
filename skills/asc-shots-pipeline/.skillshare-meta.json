@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-shots-pipeline",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.416915-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-shots-pipeline",
+  "version": "6b31882",
+  "tree_hash": "a7f6e081d0e4d72bbe039034e72351d7d7cc2e8e",
+  "file_hashes": {
+    "SKILL.md": "sha256:1c633752947bd80332201745a52d5246e87468c399e55f2b715b191a296bd047"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-id-resolver",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.248649-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-id-resolver",
+  "version": "6b31882",
+  "tree_hash": "85ff98668ac706893b868ade6af7092c532cd523",
+  "file_hashes": {
+    "SKILL.md": "sha256:c4e127cb28999c4477841243d14f67a9547fb729871d7957f8c47651a62734bf"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": "github.com/rudrankriyam/asc-skills/skills/asc-build-lifecycle",
+  "type": "github-subdir",
+  "installed_at": "2026-04-07T13:12:37.188594-04:00",
+  "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
+  "subdir": "skills/asc-build-lifecycle",
+  "version": "6b31882",
+  "tree_hash": "ace286d720b4ad94978b39d1ee06d3cef436a268",
+  "file_hashes": {
+    "SKILL.md": "sha256:d82fc9d18980202d34b0ed26a40bca61d61e4ebb1df2d4036905fb27c4f1a4dd"
+  }
+}
