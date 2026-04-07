@@ -1,145 +1,133 @@
 ---
 name: forge-agent
 description: >-
-  Route work into the local Forge launcher when the user wants Forge to act as a
-  planner, researcher, coder, reviewer, or validator instead of doing the work
-  directly in the current agent session. Use whenever the user mentions Forge,
-  forge-agent, forge-zsh, "run this in Forge", "send this off", "send this to a
-  coding agent", "delegate this", "run this in another lane", "have Forge do
-  it", "use Forge as the coder", "what Forge agents are available", or wants
-  the exact Forge command to run. Do not use for ordinary direct edits in the
-  current session unless the user specifically wants Forge involved.
+  Delegate coding, planning, or research tasks to the ForgeCode AI agent via
+  the forge-agent wrapper or raw forge CLI. Use whenever the user mentions Forge,
+  forge-agent, "run this in Forge", "send this off", "delegate this", "run this
+  in another lane", "have Forge do it", "use Forge as the coder", or wants work
+  done by a separate coding agent instead of the current session. Also use when
+  asking about available Forge agents, modes, or capabilities. Do not use for
+  ordinary edits in the current session unless the user specifically wants Forge.
 metadata:
   author: Codex
-  version: 1.3.0
+  version: 2.0.0
 ---
 
 # Forge Agent
 
-Use this skill to launch or inspect the machine-local Forge workflow through the
-`forge-agent` wrapper instead of improvising raw Forge commands.
+Delegate work to ForgeCode — a separate AI coding agent with its own context,
+tools, and conversation state. Forge runs in the terminal and has full
+read/write file access, shell execution, and web fetch.
 
-This skill is most useful when the user wants a second execution lane:
-- plan in Forge
-- research in Forge
-- implement in Forge
-- validate or review through Forge
-- inspect available Forge agents, tools, commands, or conversations
+## Three Agents
 
-## When This Skill Should Win
+Forge has three specialized agents. Pick the right one for the job:
 
-Use this skill when the user:
-- explicitly asks to use Forge, `forge-agent`, `forge-zsh`, or the Forge CLI
-- wants to hand work off to a coding agent rather than doing it in the current session
-- says things like "send this off", "delegate this", "run this in another lane", or "have Forge do it"
-- asks what Forge modes, agents, profiles, tools, or commands are available
-- wants a reusable or copyable command for launching Forge in the current repo
-- wants to continue or inspect a Forge conversation
-
-Prefer the current agent session instead when:
-- the user just wants the task done here
-- the work is a small direct edit and there is no reason to hand it off
-- the user is asking about general shell or coding behavior unrelated to Forge
-- the wording is just general implementation intent without any sign they want a second execution lane
-
-## First Checks
-
-Before recommending or launching anything, verify the local surface that is
-actually available on the current machine:
-
-```bash
-command -v forge-agent
-command -v forge
-forge-agent info
-forge agent list --porcelain
-forge cmd list --porcelain
-```
-
-If interactive Zsh behavior matters, also verify:
-
-```bash
-bash -ic 'type forge-zsh && forge-zsh --version'
-```
-
-If `forge-agent` is missing but `forge` exists, explain that the wrapper is not
-installed on this machine and either install it or fall back to raw Forge only
-if the user wants that.
-
-If neither `forge-agent` nor `forge` exists, say that Forge is not installed on
-this machine and switch from launch advice to setup or installation guidance.
-
-## Routing Guide
-
-Choose the lightest Forge path that matches the job.
-
-| User intent | Preferred command | Why |
+| Agent | What it does | When to use |
 |---|---|---|
-| implement the task | `forge-agent code "..."` | uses the custom `kosta-coder` lane |
-| write the plan only | `forge-agent plan "..."` | routes to the planning lane |
-| analyze before changing | `forge-agent research "..."` | routes to the research lane |
-| validate the current repo | `forge-agent check "..."` | uses the custom validation command |
-| review for bugs and regressions | `forge-agent review "..."` | uses the custom review command |
-| pick a specific Forge agent | `forge-agent run --agent <id> "..."` | explicit control without raw Forge |
-| inspect agents, tools, or providers | `forge-agent list ...` or `forge-agent info` | safer than guessing |
-| continue an existing session | `forge-agent resume` or `forge-agent resume <id>` | clear conversation handoff |
-| stay inside Forge interactively | `forge-zsh` | launches the Zsh-native Forge shell |
+| **forge** (kosta-coder) | Implements code — edits files, runs commands, builds features | "Go build this", "fix this bug", "refactor this module" |
+| **muse** | Plans and analyzes — produces implementation plans, scopes work | "Plan this refactor", "what's the best approach", "scope this out" |
+| **sage** | Investigates read-only — traces bugs, maps architecture, answers questions | "How does this work", "trace this bug", "explain the auth flow" |
 
-## Safe Defaults
+The natural workflow is **muse -> forge**: plan first, then implement.
+Sage is also used internally by the other two when they need to research.
 
-Use these defaults unless the user wants something else:
+## Quick Reference
 
-| Decision | Safe default | Convenience option | Recommendation |
-|---|---|---|---|
-| conversation start | fresh conversation | `--keep` | start fresh unless the user asks to continue |
-| conversation reuse | `--conversation-id <id>` | latest-global reuse | prefer explicit ID when context isolation matters |
-| launch style | one-shot `forge-agent ... "prompt"` | interactive `forge-zsh` | use one-shot for handoff, interactive only when the user wants to stay inside Forge |
-| launcher surface | `forge-agent` | raw `forge` | prefer the wrapper unless the user explicitly wants raw Forge |
+**One-shot delegation** (most common from Hermes):
+```bash
+forge-agent code "implement the auth middleware"
+forge-agent plan "plan the database migration for v2"
+forge-agent research "trace how errors propagate through the pipeline"
+forge-agent check "validate the repo is in good shape"
+forge-agent review "review recent changes for bugs and regressions"
+```
 
-Do not promise per-run `--model` switching through `forge-agent`.
-This wrapper rejects per-run `--model`; use Forge config, session commands, or
-agent definitions when model selection needs to change.
+**With options:**
+```bash
+forge-agent code --cwd /path/to/repo "fix the failing tests"
+forge-agent code --sandbox experiment "try a new caching approach"
+forge-agent code --keep "continue where we left off"
+forge-agent code --conversation-id <uuid> "now do step 2"
+forge-agent run --agent <custom-id> "use a specific agent"
+```
 
-## Examples
+**Inspection:**
+```bash
+forge-agent info                    # current model, provider, conversation
+forge-agent list agents             # available agents
+forge-agent list models             # available models
+forge-agent list tools [agent]      # tools available to an agent
+```
 
-Keep `SKILL.md` focused on routing. For reusable launch recipes and copyable
-examples, load [references/examples.md](references/examples.md) when the user
-wants concrete command patterns.
+## How to Choose
 
-## What To Tell The User
+| Situation | Command | Why |
+|---|---|---|
+| User wants coding done | `forge-agent code "..."` | Routes to kosta-coder, the implementation agent |
+| User wants a plan first | `forge-agent plan "..."` | Routes to muse — produces a plan without changing files |
+| User wants investigation | `forge-agent research "..."` | Routes to sage — read-only, won't modify anything |
+| User wants validation | `forge-agent check "..."` | Runs the custom check command against the repo |
+| User wants code review | `forge-agent review "..."` | Runs the custom review command |
+| User wants interactive Forge | Launch `forge` directly | Full REPL with /slash commands |
+| User wants to continue a session | `forge-agent resume [id]` | Picks up where the last conversation left off |
 
-When explaining the setup, keep the distinction clear:
-- `forge-agent` is the practical launcher for agent-style use
-- `forge-zsh` is the interactive shell handoff for the full Zsh-native Forge UX
-- `kosta-coder` is the custom implementation agent
-- `check`, `code`, `plan-task`, `research`, and `review` are the custom Forge command surfaces
+## Getting Good Results
 
-If the user asks which path to use, recommend:
-- `forge-agent code` for most "go do the coding" requests
-- `forge-agent plan` when they want planning delegated
-- `forge-agent review` or `check` after implementation
+**Be specific in prompts.** Forge works best with concrete instructions:
+- Bad: `forge-agent code "improve the API"`
+- Good: `forge-agent code "add rate limiting to POST /api/users — use a sliding window of 100 req/min per IP, return 429 with Retry-After header"`
 
-## Verification
+**Use --cwd for repo context.** Forge reads the working directory to understand
+the project. Always pass `--cwd` when delegating from Hermes if you're not
+already in the target repo.
 
-After changing this setup or relying on it heavily, verify with:
+**Use plan -> code flow for complex work.** For anything non-trivial, run
+`forge-agent plan` first, review the plan with the user, then run
+`forge-agent code` with the approved plan. Muse's plans are thorough and
+save implementation time.
+
+**Use --sandbox for risky experiments.** This creates an isolated git worktree
+so Forge can experiment without touching the main branch. Requires a git repo.
+
+**Use --keep or --conversation-id for multi-step work.** By default each
+invocation starts a fresh conversation. If the task needs multiple steps,
+use `--keep` to continue the latest conversation, or `--conversation-id <uuid>`
+for a specific one.
+
+## What to Expect
+
+- **One-shot runs** execute the prompt and exit. Output goes to stdout.
+  The agent will read files, make edits, run commands, and report results.
+- **Interactive runs** (no prompt given) open a REPL. The user types prompts
+  and gets responses. Exit with `/exit` or Ctrl+D.
+- **Forge has its own context window.** It doesn't share context with the
+  current Hermes session. Pass all relevant info in the prompt.
+- **Forge can fail.** Check the exit code and output. If it errors on
+  provider/model config, run `forge-agent info` to diagnose.
+
+## Raw Forge CLI
+
+When the wrapper isn't enough, use `forge` directly:
 
 ```bash
-forge --version
-forge-agent info
-forge agent list --porcelain
-forge cmd list --porcelain
-forge-agent --print code "smoke test"
-bash /Users/kosta/forge/tests/test_forge_agent.sh
+forge --prompt "do the thing"                    # one-shot
+forge --agent muse --prompt "plan this"          # specific agent
+forge -C /path --prompt "fix tests"              # specific directory
+forge --conversation-id <uuid> --prompt "step 2" # continue conversation
+forge --sandbox experiment --prompt "try this"   # isolated worktree
+cat plan.md | forge                              # pipe input
 ```
+
+Interactive commands inside a forge session:
+`/forge` `/muse` `/agent` `/model` `/new` `/info` `/usage` `/compact` `/exit`
 
 ## Troubleshooting
 
-If Forge says the provider or model is not configured:
-- run `forge-agent info`
-- inspect `forge config list`
-- confirm the expected provider endpoint is active
+If Forge says provider/model not configured: `forge-agent info` to check,
+then `forge config list` to inspect settings.
 
-If `resume` or `--keep` picks up the wrong context:
-- use `--conversation-id <id>` instead of the latest-global behavior
+If `--keep` picks up wrong context: use `--conversation-id <uuid>` explicitly.
 
-If the user wants the custom planning command rather than the built-in planning agent:
-- use `forge cmd execute plan-task "..."` directly
+If `forge-agent` isn't found but `forge` is: the wrapper script isn't installed
+at `/Users/Kosta/.local/bin/forge-agent`. Fall back to raw `forge` commands.
