@@ -104,27 +104,39 @@ call_llm({
 Before writing, search Mem0 for each fact to avoid duplicates:
 
 ```
-memory_search({ query: "<fact text>", user_id: "kosta", limit: 3 })
+search_memories({ query: "<fact text>", user_id: "kosta", limit: 3 })
 ```
 
 If a similar memory exists (score > 0.8), skip it. Otherwise, write it.
 
 ### Step 5: Write to Mem0
 
+Use the `add_memory` MCP tool or REST API. **Metadata must include `category` and `source`** per the mem0 skill spec.
+
 ```
-memory_add({
-  message: "<fact>",
+add_memory({
+  content: "<fact>",
   user_id: "kosta",
   metadata: {
-    host: "<hostname>",
-    device_type: "laptop",
-    project: "<session name or 'general'>",
-    timestamp: "<ISO 8601>",
-    source: "daily-summarizer",
-    session_id: "<session-id>"
+    category: "<coding|environment|preferences|personal|workflow>",
+    source: "memory-summarizer"
   }
 })
 ```
+
+Or via REST API:
+```bash
+curl -s -X POST http://100.69.228.58:8888/memories \
+  -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"user","content":"<fact>"}], "user_id":"kosta", "metadata":{"category":"<category>","source":"memory-summarizer"}}'
+```
+
+**Category selection guide:**
+- `coding` — languages, frameworks, patterns, tooling decisions
+- `environment` — machine setup, paths, installed software
+- `preferences` — user preferences, workflow habits
+- `personal` — bio, schedule, non-technical facts
+- `workflow` — processes, conventions, team agreements
 
 ### Step 6: Report
 
