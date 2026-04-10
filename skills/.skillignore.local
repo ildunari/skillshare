@@ -1,9 +1,8 @@
 # Local overrides — enable Figma skills on this machine
-!figma-code-connect
-!figma-create-design-system-rules
-!figma-create-new-file
-!figma-generate-design
-!figma-generate-library
-!figma-implement-design
-!figma-use
-!figma-power
+!ui-ux/figma-code-connect
+!ui-ux/figma-create-design-system-rules
+!ui-ux/figma-create-new-file
+!ui-ux/figma-generate-design
+!ui-ux/figma-generate-library
+!ui-ux/figma-implement-design
+!ui-ux/figma-use

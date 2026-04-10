@@ -2,19 +2,19 @@
 # Keep this list intentionally small. Add skills only when you actively want
 # Hermes default and Hermes GPT to have them.
 skills:
-  - agent-browser
-  - agentic-loop-builder
-  - agentic-loop-productivity
-  - d3-viz
-  - defuddle
-  - discord
-  - electron
-  - forge-agent
-  - humanize-ai-content
-  - obsidian-second-brain
-  - officecli
-  - plain-english-explainer
-  - python-visualization
-  - skill-creator
-  - skillshare
-  - telegram
+- automation/agent-browser
+- agentic/agentic-loop-builder
+- agentic/agentic-loop-productivity
+- research-analysis/d3-viz
+- research-analysis/defuddle
+- personal-ops/discord
+- automation/electron
+- agentic/forge-agent
+- meta-tools/humanize-ai-content
+- knowledge-memory/obsidian-second-brain
+- documents-office/officecli
+- meta-tools/plain-english-explainer
+- research-analysis/python-visualization
+- meta-tools/skill-creator
+- meta-tools/skillshare
+- personal-ops/telegram

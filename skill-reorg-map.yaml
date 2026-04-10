@@ -1,0 +1,401 @@
+# Canonical active-skill reorganization map.
+# old_path is relative to skills/ before migration.
+# new_path is relative to skills/ after migration.
+
+moves:
+  - old: agentic-loop-builder
+    new: agentic/agentic-loop-builder
+  - old: agentic-loop-productivity
+    new: agentic/agentic-loop-productivity
+  - old: brainstorming
+    new: agentic/brainstorming
+  - old: codex-cloud-parallel
+    new: agentic/codex-cloud-parallel
+  - old: droid
+    new: agentic/droid
+  - old: forge-agent
+    new: agentic/forge-agent
+  - old: forge-reviewer
+    new: agentic/forge-reviewer
+  - old: interview
+    new: agentic/interview
+  - old: oracle
+    new: agentic/oracle
+  - old: orchestration-guide
+    new: agentic/orchestration-guide
+  - old: orchestration-router
+    new: agentic/orchestration-router
+  - old: planning-protocol
+    new: agentic/planning-protocol
+  - old: planning-protocol/merged/executing-plans
+    new: agentic/planning-protocol/merged/executing-plans
+  - old: planning-protocol/merged/workflow-protocols
+    new: agentic/planning-protocol/merged/workflow-protocols
+  - old: planning-protocol/merged/writing-plans
+    new: agentic/planning-protocol/merged/writing-plans
+  - old: rtk
+    new: agentic/rtk
+  - old: subagent-orchestrator
+    new: agentic/subagent-orchestrator
+  - old: subagent-orchestrator/merged/delegation-autopilot
+    new: agentic/subagent-orchestrator/merged/delegation-autopilot
+  - old: using-superpowers
+    new: agentic/using-superpowers
+  - old: workflow-methodology
+    new: agentic/workflow-methodology
+  - old: ci-triage
+    new: code-quality/ci-triage
+  - old: codebase-explorer
+    new: code-quality/codebase-explorer
+  - old: completion-verification-gate
+    new: code-quality/completion-verification-gate
+  - old: correctness-bug-hunter
+    new: code-quality/correctness-bug-hunter
+  - old: integration-regression-sentinel
+    new: code-quality/integration-regression-sentinel
+  - old: javascript-testing-patterns
+    new: code-quality/javascript-testing-patterns
+  - old: minidiff-refactor
+    new: code-quality/minidiff-refactor
+  - old: nextjs-app-router-architecture
+    new: code-quality/nextjs-app-router-architecture
+  - old: react-component-performance
+    new: code-quality/react-component-performance
+  - old: refactor-safety-auditor
+    new: code-quality/refactor-safety-auditor
+  - old: software-development/desktop
+    new: code-quality/software-development/desktop
+  - old: systematic-debugging
+    new: code-quality/systematic-debugging
+  - old: test-driven-development
+    new: code-quality/test-driven-development
+  - old: test-driven-development/merged/testing-protocol
+    new: code-quality/test-driven-development/merged/testing-protocol
+  - old: branch-finish-release
+    new: github-release/branch-finish-release
+  - old: branch-finish-release/merged/using-git-worktrees
+    new: github-release/branch-finish-release/merged/using-git-worktrees
+  - old: code-reviewer-guardian
+    new: github-release/code-reviewer-guardian
+  - old: code-reviewer-guardian/merged/receiving-code-review
+    new: github-release/code-reviewer-guardian/merged/receiving-code-review
+  - old: code-reviewer-guardian/merged/requesting-code-review
+    new: github-release/code-reviewer-guardian/merged/requesting-code-review
+  - old: github
+    new: github-release/github
+  - old: github/merged/gh-issue-fix-flow
+    new: github-release/github/merged/gh-issue-fix-flow
+  - old: MCP-APP-LiquidGlass
+    new: apple/MCP-APP-LiquidGlass
+  - old: app-store-changelog
+    new: apple/app-store-changelog
+  - old: apple-architecture-patterns
+    new: apple/apple-architecture-patterns
+  - old: apple-data-persistence
+    new: apple/apple-data-persistence
+  - old: apple-macos-ux-full
+    new: apple/apple-macos-ux-full
+  - old: apple-networking-apis
+    new: apple/apple-networking-apis
+  - old: apple-performance-engineer
+    new: apple/apple-performance-engineer
+  - old: apple-platform-features
+    new: apple/apple-platform-features
+  - old: apple-platform-research
+    new: apple/apple-platform-research
+  - old: apple-swift-language-expert
+    new: apple/apple-swift-language-expert
+  - old: apple-testing-architect-updated
+    new: apple/apple-testing-architect-updated
+  - old: apple-uikit-appkit-bridge
+    new: apple/apple-uikit-appkit-bridge
+  - old: asc-app-create-ui
+    new: apple/asc-app-create-ui
+  - old: asc-aso-audit
+    new: apple/asc-aso-audit
+  - old: asc-build-lifecycle
+    new: apple/asc-build-lifecycle
+  - old: asc-cli-usage
+    new: apple/asc-cli-usage
+  - old: asc-crash-triage
+    new: apple/asc-crash-triage
+  - old: asc-id-resolver
+    new: apple/asc-id-resolver
+  - old: asc-localize-metadata
+    new: apple/asc-localize-metadata
+  - old: asc-metadata-sync
+    new: apple/asc-metadata-sync
+  - old: asc-notarization
+    new: apple/asc-notarization
+  - old: asc-ppp-pricing
+    new: apple/asc-ppp-pricing
+  - old: asc-release-flow
+    new: apple/asc-release-flow
+  - old: asc-revenuecat-catalog-sync
+    new: apple/asc-revenuecat-catalog-sync
+  - old: asc-screenshot-resize
+    new: apple/asc-screenshot-resize
+  - old: asc-shots-pipeline
+    new: apple/asc-shots-pipeline
+  - old: asc-signing-setup
+    new: apple/asc-signing-setup
+  - old: asc-submission-health
+    new: apple/asc-submission-health
+  - old: asc-subscription-localization
+    new: apple/asc-subscription-localization
+  - old: asc-testflight-orchestration
+    new: apple/asc-testflight-orchestration
+  - old: asc-wall-submit
+    new: apple/asc-wall-submit
+  - old: asc-whats-new-writer
+    new: apple/asc-whats-new-writer
+  - old: asc-workflow
+    new: apple/asc-workflow
+  - old: asc-xcode-build
+    new: apple/asc-xcode-build
+  - old: ios-debugger-agent
+    new: apple/ios-debugger-agent
+  - old: liquid-glass
+    new: apple/liquid-glass
+  - old: macos-spm-app-packaging
+    new: apple/macos-spm-app-packaging
+  - old: swift-agentation
+    new: apple/swift-agentation
+  - old: swift-concurrency
+    new: apple/swift-concurrency
+  - old: swift-testing-expert
+    new: apple/swift-testing-expert
+  - old: swiftui-expert-skill
+    new: apple/swiftui-expert-skill
+  - old: swiftui-mastery
+    new: apple/swiftui-mastery
+  - old: swiftui-view-refactor
+    new: apple/swiftui-view-refactor
+  - old: xcodebuildmcp
+    new: apple/xcodebuildmcp
+  - old: xcodebuildmcp-cli
+    new: apple/xcodebuildmcp-cli
+  - old: agentation
+    new: ui-ux/agentation
+  - old: design-maestro
+    new: ui-ux/design-maestro
+  - old: figma-cli
+    new: ui-ux/figma-cli
+  - old: figma-code-connect
+    new: ui-ux/figma-code-connect
+  - old: figma-create-design-system-rules
+    new: ui-ux/figma-create-design-system-rules
+  - old: figma-create-new-file
+    new: ui-ux/figma-create-new-file
+  - old: figma-generate-design
+    new: ui-ux/figma-generate-design
+  - old: figma-generate-library
+    new: ui-ux/figma-generate-library
+  - old: figma-implement-design
+    new: ui-ux/figma-implement-design
+  - old: figma-mcp
+    new: ui-ux/figma-mcp
+  - old: figma-use
+    new: ui-ux/figma-use
+  - old: mcp-app-design
+    new: ui-ux/mcp-app-design
+  - old: stitch-mcp
+    new: ui-ux/stitch-mcp
+  - old: ui-motion-wiki
+    new: ui-ux/ui-motion-wiki
+  - old: ui-ux-myth
+    new: ui-ux/ui-ux-myth
+  - old: ui-visual-polish
+    new: ui-ux/ui-visual-polish
+  - old: visual-design-lab
+    new: ui-ux/visual-design-lab
+  - old: visual-design-lab/merged/design-theme-library
+    new: ui-ux/visual-design-lab/merged/design-theme-library
+  - old: visual-themes
+    new: ui-ux/visual-themes
+  - old: beautiful-mermaid
+    new: documents-office/beautiful-mermaid
+  - old: document-design-mastery
+    new: documents-office/document-design-mastery
+  - old: document-to-tts-transcript
+    new: documents-office/document-to-tts-transcript
+  - old: excel-workbook-mastery
+    new: documents-office/excel-workbook-mastery
+  - old: morph-ppt
+    new: documents-office/morph-ppt
+  - old: officecli
+    new: documents-office/officecli
+  - old: officecli-academic-paper
+    new: documents-office/officecli-academic-paper
+  - old: officecli-data-dashboard
+    new: documents-office/officecli-data-dashboard
+  - old: officecli-docx
+    new: documents-office/officecli-docx
+  - old: officecli-financial-model
+    new: documents-office/officecli-financial-model
+  - old: officecli-pitch-deck
+    new: documents-office/officecli-pitch-deck
+  - old: officecli-pptx
+    new: documents-office/officecli-pptx
+  - old: officecli-xlsx
+    new: documents-office/officecli-xlsx
+  - old: pdf
+    new: documents-office/pdf
+  - old: pptx-mastery
+    new: documents-office/pptx-mastery
+  - old: spreadsheet
+    new: documents-office/spreadsheet
+  - old: word-docx-production
+    new: documents-office/word-docx-production
+  - old: word-mcp-bridge
+    new: documents-office/word-mcp-bridge
+  - old: d3-viz
+    new: research-analysis/d3-viz
+  - old: deep-research-prompting
+    new: research-analysis/deep-research-prompting
+  - old: defuddle
+    new: research-analysis/defuddle
+  - old: exploratory-data-analysis
+    new: research-analysis/exploratory-data-analysis
+  - old: last30days
+    new: research-analysis/last30days
+  - old: networkx
+    new: research-analysis/networkx
+  - old: notebooklm
+    new: research-analysis/notebooklm
+  - old: pubchem-database
+    new: research-analysis/pubchem-database
+  - old: pubmed-database
+    new: research-analysis/pubmed-database
+  - old: python-visualization
+    new: research-analysis/python-visualization
+  - old: scientific-brainstorming
+    new: research-analysis/scientific-brainstorming
+  - old: scientific-critical-thinking
+    new: research-analysis/scientific-critical-thinking
+  - old: statistical-analysis
+    new: research-analysis/statistical-analysis
+  - old: sympy
+    new: research-analysis/sympy
+  - old: web-research
+    new: research-analysis/web-research
+  - old: web-research/merged/research-prompt-writer
+    new: research-analysis/web-research/merged/research-prompt-writer
+  - old: web-research/merged/research-report-distiller
+    new: research-analysis/web-research/merged/research-report-distiller
+  - old: json-canvas
+    new: knowledge-memory/json-canvas
+  - old: mem0
+    new: knowledge-memory/mem0
+  - old: obsidian-second-brain
+    new: knowledge-memory/obsidian-second-brain
+  - old: obsidian-second-brain/merged/obsidian-bases
+    new: knowledge-memory/obsidian-second-brain/merged/obsidian-bases
+  - old: obsidian-second-brain/merged/obsidian-cli
+    new: knowledge-memory/obsidian-second-brain/merged/obsidian-cli
+  - old: personality-pipeline
+    new: knowledge-memory/personality-pipeline
+  - old: session-reader
+    new: knowledge-memory/session-reader
+  - old: session-reader/merged/memory-summarizer
+    new: knowledge-memory/session-reader/merged/memory-summarizer
+  - old: session-reader/merged/session-classifier
+    new: knowledge-memory/session-reader/merged/session-classifier
+  - old: vault-sorter
+    new: knowledge-memory/vault-sorter
+  - old: wiki-weaver
+    new: knowledge-memory/wiki-weaver
+  - old: agent-browser
+    new: automation/agent-browser
+  - old: atlas
+    new: automation/atlas
+  - old: bridge-monitoring
+    new: automation/bridge-monitoring
+  - old: electron
+    new: automation/electron
+  - old: electron-to-cli
+    new: automation/electron-to-cli
+  - old: firecrawl
+    new: automation/firecrawl
+  - old: firecrawl-cli
+    new: automation/firecrawl-cli
+  - old: playwright
+    new: automation/playwright
+  - old: screenshot
+    new: automation/screenshot
+  - old: web-performance-optimization
+    new: automation/web-performance-optimization
+  - old: chatgpt-apps
+    new: ai-platforms-mcp/chatgpt-apps
+  - old: claude-api
+    new: ai-platforms-mcp/claude-api
+  - old: mcp-server-builder
+    new: ai-platforms-mcp/mcp-server-builder
+  - old: mcp-server-builder/merged/mcp-operations
+    new: ai-platforms-mcp/mcp-server-builder/merged/mcp-operations
+  - old: mcp-server-builder/merged/mcp-proxy-builder
+    new: ai-platforms-mcp/mcp-server-builder/merged/mcp-proxy-builder
+  - old: mcp2cli
+    new: ai-platforms-mcp/mcp2cli
+  - old: microsoft-foundry
+    new: ai-platforms-mcp/microsoft-foundry
+  - old: microsoft-foundry/models/deploy-model
+    new: ai-platforms-mcp/microsoft-foundry/models/deploy-model
+  - old: microsoft-foundry/models/deploy-model/capacity
+    new: ai-platforms-mcp/microsoft-foundry/models/deploy-model/capacity
+  - old: microsoft-foundry/models/deploy-model/customize
+    new: ai-platforms-mcp/microsoft-foundry/models/deploy-model/customize
+  - old: microsoft-foundry/models/deploy-model/preset
+    new: ai-platforms-mcp/microsoft-foundry/models/deploy-model/preset
+  - old: openai-docs
+    new: ai-platforms-mcp/openai-docs
+  - old: plugin-maker
+    new: ai-platforms-mcp/plugin-maker
+  - old: agentmd-optimizer
+    new: meta-tools/agentmd-optimizer
+  - old: claude-prompt-architect
+    new: meta-tools/claude-prompt-architect
+  - old: cli-anything
+    new: meta-tools/cli-anything
+  - old: freshness-verifier
+    new: meta-tools/freshness-verifier
+  - old: gpt-prompt-architect
+    new: meta-tools/gpt-prompt-architect
+  - old: humanize-ai-content
+    new: meta-tools/humanize-ai-content
+  - old: init-advanced
+    new: meta-tools/init-advanced
+  - old: init-advanced/merged/context-control
+    new: meta-tools/init-advanced/merged/context-control
+  - old: plain-english-explainer
+    new: meta-tools/plain-english-explainer
+  - old: skill-creator
+    new: meta-tools/skill-creator
+  - old: skill-creator/merged/skill-review
+    new: meta-tools/skill-creator/merged/skill-review
+  - old: skill-lib-cleanup
+    new: meta-tools/skill-lib-cleanup
+  - old: skillshare
+    new: meta-tools/skillshare
+  - old: update-global-tools
+    new: meta-tools/update-global-tools
+  - old: algorithmic-art-enhanced
+    new: media-creative/algorithmic-art-enhanced
+  - old: game-dev
+    new: media-creative/game-dev
+  - old: game-dev/merged/develop-web-game
+    new: media-creative/game-dev/merged/develop-web-game
+  - old: image-generation-studio
+    new: media-creative/image-generation-studio
+  - old: image-generation-studio/merged/image-prompt-architect
+    new: media-creative/image-generation-studio/merged/image-prompt-architect
+  - old: yt-dlp-downloader-skill
+    new: media-creative/yt-dlp-downloader-skill
+  - old: bird
+    new: personal-ops/bird
+  - old: discord
+    new: personal-ops/discord
+  - old: gog
+    new: personal-ops/gog
+  - old: telegram
+    new: personal-ops/telegram

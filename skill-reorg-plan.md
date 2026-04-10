@@ -22,6 +22,8 @@ Known risks already confirmed
    - `hermes-default` includes: tracked small Hermes allowlist
    - `hermes-gpt` includes: tracked small Hermes allowlist
 
+   Important observed behavior: after nesting skills, Skillshare target filters match the flattened skill name form (for example `agentic__forge-agent`), not the slash path form (`agentic/forge-agent`). Rewrite target filters accordingly.
+
 2. Relative sibling references exist and must be preserved or patched together.
    Confirmed examples include cross-links in:
    - `figma-generate-design/SKILL.md` -> `../figma-use/...`

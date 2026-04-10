@@ -41,9 +41,12 @@ def main() -> int:
     for key in ("hermes", "hermes-default", "hermes-gpt"):
         targets.pop(key, None)
 
+    def to_filter_name(rel_path: str) -> str:
+        return rel_path.replace("/", "__")
+
     if args.mode == "studio":
         home = Path.home()
-        shared_include = list(skills)
+        shared_include = [to_filter_name(s) for s in skills]
         targets["hermes-default"] = {
             "skills": {
                 "path": str(home / ".hermes" / "skills"),
@@ -53,7 +56,7 @@ def main() -> int:
         targets["hermes-gpt"] = {
             "skills": {
                 "path": str(home / ".hermes" / "profiles" / "gpt" / "skills"),
-                "include": list(skills),
+                "include": list(shared_include),
             }
         }
 
