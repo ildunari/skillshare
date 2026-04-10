@@ -1,0 +1,17 @@
+# Canonical Hermes skill allowlist for Studio-managed Hermes targets.
+# Keep this list intentionally small. Add skills only when you actively want
+# Hermes default and Hermes GPT to have them.
+skills:
+  - agent-browser
+  - agentic-loop-builder
+  - agentic-loop-productivity
+  - d3-viz
+  - discord
+  - electron
+  - forge-agent
+  - obsidian-second-brain
+  - officecli
+  - python-visualization
+  - skill-creator
+  - skillshare
+  - telegram

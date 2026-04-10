@@ -1,4 +1,6 @@
 # Machine-specific config (has local target paths)
+# Canonical Hermes allowlist is tracked in hermes-allowlist.yaml and applied via
+# scripts/sync_hermes_targets.py. Do not treat config.yaml as the source of truth.
 config.yaml
 
 # macOS
