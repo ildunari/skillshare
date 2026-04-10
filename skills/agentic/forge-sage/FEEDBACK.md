@@ -1,4 +1,4 @@
-# Feedback Log — forge-reviewer
+# Feedback Log — forge-sage
 
 Read this file before every use. Keep entries short and actionable.
 

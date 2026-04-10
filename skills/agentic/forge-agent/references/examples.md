@@ -23,6 +23,14 @@ forge-agent code --cwd /path/to/repo "implement the requested fix"
 Use this when the user wants the coding lane to do the implementation work in a
 specific repository.
 
+### Investigate with Sage
+
+```bash
+forge-agent research --cwd /path/to/repo "trace the auth failure without making changes; read the auth middleware, route handlers, and the latest diff first; focus on where state is lost; return likely root cause with file references"
+```
+
+Use this when the user says "use Sage" or wants Forge's read-only investigation lane.
+
 ### Review or Validate After Implementation
 
 ```bash

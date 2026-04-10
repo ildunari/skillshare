@@ -4,13 +4,14 @@ description: >-
   Delegate coding, planning, or research tasks to the ForgeCode AI agent via
   the forge-agent wrapper or raw forge CLI. Use whenever the user mentions Forge,
   forge-agent, "run this in Forge", "send this off", "delegate this", "run this
-  in another lane", "have Forge do it", "use Forge as the coder", or wants work
-  done by a separate coding agent instead of the current session. Also use when
-  asking about available Forge agents, modes, or capabilities. Do not use for
-  ordinary edits in the current session unless the user specifically wants Forge.
+  in another lane", "have Forge do it", "use Forge as the coder", "use sage",
+  or "forge sage", or wants work done by a separate coding agent instead of the
+  current session. Also use when asking about available Forge agents, modes, or
+  capabilities. Do not use for ordinary edits in the current session unless the
+  user specifically wants Forge.
 metadata:
   author: Codex
-  version: 2.0.0
+  version: 2.1.0
 ---
 
 # Forge Agent
@@ -38,7 +39,7 @@ Sage is also used internally by the other two when they need to research.
 ```bash
 forge-agent code "implement the auth middleware"
 forge-agent plan "plan the database migration for v2"
-forge-agent research "trace how errors propagate through the pipeline"
+forge-agent research "trace how errors propagate through the pipeline"   # Sage lane
 forge-agent check "validate the repo is in good shape"
 forge-agent review "review recent changes for bugs and regressions"
 ```
@@ -66,7 +67,7 @@ forge-agent list tools [agent]      # tools available to an agent
 |---|---|---|
 | User wants coding done | `forge-agent code "..."` | Routes to kosta-coder, the implementation agent |
 | User wants a plan first | `forge-agent plan "..."` | Routes to muse — produces a plan without changing files |
-| User wants investigation | `forge-agent research "..."` | Routes to sage — read-only, won't modify anything |
+| User wants investigation or says "use Sage" | `forge-agent research "..."` | Routes to Sage — read-only, won't modify anything |
 | User wants validation | `forge-agent check "..."` | Runs the custom check command against the repo |
 | User wants code review | `forge-agent review "..."` | Runs the custom review command |
 | User wants interactive Forge | Launch `forge` directly | Full REPL with /slash commands |
@@ -77,6 +78,8 @@ forge-agent list tools [agent]      # tools available to an agent
 **Be specific in prompts.** Forge works best with concrete instructions:
 - Bad: `forge-agent code "improve the API"`
 - Good: `forge-agent code "add rate limiting to POST /api/users — use a sliding window of 100 req/min per IP, return 429 with Retry-After header"`
+
+The same applies to Sage and review work: give project context, the files or diffs to read first, the exact risk areas to focus on, and the output format you want back.
 
 **Use --cwd for repo context.** Forge reads the working directory to understand
 the project. Always pass `--cwd` when delegating from Hermes if you're not

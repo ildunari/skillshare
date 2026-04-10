@@ -15,8 +15,8 @@ moves:
     new: agentic/droid
   - old: forge-agent
     new: agentic/forge-agent
-  - old: forge-reviewer
-    new: agentic/forge-reviewer
+  - old: forge-sage
+    new: agentic/forge-sage
   - old: interview
     new: agentic/interview
   - old: oracle
