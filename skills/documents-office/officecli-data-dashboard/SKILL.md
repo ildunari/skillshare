@@ -127,4 +127,4 @@ Read [creating.md](creating.md) and follow it step by step. It contains the comp
 ## References
 
 - [creating.md](creating.md) -- Complete dashboard creation guide (the main skill file)
-- [xlsx SKILL.md](../xlsx/SKILL.md) -- General xlsx reading, editing, and QA reference
+- [officecli-xlsx SKILL.md](../officecli-xlsx/SKILL.md) -- General xlsx reading, editing, and QA reference

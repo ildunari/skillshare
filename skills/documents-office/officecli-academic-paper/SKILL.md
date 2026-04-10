@@ -188,5 +188,5 @@ Follow [creating.md](creating.md) for the full step-by-step guide.
 ## References
 
 - [creating.md](creating.md) -- Complete academic paper creation guide
-- [docx SKILL.md](../docx/SKILL.md) -- General docx reading, editing, and QA reference
-- [docx creating.md](../docx/creating.md) -- General building blocks (paragraphs, tables, images, etc.)
+- [officecli-docx SKILL.md](../officecli-docx/SKILL.md) -- General docx reading, editing, and QA reference
+- [officecli-docx creating.md](../officecli-docx/creating.md) -- General building blocks (paragraphs, tables, images, etc.)

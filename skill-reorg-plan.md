@@ -1,6 +1,14 @@
 # Skill reorganization plan
 
-Status: planned, not yet executed.
+Status: executed.
+
+Completion summary:
+- Canonical `skills/` source now uses the approved bucketed layout.
+- `skill-reorg-map.yaml` is the tracked old -> new move map used for the migration.
+- Machine-local `config.yaml` target filters were rewritten to the flattened Skillshare form where needed.
+- Studio Hermes targets were regenerated from `hermes-allowlist.yaml`.
+- Dry-run and real `skillshare sync -g` were run during rollout verification.
+- Studio and MacBook were brought to the same canonical source shape, with stale flat-path leftovers removed on MacBook so the bucketed repo is the winner.
 
 Goal:
 - Move active non-archived skills into 13 top-level buckets.
@@ -96,5 +104,6 @@ Suggested tracked artifacts
 - `skill-reorg-plan.md` — this execution plan
 - optional audit outputs under `migration-artifacts/`
 
-Immediate next step
-- Generate `skill-reorg-map.yaml` from the approved 13-bucket layout before moving any directories.
+Follow-up cleanup
+- Keep this file as historical rollout notes.
+- If future migration work happens, add a dated completion note instead of resetting this file back to "planned".
