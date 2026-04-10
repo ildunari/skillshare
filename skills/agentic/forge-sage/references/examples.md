@@ -1,6 +1,7 @@
 # Forge Sage Examples
 
-Load this file when the user wants copyable Sage, review, or validation commands that include enough context to be operationally useful.
+Load this file when the user wants copyable Sage investigation commands that
+include enough context to be operationally useful.
 
 ## Investigate with Sage
 
@@ -12,13 +13,16 @@ Context:
 - This is a multi-service app with a web client and API backend.
 - Users can sign in, but some requests fail after login.
 
+Question:
+- Where is auth state created, forwarded, and lost?
+
 Read first:
 - README or root docs
 - auth-related middleware and route handlers
 - recent auth-related diff if present
 
 Focus:
-- where auth state is created, forwarded, and lost
+- the exact failure path
 - likely root cause
 - smallest safe fix direction
 
@@ -31,78 +35,45 @@ Output:
 
 Use this when the user says "use Sage" or wants a read-only investigation.
 
-## Review the Latest Change
+## Map a Codepath
 
 ```bash
-forge-agent review --cwd /path/to/repo "
-Review the latest change for bugs and regressions.
+forge-agent research --cwd /path/to/repo "
+Map how a user action moves through this system.
 
 Context:
-- The recent change updates Forge skill routing and examples.
-- The goal is better delegated review prompts, not new runtime behavior.
+- We need to understand the save flow before changing it.
+
+Question:
+- Starting from the UI action, what functions, services, and side effects are involved?
 
 Read first:
-- git diff --stat
-- full git diff
-- any touched SKILL.md and reference files
-
-Focus:
-- broken references
-- weak or misleading guidance
-- missing context that would cause poor handoffs
-
-Ignore:
-- style-only wording nits
-- unrelated cleanup ideas
+- the affected screen or route
+- the save action handler
+- any service or persistence layer it calls
 
 Output:
-- substantive findings only
-- rank by severity
-- include replacement wording when useful
-- say \"no substantive issues found\" if clean
+- ordered codepath summary
+- key state transitions
+- file references
+- likely risk points if we modify this flow
 "
 ```
 
-Use this when the user wants a bug/regression review after implementation.
-
-## Validate the Current Repo
-
-```bash
-forge-agent check --cwd /path/to/repo "
-Run the right validation for this project.
-
-Context:
-- This repo contains reusable AI skills synced to multiple targets.
-- A recent rename may affect generated target copies.
-
-Focus:
-- broken sync assumptions
-- missing files after rename
-- validation or audit issues that would block rollout
-
-Output:
-- checks run
-- failures with likely cause
-- concrete next action for each failure
-"
-```
-
-Use this when the user wants Forge to discover and run the relevant validation.
+Use this when the user wants architecture or behavior mapped before making a change.
 
 ## Print the Exact Command Without Running It
 
 ```bash
-forge-agent --print review --cwd /path/to/repo "
-Review the latest change for important risks.
+forge-agent --print research --cwd /path/to/repo "
+Trace the bug without making changes.
 
 Read first:
-- git diff --stat
-- full diff
+- the relevant diff
+- the affected module
 
-Focus:
-- correctness
-- regressions
-- broken references
+Output:
+- likely root cause with file references
 "
 ```
 

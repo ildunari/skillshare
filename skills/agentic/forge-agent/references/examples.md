@@ -5,7 +5,7 @@ or examples of when to choose one Forge lane over another.
 
 ## Common Recipes
 
-### Plan in Forge
+### Plan in Forge with Muse
 
 ```bash
 forge-agent plan "write a decision-complete implementation plan for this repo change"
@@ -20,16 +20,17 @@ implementation.
 forge-agent code --cwd /path/to/repo "implement the requested fix"
 ```
 
-Use this when the user wants the coding lane to do the implementation work in a
-specific repository.
+Use this when the user wants the general coding lane to do the implementation
+work in a specific repository.
 
-### Investigate with Sage
+### Apple-Specific Work in Apple Dev
 
 ```bash
-forge-agent research --cwd /path/to/repo "trace the auth failure without making changes; read the auth middleware, route handlers, and the latest diff first; focus on where state is lost; return likely root cause with file references"
+forge-agent run --agent apple-dev --cwd /path/to/app "fix the SwiftUI navigation glitch, verify the macOS build still passes, and keep the change scoped to the affected screen"
 ```
 
-Use this when the user says "use Sage" or wants Forge's read-only investigation lane.
+Use this when the task is mainly Swift, SwiftUI, UIKit/AppKit, Xcode, signing,
+or App Store Connect work.
 
 ### Review or Validate After Implementation
 
