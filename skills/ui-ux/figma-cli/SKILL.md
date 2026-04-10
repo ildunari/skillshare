@@ -2,7 +2,7 @@
 name: "Figma CLI"
 description: "Control Figma Desktop directly via CLI — create components, design tokens, layouts, icons, and export designs. No API key needed."
 alwaysAllow: ["Bash"]
-targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, Craft-Phone, hermes]
+targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, hermes]
 ---
 
 # figma-ds-cli

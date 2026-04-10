@@ -2,7 +2,7 @@
 name: mcp2cli
 description: Turn any MCP server, OpenAPI spec, or GraphQL endpoint into a CLI. Use this skill when the user wants to interact with an MCP server, OpenAPI/REST API, or GraphQL API via command line, discover available tools/endpoints, call API operations, or generate a new skill from an API. Triggers include "mcp2cli", "call this MCP server", "use this API", "list tools from", "create a skill for this API", "graphql", or any task involving MCP tool invocation, OpenAPI endpoint calls, or GraphQL queries without writing code.
 alwaysAllow: ["Bash"]
-targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, Craft-Phone, hermes]
+targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, hermes]
 ---
 
 # mcp2cli

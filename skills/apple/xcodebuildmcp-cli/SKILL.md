@@ -2,7 +2,7 @@
 name: xcodebuildmcp-cli
 description: Official skill for the XcodeBuildMCP CLI. Use when doing iOS/macOS/watchOS/tvOS/visionOS work (build, test, run, debug, log, UI automation).
 alwaysAllow: ["Bash"]
-targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, Craft-Phone, hermes]
+targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, hermes]
 ---
 
 # XcodeBuildMCP CLI
