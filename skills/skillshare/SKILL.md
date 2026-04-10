@@ -167,6 +167,8 @@ See [TROUBLESHOOTING.md](references/TROUBLESHOOTING.md) for more.
 3. **Audit** — `install` auto-scans; CRITICAL blocks. `--force` to override, `--skip-audit` to bypass. Detects hardcoded secrets (API keys, tokens, private keys).
 4. **Uninstall safely** — moves to trash (7 days). `trash restore <name>` to undo. **NEVER** `rm -rf` symlinks.
 5. **Output** — `--json` for structured data (12 commands support it, see Quick Lookup). `--no-tui` for plain text on TUI commands (`list`, `log`, `audit`, `analyze`, `diff`, `trash list`, `backup list`, `target list`). `tui off` disables TUI globally. `--dry-run` to preview.
+6. **This repo's Hermes policy** — the tracked Hermes allowlist lives in `hermes-allowlist.yaml`, not `config.yaml` (which stays machine-local). Apply it with `scripts/sync_hermes_targets.py`; keep Studio `hermes-default` and `hermes-gpt` aligned from that one list, and keep MacBook isolated from Hermes targets unless explicitly asked.
+7. **Global-mode verification** — when validating this repo's global config, prefer `skillshare list -g --json`, `skillshare status -g --json`, and `skillshare sync -g --dry-run --json` so project-mode autodetection cannot skew results.
 
 ## References
 | Topic | File |
