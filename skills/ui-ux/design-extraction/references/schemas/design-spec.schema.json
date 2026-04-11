@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://visual-design-lab.skill/design-spec.schema.json",
+  "$id": "https://design-extraction.skill/design-spec.schema.json",
   "title": "VisualAnalyzerDesignSpec",
   "description": "Hybrid schema for screenshot/video → design spec extraction. DTCG 2025.10 compatible tokens with separate confidence/evidence layer.",
   "type": "object",

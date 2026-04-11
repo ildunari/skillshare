@@ -15,7 +15,7 @@ Only then proceed to choosing fonts, colors, and layout.
 ## Step 2: Choose Foundation
 
 ### Theme Selection
-If interactive artifact/simulation/game -> pick from the 5 quick-access themes in `themes.md` or load the **visual-design-lab** skill for the merged theme packs, token extraction workflow, and component styling guidance.
+If interactive artifact/simulation/game -> pick from the 5 quick-access themes in `themes.md` or load the **design-extraction** skill for the merged theme packs, token extraction workflow, and component styling guidance.
 If website/app → select a font pairing from `themes.md` based on project type.
 
 ### Color Palette

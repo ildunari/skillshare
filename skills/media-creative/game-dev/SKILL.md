@@ -184,7 +184,7 @@ Production-ready JS utilities in `scripts/` — inline into your single-file art
   if (navigator.gpu) { /* WebGPU path */ } else { /* WebGL2 fallback */ }
   ```
 - **Font loading:** Google Fonts `<link>` when UI labels needed.
-- **Visual themes:** For simulation aesthetics, reference the user's visual themes in `design-maestro` skill's `references/themes.md` or the `visual-design-lab` skill.
+- **Visual themes:** For simulation aesthetics, reference the user's visual themes in `design-maestro` skill's `references/themes.md` or the `design-extraction` skill.
 - **Game feel:** Layer juice on last, not first. Get the simulation correct, then add screen shake / particles / trails.
 - **Responsive:** Use virtual canvas pattern for games (see `assets/game-base.html`). Use `100dvh`/`100dvw` for fullscreen sims.
 
@@ -399,4 +399,4 @@ Inline JSON actions (no file needed):
 ## Relationship to Other Skills
 
 - **`algorithmic-art-enhanced`** — Use for p5.js generative art with seeded randomness. Use *this* skill for WebGL/WebGPU shader-based generative art (reaction-diffusion, fractals, Physarum, fluid art).
-- **`design-maestro`** / **`visual-design-lab`** — Reference for simulation aesthetics and UI polish.
+- **`design-maestro`** / **`design-extraction`** — Reference for simulation aesthetics and UI polish.

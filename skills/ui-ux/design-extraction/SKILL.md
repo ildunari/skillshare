@@ -1,5 +1,5 @@
 ---
-name: visual-design-lab
+name: design-extraction
 description: >
   Extract design tokens, components, layout, and motion specs from screenshots and screen-recording
   videos, then pair them with curated visual-theme guidance for implementation. Use this skill whenever
@@ -11,7 +11,7 @@ description: >
 
 <!-- Merged from: ui-spec-extractor, design-theme-library (2026-04-05) -->
 
-# Visual Design Lab
+# Design Extraction
 
 Screenshot or video -> DTCG 2025.10 design tokens + components + layout + motion specs, with a merged visual-theme library for turning extracted structure into a coherent design system.
 
@@ -234,7 +234,7 @@ INPUT
 ## File Map
 
 ``` 
-visual-design-lab/
+design-extraction/
 ├── SKILL.md                          ← You are here
 ├── FEEDBACK.md                       ← Accumulated learnings (read first!)
 ├── scripts/

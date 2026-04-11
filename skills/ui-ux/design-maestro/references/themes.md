@@ -6,7 +6,7 @@
 
 Apply these to simulations, games, generative art, and interactive artifacts.
 
-> **Additional curated themes** are available in the **visual-design-lab** skill. That skill now combines the old design-theme-library packs with screenshot-to-token extraction and broader design-system guidance. The 5 themes below are quick-access favorites for common simulation types. For themed work, load visual-design-lab alongside this file.
+> **Additional curated themes** are available in the **design-extraction** skill. That skill now combines the old design-theme-library packs with screenshot-to-token extraction and broader design-system guidance. The 5 themes below are quick-access favorites for common simulation types. For themed work, load design-extraction alongside this file.
 
 ### 1. Alchemist's Journal
 **Best for:** Reaction-diffusion, slime mold, organic simulations

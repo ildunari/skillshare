@@ -96,7 +96,7 @@ For pattern vocabulary (dock magnification, bento grid, parallax tilt, etc.), lo
 | **Need AI/chat UI** (streaming, citations, tool use, agents) | `references/ai-ui-patterns.md` |
 | **Need data visualizations** | `references/patterns-and-recipes.md` (data viz section) |
 | **Need fonts/theming** | `references/themes.md` |
-| **Need a complete visual theme** (merged theme library plus extraction workflow) | `visual-design-lab/` |
+| **Need a complete visual theme** (merged theme library plus extraction workflow) | `design-extraction/` |
 | **Iterating on a design** | `references/design-iteration.md` |
 | **Received vague/conflicting feedback** | `references/design-feedback.md` |
 | **Design review** (formal visual QA) | `references/design-review.md` |

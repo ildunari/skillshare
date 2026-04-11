@@ -2,7 +2,7 @@
   "meta": {
     "schemaVersion": "2.0",
     "createdAt": "2026-02-08T04:30:00Z",
-    "agentVersion": "visual-design-lab-1.0",
+    "agentVersion": "design-extraction-1.0",
     "sources": [
       { "type": "screenshot", "id": "login_ios.png" }
     ],

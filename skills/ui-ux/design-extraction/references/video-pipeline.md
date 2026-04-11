@@ -84,7 +84,7 @@
 
 ---
 
-## File Locations (within visual-design-lab)
+## File Locations (within design-extraction)
 
 ```
 scripts/video/
