@@ -1,3 +1,4 @@
+Atuin AI is not enabled. Please enable it in your settings or run `atuin setup`.
 ---
 name: "Design Agent Droid"
 description: "Run a focused UI polish or mockup-to-implementation pass through Factory/Droid using the custom droid `design-agent-droid`. Prefer GLM-5V Turbo when available; current working fallback/default is GLM-5.1 on the coding-plan endpoint."
@@ -6,7 +7,20 @@ alwaysAllow: ["Bash"]
 
 # Design Agent Droid
 
-Use this when you want Factory/Droid to do a visual-first UI pass.
+Use this skill when you, the orchestrating agent, need to launch Factory/Droid for a visual-first UI pass.
+
+## What this skill is for
+This is an orchestrator-facing launch skill. It tells the current agent how to route the task, shape the prompt, and choose the right Droid-side worker.
+
+Use it to:
+- choose the correct Droid agent/droid
+- shape the delegation prompt for visual/design work
+- avoid generic coding-agent prompting when the task is really UI/UX polish
+
+Do not tell the downstream Droid worker to load, activate, or read this skill itself unless the user explicitly wants that. The normal flow is:
+1. You read this skill.
+2. You launch Droid correctly.
+3. The Droid worker does the task using its own droid instructions.
 
 ## Default workflow
 1. Inspect the current UI first.
