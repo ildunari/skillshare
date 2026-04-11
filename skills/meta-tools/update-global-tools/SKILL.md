@@ -2,6 +2,7 @@
 name: "Update Global Tools"
 description: "Use when the user asks to scan globally installed developer tools on the machine, update them across Homebrew, npm, and standalone binaries, and report the important version changes. Trigger on requests like 'update my global tools', 'check brew and npm globals for updates', or 'run the daily tool update workflow'; do not use for project-local dependency upgrades."
 alwaysAllow: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "Agent", "WebSearch"]
+targets: ["Craft-MyWorkspace"]
 ---
 
 # Update Global Tools Skill
@@ -11,7 +12,7 @@ You are running the daily tool update workflow. Your job is to scan the system f
 ## Inventory File
 
 The tool inventory lives at:
-`/Users/kosta/.craft-agent/workspaces/my-workspace/skills/update-global-tools/tool-inventory.md`
+`/Users/kosta/.craft-agent/workspaces/my-workspace/skills/meta-tools__update-global-tools/tool-inventory.md`
 
 Read it at the start of every run. It contains every tracked tool, its current version, update command, and last changelog notes.
 
