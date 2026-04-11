@@ -4,7 +4,7 @@ description: |
   Update Craft Agents Electron app to the latest version and re-apply local patches
   (window size, multi_tool_use.parallel fix). Handles quit, backup, install, patch,
   re-sign, and relaunch. Use when the user says "update craft agent" or "repatch".
-targets: [Craft-MyWorkspace]
+targets: [Craft-MyWorkspace, Craft-Brown]
 alwaysAllow: ["Bash", "Read", "Write", "Edit"]
 ---
 

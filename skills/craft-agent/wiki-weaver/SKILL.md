@@ -1,7 +1,7 @@
 ---
 name: "Wiki Weaver"
 description: "Automated knowledge graph builder for Kosta's Obsidian Brain vault. Reads existing notes, finds connections, adds wikilinks (inline + Related Notes section), maintains wiki/index.md and wiki/schema.md, and keeps guide pages current. Runs daily after Vault Sorter and weekly for fortification. Read this skill before every wiki weaving run."
-targets: [Craft-MyWorkspace]
+targets: [Craft-MyWorkspace, Craft-Brown]
 ---
 
 # Wiki Weaver

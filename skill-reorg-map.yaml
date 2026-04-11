@@ -304,7 +304,7 @@ moves:
   - old: vault-sorter
     new: knowledge-memory/vault-sorter
   - old: wiki-weaver
-    new: knowledge-memory/wiki-weaver
+    new: craft-agent/wiki-weaver
   - old: agent-browser
     new: automation/agent-browser
   - old: atlas
