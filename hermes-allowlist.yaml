@@ -18,6 +18,9 @@ skills:
 - research-analysis/python-visualization
 - meta-tools/skill-creator
 - meta-tools/skillshare
+- ui-ux/design-agent-droid
+- ui-ux/design-agent-claude
+- ui-ux/design-agent-gemini
 - personal-ops/telegram
 - hermes/update-checklist
 - hermes/local-patches
