@@ -162,3 +162,5 @@ Then manually rebase the rejects and regenerate the patch.
 Before any meaningful Hermes update on this machine, treat `~/.hermes/patches/` as part of the live system state, not just an archive.
 
 If you do not audit and refresh that directory, `hermes update` can faithfully preserve the wrong things.
+
+If the real problem is that state lives in the wrong home to begin with, stop and read `hermes__shared-durable-state-architecture` before adding more replay artifacts. Patches are the preservation layer, not the ideal canonical home for durable operational state.

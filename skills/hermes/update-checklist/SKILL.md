@@ -54,6 +54,9 @@ Never assume current local work is update-proof just because:
 
 Check the live dirty tree against the live patch inventory every time.
 
+Also classify *where* each durable change should live before updating.
+If the question is really about storage/placement rather than update mechanics, read the shared durable-state skill first. The update checklist should stay procedural; the placement model lives in `hermes__shared-durable-state-architecture`.
+
 ## Trigger questions
 
 Use this skill when the user says things like:

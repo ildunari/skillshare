@@ -25,6 +25,8 @@ skills:
 - personal-ops/telegram
 - hermes/update-checklist
 - hermes/local-patches
+- hermes/shared-durable-state-architecture
+- hermes/daily-change-logbook
 - hermes/moss-samantha-voiceover
 - hermes/mem0-presence-check
 - hermes/profile-gateway-display-settings
