@@ -24,13 +24,11 @@ AutoCLI is a fast Rust CLI that turns websites and some local tools/apps into co
 
 Think of it as: “try a purpose-built website/app CLI first, then fall back to browser automation if needed.”
 
-## On this machine
+## Environment notes
 
-- Binary: `autocli`
-- Install path: `/opt/homebrew/bin/autocli`
-- Auth token is stored in 1Password CLI vault item `AutoCLI API Token`
-- Read the token with:
-  - `op read "op://CLI/AutoCLI API Token/credential"`
+- Expect the `autocli` binary to be available on `PATH`.
+- Keep auth tokens in the machine's normal secure secret store or local AutoCLI auth flow.
+- If a team already has a standard token-retrieval workflow, use that instead of inventing a new one.
 
 Do not paste tokens into files, skills, or committed config.
 
@@ -81,4 +79,4 @@ autocli gh repo view cli/cli --format json
 
 - Public commands can work without browser auth.
 - AI generation/auth features use `autocli.ai` and store local config in `~/.autocli/config.json`.
-- If `autocli auth` is needed again, fetch the token from 1Password instead of asking the user to retype it if permission to use stored secrets is already clear from context.
+- If auth is needed again, prefer the machine's existing secure secret workflow instead of asking the user to retype a token that is already managed locally.

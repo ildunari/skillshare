@@ -79,7 +79,14 @@ report_status() {
 }
 
 while kill -0 "$PID" 2>/dev/null; do
-  sleep "$INTERVAL"
+  remaining="$INTERVAL"
+  while [[ "$remaining" -gt 0 ]]; do
+    if ! kill -0 "$PID" 2>/dev/null; then
+      break 2
+    fi
+    sleep 1
+    remaining="$(( remaining - 1 ))"
+  done
   report_status
 done
 
