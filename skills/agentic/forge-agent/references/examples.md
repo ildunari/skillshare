@@ -69,6 +69,16 @@ forge-agent --print code "implement the requested change"
 
 Use this when the user wants the exact launch command without executing it.
 
+### Watch a Slow Run
+
+```bash
+scripts/forge-watch.sh research --cwd /path/to/repo "trace the bug without making changes"
+scripts/forge-watch.sh review "review the latest change for bugs and regressions"
+```
+
+Use this when the selected Forge lane may take a while and you want periodic,
+observable heartbeat updates instead of guessing whether silence means failure.
+
 ### Interactive Zsh-backed Session
 
 ```bash

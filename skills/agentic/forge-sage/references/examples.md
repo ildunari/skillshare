@@ -78,3 +78,25 @@ Output:
 ```
 
 Use this when the user wants the exact launch command first.
+
+## Run Sage with Heartbeats
+
+```bash
+scripts/forge-sage-watch.sh --cwd /path/to/repo "
+Trace the drawer interaction bug without making changes.
+
+Context:
+- The drawer opens visually, but taps may be swallowed.
+
+Read first:
+- the shell view
+- the drawer view
+- the routing state
+
+Output:
+- findings first with file references
+"
+```
+
+Use this when Sage is likely to take a while and you want periodic, observable
+status updates instead of assuming silence means failure.

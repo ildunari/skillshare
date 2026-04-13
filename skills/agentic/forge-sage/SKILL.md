@@ -9,7 +9,7 @@ description: >-
   broader Forge router.
 metadata:
   author: Codex
-  version: 2.1.0
+  version: 2.2.0
 ---
 
 # Forge Sage
@@ -69,6 +69,47 @@ Important nuance: users may say **"use Sage"** or **"Forge Sage"** even though
 the wrapper command still uses the verb `research`. Match the user's intent,
 then use the command that reaches Sage.
 
+## Patience and Polling
+
+Sage is often **slower and higher-latency** than ordinary shell commands. Do
+not assume it should answer quickly just because the local wrapper returned no
+text in the first few seconds.
+
+When you launch Sage:
+- expect long silent stretches, especially on dense repo investigations
+- keep the session open and **poll it periodically** before calling it stuck
+- prefer **20-30 second** polling intervals for longer runs
+- distinguish **"no streamed text yet"** from **"no progress"**
+
+Before declaring a Sage run stuck, check observable signals such as:
+- the `forge-agent` parent process is still alive
+- the `forge --agent sage` child process is still alive
+- elapsed time keeps increasing
+- CPU, open files, or network connections suggest active work
+- captured output files are growing, even if nothing has been printed back yet
+
+Do **not** invent semantic progress summaries like "Sage is analyzing routing"
+unless Sage actually emitted that. Report only observable facts such as:
+- elapsed runtime
+- process state
+- whether output has changed
+- whether there are active network connections
+
+If you want heartbeat-style monitoring, use the helper:
+
+```bash
+scripts/forge-sage-watch.sh --cwd /path/to/repo "
+Context:
+- ...
+
+Question:
+- ...
+"
+```
+
+That helper launches `forge-agent research`, prints periodic status updates,
+and shows newly emitted output without pretending to know what Sage is thinking.
+
 ## What A Good Sage Handoff Includes
 
 Small prompts are fine for tiny, obvious questions. But for repo investigation,
@@ -115,6 +156,7 @@ Output:
 | launch style | one-shot `research` | prefer one-shot Sage handoffs over interactive Forge shells |
 | launcher surface | `forge-agent` | prefer the wrapper over raw `forge` |
 | prompt style | detailed but scoped | include project context, read-first files, and the exact investigation question |
+| slow response handling | patient polling | poll before judging the run as stuck |
 
 Treat `--keep` as convenience only. It reuses the latest global Forge
 conversation and is not repo-scoped.
@@ -172,12 +214,18 @@ After changing or relying on this setup, verify with:
 forge-agent info
 forge cmd list --porcelain
 forge-agent --print research "trace the bug without making changes"
+bash scripts/forge-sage-watch.sh --help
 ```
 
 ## Troubleshooting
 
 If Forge picks up the wrong prior context:
 - use `--conversation-id <id>` instead of relying on the latest-global behavior
+
+If Sage is silent for a while:
+- keep polling at 20-30 second intervals
+- inspect the child process before assuming failure
+- use `scripts/forge-sage-watch.sh` when you want heartbeat-style monitoring
 
 If the user wants a broader Forge handoff rather than Sage-only investigation:
 - switch back to `forge-agent`

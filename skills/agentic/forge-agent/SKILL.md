@@ -11,7 +11,7 @@ description: >-
   wants Forge. For Sage-only investigation, use forge-sage.
 metadata:
   author: Codex
-  version: 2.2.0
+  version: 2.3.0
 ---
 
 # Forge Agent
@@ -59,6 +59,7 @@ forge-agent info                    # current model, provider, conversation
 forge-agent list agents             # available agents
 forge-agent list models             # available models
 forge-agent list tools [agent]      # tools available to an agent
+scripts/forge-watch.sh research --cwd /path/to/repo "trace the bug"
 ```
 
 ## How to Choose
@@ -101,6 +102,23 @@ invocation starts a fresh conversation. If the task needs multiple steps,
 use `--keep` to continue the latest conversation, or `--conversation-id <uuid>`
 for a specific one.
 
+**Be patient with slower lanes.** `research`, `review`, and sometimes `check`
+can take materially longer than ordinary shell commands. Do not assume a run
+has failed just because it has not streamed text back quickly. Keep the process
+alive, poll it, and only declare it stuck after checking observable signals.
+
+**Use the watcher when you need heartbeats.** For long-running runs, or when
+the user wants explicit progress checks, use:
+
+```bash
+scripts/forge-watch.sh research --cwd /path/to/repo "trace the bug"
+scripts/forge-watch.sh review "review the recent change for bugs"
+scripts/forge-watch.sh check "validate this repo"
+```
+
+The watcher reports only observable signals such as elapsed time, process
+state, and newly emitted output. It does not fabricate semantic progress.
+
 ## What to Expect
 
 - **One-shot runs** execute the prompt and exit. Output goes to stdout.
@@ -133,6 +151,12 @@ Interactive commands inside a forge session:
 
 If Forge says provider/model not configured: `forge-agent info` to check,
 then `forge config list` to inspect settings.
+
+If a slower lane is silent:
+- keep the process open and poll it before assuming failure
+- prefer 20-30 second intervals for long runs
+- inspect the child process if there is no text yet
+- use `scripts/forge-watch.sh` when you want heartbeat-style monitoring
 
 If `--keep` picks up wrong context: use `--conversation-id <uuid>` explicitly.
 
