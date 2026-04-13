@@ -28,6 +28,7 @@ Separate these classes explicitly:
 1. **Repo code / instruction layer**
    - `~/.hermes/hermes-agent`
    - Real Hermes code, tests, repo docs, repo-root `HERMES.md`
+   - Durable local repo customizations should live as real commits on a maintained local branch such as `local/studio-customizations`, not as patch replay artifacts
 
 2. **Root-shared durable state**
    - `~/.hermes/shared/`

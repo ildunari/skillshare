@@ -1,166 +1,107 @@
 ---
 name: hermes-local-patches
 description: >-
-  Preserve local hermes-agent customizations across `hermes update` by using the
-  real update behavior (auto-stash + stash restore) together with the local
-  `~/.hermes/patches` post-merge reapply hook. Use when auditing whether local
-  changes will survive an update, refreshing patch artifacts before updating,
-  debugging why old files came back after update, or carrying forward untracked
-  files like local tools/tests.
+  Audit or maintain the narrow `~/.hermes/patches` replay layer now that repo-code
+  customizations are preserved canonically on the local git branch instead of by
+  top-level patch replay. Use for machine-local helper restores, emergency patch
+  triage, or cleanup of stale replay artifacts.
 targets: [hermes-default, hermes-gpt]
 ---
 
 # Hermes Local Patches
 
-Use this when the user asks things like:
-- "will `hermes update` keep my changes?"
-- "how do we preserve local Hermes edits across update?"
-- "why did this deleted file come back after update?"
-- "what does the post-merge hook actually do?"
+This skill is now about the leftover replay layer, not the main preservation model.
 
-## What `hermes update` really does
+## Core rule
 
-Verified from `hermes_cli/main.py`:
+Important repo-code customizations must live as commits on `local/studio-customizations`.
 
-1. If the repo is dirty, Hermes auto-stashes local changes with:
-   - `git stash push --include-untracked -m hermes-update-autostash-...`
-2. Hermes updates against `origin/main`.
-3. Hermes then tries to restore the stash with:
-   - `git stash apply <stash-ref>`
-4. If stash restore conflicts, Hermes preserves the stash and reports the conflict.
+Do not treat these as canonical homes for repo code:
+- dirty working tree
+- `git stash`
+- `~/.hermes/patches/*.patch`
+- archived patch exports
+- backup branches with no active merge path
 
-Important: this is **not** a semantic smart merge. It is git stash/apply mechanics. It preserves work, but it does not understand intent.
+`~/.hermes/patches/` is now for:
+- machine-local non-repo helpers
+- tiny emergency stopgaps with explicit justification
+- archived recovery material kept for reference
 
-## The second layer: post-merge local patch reapply
+## Current live role on this machine
 
-On this machine, `~/.hermes/hermes-agent/.git/hooks/post-merge` adds a second preservation layer after every merge/update.
+Top-level `~/.hermes/patches/` may still be consulted by the local post-merge hook.
+That does not make it the source of truth for repo behavior.
 
-It does two things:
+Steady-state goal:
+- repo-code customizations survive because they are committed on `local/studio-customizations`
+- top-level replay artifacts are minimal
+- archived patch exports stay cold/inert unless deliberately inspected
 
-1. Restores certain `.new` files from `~/.hermes/patches/`
-   - Example: `telegram_actions_tool.py.new` -> `tools/telegram_actions_tool.py`
-2. Reapplies every `*.patch` file in `~/.hermes/patches/`
-   - tries `git apply --check`
-   - then `git apply`
-   - then `git apply --3way`
-   - if reverse-check succeeds, treats it as already present
-   - otherwise reports manual rebase needed
+## When to use this skill
 
-So the true update-survival model is:
-- Hermes auto-stash + restore
-- then post-merge patch replay
+Use it when you need to:
+- inspect or narrow the live top-level replay set
+- preserve a machine-local helper outside the repo
+- retire a stale `.patch` or `.new` artifact
+- explain why a hook restored something unexpected
+- do emergency/manual recovery from an archived patch
 
-## Critical lesson: stale patch artifacts can resurrect dead files
+Do not use this skill as the default answer to “how do we preserve local repo changes across update?”
+For that, use the branch workflow and the update checklist.
 
-This is the main practical pitfall.
+## Canonical preservation model for repo code
 
-If `~/.hermes/patches/` still contains an old `.new` file or patch for something you intentionally removed, the hook can bring it back after update.
+- `main` = clean upstream-tracking branch
+- `local/studio-customizations` = canonical local customization branch
+- durable repo changes should be made there or cherry-picked there promptly
+- update flow is: update `main`, merge `main` into `local/studio-customizations`, verify, commit any follow-up fixes
 
-Concrete example discovered on this machine:
-- `test_tts_kokoro.py.new` was still sitting in `~/.hermes/patches/`
-- the live repo had intentionally deleted `tests/tools/test_tts_kokoro.py`
-- that stale restore artifact had to be archived so future updates would not bring the dead test back
+## What is still legitimate in `~/.hermes/patches/`
 
-Translation: the patch directory is a source of truth too. If it is stale, update preserves stale things.
+Good uses:
+- `parakeet_mlx_stt.py.new` restoring `~/.hermes/scripts/parakeet_mlx_stt.py`
+- archived stash exports kept under `~/.hermes/patches/archive/`
+- one-off emergency patch files that are clearly labeled and time-bounded
 
-## Safe pre-update workflow
+Bad uses:
+- long-lived Telegram/gateway repo features that matter operationally
+- keeping the “real” version of repo code only as a top-level patch
+- depending on patch replay instead of committing durable repo work
 
-Before running `hermes update`:
+## Practical audit checklist
 
-1. Inspect the live repo status
-```bash
-cd ~/.hermes/hermes-agent
-git status --short
-```
-
-2. Inspect the patch inventory
+1. Inspect the top-level live set:
 ```bash
 find ~/.hermes/patches -maxdepth 1 -type f | sort
 ```
 
-3. Read the post-merge hook if behavior is in doubt
+2. Classify each top-level artifact:
+- machine-local helper -> okay to keep
+- emergency bridge -> keep only with explicit note and exit plan
+- repo feature that matters -> promote to `local/studio-customizations`
+- stale artifact -> archive or remove from the top level
+
+3. Confirm archives are inert reference material, not active replay:
 ```bash
-read_file ~/.hermes/hermes-agent/.git/hooks/post-merge
+find ~/.hermes/patches/archive -maxdepth 2 -type f | sort
 ```
 
-4. Check for stale `.new` artifacts that would restore deleted files
-   - especially tests, local tools, or temporary experiments
+4. If a repo-code patch still matters, promote it into git history instead of refreshing the patch again.
 
-5. Refresh patch files from the current intended working tree
-   - do not assume old patch files still represent current reality
+## Archive/stash rules
 
-6. Remove or archive artifacts for changes you no longer want preserved
-
-## Refreshing the patch set
-
-There is no universal one-command generator for all local changes. Regenerate deliberately by concern.
-
-Typical pattern for an existing patch:
-```bash
-cd ~/.hermes/hermes-agent
-git --no-pager diff path/to/file1 path/to/file2 > ~/.hermes/patches/some-feature.patch
-```
-
-Typical pattern for an untracked new file you want restored after update:
-```bash
-cp path/to/new_file ~/.hermes/patches/new_file.py.new
-```
-
-After refreshing, sanity-check sizes so you do not accidentally save an empty patch:
-```bash
-wc -l ~/.hermes/patches/*.patch ~/.hermes/patches/*.new
-```
-
-## How to think about change groups
-
-Do not rely on one giant anonymous dirty tree.
-
-Split local work into logical preservation units such as:
-- gateway compact-progress work
-- mem0/cron recovery
-- browser fix
-- Telegram power-tool file
-- repo instruction/context files
-- dependency lockfile sync
-
-That makes post-update replay and conflict resolution much easier.
-
-## When to trust auto-stash alone vs patch replay
-
-Auto-stash alone is usually enough for:
-- small edits on top of nearby upstream code
-- changes you are happy to manually reconcile if conflicts happen
-
-Patch replay is better for:
-- long-lived local customizations
-- untracked new files that git stash/apply may preserve awkwardly in practice
-- machine-specific Hermes modifications you expect to survive many updates
-- features referenced by other local skills or hooks
+- archives and stashes are safety/reference layers only
+- do not auto-replay them after update
+- if an archived repo-code behavior still matters, move it into `local/studio-customizations`
+- if it does not matter, leave it archived or retire it; do not resurrect it by habit
 
 ## Troubleshooting
 
-If update "succeeded" but local behavior disappeared:
-- check whether the stash restore conflicted and was skipped
-- check post-merge hook output
-- manually inspect `~/.hermes/patches/`
-- verify the relevant patch file still matches the current intended code
+If behavior disappeared after update:
+1. check whether it exists on `local/studio-customizations`
+2. check whether `main` was merged into that branch correctly
+3. verify the behavior from the branch-integrated tree
+4. only then inspect emergency patch/archive material
 
-If an old file mysteriously reappears after update:
-- inspect `~/.hermes/patches/*.new`
-- inspect the post-merge hook target mappings
-- remove the stale `.new` file and re-run cleanup
-
-If a patch stops applying cleanly:
-```bash
-cd ~/.hermes/hermes-agent
-git apply --reject ~/.hermes/patches/<name>.patch
-```
-Then manually rebase the rejects and regenerate the patch.
-
-## Practical rule
-
-Before any meaningful Hermes update on this machine, treat `~/.hermes/patches/` as part of the live system state, not just an archive.
-
-If you do not audit and refresh that directory, `hermes update` can faithfully preserve the wrong things.
-
-If the real problem is that state lives in the wrong home to begin with, stop and read `hermes__shared-durable-state-architecture` before adding more replay artifacts. Patches are the preservation layer, not the ideal canonical home for durable operational state.
+If a top-level patch is still required for a repo feature, the migration is incomplete.
