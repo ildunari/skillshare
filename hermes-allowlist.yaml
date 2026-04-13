@@ -3,6 +3,7 @@
 # Hermes default and Hermes GPT to have them.
 skills:
 - automation/agent-browser
+- automation/autocli
 - agentic/agentic-loop-builder
 - agentic/agentic-loop-productivity
 - research-analysis/d3-viz
