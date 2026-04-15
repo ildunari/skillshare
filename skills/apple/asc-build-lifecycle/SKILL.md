@@ -20,8 +20,11 @@ Use this skill to manage build state, processing, and retention.
 
 ## Distribution flows
 - Prefer end-to-end:
-  - `asc publish testflight --app "APP_ID" --ipa "./app.ipa" --group "GROUP_ID" --wait`
+  - `asc publish testflight --app "APP_ID" --ipa "./app.ipa" --group "GROUP_ID_OR_NAME" --wait --timeout 30m --output json`
   - `asc publish appstore --app "APP_ID" --ipa "./app.ipa" --version "1.2.3" --wait --submit --confirm`
+- For external TestFlight delivery, do not stop at upload success. Verify both the build record and group linkage:
+  - `asc builds info --app "APP_ID" --build-number "42" --version "1.2.3" --platform IOS --output json`
+  - `asc testflight groups links view --group-id "GROUP_ID" --type builds --output json`
 
 ## Cleanup
 - Preview expiration:
