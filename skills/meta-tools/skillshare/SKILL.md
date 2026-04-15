@@ -168,8 +168,9 @@ See [TROUBLESHOOTING.md](references/TROUBLESHOOTING.md) for more.
 4. **Uninstall safely** — moves to trash (7 days). `trash restore <name>` to undo. **NEVER** `rm -rf` symlinks.
 5. **Output** — `--json` for structured data (12 commands support it, see Quick Lookup). `--no-tui` for plain text on TUI commands (`list`, `log`, `audit`, `analyze`, `diff`, `trash list`, `backup list`, `target list`). `tui off` disables TUI globally. `--dry-run` to preview.
 6. **This repo's Hermes policy** — the tracked Hermes allowlist lives in `hermes-allowlist.yaml`, not `config.yaml` (which stays machine-local). Apply it with `scripts/sync_hermes_targets.py`; keep Studio `hermes-default` and `hermes-gpt` aligned from that one list, and keep MacBook isolated from Hermes targets unless explicitly asked.
-7. **Global-mode verification** — when validating this repo's global config, prefer `skillshare list -g --json`, `skillshare status -g --json`, and `skillshare sync -g --dry-run --json` so project-mode autodetection cannot skew results.
-8. **Observed filter behavior here** — after nesting skills into buckets, target include/exclude filters must use the flattened skill name form (for example `agentic__forge-agent`), not the slash path form (`agentic/forge-agent`). Validate by dry-run before a real sync.
+7. **Hermes-only approval needs two changes here** — if you want a skill available only in Hermes on this repo, do both: add `targets: [hermes-default, hermes-gpt]` to the skill frontmatter so other targets do not receive it during sync, and add the slash-path source entry (for example `media-creative/architecture-diagram`) to `hermes-allowlist.yaml` so Studio Hermes targets actually include it.
+8. **Global-mode verification** — when validating this repo's global config, prefer `skillshare list -g --json`, `skillshare status -g --json`, and `skillshare sync -g --dry-run --json` so project-mode autodetection cannot skew results.
+9. **Observed filter behavior here** — after nesting skills into buckets, target include/exclude filters must use the flattened skill name form (for example `agentic__forge-agent`), not the slash path form (`agentic/forge-agent`). Validate by dry-run before a real sync.
 
 ## References
 | Topic | File |
