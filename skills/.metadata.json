@@ -38,7 +38,7 @@
       "version": "6b31882",
       "tree_hash": "ace286d720b4ad94978b39d1ee06d3cef436a268",
       "file_hashes": {
-        "SKILL.md": "sha256:d82fc9d18980202d34b0ed26a40bca61d61e4ebb1df2d4036905fb27c4f1a4dd"
+        "SKILL.md": "sha256:8ed4fe913aede25b68f2aeecfad2e98a4bd5b3e28ecd109f6374418ff078b822"
       }
     },
     "apple/asc-cli-usage": {
@@ -51,7 +51,7 @@
       "version": "6b31882",
       "tree_hash": "ada613fa96a82d2878c33b019eef6d25f4ca366a",
       "file_hashes": {
-        "SKILL.md": "sha256:00715cc7faf56d1af903d136aec0eb6e77bada52a0cd9a741b8615a80ef885dc"
+        "SKILL.md": "sha256:369d9f7cf959f472c17cecd152409fa28e44ee5897254ce4aee58c6708eba535"
       }
     },
     "apple/asc-crash-triage": {
@@ -288,7 +288,7 @@
       "version": "6b31882",
       "tree_hash": "f35488cd60f541c0d788040bf54fa371858b1f4e",
       "file_hashes": {
-        "SKILL.md": "sha256:9854797f2b18ff7b2d128909d26d2e069e2872cf346a97631ae15c328d5347ea"
+        "SKILL.md": "sha256:fcb7f3b91449cb032d1061096326d0ba29cddc617b6675bbb608ef89c58cc499"
       }
     },
     "apple/swiftui-expert-skill": {
@@ -459,8 +459,8 @@
       "version": "9cc0541",
       "tree_hash": "2c4d34afdaa184eb97357e4f771635766e2e509c",
       "file_hashes": {
-        "SKILL.md": "sha256:bfd5210e4ecd42230d229bf725a8e0d39884cd34c85e3b31a0a3bea8875e5a2f",
-        "creating.md": "sha256:dd2d52e2c0ae51f861130b4a9a3e7e58832a9807c7c4f308d853d4f6ca2a1157"
+        "SKILL.md": "sha256:86bc5f6dff456fb3dbbde41d9cf800c352f0f4ce66eb0fb27ade1c4fc128a2fb",
+        "creating.md": "sha256:c1b87c8caaac5d96e9472773a98014cef670fdd8c3164bce68616a4b4b9e0646"
       }
     },
     "documents-office/officecli-data-dashboard": {
@@ -473,7 +473,7 @@
       "version": "9cc0541",
       "tree_hash": "4701dfd84f23c55a016bf20a7d9178b715fb7d0e",
       "file_hashes": {
-        "SKILL.md": "sha256:2a41706c73a2ba23a79c6a7554d688175129046a40bc98ddee62aa28ffa3de50",
+        "SKILL.md": "sha256:7ca8e713674ad642ae532e9d63c226bad3d21b809a5b91d5bfeb53e82d1a1292",
         "creating.md": "sha256:3f7b5682b04acd393491422d31ca06f09bd730cb153fb2466b0b6506c7443d9b"
       }
     },
@@ -502,7 +502,7 @@
       "version": "9cc0541",
       "tree_hash": "acfb556a5af6edb5f530c904368caf5cfe91b78a",
       "file_hashes": {
-        "SKILL.md": "sha256:b2f7fb3aba968e6534c308f32785abaf72696b091dcf690d6cda9445ed8a73fe",
+        "SKILL.md": "sha256:2184e6c51b410d3cb89d0a7a76a87ff2a9546da54fbf13ef49d8332ac1bef54a",
         "creating.md": "sha256:5dc162c21aeb38f24faeca2c2779df5d62d028e9c9838232cb655e58f32bb447"
       }
     },
@@ -560,7 +560,7 @@
       "version": "7a010a9",
       "tree_hash": "e69406664b615ff7276d030adee8c2f384f22b1e",
       "file_hashes": {
-        "SKILL.md": "sha256:7601dcc61bef5375e8d9ea44a37c387c56a802b5eb04534afa32629a9a783a48",
+        "SKILL.md": "sha256:faabd4e6603fc9afda7c368b520ca109f48dd3823ee8819c9b0d883f315863b8",
         "references/TROUBLESHOOTING.md": "sha256:14855dbd2f20ad7042941959f257c79f768d103e89e55d74d8c3b3d38f9ff5ee",
         "references/audit.md": "sha256:85a31c32f17f39ce2baa5189a8004c6adec506e5fcf7d20378caa103b015fd5d",
         "references/backup.md": "sha256:96e2e8d5e2d7cfb8765c2eebb4e6d733b79258de8b3d974fca8972557f7326a6",

@@ -1,5 +1,6 @@
 ---
 name: skillshare
+version: v0.19.1
 description: |
   Manages and syncs AI CLI skills across 50+ tools from a single source.
   Use this skill whenever the user mentions "skillshare", runs skillshare commands,
@@ -12,7 +13,7 @@ description: |
   audit pipelines, or building/sharing skill hubs (hub index, hub add).
 argument-hint: "[command] [target] [--json] [--dry-run] [-p|-g]"
 metadata:
-  version: v0.18.9
+  version: v0.19.1
 ---
 
 # Skillshare CLI
