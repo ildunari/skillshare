@@ -550,7 +550,32 @@
         "editing.md": "sha256:58920993ab377211bef1a72251b687a4a382325f67545ad0bd5328be32b2a5ed"
       }
     },
-    "hue": {
+    "meta-tools/skillshare": {
+      "source": "github.com/runkids/skillshare/skills/skillshare",
+      "type": "github-subdir",
+      "group": "meta-tools",
+      "installed_at": "2026-04-07T10:56:51.06011-04:00",
+      "repo_url": "https://github.com/runkids/skillshare.git",
+      "subdir": "skills/skillshare",
+      "version": "7a010a9",
+      "tree_hash": "e69406664b615ff7276d030adee8c2f384f22b1e",
+      "file_hashes": {
+        "SKILL.md": "sha256:faabd4e6603fc9afda7c368b520ca109f48dd3823ee8819c9b0d883f315863b8",
+        "references/TROUBLESHOOTING.md": "sha256:14855dbd2f20ad7042941959f257c79f768d103e89e55d74d8c3b3d38f9ff5ee",
+        "references/audit.md": "sha256:85a31c32f17f39ce2baa5189a8004c6adec506e5fcf7d20378caa103b015fd5d",
+        "references/backup.md": "sha256:96e2e8d5e2d7cfb8765c2eebb4e6d733b79258de8b3d974fca8972557f7326a6",
+        "references/extras.md": "sha256:27529c7fba6335efabb38a2a5dac1c0e4a0b79d16d0188d3f98dad2068ec4bdf",
+        "references/init.md": "sha256:41d99a2a49f576e1a2354312856ccf730f8d19d4c8d35c592585d40bc2d14d82",
+        "references/install.md": "sha256:2b444bfcd211fae59421631ecd49331b4de287c311354f8ed3ca19f204d223db",
+        "references/log.md": "sha256:406e85525f53f4deaa0f48bf8b3b53db3e032b99f5a0e926c84542d51b3a3625",
+        "references/status.md": "sha256:0143c8250ecbedfa14607b82cbfb23107294b6c1e053b5726629556b7a47412c",
+        "references/sync.md": "sha256:f9447ffbd0a48f9d7910e90861905727d41a679d284a9e3e09f96d4a1663c6c3",
+        "references/targets.md": "sha256:a883a8b720b5d6b7f467d194d497e2d1f3b6ab99d676c86146d74716ed23c0ca",
+        "references/trash.md": "sha256:fd7c7d95724ff4bec693be35e57ae9ab1a7c2c845df15d9bb60aa044862cdfe0",
+        "scripts/run.sh": "sha256:e434ebdb7d3ae0b37c00ddc36687bc975da9e766b8cb863f9aed9a624ebbdfa9"
+      }
+    },
+    "ui-ux/hue": {
       "source": "github.com/dominikmartn/hue",
       "type": "github",
       "installed_at": "2026-04-15T14:00:11.20987-04:00",
@@ -610,34 +635,10 @@
         "references/preview-template.md": "sha256:04eed47405856b0bbbdcab1e2a19187f9f951eb54249e535d6b1306f6a0d7a17",
         "references/skill-template.md": "sha256:231675e15937744ce44ff00620d7480d0e15e4b8d3d930fa0eb7fe1aa767e49d",
         "references/tokens-template.md": "sha256:6c2a34063891f638da04c160fbccb359030325793783f2bf4b7699d2219763c3"
-      }
+      },
+      "group": "ui-ux"
     },
-    "meta-tools/skillshare": {
-      "source": "github.com/runkids/skillshare/skills/skillshare",
-      "type": "github-subdir",
-      "group": "meta-tools",
-      "installed_at": "2026-04-07T10:56:51.06011-04:00",
-      "repo_url": "https://github.com/runkids/skillshare.git",
-      "subdir": "skills/skillshare",
-      "version": "7a010a9",
-      "tree_hash": "e69406664b615ff7276d030adee8c2f384f22b1e",
-      "file_hashes": {
-        "SKILL.md": "sha256:faabd4e6603fc9afda7c368b520ca109f48dd3823ee8819c9b0d883f315863b8",
-        "references/TROUBLESHOOTING.md": "sha256:14855dbd2f20ad7042941959f257c79f768d103e89e55d74d8c3b3d38f9ff5ee",
-        "references/audit.md": "sha256:85a31c32f17f39ce2baa5189a8004c6adec506e5fcf7d20378caa103b015fd5d",
-        "references/backup.md": "sha256:96e2e8d5e2d7cfb8765c2eebb4e6d733b79258de8b3d974fca8972557f7326a6",
-        "references/extras.md": "sha256:27529c7fba6335efabb38a2a5dac1c0e4a0b79d16d0188d3f98dad2068ec4bdf",
-        "references/init.md": "sha256:41d99a2a49f576e1a2354312856ccf730f8d19d4c8d35c592585d40bc2d14d82",
-        "references/install.md": "sha256:2b444bfcd211fae59421631ecd49331b4de287c311354f8ed3ca19f204d223db",
-        "references/log.md": "sha256:406e85525f53f4deaa0f48bf8b3b53db3e032b99f5a0e926c84542d51b3a3625",
-        "references/status.md": "sha256:0143c8250ecbedfa14607b82cbfb23107294b6c1e053b5726629556b7a47412c",
-        "references/sync.md": "sha256:f9447ffbd0a48f9d7910e90861905727d41a679d284a9e3e09f96d4a1663c6c3",
-        "references/targets.md": "sha256:a883a8b720b5d6b7f467d194d497e2d1f3b6ab99d676c86146d74716ed23c0ca",
-        "references/trash.md": "sha256:fd7c7d95724ff4bec693be35e57ae9ab1a7c2c845df15d9bb60aa044862cdfe0",
-        "scripts/run.sh": "sha256:e434ebdb7d3ae0b37c00ddc36687bc975da9e766b8cb863f9aed9a624ebbdfa9"
-      }
-    },
-    "motion-design": {
+    "ui-ux/motion-design": {
       "source": "github.com/LottieFiles/motion-design-skill/skills/motion-design",
       "type": "github-subdir",
       "installed_at": "2026-04-16T02:05:22.080676-04:00",
@@ -663,7 +664,8 @@
         "reference/quality-checklist.md": "sha256:c11bf193b700d9c9ebc5d871f1d5f193bccc441c4eccc0509b53a40d6e8dc558",
         "reference/timing-easing-tables.md": "sha256:e478f3b99c4cac3f96eca008e20f8808d4cfae165f5799f260092baf9b6ebcff",
         "reference/troubleshooting.md": "sha256:69e5aaeee108231d51187143ae3fce4db7a42936f10682908ca9462a008a047a"
-      }
+      },
+      "group": "ui-ux"
     }
   }
 }
