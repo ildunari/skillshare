@@ -7,8 +7,9 @@ description: >
   Triggers on: Liquid Glass, glassEffect, GlassEffectContainer, glassEffectID, glass button styles,
   glass morphing, iOS 26 design, iOS 26 UI, macOS 26 design, translucency, glass effects,
   material design iOS 26, UIGlassEffect, NSGlassEffectView, Reduce Transparency, glass surfaces,
-  glass cards, glass buttons, glass sheets, glass tab bars, glass toolbars, WWDC 2025 design,
-  Apple glass design language, or any request to make an app look like iOS 26. Use even when the
+  glass cards, glass buttons, glass sheets, glass tab bars, glass toolbars, glass composers,
+  chat composers, message input bars, bottom accessories, WWDC 2025 design, Apple glass design
+  language, or any request to make an app look like iOS 26. Use even when the
   user doesn't say "Liquid Glass" but is clearly asking about the new Apple design style or
   iOS 26 visual design patterns. Only adopt Liquid Glass when explicitly requested — do not
   proactively convert existing UI. Supersedes apple-ios-liquid-glass-ux, apple-liquid-glass-ux,
@@ -69,7 +70,7 @@ For a detailed migration plan: `docs/ios26-migration.md` and `docs/macos26-migra
 
 ## When to Use (and When Not to Use) Liquid Glass
 
-**Good fit:** navigation bars, toolbars, tab bars, cards, panels, sheets — anywhere you want to separate foreground content from rich or dynamic backdrops while keeping context visible.
+**Good fit:** navigation bars, toolbars, tab bars, cards, panels, sheets, floating composers, and bottom accessory bars — anywhere you want to separate foreground content from rich or dynamic backdrops while keeping context visible.
 
 **Avoid:** long-form text, dense tables, and anywhere readability is paramount. Always replace glass with opaque fills when Reduce Transparency is enabled.
 
@@ -263,6 +264,45 @@ struct GlassPanelView: View {
 - Search fields in toolbars adopt glass; use semantic search tab role for separate search tabs
 - Use `.buttonStyle(.glass)` for toolbar and bar buttons
 
+#### Composer / message input bars
+
+- If the composer is really app chrome, prefer a bottom toolbar item or `safeAreaBar(edge: .bottom)` so the system gives you the proper scroll-edge darkening and bar behaviour.
+- In a `toolbar` / `.bottomBar`, a `TextField` already picks up the correct glass treatment — do **not** add another `.glassEffect()` on top of it.
+- In a custom `safeAreaBar`, apply glass to the outer composer surface, not every child. One shared surface is usually cleaner than separate glass bubbles around the field, attachment button, and send button.
+- Group adjacent composer controls with `GlassEffectContainer` when they should read as one unit and merge naturally during motion.
+- Keep dense editable text readable. For multi-line compose areas, use glass as the shell and keep the actual text-entry region more restrained when needed instead of turning the whole editor into pure translucent glass.
+- Use `.interactive()` only on tappable controls such as send, attach, voice, or reaction buttons — not on static labels or the whole bar.
+
+```swift
+.safeAreaBar(edge: .bottom) {
+    GlassEffectContainer(spacing: 10) {
+        HStack(spacing: 10) {
+            Button {
+                // attach
+            } label: {
+                Image(systemName: "plus")
+            }
+            .buttonStyle(.glass)
+
+            TextField("Message", text: $draft, axis: .vertical)
+                .textFieldStyle(.plain)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 12)
+                .frame(minHeight: 44)
+
+            Button("Send") {
+                // send
+            }
+            .buttonStyle(.glassProminent)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+    }
+    .padding(.horizontal)
+}
+```
+
 ### macOS
 
 - Windows adopt rounder corners automatically; glass integrates with standard window controls
@@ -354,6 +394,7 @@ Component source files live in `components/`. Demo app in `examples/DemoApp/`.
 | `docs/component-guidelines.md` | Component-specific usage guidance |
 | `docs/ios26-migration.md` | Step-by-step migration from iOS 25 and earlier |
 | `docs/macos26-migration.md` | Step-by-step migration on macOS |
+| `docs/composer-patterns.md` | Bottom composer, chat input, and accessory bar patterns |
 | `docs/accessibility-guide.md` | Accessibility implementation details |
 | `docs/dark-mode-patterns.md` | Dark mode / light adaptation patterns |
 | `docs/morphing-guide.md` | `glassEffectID` morphing deep-dive |

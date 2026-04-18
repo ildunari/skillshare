@@ -37,6 +37,15 @@ On iOS 25 and earlier the sheet uses `.ultraThinMaterial` for its background.
 
 `GlassToolbarDemo` demonstrates how navigation and toolbars automatically adopt Liquid Glass on iOS 26. Place your buttons inside `ToolbarItemGroup` and apply `.buttonStyle(.glass)` or `.glassProminent` as appropriate. Do not add custom backgrounds—let the system supply the glass.
 
+## Composer / Message Input Bars
+
+For composers, prefer treating the whole bar as one coherent surface.
+
+- In `toolbar` / `.bottomBar`, let the system style the field. Do not stack another `.glassEffect()` on the `TextField`.
+- In `safeAreaBar(edge: .bottom)`, apply glass to the outer composer shell and keep child controls inside that shared surface.
+- Use `GlassEffectContainer` when the attach, input, and send controls should read as one group.
+- Preserve readability for multiline drafting; a restrained input region inside a glass shell is usually better than making the whole editor fully translucent.
+
 ## GlassNavigation
 
 `GlassNavigationDemo` shows navigation within a `NavigationStack`. The navigation bar automatically uses Liquid Glass, and buttons in the toolbar use `.glass` styles. The detail view includes a scrolling list of `GlassCard` elements to illustrate how content flows beneath the glass navigation bar.
