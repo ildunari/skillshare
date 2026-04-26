@@ -375,11 +375,12 @@ xurl --app staging /2/users/me             # one-off against staging
 
 1. Verify prerequisites: `xurl --help`, `xurl version`, and `xurl auth status`.
 2. **Check default app has credentials.** Parse the `auth status` output. The default app is marked with `▸`. If the default app shows `oauth2: (none)` but another app has a valid oauth2 user, tell the user to run `xurl auth default <that-app>` to fix it. This is the most common setup mistake — the user added an app with a custom name but never set it as default, so xurl keeps trying the empty `default` profile.
-3. If auth is missing entirely, stop and direct the user to the "One-Time User Setup" section — do NOT attempt to register apps or pass secrets yourself.
-4. Start with a cheap read (`xurl whoami`, `xurl user @handle`, `xurl search ... -n 3`) to confirm reachability.
-5. Confirm the target post/user and the user's intent before any write action (post, reply, like, repost, DM, follow, block, delete).
-6. Use JSON output directly — every response is already structured.
-7. Never paste `~/.xurl` contents back into the conversation.
+3. If auth is missing entirely, stop and direct the user to the "One-Time User Setup" section — do NOT attempt to register apps or pass secrets yourself. If the user explicitly asks you to operate the X Developer Portal for them and a GUI session is available, use the browser to configure OAuth settings, but keep secrets local-only and never echo them into chat.
+4. In headless/SSH sessions, expect `xurl auth oauth2` to be fragile: it may print `stty: stdin isn't a terminal`, open no visible browser, and wait on `127.0.0.1:8080`. Prefer completing OAuth from an active Mac GUI browser/Screen Sharing session, then verify with `xurl auth status`; do not read `~/.xurl`.
+5. Start with a cheap read (`xurl whoami`, `xurl user @handle`, `xurl search ... -n 3`) to confirm reachability.
+6. Confirm the target post/user and the user's intent before any write action (post, reply, like, repost, DM, follow, block, delete).
+7. Use JSON output directly — every response is already structured.
+8. Never paste `~/.xurl` contents back into the conversation.
 
 ## Local setup on Kosta's Mac Studio
 
@@ -415,6 +416,7 @@ Safe default behavior on this machine:
 | `client-forbidden` / `client-not-enrolled` | X platform enrollment issue | Dashboard → Apps → Manage → Move to "Pay-per-use" package → Production environment |
 | `CreditsDepleted` | $0 balance on X API | Buy credits (min $5) in Developer Console → Billing |
 | `media processing failed` on image upload | Default category is `amplify_video` | Add `--category tweet_image --media-type image/png` |
+| `xurl auth oauth2` hangs, prints `stty: stdin isn't a terminal`, or no browser appears over SSH | Headless/non-interactive shell cannot reliably open/drive the OAuth browser, while xurl waits on local callback port 8080 | Use Screen Sharing/active GUI browser to complete the authorization. Check that xurl is listening with `lsof -Pan -p <pid> -iTCP -sTCP:LISTEN`; after authorizing, verify with `xurl auth status` and `xurl whoami`. Do not read `~/.xurl`. |
 | Two "Client Secret" values in X dashboard | UI bug — first is actually Client ID | Confirm on the "Keys and tokens" page; ID ends in `MTpjaQ` |
 
 ---
