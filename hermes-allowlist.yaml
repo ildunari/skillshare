@@ -32,3 +32,16 @@ skills:
 - hermes/telegram-gateway
 - ui-ux/hue
 - ui-ux/motion-design
+- hermes-subagents/hermes-subagent-computer-use
+- hermes-subagents/hermes-subagent-hermes-mechanic
+- hermes-subagents/hermes-subagent-ios-swift
+- hermes-subagents/hermes-subagent-mac-operator
+- hermes-subagents/hermes-subagent-paper-scout
+- hermes-subagents/hermes-subagent-product-finder
+- hermes-subagents/hermes-subagent-prompt-designer
+- hermes-subagents/hermes-subagent-ui-polish
+- hermes-subagents/hermes-subagent-voice-audio
+- hermes-subagents/hermes-subagent-web-searcher
+- hermes/codex-image-gen-default
+- hermes/mac-shell-compression-hygiene
+- personal-ops/xurl
