@@ -1,3 +1,4 @@
+Invalid tmux session name: 
 ---
 name: claude-code-subagent-lane
 description: Use when Hermes should launch Claude Code as a planning, review, UI/UX, architecture, or specialized Claude Code agent lane; especially when deciding between `claude -p`, `--agent`, Hermes `delegate_task`, and ACP adapters.
@@ -81,3 +82,7 @@ claude --acp --stdio
 ```
 
 The last command should be treated as a negative check: if it still says `unknown option '--acp'`, do not use raw-Claude ACP examples.
+
+## After updating Hermes instructions or tool schemas
+
+If you correct a Hermes skill, prompt file, or `delegate_task` schema, remember that the current Telegram/gateway session may still show the old tool description until the gateway or session reloads. Verify the files and synced skills on disk, then restart/reload the relevant gateway/session before treating the new guidance as active in live tool schemas.
