@@ -45,3 +45,4 @@ skills:
 - hermes/codex-image-gen-default
 - hermes/mac-shell-compression-hygiene
 - personal-ops/xurl
+- hermes/claude-code-subagent-lane
