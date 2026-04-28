@@ -1,4 +1,5 @@
 skills:
+- ui-ux/gpt-image-2-uiux-prompting
 - automation/agent-browser
 - automation/autocli
 - agentic/agentic-loop-builder
@@ -44,5 +45,19 @@ skills:
 - hermes-subagents/hermes-subagent-web-searcher
 - hermes/codex-image-gen-default
 - hermes/mac-shell-compression-hygiene
+- automation/cua-driver-computer-use
 - personal-ops/xurl
+- hermes/plan
+- hermes/hermes-webui-mobile-evaluation
 - hermes/claude-code-subagent-lane
+- media-creative/hyperframes
+- media-creative/hyperframes-cli
+- media-creative/gsap
+- media-creative/website-to-hyperframes
+- creative/ascii-video
+- creative/manim-video
+- creative/p5js
+- creative/pixel-art
+- creative/architecture-diagram
+- hermes/workspace-gui-update-triage
+- hermes/non-hermes-update-audit
