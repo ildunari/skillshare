@@ -1,20 +1,11 @@
 ---
 name: Liquid Glass
 description: >
-  THE comprehensive skill for Apple's Liquid Glass design language introduced in iOS 26+,
-  macOS 26+, tvOS 26+, and watchOS 26+. Use this skill whenever the user wants to adopt,
-  implement, review, improve, or migrate to Liquid Glass in a SwiftUI, UIKit, or AppKit project.
-  Triggers on: Liquid Glass, glassEffect, GlassEffectContainer, glassEffectID, glass button styles,
-  glass morphing, iOS 26 design, iOS 26 UI, macOS 26 design, translucency, glass effects,
-  material design iOS 26, UIGlassEffect, NSGlassEffectView, Reduce Transparency, glass surfaces,
-  glass cards, glass buttons, glass sheets, glass tab bars, glass toolbars, glass composers,
-  chat composers, message input bars, bottom accessories, WWDC 2025 design, Apple glass design
-  language, or any request to make an app look like iOS 26. Use even when the
-  user doesn't say "Liquid Glass" but is clearly asking about the new Apple design style or
-  iOS 26 visual design patterns. Only adopt Liquid Glass when explicitly requested — do not
-  proactively convert existing UI. Supersedes apple-ios-liquid-glass-ux, apple-liquid-glass-ux,
-  and swiftui-liquid-glass. Do not use for general Apple UI work that is not specifically about
-  Liquid Glass.
+  Use for Apple's Liquid Glass design language on iOS 26+, macOS 26+, tvOS 26+,
+  and watchOS 26+. Covers SwiftUI, UIKit, and AppKit adoption, review, migration,
+  glassEffect APIs, morphing, accessibility, and platform fallbacks. Use only
+  when Liquid Glass or the new iOS/macOS glass design style is explicitly in
+  scope; do not proactively convert unrelated UI.
 tags: [liquid-glass, ios26, macos26, swiftui, uikit, appkit, design-system, accessibility, animations, translucency, glass]
 ---
 

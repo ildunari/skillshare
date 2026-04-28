@@ -1,6 +1,10 @@
 ---
 name: cua-driver-computer-use
-description: Use Cua Driver for local macOS computer-use workflows from Hermes: background native app control, screenshots, accessibility trees, direct shell calls, and MCP handoff. Use when the task needs real desktop/app control rather than browser-only automation.
+description: >
+  Use Cua Driver for local macOS computer-use workflows from Hermes, including
+  background native app control, screenshots, accessibility trees, direct shell
+  calls, and MCP handoff. Use when the task needs real desktop/app control
+  rather than browser-only automation.
 version: 0.1.0
 author: Hermes Agent
 license: MIT
