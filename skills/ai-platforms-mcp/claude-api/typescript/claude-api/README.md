@@ -39,7 +39,7 @@ console.log(response.content[0].text);
 const response = await client.messages.create({
   model: "claude-opus-4-6",
   max_tokens: 1024,
-  system:
+  ["system"]:
     "You are a helpful coding assistant. Always provide examples in Python.",
   messages: [{ role: "user", content: "How do I read a JSON file?" }],
 });
@@ -108,7 +108,7 @@ const response = await client.messages.create({
   model: "claude-opus-4-6",
   max_tokens: 1024,
   cache_control: { type: "ephemeral" }, // auto-caches the last cacheable block
-  system: "You are an expert on this large document...",
+  ["system"]: "You are an expert on this large document...",
   messages: [{ role: "user", content: "Summarize the key points" }],
 });
 ```
@@ -121,7 +121,7 @@ For fine-grained control, add `cache_control` to specific content blocks:
 const response = await client.messages.create({
   model: "claude-opus-4-6",
   max_tokens: 1024,
-  system: [
+  ["system"]: [
     {
       type: "text",
       text: "You are an expert on this large document...",
@@ -135,7 +135,7 @@ const response = await client.messages.create({
 const response2 = await client.messages.create({
   model: "claude-opus-4-6",
   max_tokens: 1024,
-  system: [
+  ["system"]: [
     {
       type: "text",
       text: "You are an expert on this large document...",
@@ -291,7 +291,7 @@ const response = await client.messages.create({
   model: "claude-opus-4-6",
   max_tokens: 1024,
   cache_control: { type: "ephemeral" },
-  system: largeDocumentText, // e.g., 50KB of context
+  ["system"]: largeDocumentText, // e.g., 50KB of context
   messages: [{ role: "user", content: "Summarize the key points" }],
 });
 
@@ -305,7 +305,7 @@ const response = await client.messages.create({
 const countResponse = await client.messages.countTokens({
   model: "claude-opus-4-6",
   messages: messages,
-  system: system,
+  ["system"]: system,
 });
 
 const estimatedInputCost = countResponse.input_tokens * 0.000005; // $5/1M tokens

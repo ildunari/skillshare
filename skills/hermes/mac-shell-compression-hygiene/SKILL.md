@@ -69,7 +69,7 @@ Only allow `.envrc` after reading it. For the Hermes repo, the observed `.envrc`
 
 ```bash
 cd ~/.hermes/hermes-agent
-cat .envrc
+sed -n '1,120p' .envrc
 direnv allow
 ```
 

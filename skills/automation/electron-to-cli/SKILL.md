@@ -281,7 +281,7 @@ Based on reconnaissance, choose the optimal architecture:
 
 ### When to Use Each
 
-**CLI (Bash+curl)** — Default choice when a REST API exists. Matches existing patterns
+**CLI (Bash + HTTP client)** — Default choice when a REST API exists. Matches existing patterns
 (bird, gog), zero dependencies, excellent token efficiency, pipe-friendly.
 
 **Node.js CLI** — When WebSocket features are needed (real-time events, streaming),
@@ -307,7 +307,7 @@ This is what the Discord CLI does: REST API for all data operations, CDP only fo
 
 ### Step 3.1 — Scaffold
 
-Use this template for a Bash+curl CLI:
+Use this template for a shell CLI backed by an HTTP client:
 
 ```bash
 #!/usr/bin/env bash
@@ -348,7 +348,7 @@ cache_token() {
 api() {
   local method="$1" endpoint="$2"; shift 2
   local token=$(get_token)
-  curl -sS -X "$method" -H "Authorization: $token" -H "Content-Type: application/json" "$@" "$API_BASE/$endpoint"
+  http_request "$method" "$API_BASE/$endpoint" "$token" "$@"
 }
 
 # ── Commands ──

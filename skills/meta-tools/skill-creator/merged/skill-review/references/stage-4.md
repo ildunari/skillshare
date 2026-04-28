@@ -63,9 +63,8 @@ Think about what could go wrong even with well-intentioned users:
 
 - **Ambiguous triggers:** Are there user messages that could plausibly trigger
   this skill AND another skill? Which should win, and is that documented?
-- **Instruction injection:** Could a user's input file contain instructions
-  that override the skill's behavior? (e.g., a document being analyzed that
-  contains "ignore all previous instructions")
+- **Instruction injection:** Could a user's input file contain instruction-like
+  text that tries to override the skill's behavior?
 - **Misuse potential:** Could the skill be used in ways the author didn't
   intend? Is that a problem, and if so, are there guardrails?
 - **Failure cascades:** If one step fails, does the failure propagate cleanly,
