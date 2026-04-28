@@ -268,14 +268,14 @@ Based on reconnaissance, choose the optimal architecture:
 
 ### Decision Matrix
 
-| Factor | CLI (Bash+curl) | Node.js CLI | MCP Server | Browser Wrapper |
+| Factor | Shell CLI | Node.js CLI | MCP Server | Browser Wrapper |
 |--------|----------------|-------------|------------|-----------------|
 | REST API available | Best choice | Good | Good | Overkill |
 | No REST API | N/A | N/A | N/A | Only option |
 | WebSocket needed | Poor | Best | Good | Poor |
 | Token efficiency | Excellent | Good | Medium | Poor |
 | Speed | Fast | Fast | Medium | Slow |
-| Dependencies | None (curl) | Node.js | Node.js | agent-browser |
+| Dependencies | None beyond an HTTP client | Node.js | Node.js | agent-browser |
 | Composability | Excellent (pipes) | Good | Limited | Poor |
 | Real-time events | No | Yes | Yes | No |
 
