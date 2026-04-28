@@ -1,19 +1,11 @@
 ---
 name: claude-prompt-architect
 description: >
-  Write, audit, migrate, and optimize prompts specifically calibrated for Anthropic's
-  Claude Opus and Sonnet 4.5/4.6 model family. Use this skill whenever the user wants to
-  write a system prompt, CLAUDE.md file, project instruction set, custom instructions,
-  or task prompt for Claude. Also use when the user wants to review, audit, fix, or
-  migrate an existing prompt — especially when moving from Claude 4.5/Opus 4.5 era
-  prompts to current models. Triggers on: "write a prompt," "make a system prompt,"
-  "audit my prompt," "fix my CLAUDE.md," "optimize this prompt," "migrate this prompt,"
-  "why isn't Claude following my instructions," "prompt engineering," "write instructions
-  for Claude," "make Claude do X," "prompt for Opus/Sonnet," "calibrate this prompt,"
-  or any task where the deliverable is instructions that an AI model will follow.
-  Use this skill even when the user doesn't explicitly say "prompt" — if they're
-  describing desired AI behavior and the output is an instruction set, this skill applies.
-  Do not use for GPT/Codex/ChatGPT prompt work; use gpt-prompt-architect there.
+  Write, audit, migrate, and optimize prompts for Anthropic Claude Opus and
+  Sonnet 4.5/4.6. Use for Claude system prompts, CLAUDE.md files, project
+  instructions, custom instructions, task prompts, prompt audits, prompt
+  migration, and instruction-set design. Do not use for GPT, Codex, or ChatGPT
+  prompt work; use gpt-prompt-architect there.
 ---
 
 # Claude Prompt Architect
