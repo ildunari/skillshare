@@ -1,7 +1,6 @@
-Invalid tmux session name: 
 ---
 name: claude-code-subagent-lane
-description: Use when Hermes should launch Claude Code as a planning, review, UI/UX, architecture, or specialized Claude Code agent lane; especially when deciding between `claude -p`, `--agent`, Hermes `delegate_task`, and ACP adapters.
+description: Use when Hermes should launch Claude Code as a planning, review, UI/UX, architecture, implementation, or specialized Claude Code agent lane. Covers one-shot `claude -p`, long-running/background `terminal(background=true)` jobs, interactive back-and-forth Claude Code sessions, `--agent`, `--worktree --tmux`, Hermes `delegate_task`, and ACP adapter choices.
 targets: [hermes-default, hermes-gpt]
 ---
 
@@ -13,7 +12,18 @@ Use this when Hermes wants Claude Code to act as a separate worker/lane.
 
 Claude Code should usually be launched as a normal CLI subprocess with `claude -p`, not through Hermes `delegate_task(acp_command="claude")`.
 
-Current observed state on this machine: Claude Code 2.1.119 does **not** support `claude --acp --stdio`; it exits with `unknown option '--acp'`. Do not copy older or guessed ACP examples that treat the raw `claude` binary as an ACP server.
+Current observed state on this machine: Claude Code 2.1.122 does **not** document raw `claude --acp --stdio` in `claude --help`. Do not copy older or guessed ACP examples that treat the raw `claude` binary as an ACP server.
+
+## Choose the right lane
+
+Use these defaults:
+
+- **One-shot read-only plan/review**: foreground `claude -p --permission-mode plan --output-format json`.
+- **One-shot implementation with bounded scope**: foreground `claude -p --permission-mode acceptEdits` or `dontAsk`, then independently verify diffs/tests.
+- **Long-running implementation or test loop**: run Claude Code through `terminal(background=true, notify_on_complete=true)`, then poll logs and verify output yourself before reporting success.
+- **Interactive back-and-forth**: run Claude Code in PTY mode or use Claude Code's native `--worktree --tmux` when the user wants to steer it manually across multiple turns.
+- **Configured specialist**: add `--agent <name>`.
+- **Hermes subagent**: use `delegate_task` for isolated Hermes workers, not for raw Claude Code unless using a real ACP adapter.
 
 ## Preferred one-shot pattern
 
@@ -33,6 +43,35 @@ claude -p --agent design-agent-claude --output-format json "<task prompt>"
 ```
 
 Use `--agents '<json>'` for ephemeral session-local agents when a file-backed agent is overkill.
+
+## Background pattern
+
+Use Hermes' background process tracking when Claude Code may take minutes, run tests, or iterate on a non-trivial repo change:
+
+```bash
+claude -p --output-format json \
+  --permission-mode acceptEdits \
+  --append-system-prompt "Return files changed, checks run, blockers, and exact verification commands." \
+  "<implementation task>"
+```
+
+Start it with `terminal(background=true, notify_on_complete=true)`, not shell `&`, `nohup`, or `disown`. Use `process.poll`, `process.log`, or `process.wait` to inspect progress. When it finishes, verify diffs and tests independently before telling Kosta it succeeded.
+
+## Interactive / back-and-forth pattern
+
+Use interactive Claude Code only when Kosta wants to steer the lane live or when the task benefits from a persistent Claude Code session:
+
+```bash
+claude --permission-mode default
+```
+
+Run it with a PTY when launching from Hermes terminal tooling. For isolated repo work where Claude Code should create/manage its own branch workspace, prefer Claude Code's native support:
+
+```bash
+claude --worktree <name> --tmux
+```
+
+Use this mode sparingly from Telegram because interactive sessions need active polling/stdin handling. If Kosta is not present to steer, use print/background mode instead.
 
 ## Prompting rules
 
@@ -77,7 +116,7 @@ Before changing scripts or instructions around Claude Code flags, run:
 
 ```bash
 claude --version
-claude --help | grep -E -- '--agent|--agents|--print|--permission-mode|--tools|--allowedTools|--append-system-prompt|--add-dir|--bare'
+claude --help | grep -E -- '--agent|--agents|--print|--permission-mode|--tools|--allowedTools|--append-system-prompt|--add-dir|--bare|--worktree|--tmux'
 claude --acp --stdio
 ```
 
