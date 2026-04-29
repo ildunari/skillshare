@@ -1,9 +1,12 @@
 ---
-name: moss-samantha-voiceover
+name: moss
 description: Generate a short spoken-style voiceover from a normal answer using the local MOSS CLI with Samantha as the default voice. Use whenever the user asks for Samantha, MOSS TTS, a voice memo, spoken summary, Telegram voice note, or non-English Samantha narration; includes current local flags for speed, duration budgeting, Hebrew/multilingual quality, and verification.
 targets:
   - hermes-default
   - hermes-gpt
+metadata:
+  hermes:
+    command_priority: 100
 ---
 
 # MOSS Samantha Voiceover
