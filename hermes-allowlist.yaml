@@ -77,3 +77,12 @@ skills:
 - creative/animation-generative-art
 - creative/animation-ui-motion
 - creative/blender-mcp
+- mlops/mlx
+- mlops/mlx-model-repo-audit
+- mlops/mlx-llm-conversion
+- mlops/mlx-vlm-conversion
+- mlops/mlx-embedding-reranker
+- mlops/mlx-quantization-quality
+- mlops/mlx-local-benchmarking
+- mlops/mlx-troubleshooting-repro
+- mlops/mlx-hub-packaging
