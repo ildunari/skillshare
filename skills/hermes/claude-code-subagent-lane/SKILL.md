@@ -1,5 +1,5 @@
 ---
-name: claude-code-subagent-lane
+name: claude-code
 description: Use when Hermes should launch Claude Code as a planning, review, UI/UX, architecture, implementation, or specialized Claude Code agent lane. Covers one-shot `claude -p`, long-running/background `terminal(background=true)` jobs, interactive back-and-forth Claude Code sessions, `--agent`, `--worktree --tmux`, Hermes `delegate_task`, and ACP adapter choices.
 targets: [hermes-default, hermes-gpt]
 ---
