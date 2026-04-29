@@ -1,6 +1,5 @@
 ---
 name: animation-ui-motion
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Design or fix UI transitions, microinteractions, easing, app motion, and interface choreography in plain English.
 metadata:

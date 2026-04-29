@@ -1,6 +1,5 @@
 ---
 name: animation-generative-art
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make coded visual loops: particles, flow fields, shaders, canvas sketches, procedural art, and interactive animation studies.
 metadata:

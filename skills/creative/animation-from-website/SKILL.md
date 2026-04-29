@@ -1,6 +1,5 @@
 ---
 name: animation-from-website
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Turn a URL or existing website into a short video walkthrough, promo, or animated capture.
 metadata:

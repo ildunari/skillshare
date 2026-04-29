@@ -1,6 +1,5 @@
 ---
 name: animation-3d-scene
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make Blender-style 3D scenes, camera moves, materials, object animation, and particle sculptures without making Kosta remember Blender MCP.
 metadata:

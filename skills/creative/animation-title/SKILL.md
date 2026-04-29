@@ -1,6 +1,5 @@
 ---
 name: animation-title
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make cinematic title cards, intro sequences, kinetic captions, promo clips, and polished short motion pieces.
 metadata:

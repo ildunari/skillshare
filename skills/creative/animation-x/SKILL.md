@@ -1,6 +1,5 @@
 ---
 name: animation-x
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Plain-English animation command chooser. Use this when Kosta asks which animation command/skill to use, or wants an animation made but has not picked the style yet.
 metadata:

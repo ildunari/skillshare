@@ -1,6 +1,5 @@
 ---
 name: animation-live-visuals
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make TouchDesigner-style live/generative visuals, audio-reactive stage looks, visualizers, tunnels, feedback, and experimental realtime motion.
 metadata:

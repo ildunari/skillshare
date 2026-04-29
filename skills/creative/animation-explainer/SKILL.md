@@ -1,6 +1,5 @@
 ---
 name: animation-explainer
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make clear math, science, algorithm, and technical explainer animations without making Kosta remember Manim or other tool names.
 metadata:

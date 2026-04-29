@@ -13,10 +13,6 @@ tags:
 - modeling
 - bpy
 - mcp
-targets:
-- hermes-default
-- hermes-gpt
-- claude
 ---
 
 # Blender MCP

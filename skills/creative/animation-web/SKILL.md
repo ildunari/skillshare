@@ -1,6 +1,5 @@
 ---
 name: animation-web
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make browser-rendered animation videos: HTML/CSS/JS scenes, captions, overlays, transitions, and social-video compositions.
 metadata:

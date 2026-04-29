@@ -1,6 +1,5 @@
 ---
 name: animation-lab
-targets: [hermes-default, hermes-gpt, claude]
 description: >-
   Make polished motion-design and animation prototypes with Claude Code and the local media/creative skill stack. Use this when the user asks for animation directions, ASCII/bit animation, kinetic typography, cinematic title cards, audio-reactive orb/waveform visuals, liquid holograms, blueprint/lab-note motion, retro terminal animation, or design explorations that should be rendered as MP4/GIF/contact sheets rather than just described.
 metadata:
