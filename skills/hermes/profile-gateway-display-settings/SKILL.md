@@ -54,19 +54,27 @@ What this means:
 
 ## Safe restart pattern for one default + one gpt gateway
 
+Prefer the managed background LaunchAgent restart. On this Mac Studio, Hermes gateways are loaded in the `user/<uid>` launchd domain with `LimitLoadToSessionType=Background`; do **not** use `gui/<uid>` from Telegram/Discord/background shells.
+
 ```bash
-pkill -f '/Users/Kosta/.hermes/hermes-agent/.venv/bin/python -m hermes_cli.main gateway run --replace'
-pkill -f '/Users/Kosta/.hermes/hermes-agent/.venv/bin/python -m hermes_cli.main --profile gpt gateway run --replace'
-
-sleep 2
-
-nohup /Users/Kosta/.hermes/hermes-agent/.venv/bin/python -m hermes_cli.main gateway run --replace >/tmp/hermes-default-gateway.log 2>&1 &
-nohup /Users/Kosta/.hermes/hermes-agent/.venv/bin/python -m hermes_cli.main --profile gpt gateway run --replace >/tmp/hermes-gpt-gateway.log 2>&1 &
-
-sleep 2
-
-ps aux | egrep 'hermes_cli.main( --profile gpt)? gateway run --replace' | grep -v egrep
+uid=$(id -u)
+launchctl kickstart -k user/$uid/ai.hermes.gateway
+launchctl kickstart -k user/$uid/ai.hermes.gateway-gpt
 ```
+
+If this is triggered from a live Telegram/Discord/Hermes gateway command, do not run it inline inside the receiving gateway process. Queue a detached helper that replies first, sleeps briefly so the reply flushes, runs the two `launchctl kickstart -k user/$uid/...` commands, logs to `~/.hermes/logs/restart-surfaces.log`, then verifies the managed services.
+
+The local implementation for that helper is:
+
+```text
+hermes_cli/restart_surfaces.py
+/restart-gateways
+/restart-hermes
+/restart-gateways --dry-run
+/restart-hermes --dry-run
+```
+
+Only fall back to killing and launching direct `gateway run --replace` processes when launchd is broken or unloaded and the dual-gateway recovery skill says to use the headless fallback. Direct `pkill`/`nohup` restarts are no longer the normal first choice because they can leave orphaned gateway pollers outside launchd.
 
 ## Pitfalls
 
