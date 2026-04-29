@@ -11,6 +11,7 @@ description: "Production pipeline for ASCII art video \u2014 any format. Convert
 targets:
 - hermes-default
 - hermes-gpt
+- claude
 ---
 
 # ASCII Video Production Pipeline

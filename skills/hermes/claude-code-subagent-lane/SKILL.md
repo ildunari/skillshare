@@ -27,20 +27,32 @@ Use these defaults:
 
 ## Preferred one-shot pattern
 
-Run from the repo/workdir that should provide project context:
+Run from the repo/workdir that should provide project context. For anything longer than a sentence or two, write the prompt to a file and redirect stdin. This avoids shell quoting/argument parsing mistakes where Claude sees only `json` or receives no prompt.
 
 ```bash
-claude -p --output-format json \
+cat > /tmp/claude-task.md <<'PROMPT'
+<task prompt>
+PROMPT
+
+claude --print --input-format text --output-format json \
   --permission-mode plan \
   --append-system-prompt-file .hermes/prompts/claude-planning.md \
-  "<task prompt>"
+  < /tmp/claude-task.md
 ```
 
 Use `--agent <name>` for a configured Claude Code agent:
 
 ```bash
-claude -p --agent design-agent-claude --output-format json "<task prompt>"
+cat > /tmp/claude-task.md <<'PROMPT'
+<task prompt>
+PROMPT
+
+claude --print --input-format text --output-format json \
+  --agent design-agent-claude \
+  < /tmp/claude-task.md
 ```
+
+Short one-liners can still use a positional prompt, but avoid `"$(cat prompt.md)"` for real tasks.
 
 Use `--agents '<json>'` for ephemeral session-local agents when a file-backed agent is overkill.
 
@@ -49,13 +61,17 @@ Use `--agents '<json>'` for ephemeral session-local agents when a file-backed ag
 Use Hermes' background process tracking when Claude Code may take minutes, run tests, or iterate on a non-trivial repo change:
 
 ```bash
-claude -p --output-format json \
+cat > /tmp/claude-task.md <<'PROMPT'
+<implementation task>
+PROMPT
+
+claude --print --input-format text --output-format json \
   --permission-mode acceptEdits \
   --append-system-prompt "Return files changed, checks run, blockers, and exact verification commands." \
-  "<implementation task>"
+  < /tmp/claude-task.md
 ```
 
-Start it with `terminal(background=true, notify_on_complete=true)`, not shell `&`, `nohup`, or `disown`. Use `process.poll`, `process.log`, or `process.wait` to inspect progress. When it finishes, verify diffs and tests independently before telling Kosta it succeeded.
+Start it with `terminal(background=true, notify_on_complete=true)`, not shell `&`, `nohup`, or `disown`. Use `process.poll`, `process.log`, or `process.wait` to inspect progress. If an early background notification says `no stdin data received` or asks what to do with `JSON`, that run did not receive the intended prompt; ignore that failed run, relaunch with the stdin pattern above, and verify the successful run's output separately. When it finishes, verify diffs and tests independently before telling Kosta it succeeded.
 
 ## Interactive / back-and-forth pattern
 
