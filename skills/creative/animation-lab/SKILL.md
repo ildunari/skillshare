@@ -18,7 +18,7 @@ For most jobs, load:
 
 - `creative__ascii-video` — production pipeline for MP4/GIF/image-sequence generation
 - `creative__claude-design` — design taste, layout, typography, anti-slop rules
-- `hermes__claude-code-subagent-lane` — how to launch Claude Code correctly from Hermes
+- `agentic__claude-code-subagent-lane` — how to launch Claude Code correctly from another agent
 - `creative__touchdesigner-hermes-ops` if the prompt mentions TouchDesigner/twozero/port 40404
 
 If using Claude Code, point it explicitly at the installed Claude skills:

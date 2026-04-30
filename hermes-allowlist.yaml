@@ -51,7 +51,7 @@ skills:
 - personal-ops/xurl
 - hermes/plan
 - hermes/hermes-webui-mobile-evaluation
-- hermes/claude-code-subagent-lane
+- agentic/claude-code-subagent-lane
 - media-creative/hyperframes
 - media-creative/hyperframes-cli
 - media-creative/gsap

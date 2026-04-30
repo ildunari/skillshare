@@ -1,12 +1,12 @@
 ---
 name: claude-code
-description: Use when Hermes should launch Claude Code as a planning, review, UI/UX, architecture, implementation, or specialized Claude Code agent lane. Covers one-shot `claude -p`, long-running/background `terminal(background=true)` jobs, interactive back-and-forth Claude Code sessions, `--agent`, `--worktree --tmux`, Hermes `delegate_task`, and ACP adapter choices.
-targets: [hermes-default, hermes-gpt, codex]
+description: Use when an agent should launch Claude Code as a planning, review, UI/UX, architecture, implementation, or specialized Claude Code lane. Covers one-shot `claude -p`, long-running/background jobs, interactive back-and-forth Claude Code sessions, `--agent`, `--worktree --tmux`, and ACP adapter choices.
+targets: [codex, droid, gemini, cursor, "Forge Agent", "Craft-MyWorkspace", "Craft-Brown", hermes-default, hermes-gpt, xcode-codex]
 ---
 
-# Claude Code Subagent Lane for Hermes
+# Claude Code Subagent Lane
 
-Use this when Hermes wants Claude Code to act as a separate worker/lane.
+Use this when the current agent wants Claude Code to act as a separate worker/lane.
 
 ## Position
 
@@ -39,10 +39,10 @@ Use these defaults:
 
 - **One-shot read-only plan/review**: foreground `claude -p --permission-mode auto --output-format json` by default so inspection commands are not denied; use `plan` only when edits must be impossible.
 - **One-shot implementation with bounded scope**: foreground `claude -p --permission-mode auto`; fall back to `acceptEdits` if auto is unavailable. Independently verify diffs/tests.
-- **Long-running implementation or test loop**: run Claude Code through `terminal(background=true, notify_on_complete=true)`, then poll logs and verify output yourself before reporting success.
+- **Long-running implementation or test loop**: run Claude Code through the host's background process mechanism when available, then poll logs and verify output yourself before reporting success.
 - **Interactive back-and-forth**: run Claude Code in PTY mode or use Claude Code's native `--worktree --tmux` when the user wants to steer it manually across multiple turns.
 - **Configured specialist**: add `--agent <name>`.
-- **Hermes subagent**: use `delegate_task` for isolated Hermes workers, not for raw Claude Code unless using a real ACP adapter.
+- **ACP subagent lane**: use the host's native delegation tool for isolated workers, not raw Claude Code ACP unless using a real ACP adapter.
 
 ## Preferred one-shot pattern
 
@@ -77,7 +77,7 @@ Use `--agents '<json>'` for ephemeral session-local agents when a file-backed ag
 
 ## Background pattern
 
-Use Hermes' background process tracking when Claude Code may take minutes, run tests, or iterate on a non-trivial repo change:
+Use the host's background process tracking when Claude Code may take minutes, run tests, or iterate on a non-trivial repo change:
 
 ```bash
 cat > /tmp/claude-task.md <<'PROMPT'
@@ -90,7 +90,7 @@ claude --print --input-format text --output-format json \
   < /tmp/claude-task.md
 ```
 
-Start it with `terminal(background=true, notify_on_complete=true)`, not shell `&`, `nohup`, or `disown`. Use `process.poll`, `process.log`, or `process.wait` to inspect progress. If an early background notification says `no stdin data received` or asks what to do with `JSON`, that run did not receive the intended prompt; ignore that failed run, relaunch with the stdin pattern above, and verify the successful run's output separately. When it finishes, verify diffs and tests independently before telling Kosta it succeeded.
+Start it with the host's managed background task API when one exists, not shell `&`, `nohup`, or `disown`. Use the host's polling/log APIs to inspect progress. If an early background notification says `no stdin data received` or asks what to do with `JSON`, that run did not receive the intended prompt; ignore that failed run, relaunch with the stdin pattern above, and verify the successful run's output separately. When it finishes, verify diffs and tests independently before telling Kosta it succeeded.
 
 ## Interactive / back-and-forth pattern
 
@@ -100,7 +100,7 @@ Use interactive Claude Code only when Kosta wants to steer the lane live or when
 claude --permission-mode auto
 ```
 
-Run it with a PTY when launching from Hermes terminal tooling. For isolated repo work where Claude Code should create/manage its own branch workspace, prefer Claude Code's native support:
+Run it with a PTY when launching from terminal tooling. For isolated repo work where Claude Code should create/manage its own branch workspace, prefer Claude Code's native support:
 
 ```bash
 claude --worktree <name> --tmux
@@ -128,7 +128,7 @@ Use this mode sparingly from Telegram because interactive sessions need active p
 
 ## ACP bridge, only when needed
 
-If Hermes truly needs ACP transport, use an actual ACP adapter, not raw Claude Code. The current package is:
+If the host truly needs ACP transport, use an actual ACP adapter, not raw Claude Code. The current package is:
 
 ```bash
 npx -y @agentclientprotocol/claude-agent-acp
@@ -145,7 +145,7 @@ delegate_task(
 )
 ```
 
-Test the adapter in the current environment before relying on it for real work. For most Hermes orchestration, direct `claude -p` is simpler, more debuggable, and closer to Claude Code's documented headless/programmatic mode.
+Test the adapter in the current environment before relying on it for real work. For most orchestration, direct `claude -p` is simpler, more debuggable, and closer to Claude Code's documented headless/programmatic mode.
 
 ## Freshness check
 
