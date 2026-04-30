@@ -1,7 +1,7 @@
 ---
 name: claude-code
 description: Use when an agent should launch Claude Code as a planning, review, UI/UX, architecture, implementation, or specialized Claude Code lane. Covers one-shot `claude -p`, long-running/background jobs, interactive back-and-forth Claude Code sessions, `--agent`, `--worktree --tmux`, and ACP adapter choices.
-targets: [codex, droid, gemini, cursor, "Forge Agent", "Craft-MyWorkspace", "Craft-Brown", hermes-default, hermes-gpt, xcode-codex]
+targets: [codex, droid, gemini, cursor, antigravity, copilot, kiro, "Forge Agent", "Craft-MyWorkspace", "Craft-Brown", hermes-default, hermes-gpt, xcode-codex]
 ---
 
 # Claude Code Subagent Lane
