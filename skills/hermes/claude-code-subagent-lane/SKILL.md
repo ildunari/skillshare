@@ -12,14 +12,33 @@ Use this when Hermes wants Claude Code to act as a separate worker/lane.
 
 Claude Code should usually be launched as a normal CLI subprocess with `claude -p`, not through Hermes `delegate_task(acp_command="claude")`.
 
-Current observed state on this machine: Claude Code 2.1.122 does **not** document raw `claude --acp --stdio` in `claude --help`. Do not copy older or guessed ACP examples that treat the raw `claude` binary as an ACP server.
+Current observed state on this machine: Claude Code 2.1.123 does **not** document raw `claude --acp --stdio` in `claude --help`. Do not copy older or guessed ACP examples that treat the raw `claude` binary as an ACP server.
+
+## Permission mode default
+
+Prefer Claude Code's `auto` permission mode for delegated Claude Code lanes:
+
+```bash
+claude --print --input-format text --output-format json \
+  --permission-mode auto \
+  < /tmp/claude-task.md
+```
+
+Use `auto` because it lets Claude Code run without repeated permission prompts while still routing risky actions through Claude Code's classifier. It is less disruptive than `plan`/`default` and safer than `bypassPermissions`.
+
+Important caveats:
+
+- `auto` requires Claude Code v2.1.83+, an eligible plan/account, a supported Claude model, and Anthropic API routing. If Claude reports that auto mode is unavailable, relaunch with `--permission-mode acceptEdits` for implementation work or `--permission-mode plan` for read-only planning/review.
+- For non-interactive `claude --print` runs, repeated auto-mode blocks can abort the run because there is no user prompt to fall back to. If that happens, rerun with narrower context, clearer trusted-boundary instructions, or `acceptEdits`.
+- Do not use `bypassPermissions` / `--dangerously-skip-permissions` unless Kosta explicitly asks for a YOLO lane in an isolated environment.
+- To make auto persistent for normal Claude Code launches, set `permissions.defaultMode = "auto"` in Claude Code settings. Do not use VS Code's `claudeCode.initialPermissionMode` for this; it does not accept `auto`.
 
 ## Choose the right lane
 
 Use these defaults:
 
-- **One-shot read-only plan/review**: foreground `claude -p --permission-mode plan --output-format json`.
-- **One-shot implementation with bounded scope**: foreground `claude -p --permission-mode acceptEdits` or `dontAsk`, then independently verify diffs/tests.
+- **One-shot read-only plan/review**: foreground `claude -p --permission-mode auto --output-format json` by default so inspection commands are not denied; use `plan` only when edits must be impossible.
+- **One-shot implementation with bounded scope**: foreground `claude -p --permission-mode auto`; fall back to `acceptEdits` if auto is unavailable. Independently verify diffs/tests.
 - **Long-running implementation or test loop**: run Claude Code through `terminal(background=true, notify_on_complete=true)`, then poll logs and verify output yourself before reporting success.
 - **Interactive back-and-forth**: run Claude Code in PTY mode or use Claude Code's native `--worktree --tmux` when the user wants to steer it manually across multiple turns.
 - **Configured specialist**: add `--agent <name>`.
@@ -35,7 +54,7 @@ cat > /tmp/claude-task.md <<'PROMPT'
 PROMPT
 
 claude --print --input-format text --output-format json \
-  --permission-mode plan \
+  --permission-mode auto \
   --append-system-prompt-file .hermes/prompts/claude-planning.md \
   < /tmp/claude-task.md
 ```
@@ -66,7 +85,7 @@ cat > /tmp/claude-task.md <<'PROMPT'
 PROMPT
 
 claude --print --input-format text --output-format json \
-  --permission-mode acceptEdits \
+  --permission-mode auto \
   --append-system-prompt "Return files changed, checks run, blockers, and exact verification commands." \
   < /tmp/claude-task.md
 ```
@@ -78,7 +97,7 @@ Start it with `terminal(background=true, notify_on_complete=true)`, not shell `&
 Use interactive Claude Code only when Kosta wants to steer the lane live or when the task benefits from a persistent Claude Code session:
 
 ```bash
-claude --permission-mode default
+claude --permission-mode auto
 ```
 
 Run it with a PTY when launching from Hermes terminal tooling. For isolated repo work where Claude Code should create/manage its own branch workspace, prefer Claude Code's native support:
@@ -100,7 +119,9 @@ Use this mode sparingly from Telegram because interactive sessions need active p
 
 ## Permissions and tools
 
-- For read-only planning/review, default to `--permission-mode plan`.
+- Default to `--permission-mode auto` for Claude Code lanes so read/explore commands, edits, and tests can proceed without repeated permission prompts.
+- Use `--permission-mode plan` only when the lane must be unable to edit.
+- Use `--permission-mode acceptEdits` when auto is unavailable but edits should still be allowed.
 - Use `--tools` to restrict what Claude can use.
 - Use `--allowedTools` to auto-approve specific tools; it is not the same as restricting available tools.
 - Avoid broad `--dangerously-skip-permissions` / bypass mode unless Kosta explicitly wants a YOLO implementation lane.
@@ -133,6 +154,7 @@ Before changing scripts or instructions around Claude Code flags, run:
 ```bash
 claude --version
 claude --help | grep -E -- '--agent|--agents|--print|--permission-mode|--tools|--allowedTools|--append-system-prompt|--add-dir|--bare|--worktree|--tmux'
+claude --print --permission-mode auto --input-format text --output-format json <<< 'Say ok'
 claude --acp --stdio
 ```
 
