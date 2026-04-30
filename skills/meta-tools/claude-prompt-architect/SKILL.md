@@ -1,8 +1,8 @@
 ---
 name: claude-prompt-architect
 description: >
-  Write, audit, migrate, and optimize prompts for Anthropic Claude Opus and
-  Sonnet 4.5/4.6. Use for Claude system prompts, CLAUDE.md files, project
+  Write, audit, migrate, and optimize prompts for Anthropic Claude Opus 4.7
+  plus Claude Opus/Sonnet 4.5/4.6. Use for Claude system prompts, CLAUDE.md files, project
   instructions, custom instructions, task prompts, prompt audits, prompt
   migration, and instruction-set design. Do not use for GPT, Codex, or ChatGPT
   prompt work; use gpt-prompt-architect there.
@@ -10,17 +10,19 @@ description: >
 
 # Claude Prompt Architect
 
-Write and optimize prompts for Claude's 4.5/4.6 model family using the behavioral patterns these models actually respond to — not prompt engineering folklore from earlier generations.
+Write and optimize prompts for Claude Opus 4.7 and the Claude 4.5/4.6 family using current Anthropic guidance, not prompt-engineering folklore from earlier generations.
 
 ## Three Principles
 
-Everything in this skill flows from three meta-principles that define effective prompting on Claude 4.5/4.6:
+Everything in this skill flows from four meta-principles that define effective prompting on Claude Opus 4.7 and the Claude 4.5/4.6 family:
 
-**1. Literalism is the default.** These models follow instructions as written, not as intended. They will not infer unstated requirements, add features you didn't ask for, or go "above and beyond" unless explicitly told to. Specify what good looks like. If you want thoroughness, say so. If you want creative latitude, grant it.
+**1. Literalism is the default, especially on Opus 4.7.** Claude follows instructions as written, not as intended. If a rule applies to every item, file, or section, say so explicitly. Do not rely on silent generalization across a list.
 
-**2. Softer language produces better results.** The calibration spectrum has shifted. Aggressive emphasis (CRITICAL, MUST, ALWAYS, NEVER) causes overtriggering on Opus 4.5/4.6 — the model obsessively follows the emphasized instruction at the expense of judgment. Conditional guidance with rationale ("Use X when Y, because Z") consistently outperforms imperative commands across all current models.
+**2. Direct and conditional beats theatrical emphasis.** Opus 4.7 is more direct and less validation-forward than Opus 4.6. Use clear decision rules with rationale. Keep aggressive emphasis for true safety or irreversible-action boundaries; do not use it to force diligence.
 
-**3. Context minimalism outperforms context maximalism.** Frontier thinking models reliably follow approximately 150–200 individual instructions. Beyond this, compliance degrades uniformly — the model doesn't ignore new instructions selectively, it starts ignoring all of them with equal probability. Every unnecessary instruction, document, or emphasis marker dilutes attention on what matters.
+**3. Front-load task context, prune evergreen clutter.** For Claude Code and agentic work, the first turn should include intent, constraints, acceptance criteria, relevant files, and allowed side effects. Persistent system/project prompts should stay lean because broad instruction stacks still dilute compliance.
+
+**4. Tune effort before adding prompt hacks.** Opus 4.7 is effort-sensitive. For serious coding and agentic work, use `xhigh` or at least `high`; for shallow reasoning, raise effort before adding more “think carefully” prose. Fixed thinking budgets and non-default sampling parameters are not valid for Opus 4.7.
 
 ## Feedback Loop
 
@@ -40,6 +42,7 @@ Load only what you need. Use this routing table.
 | Reference | Load when... |
 |---|---|
 | `FEEDBACK.md` | **Always** — before every use |
+| `references/opus-4-7-guidance.md` | **Always for Opus 4.7 work** — literalism, effort, adaptive thinking, API changes, tool/subagent behavior |
 | `references/calibration-guide.md` | Writing or auditing any prompt — intensity calibration is the single highest-leverage skill |
 | `references/constraint-patterns.md` | Writing constraints, prohibitions, behavioral boundaries, or formatting rules |
 | `references/structural-templates.md` | Building a system prompt, CLAUDE.md, or project instruction set from scratch |
@@ -58,7 +61,7 @@ Use `ask_user_input` to clarify scope before writing anything. Gather iterativel
 
 **First round — establish the basics:**
 - What type of prompt? (system prompt, CLAUDE.md, project instructions, task prompt, custom instructions)
-- What is the target model? (Opus 4.6, Opus 4.5, Sonnet 4.6, Sonnet 4.5, or "whatever Claude is using")
+- What is the target model? (Opus 4.7, Opus 4.6, Opus 4.5, Sonnet 4.6, Sonnet 4.5, or "whatever Claude is using")
 - What is the prompt's purpose? (role definition, tool orchestration, output formatting, behavioral constraints, agentic workflow, general assistant customization)
 - Who interacts with the prompted Claude? (end users, developers, automated pipelines, the user themselves)
 
@@ -85,24 +88,29 @@ Present this outline to the user. Get approval before drafting.
 
 #### Step 3: Draft the prompt
 
-**Load `references/calibration-guide.md` and `references/constraint-patterns.md` before drafting.**
+**Load `references/opus-4-7-guidance.md` for Opus 4.7 work, plus `references/calibration-guide.md` and `references/constraint-patterns.md` before drafting.**
 
 Apply these rules during drafting:
 
 **Calibration rules:**
-- Default to "explained conditional" intensity: "Use X when Y, because Z"
-- Remove any ALL-CAPS emphasis unless it's a genuine safety-critical hard stop
-- Replace imperative commands ("ALWAYS do X") with conditional guidance ("When encountering Y, do X")
-- Include rationale for non-obvious rules — Claude generalizes from explanations
-- For Opus 4.6: actively remove anti-laziness language ("be thorough," "explore all possibilities")
-- For Sonnet 4.5/4.6: provide more explicit structure (checklists, numbered steps) since Sonnet benefits from specificity
+- Default to explained conditionals: "Use X when Y, because Z."
+- For Opus 4.7, be direct and explicit about global scope: "Apply this to every section/file/item."
+- Remove vague optionality (`try to`, `if possible`, `consider`) when the behavior is required.
+- Remove any ALL-CAPS emphasis unless it is a genuine safety-critical or irreversible-action boundary.
+- Replace broad imperatives ("ALWAYS do X") with decision rules ("When encountering Y, do X because Z").
+- Include rationale for non-obvious rules — Claude generalizes from explanations.
+- If warmth matters on Opus 4.7, ask for it positively and give a short example; otherwise expect more direct output.
+- For Opus 4.7 coding/agentic work, recommend `output_config.effort: xhigh` or at least `high` before adding anti-laziness prose.
+- For Opus 4.6: actively remove anti-laziness language ("be thorough," "explore all possibilities").
+- For Sonnet 4.5/4.6: provide more explicit structure (checklists, numbered steps) since Sonnet benefits from specificity.
 
 **Structural rules:**
-- Role definition goes in the `system` parameter — make it domain-specific, not generic
-- Long documents placed before instructions, query placed last
-- Use XML tags for complex prompts with 3+ behavioral sections
-- Define XML tags explicitly at first use rather than relying on Claude to infer meaning
-- Keep total instruction count under 150 (count each discrete behavioral directive)
+- Role definition goes in the `system` parameter — make it domain-specific, not generic.
+- For Opus 4.7 Claude Code / agentic work, front-load intent, constraints, acceptance criteria, relevant files/locations, and allowed side effects.
+- Long documents placed before instructions, query placed last.
+- Use XML tags for complex prompts with 3+ behavioral sections.
+- Define XML tags explicitly at first use rather than relying on Claude to infer meaning.
+- Keep persistent instruction stacks lean; broad evergreen context dilutes compliance even when Opus 4.7 can handle long context.
 
 **Constraint rules:**
 - Frame constraints positively: "write in flowing prose" not "don't use bullet points"
@@ -156,13 +164,15 @@ Run through this checklist. For each item, note pass/concern/fail with specific 
 - Total instruction count under 150 for the full prompt stack
 - No redundant or overlapping instructions
 
-**Calibration for 4.5/4.6:**
-- All instances of CRITICAL, MUST, ALWAYS, NEVER reviewed — most should be softened
+**Calibration for Opus 4.7 and Claude 4.5/4.6:**
+- All instances of CRITICAL, MUST, ALWAYS, NEVER reviewed — keep only true invariants/hard stops
 - Anti-laziness prompting removed (causes overtriggering on Opus 4.5/4.6)
 - Tool-triggering language uses conditional form, not imperative
 - "Above and beyond" behavior explicitly requested if desired
 - No use of "think" in non-thinking contexts if targeting Opus 4.5
-- Prefilling removed if targeting Opus 4.6 or Sonnet 4.6 (deprecated)
+- Prefilling removed if targeting Opus 4.6, Opus 4.7, or Sonnet 4.6 (deprecated/unsupported patterns)
+- For Opus 4.7: no fixed `budget_tokens`; use adaptive thinking + `output_config.effort`
+- For Opus 4.7: no non-default `temperature`, `top_p`, or `top_k`; steer behavior through prompts/examples/evals
 
 **Constraint quality:**
 - Constraints framed positively with approved alternative actions
@@ -177,7 +187,7 @@ Run through this checklist. For each item, note pass/concern/fail with specific 
 - Formatting preferences use "do this" rather than "don't do that"
 
 **Extended thinking (if applicable):**
-- Thinking mode matches model (adaptive for Opus 4.6, manual budget for others)
+- Thinking mode matches model (adaptive + effort for Opus 4.7/4.6, manual budget only for older supported models)
 - Effort parameter set appropriately
 - No manual "think step-by-step" that conflicts with extended thinking
 - Thinking instructions are high-level, not prescriptive step-by-step
@@ -212,14 +222,15 @@ Deliver findings and rewrite. Note any model-specific adjustments.
 
 ### Mode 3: Migrate
 
-Convert a prompt written for an older Claude model (4.5, Opus 4.5, or earlier) to work optimally on current 4.6 models.
+Convert a prompt written for an older Claude model (4.6, 4.5, Opus 4.5, or earlier) to work optimally on Opus 4.7 or current Claude 4.x models.
 
-This is a specialized Audit with a focus on the behavioral shifts between generations:
+This is a specialized Audit with a focus on behavioral and API shifts between generations:
 
-1. **Identify era markers** — ALL-CAPS emphasis, anti-laziness language, aggressive tool triggers, "think step-by-step" instructions, prefill patterns
-2. **Map each marker to its 4.5/4.6 replacement** using `references/calibration-guide.md`
-3. **Check for missing explicit instructions** — behaviors the old model inferred that 4.5/4.6 requires stated explicitly
-4. **Produce a migration diff** — show what changed and why, then the complete rewritten prompt
+1. **Identify era markers** — ALL-CAPS emphasis, anti-laziness language, aggressive tool triggers, "think step-by-step" instructions, prefill patterns, fixed thinking budgets, non-default sampling parameters
+2. **Map each marker to its replacement** using `references/opus-4-7-guidance.md` and `references/calibration-guide.md`
+3. **Check for missing explicit instructions** — especially global scope across every file/item/section, tool-use triggers, subagent fanout, warmth/directness, and acceptance criteria
+4. **Set effort intentionally** — Opus 4.7 serious coding/agentic tasks usually want `xhigh`/`high`; do not fix shallow reasoning by adding prompt clutter
+5. **Produce a migration diff** — show what changed and why, then the complete rewritten prompt
 
 ---
 
@@ -266,3 +277,11 @@ No prompt is correct until tested against representative inputs on the target mo
 - After writing a CLAUDE.md, the user may want `workflow-methodology` for the development workflow it supports
 - After writing a system prompt with tool descriptions, the user may need `mcp-server-builder` for the tools themselves
 - When the user reports a prompt "isn't working," start with this skill's Audit mode before assuming the problem is elsewhere
+
+
+## Current Source Receipts
+
+- Anthropic Opus 4.7 launch/API notes: 2026-04-16.
+- Anthropic Opus 4.7 docs: prompting best practices, migration guide, model overview, and Claude Code best-practices page.
+- Claude 4.7 family currently appears to mean Opus 4.7 specifically; do not invent Sonnet 4.7 guidance unless Anthropic publishes it.
+

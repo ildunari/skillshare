@@ -1,6 +1,6 @@
 # AGENTS.md Architecture & Codex Skills
 
-Reference for writing and auditing AGENTS.md files, Codex skills, and compaction-aware prompt design. Load when working on any Codex CLI prompt surface.
+Reference for writing and auditing AGENTS.md files, Codex skills, and compaction-aware prompt design. Load when working on any Codex CLI prompt surface. For GPT-5.5-specific model calibration, load `gpt-5-5-guidance.md` first.
 
 ---
 
@@ -56,9 +56,9 @@ Think of 32 KiB as approximately 8,000 words or ~25 pages of instructions. This 
 
 If you're approaching the cap: audit for redundancy, move reference material to skills (which load on-demand, not on startup), and use `project_doc_max_bytes` to raise the limit if justified.
 
-### Structure: CTCO for AGENTS.md
+### Structure: CTCO+ for AGENTS.md
 
-Apply the CTCO pattern, adapted for markdown:
+Apply the GPT-5.5 CTCO+ pattern, adapted for markdown:
 
 ```markdown
 # AGENTS.md
@@ -73,10 +73,19 @@ Apply the CTCO pattern, adapted for markdown:
 - Prefer `pnpm` when installing dependencies
 - Ask for confirmation before adding new production dependencies
 
+## Success Criteria
+- The requested behavior is implemented
+- Relevant tests/checks pass or the failing excerpt is reported
+- No unrelated files are changed
+
 ## Constraints
 - Do not modify files in `vendor/` or `generated/`
 - Maximum 3 files per change unless explicitly approved
 - Do not refactor code adjacent to the change without asking
+
+## Evidence and Stopping Rules
+- Read the files directly involved before editing
+- Stop after the requested change and relevant verification; do not broaden scope
 
 ## Output Expectations
 - Commit messages follow Conventional Commits format
@@ -122,7 +131,7 @@ Codex compacts conversation history when context gets long. After compaction, th
 
 **Micro-step instructions for native capabilities.** Don't write a 20-step code review checklist. Write: "Review for bugs, security issues, and style violations. Flag anything that violates the constraints in this file."
 
-**Anti-laziness language.** "Be thorough. Don't skip steps. Check everything." On GPT-5.x, this causes tool spam — the model reads every file in the directory, runs every possible test, and searches for edge cases you didn't ask about. Instead, add explicit done-conditions: "Stop after implementing the requested change."
+**Anti-laziness language.** "Be thorough. Don't skip steps. Check everything." On GPT-5.5, this causes tool spam or overthinking — the model reads too broadly, runs too many checks, or searches edge cases you did not ask about. Instead, add success criteria, evidence rules, and explicit stopping conditions: "Stop after implementing the requested change and running the named verification."
 
 **Contradictory constraints.** "Be fast and lightweight" + "Use only the standard library" + "Use external packages if they make it simpler." If constraints can conflict, state the priority: "Prefer standard library. Use external packages only when the standard library solution would exceed 50 lines."
 
@@ -297,3 +306,8 @@ Role descriptions function like skill descriptions — they're routing rules tha
 - All changes to payment processing logic require two human reviewers
 - PCI compliance: do not log request bodies or response bodies containing card data
 ```
+
+
+## GPT-5.5 Codex note
+
+When the Codex surface uses GPT-5.5 rather than `gpt-5-codex`, apply GPT-5.5 outcome-first prompting plus Codex operational constraints. When the surface uses `gpt-5-codex`, follow the official GPT-5-Codex minimal-prompt guidance: no `verbosity` parameter, no preamble instruction, minimal tools, and concise tool descriptions.

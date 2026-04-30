@@ -1,25 +1,27 @@
 # Thinking Configuration
 
-How to configure and steer Claude's extended thinking across the 4.5/4.6 model family. The core insight: high-level thinking instructions produce better reasoning than step-by-step prescriptions.
+How to configure and steer Claude thinking across Opus 4.7 and the 4.5/4.6 model family. The core insight: high-level thinking instructions produce better reasoning than step-by-step prescriptions.
 
 ## Thinking Modes by Model
 
 | Model | Thinking mode | Configuration | Default effort |
 |---|---|---|---|
+| Opus 4.7 | **Adaptive only** (`thinking: {type: "adaptive"}`) | `output_config.effort`: low / medium / high / **xhigh** / max | high; use xhigh for serious coding/agentic |
 | Opus 4.6 | **Adaptive** (`thinking: {type: "adaptive"}`) | Effort parameter: low / medium / high / **max** | high |
 | Opus 4.5 | Manual | `budget_tokens` (up to 64K) | high |
 | Sonnet 4.6 | Both adaptive and manual (interleaved) | Effort parameter: low / **medium** / high | medium |
 | Sonnet 4.5 | Manual | `budget_tokens` | N/A |
 
-### Adaptive thinking (Opus 4.6)
+### Adaptive thinking (Opus 4.7 / Opus 4.6)
 
-The model dynamically decides when and how much to think based on the effort parameter and query complexity. This replaces the manual `budget_tokens` approach and produces better performance than manually-set budgets.
+The model dynamically decides when and how much to think based on effort and query complexity. For Opus 4.7, fixed `budget_tokens` thinking is unsupported; use `thinking: {"type": "adaptive"}` plus `output_config.effort`. This replaces manual budgets and should be tuned with evals.
 
 **Effort levels:**
 - **low** — Skip thinking on simple queries. Respond directly for straightforward requests. Use for high-volume, simple-response applications.
 - **medium** — Think selectively. Good balance for mixed workloads where some queries need reasoning and some don't.
-- **high** (default) — Almost always engages deep thinking. Appropriate for complex reasoning, analysis, and multi-step problems.
-- **max** (Opus 4.6 only) — Removes all constraints on token spending. Use only for the most demanding reasoning tasks: novel mathematical proofs, complex multi-file architectural analysis, subtle logical chains.
+- **high** (default-ish baseline for intelligence-sensitive work) — Almost always engages deeper reasoning. Appropriate for complex reasoning, analysis, and multi-step problems.
+- **xhigh** (Opus 4.7) — Recommended default for serious coding, agentic, and multi-file work.
+- **max** — Use only for the most demanding/high-stakes reasoning tasks; expect overthinking, latency, and diminishing returns.
 
 **Key insight:** Effort is a behavioral signal, not a strict token budget. At lower effort levels, Claude will still think on sufficiently difficult problems — it just thinks less. You don't need to worry about hobbling Claude on hard tasks by using medium effort.
 
@@ -114,7 +116,7 @@ When Extended Thinking is disabled on Opus 4.5, the word "think" and its variant
 | "I think..." | "I believe..." / "I assess..." |
 | "Think carefully" | "Examine carefully" |
 
-This sensitivity does not affect Opus 4.6 (which uses adaptive thinking) or Sonnet models.
+This sensitivity does not affect Opus 4.7/4.6 (which use adaptive thinking) or Sonnet models.
 
 ## Few-Shot Examples and Thinking
 
@@ -134,3 +136,10 @@ When configuring prompts that will run with Extended Thinking:
 2. **Don't fight the model's thinking style.** If Claude wants to think about a problem differently than you prescribed, that's usually a signal it has found a better approach.
 3. **Use the right effort for the task.** Medium is appropriate for most Sonnet tasks and many Opus tasks. Reserve high/max for genuinely complex reasoning.
 4. **Monitor for over-refusal.** If the prompted system handles sensitive-adjacent domains, test with representative inputs and adjust effort downward if refusals are excessive.
+
+
+## Opus 4.7 API notes
+
+- Fixed extended-thinking budgets (`thinking: {type: "enabled", budget_tokens: N}`) are not supported. Use adaptive thinking plus `output_config.effort`.
+- Non-default `temperature`, `top_p`, and `top_k` are not supported; steer behavior with prompt instructions, examples, schemas, and evals.
+- If a model seems shallow on hard work, raise effort before adding broad anti-laziness prose.

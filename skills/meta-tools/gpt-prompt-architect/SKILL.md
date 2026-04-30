@@ -1,8 +1,8 @@
 ---
 name: gpt-prompt-architect
 description: >
-  Use when writing, auditing, or optimizing prompts for OpenAI's GPT model family
-  across Codex CLI and ChatGPT surfaces, especially AGENTS.md files, Codex skills,
+  Use when writing, auditing, or optimizing prompts for OpenAI's GPT model family,
+  especially GPT-5.5, across Codex CLI and ChatGPT surfaces: AGENTS.md files, Codex skills,
   ChatGPT Custom Instructions, or Custom GPT system prompts. Also use for requests
   like "write an AGENTS.md", "Codex instructions", "Custom GPT prompt", "ChatGPT custom instructions",
   "GPT system prompt", "optimize my GPT", "why isn't my GPT following instructions",
@@ -18,13 +18,15 @@ Write and optimize prompts for OpenAI's GPT models on two surfaces: **Codex CLI*
 
 ## Three Principles
 
-Everything flows from three meta-principles that define effective GPT-5.x prompting:
+Everything flows from four meta-principles that define effective GPT-5.5-era prompting:
 
-**1. Prompting inversion.** Simpler prompts outperform complex ones on GPT-5.x. Models with stronger native reasoning are *harmed* by over-constraining — personality padding ("You are a world-class expert"), micro-step instructions, and redundant emphasis are treated as noise. Give goals, not recipes. The model behaves like a senior coworker: tell it what you need done, not how to do each step.
+**1. Outcome-first baselines.** GPT-5.5 should not inherit old GPT-5.2/5.4 prompt scaffolding blindly. Start from the smallest prompt that preserves the product contract: outcome, success criteria, constraints, evidence rules, stopping rules, and output contract. Add process only when the process itself is a requirement.
 
-**2. Context over phrasing.** On GPT-5.x, *what* context you include matters more than *how* you phrase instructions. Choosing the right documents, examples, and constraints to include (and actively excluding irrelevant ones) has more impact than wordsmithing. Token budget management, compaction awareness, and strategic context selection are prompt engineering decisions.
+**2. Context over phrasing.** On GPT-5.5, *what* context you include matters more than clever wording. Stable instructions and examples should come before dynamic request context for cacheability; irrelevant documents and stale state hurt more than a slightly imperfect sentence.
 
-**3. Scope discipline.** GPT-5.2+ will build more structure than you asked for unless explicitly constrained. "ONLY what was requested" is a necessary constraint, not a nice-to-have. Without explicit scope boundaries, expect the model to add abstractions, files, tests, documentation, and architectural decisions you didn't ask for — especially in Codex sessions.
+**3. Scope and stopping discipline.** GPT-5.5 is strong enough to keep working beyond the useful point unless success criteria and stopping rules are explicit. State allowed side effects, what counts as done, when to ask, when to search, and when to stop.
+
+**4. Control effort and verbosity with model controls.** Use `reasoning.effort` and `text.verbosity` deliberately instead of prompt hacks like "think harder" or "be concise." Higher effort is not automatically better; use evals to justify `high`/`xhigh`.
 
 ## Feedback Loop
 
@@ -44,6 +46,7 @@ Load only what you need. Use this routing table.
 | Reference | Load when... |
 |---|---|
 | `FEEDBACK.md` | **Always** — before every use |
+| `references/gpt-5-5-guidance.md` | **Always for GPT-5.5 work** — current model-specific guidance, effort/verbosity/stopping rules, Codex caveats |
 | `references/agents-architecture.md` | Writing or auditing AGENTS.md, Codex skills, compaction-aware design, or any Codex CLI prompt work |
 | `references/chatgpt-patterns.md` | Writing or auditing ChatGPT Custom Instructions or Custom GPT system prompts |
 | `references/failure-modes.md` | Diagnosing why a GPT prompt isn't working, or proactively hardening against known failures |
@@ -114,25 +117,36 @@ Get approval before drafting.
 
 #### Step 3: Draft the prompt
 
-Apply the CTCO pattern as the default structural template for GPT-5.x:
+Apply the outcome-first CTCO+ pattern as the default template for GPT-5.5:
 
 ```
-Context — Who/what is the model, what project/domain context does it need
-Task — What it should accomplish (goals, not micro-steps)
-Constraints — Boundaries, prohibitions, scope limits
-Output — Expected format, length, style of responses
+Context — Stable domain/product/project context; static before dynamic
+Task / Outcome — What the model should accomplish, goals not micro-steps
+Success criteria — Observable conditions that make the task complete
+Constraints — Scope limits, safety limits, allowed side effects, forbidden actions
+Evidence / grounding — What must be cited, verified, searched, or checked
+Stopping rules — When enough evidence/tool use is enough
+Output — Expected format, length, style, schema, or artifact
 ```
 
-**Calibration rules for GPT-5.x:**
-- Remove personality padding ("You are a world-class expert," "You are meticulous and thorough"). Replace with functional context: what the model should *do*, not what it should *pretend to be*.
-- Remove micro-step instructions for tasks within the model's native capability. "Review this PR for bugs and security issues" beats a 20-step review checklist.
+**Calibration rules for GPT-5.5:**
+- Load `references/gpt-5-5-guidance.md` for model-specific defaults before drafting.
+- Start fresh/minimal rather than migrating old GPT-5.x scaffolding line-for-line.
+- Remove personality padding and micro-step instructions for native capabilities. Replace them with functional context, success criteria, and done conditions.
+- Keep `MUST`/`NEVER`/`ONLY` for true invariants. Convert behavioral preferences into decision rules with conditions and rationale.
 - Add explicit scope boundaries: "Only modify files in src/. Do not create new directories. Do not add dependencies without asking."
-- Add explicit done-conditions for agentic contexts: "Stop after implementing the requested change. Do not refactor adjacent code, add tests for unrelated modules, or update documentation unless asked."
+- Add explicit stopping rules: "Stop after implementing the requested change and running the named verification. Do not refactor adjacent code unless asked."
+- For grounded tasks, define evidence threshold, source types, search budget, citation needs, and missing-evidence behavior.
+- For machine-readable output, prefer Structured Outputs over prompt-described JSON schemas when the API surface supports it.
+- Do not automatically add current-date boilerplate. Add dates only for user-local time, policy effective dates, cutoff dates, or timezone-specific behavior.
 - For Codex: add compaction-awareness directives. Critical state belongs in files (WORKLOG.md, TODO.md, DECISIONS.md), not conversation memory.
 
-**Constraint rules:**
+**Constraint and model-control rules:**
 - State constraints as specific boundaries, not vague guidance. "Maximum 3 files per change" not "keep changes small."
 - When constraints might conflict, state the priority order explicitly. "If test coverage and delivery speed conflict, prioritize test coverage."
+- Use `reasoning.effort` intentionally: `medium` baseline, `low` for fast/simple workflows, `high`/`xhigh` only when evals show gains.
+- Use `text.verbosity` plus concrete output limits to control final-answer length; do not rely only on "be concise."
+- Place stable instructions before dynamic context for prompt caching.
 - For Custom GPTs: keep critical constraints in the first 2,000 characters of instructions — the model's attention to later instructions degrades with length.
 
 #### Step 4: Review and deliver
@@ -170,12 +184,14 @@ Determine which surface the prompt targets and which GPT model it's designed for
 - Size fits within surface constraints
 - No redundant or overlapping instructions
 
-**GPT-5.x calibration:**
+**GPT-5.5 calibration:**
 - No personality padding ("world-class expert," "meticulous," "thorough")
 - No micro-step instructions for tasks within native capability
 - Explicit scope boundaries present
 - Done-conditions present for agentic contexts
-- No anti-laziness language that causes tool spam on GPT-5.x
+- No anti-laziness language that causes tool spam or overthinking on GPT-5.5
+- Success criteria, evidence rules, and stopping rules present
+- Reasoning effort / verbosity guidance separated from prompt text where the surface supports it
 
 **Surface-specific checks:**
 
@@ -222,12 +238,13 @@ Structure the audit as:
 
 Convert a prompt written for GPT-5.3 or earlier to work on current GPT-5.x surfaces, or adapt a prompt from one surface to another.
 
-**Model migration (GPT-5.3 → GPT-5.4/5.x):**
+**Model migration (older GPT-5.x → GPT-5.5):**
 
-1. **Identify era markers** — Personality padding, micro-step instructions, anti-laziness language ("be thorough," "don't skip steps"), redundant JSON format instructions, missing scope boundaries
-2. **Apply the prompting inversion** — Simplify. Remove instructions the model can handle natively. Add scope constraints it needs.
-3. **Add surface-appropriate structure** — CTCO pattern, compaction awareness, done-conditions
-4. **Produce a migration diff** — Show what changed and why, then the complete rewritten prompt
+1. **Identify era markers** — Personality padding, micro-step instructions, anti-laziness language, redundant JSON schema prose, missing success/stopping rules, automatic current-date boilerplate
+2. **Re-baseline** — Start from the smallest prompt that preserves the product contract, not a line-by-line migration
+3. **Add GPT-5.5 structure** — Outcome, success criteria, constraints, evidence rules, stopping rules, output contract
+4. **Move controls out of prompt where possible** — Structured Outputs for schemas; `reasoning.effort` for reasoning depth; `text.verbosity` for response length
+5. **Produce a migration diff** — Show what changed and why, then the complete rewritten prompt
 
 **Surface migration (e.g., API system prompt → AGENTS.md, or Custom Instructions → Custom GPT):**
 
@@ -237,26 +254,31 @@ Convert a prompt written for GPT-5.3 or earlier to work on current GPT-5.x surfa
 
 ---
 
-## CTCO Pattern Quick Reference
+## CTCO+ Pattern Quick Reference
 
-The default structural template for GPT-5.x prompts. Adapt section names and depth to the surface.
+The default structural template for GPT-5.5 prompts. Adapt section names and depth to the surface.
 
 ```markdown
 ## Context
 [Identity and domain context. Functional, not personality-based.]
 [Project/environment specifics relevant to the task.]
 
-## Task
+## Task / Outcome
 [What the model should accomplish. Goals, not micro-steps.]
-[Expected workflow at a high level if multi-step.]
+
+## Success criteria
+[Observable conditions that make the task complete.]
 
 ## Constraints
-[Scope boundaries — what NOT to do is as important as what to do.]
+[Scope boundaries, safety boundaries, allowed side effects.]
 [Priority order when constraints conflict.]
-[Done-conditions for agentic contexts.]
+
+## Evidence and stopping rules
+[What must be verified/cited/searched.]
+[When enough evidence/tool use is enough.]
 
 ## Output
-[Expected format, length, style.]
+[Expected format, length, style, schema, or artifact.]
 [Examples of good output if available.]
 ```
 
@@ -269,3 +291,11 @@ For Codex AGENTS.md, the Context section often lives at the project root level a
 - When the user reports a prompt "isn't working," start with this skill's Audit mode before assuming the problem is elsewhere
 - For prompts targeting Claude instead of GPT, use `claude-prompt-architect` (the Claude-specific skill)
 - For cross-model translation (Claude ↔ GPT migration), load both this skill and `claude-prompt-architect` for accurate platform-specific guidance
+
+
+## Current Source Receipts
+
+- OpenAI GPT-5.5 announcement and system card: 2026-04-23, updated 2026-04-24.
+- OpenAI GPT-5.5 docs: `Using GPT-5.5`, `GPT-5.5 prompt guidance`, and `gpt-5.5` model page.
+- OpenAI GPT-5-Codex prompting guide: 2025-09-23; use only for `gpt-5-codex`-specific behavior, not as a blanket GPT-5.5-Codex guide.
+

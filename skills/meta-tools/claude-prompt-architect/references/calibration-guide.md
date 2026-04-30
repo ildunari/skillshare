@@ -1,6 +1,6 @@
 # Calibration Guide
 
-The single most impactful change between Claude 3.5-era prompts and Claude 4.5/4.6 prompts is instruction intensity calibration. These models are significantly more responsive to instructions than their predecessors. Language that was necessary to overcome undertriggering on earlier models now causes systematic overtriggering.
+The single most impactful change between Claude 3.5-era prompts and Claude 4.5/4.6/4.7 prompts is instruction intensity calibration. These models are significantly more responsive to instructions than their predecessors. Language that was necessary to overcome undertriggering on earlier models now causes systematic overtriggering.
 
 ## The Calibration Spectrum
 
@@ -73,7 +73,7 @@ Scan for: ALL CAPS words, exclamation marks used for emphasis, "CRITICAL," "MUST
 For each emphasis marker, ask:
 - Is this a genuine safety-critical hard stop? (e.g., "never reveal API keys") → Keep, but rewrite in third-person descriptive form
 - Is this a strong preference? → Rewrite as explained conditional
-- Is this anti-laziness language? → Remove entirely on Opus 4.5/4.6
+- Is this anti-laziness language? → Remove entirely on Opus 4.5/4.6/4.7
 
 ### Step 3: Rewrite
 
@@ -149,6 +149,15 @@ on defensive measures, detection, and prevention strategies.
 The third-person descriptive form frames constraints as properties of Claude's identity rather than external rules. This generalizes more reliably because Claude treats it as "who I am" rather than "what I was told."
 
 ## Model-Specific Calibration Notes
+
+
+### Opus 4.7
+
+- More literal than Opus 4.6. If a requirement applies to every section, item, or file, say so directly.
+- More direct and less validation-forward. Add warmth explicitly when the product needs it; do not add generic reassurance scaffolding by default.
+- More effort-sensitive. Use `xhigh`/`high` for serious coding and agentic work; do not compensate for low effort with anti-laziness language.
+- Uses tools and subagents less by default than Opus 4.6. If tool use or fanout matters, define when and why it should happen.
+- Avoid fixed thinking budgets and non-default sampling parameters; they are API-level migration failures, not prompt-style issues.
 
 ### Opus 4.6
 
@@ -242,7 +251,7 @@ These framing conventions are Claude-specific. Key differences when writing for 
 **Claude (Opus 4.5/4.6, Sonnet 4.5/4.6):**
 - Third-person descriptive for identity and safety constraints
 - Explained conditionals for behavioral instructions
-- Remove anti-laziness language on Opus 4.5/4.6
+- Remove anti-laziness language on Opus 4.5/4.6/4.7
 - Softer calibration produces better judgment
 
 **OpenAI (GPT-4o, GPT-4.1, GPT-5):**
@@ -252,7 +261,7 @@ These framing conventions are Claude-specific. Key differences when writing for 
 - Stronger emphasis markers are tolerated better than on Claude
 - Third-person descriptive form has no special advantage — these models aren't trained to treat it as identity-level
 
-**When migrating prompts between platforms:** Don't assume Claude patterns transfer to OpenAI or vice versa. A Claude prompt migrated to GPT without reframing will work but won't exploit OpenAI's conventions. A GPT prompt migrated to Claude without softening will overtrigger on Opus 4.5/4.6.
+**When migrating prompts between platforms:** Don't assume Claude patterns transfer to OpenAI or vice versa. A Claude prompt migrated to GPT without reframing will work but won't exploit OpenAI's conventions. A GPT prompt migrated to Claude without softening will overtrigger on Opus 4.5/4.6/4.7.
 
 ### Framing and the instruction budget
 
