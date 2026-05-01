@@ -6,7 +6,7 @@ description: >-
   create rollback branches, preserve and replay local git customizations, update
   Hermes/WebUI/non-Hermes sidecars carefully, run verification, and avoid
   restarting the live gateway from inside Telegram unless explicitly safe.
-version: 0.1.0
+version: 0.1.1
 author: Hermes Agent
 license: MIT
 targets: [hermes-default, hermes-gpt]
@@ -72,6 +72,15 @@ Do not push remotes unless Kosta explicitly asks. Local commits are fine and pre
 ## Output style
 
 Keep the report short. Say what changed, what was verified, and what still needs attention. Include backup branch names and exact failing check excerpts only if something failed.
+
+End every successful or partially successful smart update with a compact change digest so Kosta can see the payoff without reading logs. Use plain-English buckets, 1-3 bullets each, and omit empty buckets:
+
+- **New:** newly added commands, skills, features, sidecars, integrations, targets, or config surfaces.
+- **Updated:** upstream versions pulled, dependency/tool versions changed, synced targets, refreshed prompts/skills/docs.
+- **Fixed:** bugs, broken links/symlinks, stale configs, failing checks, drift, warnings resolved.
+- **Still needs attention:** only real follow-ups, blockers, safe restarts, machines that could not be reached, or warnings intentionally left.
+
+Keep the digest factual and evidence-backed. Do not pad it with every file touched; group related changes by user-visible effect. If nothing meaningful changed in a bucket, skip that bucket rather than saying “none.”
 
 ## Built-in `/update` comparison
 
