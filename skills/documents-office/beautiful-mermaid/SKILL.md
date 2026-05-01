@@ -12,6 +12,9 @@ description: >
   explicitly — if they want a visual diagram, this is the skill to use. Supersedes
   the general mermaid.md syntax reference when both are available, because this skill
   includes renderer-specific theming and anti-pattern guidance.
+targets:
+  - hermes-default
+  - hermes-gpt
 ---
 
 # Beautiful Mermaid — Craft Agent Diagram Guide
@@ -27,6 +30,17 @@ guidance about custom fills or styles elsewhere in context, follow THIS skill's
 guidance — beautiful-mermaid's theme system handles colors automatically and custom
 styling breaks it.
 
+## Local Hermes setup
+
+On Kosta's Mac Studio, `beautiful-mermaid@1.1.3` is installed under `~/.hermes/tools/beautiful-mermaid/` with a stable wrapper on PATH:
+
+```bash
+render-beautiful-mermaid -i diagram.mmd -o diagram.svg --theme github-light
+render-beautiful-mermaid -i diagram.mmd -o diagram.txt --ascii
+```
+
+The library emits SVGs that use CSS variables, so ImageMagick may fail to rasterize them directly. For PNG output, render the SVG in Chrome/headless browser and screenshot it, or send the SVG when the platform supports it.
+
 ## Quick Rules
 
 1. **Six supported diagram types**: flowchart, state, sequence, class, ER, xychart-beta
@@ -34,7 +48,10 @@ styling breaks it.
    user's active theme (a two-color system). Adding custom `fill`, `stroke`, or `color`
    via `style` or `classDef` creates jarring contrast — like painting one wall of a
    coordinated room a random color.
-3. **Prefer horizontal layouts** (`graph LR`) — they fit the Craft Agent UI much better
+3. **Prefer vertical layouts for long process flows** (`graph TD`) — they read like a
+   step-by-step procedure and avoid ultra-wide PNGs that get shrunk into unreadability.
+   Use horizontal layouts (`graph LR`) for short flows, compact system maps, and diagrams
+   with only a few stages.
 4. **Keep diagrams focused** — 10-15 nodes maximum per diagram. Split larger concepts
    into multiple smaller diagrams; the UI handles several small diagrams much better
    than one dense one.
@@ -97,7 +114,9 @@ Since you can't color-code nodes, convey meaning through:
 
 ### 1. Flowcharts (`graph` or `flowchart`)
 
-Use `graph LR` for horizontal (preferred) or `graph TD` for vertical.
+Use `graph LR` for compact horizontal flows or `graph TD` for vertical flows. For long
+process flows, prefer `graph TD` so the rendered PNG stays readable on phone and chat
+surfaces instead of becoming a tiny ultra-wide strip.
 
 **Node shapes:**
 
@@ -306,9 +325,10 @@ Tags like `<sub>`, `<sup>`, `<small>`, `<mark>` are stripped by the renderer.
 
 ## Layout Tips
 
-- **Horizontal is almost always better** — `graph LR` fits the Craft Agent UI width well
-- Use **vertical (`graph TD`) only** for: org charts, tree hierarchies, or diagrams with
-  3-4 nodes max
+- **Prefer vertical for long process flows** — `graph TD` reads naturally as a procedure
+  and survives chat/phone PNG scaling better than a very wide `graph LR` strip
+- **Use horizontal for compact maps** — `graph LR` is still good for short flows, system
+  maps, and diagrams with only a few major stages
 - **Chained edges** (`A --> B --> C --> D`) create clean linear flows
 - **Parallel links** (`A & B --> C & D`) for fan-out/fan-in patterns
 - For sequence diagrams, keep participant count to 4-6 — split beyond that
