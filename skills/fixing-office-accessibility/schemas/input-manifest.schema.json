@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/fixing-office-accessibility/input-manifest.schema.json",
+  "title": "Stage 4 Office Accessibility Residual Manifest",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "document_path", "document_type", "findings"],
+  "properties": {
+    "schema_version": {"type": "string", "minLength": 1},
+    "document_path": {"type": "string", "minLength": 1},
+    "document_type": {"type": "string", "enum": ["docx", "pptx"]},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "pipeline_stage": {"type": "string", "const": "stage4-residual"},
+    "upstream_cli_version": {"type": "string"},
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/finding"}
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "rule_id", "severity", "location", "current_value", "why_human_needed", "related_findings_ids"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "rule_id": {"type": "string", "minLength": 1},
+        "issue_type": {
+          "type": "string",
+          "enum": [
+            "reading_order",
+            "heading_structure",
+            "color_contrast",
+            "complex_table",
+            "decorative_or_informative_image",
+            "floating_object",
+            "link_text",
+            "merged_cells",
+            "slide_title",
+            "document_metadata",
+            "language",
+            "form_control",
+            "other"
+          ]
+        },
+        "severity": {"type": "string", "enum": ["error", "warning", "tip", "info"]},
+        "location": {"type": "string", "minLength": 1, "description": "OfficeCLI DOM-like path such as /body/p[8] or /slide[3]/shape[2]."},
+        "current_value": {},
+        "suggested_value": {},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "why_human_needed": {"type": "string", "minLength": 1},
+        "related_findings_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "wcag_sc": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "officecli_help": {"type": "string"},
+        "upstream_trace": {"type": "object", "additionalProperties": true}
+      }
+    }
+  }
+}
