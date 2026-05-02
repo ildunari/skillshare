@@ -15,6 +15,7 @@ description: >
 targets:
   - hermes-default
   - hermes-gpt
+  - claude-hermes
 ---
 
 # Beautiful Mermaid — Craft Agent Diagram Guide

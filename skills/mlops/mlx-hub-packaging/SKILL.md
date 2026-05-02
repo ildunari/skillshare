@@ -3,7 +3,7 @@ name: mlx-hub-packaging
 description: >
   Package, document, and optionally upload successful MLX model conversions for reuse on Hugging Face or local teams. Trigger when the user asks to publish an MLX conversion, write a model card, prepare an MLX Community-style repo, preserve tokenizer or processor files, upload quantized variants, or make conversion notes reproducible. Do not use it before the model has loaded and passed validation with the relevant MLX stack.
 compatibility: Cross-platform open skill format. Intended for MLX model repos produced by mlx-lm, mlx-vlm, mlx-embeddings, and Hugging Face Hub workflows.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

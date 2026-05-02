@@ -3,7 +3,7 @@ name: mlx-troubleshooting-repro
 description: >
   Diagnose MLX conversion, loading, generation, quantization, processor, memory, and runtime failures on Apple Silicon, and create minimal reproducible examples for GitHub issues. Trigger when the user shows an MLX error, missing or unexpected weights, incoherent output, OOM, Metal crash, processor mismatch, bad quantized behavior, or asks how to file an upstream issue. Do not use it for routine conversion planning before an error exists; start with the repo audit skill.
 compatibility: Cross-platform open skill format. Intended for Apple Silicon MLX workflows across mlx-lm, mlx-vlm, mlx-embeddings, Transformers, and Hugging Face model repos.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

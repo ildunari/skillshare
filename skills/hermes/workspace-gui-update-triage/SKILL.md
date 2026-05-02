@@ -1,7 +1,7 @@
 ---
 name: workspace-gui-update-triage
 description: Diagnose and update Hermes GUI/workspace apps on the Mac Studio. Use when the user asks whether Hermes GUIs are installed/enabled, mentions Hermes Workspace, Hermes Desktop, Hermes WebUI/Swift Mac, GUI launch agents, or asks to check/update Hermes desktop/workspace apps. Covers distinguishing running launch agents from merely remembered apps, updating ~/.hermes/hermes-workspace safely, preserving local tweaks with a stash, resolving common workspace merge conflicts, rebuilding, restarting only the workspace launch agent, and checking native macOS release-only apps without installing unless asked.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Workspace / GUI Update Triage

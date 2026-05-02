@@ -1,7 +1,7 @@
 ---
 name: hermes-webui-mobile-evaluation
 description: Use when evaluating, installing, testing, or adapting nesquena/hermes-webui for phone or small-screen Hermes use. Trigger when the user asks whether Hermes WebUI works on iPhone/mobile, wants a Telegram replacement via browser/PWA, or wants to compare Hermes WebUI against the Telegram Mini App/native iOS options.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes WebUI mobile evaluation

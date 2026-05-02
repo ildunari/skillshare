@@ -15,6 +15,7 @@ metadata:
 targets:
 - hermes-default
 - hermes-gpt
+- claude-hermes
 ---
 
 # hermes-subagent-voice-audio

@@ -3,7 +3,7 @@ name: mlx-local-benchmarking
 description: >
   Benchmark local MLX inference on Apple Silicon for LLMs, VLMs, embeddings, rerankers, and quantized variants. Trigger when the user asks about tokens per second, latency, peak memory, Mac Studio performance, prompt processing speed, batch size, image or video inference speed, or comparing MLX model variants. Do not use it for compatibility auditing or conversion unless a runnable model already exists.
 compatibility: Cross-platform open skill format. Intended for Apple Silicon machines running MLX, mlx-lm, mlx-vlm, or mlx-embeddings locally.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

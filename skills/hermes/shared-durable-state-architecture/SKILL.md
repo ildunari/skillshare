@@ -6,7 +6,7 @@ description: >
   not stay trapped in ~/.hermes/hermes-agent. Use when deciding where logbooks,
   shared specs, manifests, registries, or other durable non-repo operational
   state should live.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Shared Durable-State Architecture for Hermes

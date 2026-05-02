@@ -9,7 +9,7 @@ description: >-
 version: 0.1.1
 author: Hermes Agent
 license: MIT
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 metadata:
   hermes:
     command_priority: 450

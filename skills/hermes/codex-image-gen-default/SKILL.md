@@ -4,7 +4,7 @@ description: Configure or diagnose Hermes image generation so the image_generate
 version: 0.1.0
 author: Hermes Agent
 license: MIT
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Codex image generation default

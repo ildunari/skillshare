@@ -1,7 +1,7 @@
 ---
 name: hermes-profile-gateway-display-settings
 description: Configure and verify Hermes gateway display/tool-progress behavior across the default profile and named profiles like gpt, including reasoning status, compact tool HUD, and process sanity checks.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes profile gateway display settings

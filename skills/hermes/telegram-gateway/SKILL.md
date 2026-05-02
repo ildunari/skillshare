@@ -5,7 +5,7 @@ description: >-
   callback handling, threading behavior, and the local custom Telegram features
   carried on this machine. Use when changing or verifying Telegram-specific
   Hermes behavior.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Telegram Gateway

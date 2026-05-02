@@ -3,7 +3,7 @@ name: mlx-llm-conversion
 description: >
   Convert, run, and validate text-only language models with Apple MLX and mlx-lm. Use this skill when the user asks about LLM chat/completion models, Hugging Face causal language model checkpoints, mlx-lm generation, text-only quantized MLX variants, or uploading an LLM conversion. Do not use it for vision-language, audio/video, embedding, reranker, diffusion, or processor-dependent multimodal models; route those to the relevant MLX skill first.
 compatibility: Cross-platform open skill format. Intended for Apple Silicon MLX workflows using mlx-lm and Hugging Face language model repos.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

@@ -26,6 +26,7 @@ metadata:
 targets:
 - hermes-default
 - hermes-gpt
+- claude-hermes
 ---
 
 # Pixel Art

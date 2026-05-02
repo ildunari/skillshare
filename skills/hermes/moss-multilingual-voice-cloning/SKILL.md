@@ -4,6 +4,7 @@ description: Use when generating or debugging multilingual MOSS-TTS voice clonin
 targets:
   - hermes-default
   - hermes-gpt
+  - claude-hermes
 ---
 
 # MOSS Multilingual Voice Cloning

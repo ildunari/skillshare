@@ -2,7 +2,7 @@
 name: mlx
 description: >
   Route Apple Silicon MLX work to the right specialist workflow. Use this whenever the user says MLX, mlx-lm, mlx-vlm, mlx-embeddings, Apple Silicon model conversion, local Mac model inference, quantization, benchmarking, packaging an MLX model, or debugging MLX failures. This is the umbrella entry point: start here when the stack is unclear, then load the focused MLX skill that matches the actual model/task.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 metadata:
   hermes:
     command_priority: 80

@@ -4,7 +4,7 @@ description: Diagnose and fix noisy non-interactive Mac Studio shells used by He
 version: 0.1.0
 author: Hermes Agent
 license: MIT
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Mac shell + compression hygiene

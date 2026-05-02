@@ -3,7 +3,7 @@ name: hermes-mem0-presence-check
 description: Diagnose where mem0 is actually wired in on this machine when it seems to be missing from tool listings. Use when Hermes or Claude appears to have "lost" mem0, when `hermes tools` does not show mem0, or when there is confusion between Hermes memory-provider plugins and standalone MCP servers.
 alwaysAllow:
   - Bash
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes mem0 presence check

@@ -4,7 +4,7 @@ description: >-
   Prepare Hermes for a safe update on this machine using the branch-first local
   customization workflow. Use whenever upstream updates might affect carried local
   behavior, local branches, machine-local helpers, or profile/runtime state.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Update Checklist

@@ -1,7 +1,7 @@
 ---
 name: non-hermes-update-audit
 description: Audit and update non-Hermes local apps/tools on the Mac Studio, especially when the user says apps are behind, asks whether the update job catches everything, or wants GUI apps/direct installs/Homebrew casks/App Store/npm/git update coverage verified. Use this before claiming the machine is fully updated because normal `brew outdated` misses greedy casks and direct-installed apps.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Non-Hermes Update Audit

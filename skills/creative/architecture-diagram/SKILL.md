@@ -30,6 +30,7 @@ metadata:
 targets:
 - hermes-default
 - hermes-gpt
+- claude-hermes
 ---
 
 # Architecture Diagram Skill

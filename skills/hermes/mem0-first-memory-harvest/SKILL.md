@@ -1,7 +1,7 @@
 ---
 name: mem0-first-memory-harvest
 description: Run a Hermes nightly or ad hoc memory harvest that uses live mem0 tools first, keeps built-in MEMORY.md/USER.md as a tiny hot cache, and reports skill candidates for procedural lessons instead of polluting long-term memory. Use when reviewing recent Hermes sessions for durable memories, memory hygiene, mem0 dedupe, hot-cache cleanup, or deciding whether a lesson belongs in mem0, built-in memory, or a reusable skill.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes mem0-first memory harvest

@@ -38,7 +38,7 @@ def main() -> int:
     targets = config.setdefault("targets", {})
 
     # Clear all Hermes target variants first so mode switches are clean.
-    for key in ("hermes", "hermes-default", "hermes-gpt"):
+    for key in ("hermes", "hermes-default", "hermes-gpt", "claude-hermes"):
         targets.pop(key, None)
 
     def to_filter_name(rel_path: str) -> str:
@@ -56,6 +56,15 @@ def main() -> int:
         targets["hermes-gpt"] = {
             "skills": {
                 "path": str(home / ".hermes" / "profiles" / "gpt" / "skills"),
+                "include": list(shared_include),
+            }
+        }
+        targets["claude-hermes"] = {
+            "skills": {
+                "path": str(home / ".hermes" / ".claude" / "skills"),
+                # Merge keeps any local Claude command shims already present in
+                # this Hermes-local project scope while adding curated skills.
+                "mode": "merge",
                 "include": list(shared_include),
             }
         }

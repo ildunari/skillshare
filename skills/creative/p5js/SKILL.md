@@ -29,6 +29,7 @@ metadata:
 targets:
 - hermes-default
 - hermes-gpt
+- claude-hermes
 ---
 
 # p5.js Production Pipeline

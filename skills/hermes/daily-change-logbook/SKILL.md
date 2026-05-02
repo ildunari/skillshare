@@ -5,7 +5,7 @@ description: >
   history lives under ~/.hermes/shared/durable-state/change-log/. Use when
   updating daily Hermes change records, maintaining the shared change-log spec,
   or wiring automation that harvests recent sessions into the shared logbook.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Daily Change Logbook

@@ -3,7 +3,7 @@ name: mlx-vlm-conversion
 description: >
   Convert, run, and validate vision-language, audio, video, and omni models with Apple MLX and mlx-vlm. Use this skill for image-text-to-text models, Qwen-VL and Qwen3-VL derivatives, multimodal chat, OCR, scientific-figure-to-SVG models, audio/video inputs, processor-heavy repos, and MLX-VLM servers. Do not use text-only mlx-lm conversion advice unless the user explicitly wants only the language submodule analyzed.
 compatibility: Cross-platform open skill format. Intended for Apple Silicon MLX workflows using mlx-vlm, Transformers baselines, and Hugging Face multimodal repos.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

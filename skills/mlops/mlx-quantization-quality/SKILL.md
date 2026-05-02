@@ -3,7 +3,7 @@ name: mlx-quantization-quality
 description: >
   Decide, apply, and validate MLX quantization choices for LLMs, VLMs, embeddings, and rerankers. Trigger when the user asks about 8-bit, 6-bit, 5-bit, 4-bit, 3-bit, mxfp, nvfp, group size, memory reduction, speed, quality loss, or comparing quantized MLX models. Do not use it as the primary conversion skill; use it after the model stack and baseline are known.
 compatibility: Cross-platform open skill format. Intended for Apple Silicon MLX workflows across mlx-lm, mlx-vlm, mlx-embeddings, and MLX Community model variants.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

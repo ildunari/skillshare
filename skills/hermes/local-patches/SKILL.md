@@ -5,7 +5,7 @@ description: >-
   customizations are preserved canonically on the local git branch instead of by
   top-level patch replay. Use for machine-local helper restores, emergency patch
   triage, or cleanup of stale replay artifacts.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # Hermes Local Patches

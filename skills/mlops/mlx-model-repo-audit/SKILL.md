@@ -3,7 +3,7 @@ name: mlx-model-repo-audit
 description: >
   Audit Hugging Face or local model repositories before MLX conversion or inference. Use this skill when the user asks whether a model is MLX-compatible, which MLX stack to use, whether an MLX Community variant exists, or how a fine-tuned checkpoint differs from a base model. It covers repo files, config/tokenizer/processor/chat template, adapters, task type, licensing, and conversion risk. Do not use it for actually converting, benchmarking, or troubleshooting after a concrete error unless the repo has not been audited yet.
 compatibility: Cross-platform open skill format. Designed for agents working with Apple MLX, Hugging Face model repos, mlx-lm, mlx-vlm, and mlx-embeddings.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

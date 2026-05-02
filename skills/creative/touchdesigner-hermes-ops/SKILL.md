@@ -1,6 +1,6 @@
 ---
 name: touchdesigner-hermes-ops
-targets: [hermes-default, hermes-gpt, claude]
+targets: [hermes-default, hermes-gpt, claude, claude-hermes]
 description: >-
   Operate the Mac Studio TouchDesigner + twozero MCP setup for Hermes. Use this whenever the user wants Hermes to create TouchDesigner visuals, check whether the TouchDesigner MCP gateway is ready, finish the GUI setup, troubleshoot port 40404, install or reason about a launch agent, or produce a fallback TouchDesigner-style artifact when the GUI session is unavailable.
 version: 1.0.0

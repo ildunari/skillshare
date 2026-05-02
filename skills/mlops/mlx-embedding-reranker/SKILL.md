@@ -3,7 +3,7 @@ name: mlx-embedding-reranker
 description: >
   Use, validate, or convert embedding and reranker models for Apple MLX workflows. Trigger when the user mentions mlx-embeddings, text or multimodal embeddings, Qwen3 embedding or reranker models, vector search, similarity scoring, document reranking, or embedding quality checks on Apple Silicon. Do not use this for generative chat, VLM image-to-text generation, or LLM conversion unless embeddings or reranking are the actual task.
 compatibility: Cross-platform open skill format. Intended for MLX embedding and reranking workflows using mlx-embeddings and Hugging Face model repos.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 ## Context

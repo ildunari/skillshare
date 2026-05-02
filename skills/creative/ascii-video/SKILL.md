@@ -12,6 +12,7 @@ targets:
 - hermes-default
 - hermes-gpt
 - claude
+- claude-hermes
 ---
 
 # ASCII Video Production Pipeline

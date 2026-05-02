@@ -4,6 +4,7 @@ description: Generate a short spoken-style voiceover from a normal answer using 
 targets:
   - hermes-default
   - hermes-gpt
+  - claude-hermes
 metadata:
   hermes:
     command_priority: 100

@@ -6,7 +6,7 @@ description: >-
   CLI/desktop app accessed through AutoCLI. Prefer this before heavier browser
   automation when AutoCLI likely covers the target. Read this skill before using
   `autocli`.
-targets: [hermes-default, hermes-gpt]
+targets: [hermes-default, hermes-gpt, claude-hermes]
 ---
 
 # AutoCLI

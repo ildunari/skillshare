@@ -10,6 +10,7 @@ version: 1.0.0
 targets:
 - hermes-default
 - hermes-gpt
+- claude-hermes
 ---
 
 # Manim Video Production Pipeline
