@@ -105,9 +105,9 @@ For every morph transition, plan the slide pair BEFORE writing any code. Use a t
 - Do **not** click "Open with system app" during generation, to avoid file lock / write conflicts.
 - Use clear, direct language and make this a concrete warning, not an optional suggestion.
 
-**FIRST: Ensure latest officecli version**
+**FIRST: Install `officecli` if needed**
 
-Follow the installation check in `reference/officecli-pptx-min.md` section 0 (checks version and upgrades only if needed).
+Follow the install section in `reference/officecli-pptx-min.md` section 0.
 
 **IMPORTANT: Use morph-helpers for reliable workflow**
 
@@ -513,6 +513,23 @@ Ask user for feedback, support quick adjustments.
 - `reference/pptx-design.md` — Design principles (Canvas, Fonts, Colors, Scene Actors, Page Types)
 - `reference/officecli-pptx-min.md` — Tool syntax
 - `reference/styles/INDEX.md` — Visual style examples organized by use case
+
+---
+
+## Adjustments After Creation
+
+When the user requests changes after the deck is built:
+
+| Request | Command |
+|---------|---------|
+| Swap two slides | `officecli swap deck.pptx '/slide[2]' '/slide[4]'` |
+| Move a slide after another | `officecli move deck.pptx '/slide[5]' --after '/slide[2]'` |
+| Edit shape text | `officecli set deck.pptx '/slide[N]/shape[@name=!! ShapeName]' --prop text="..."` |
+| Change color / style | `officecli set deck.pptx '/slide[N]/shape[@name=!! ShapeName]' --prop fill=FF0000` |
+| Remove an element | `officecli remove deck.pptx '/slide[N]/shape[@name=!! ShapeName]'` |
+| Find & replace text | `officecli set deck.pptx / --prop find=OldText --prop replace=NewText` |
+
+> **Morph caution:** Morph transitions rely on matching `!!`-prefixed shape names across consecutive slides. After swapping or moving slides, verify that morph pairs (same `!!` name on adjacent slides) are still correctly aligned. Use `officecli get deck.pptx '/slide[N]' --depth 1` to check shape names.
 
 ---
 

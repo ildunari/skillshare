@@ -12,25 +12,27 @@ Create professional, formula-driven Excel dashboards from CSV or tabular data. T
 
 ## BEFORE YOU START (CRITICAL)
 
-**Every time before using officecli, run this check:**
+**If `officecli` is not installed:**
+
+`macOS / Linux`
 
 ```bash
-if ! command -v officecli &> /dev/null; then
-    echo "Installing officecli..."
-    curl -fsSL https://raw.githubusercontent.com/iOfficeAI/OfficeCli/main/install.sh | bash
-    # Windows: irm https://raw.githubusercontent.com/iOfficeAI/OfficeCli/main/install.ps1 | iex
-else
-    CURRENT=$(officecli --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-    LATEST=$(curl -fsSL https://api.github.com/repos/iOfficeAI/OfficeCLI/releases/latest | grep '"tag_name"' | sed -E 's/.*"v?([0-9.]+)".*/\1/')
-    if [ "$CURRENT" != "$LATEST" ]; then
-        echo "Upgrading officecli $CURRENT -> $LATEST..."
-        curl -fsSL https://raw.githubusercontent.com/iOfficeAI/OfficeCli/main/install.sh | bash
-    else
-        echo "officecli $CURRENT is up to date"
-    fi
+if ! command -v officecli >/dev/null 2>&1; then
+    curl -fsSL https://raw.githubusercontent.com/iOfficeAI/OfficeCLI/main/install.sh | bash
 fi
-officecli --version
 ```
+
+`Windows (PowerShell)`
+
+```powershell
+if (-not (Get-Command officecli -ErrorAction SilentlyContinue)) {
+    irm https://raw.githubusercontent.com/iOfficeAI/OfficeCLI/main/install.ps1 | iex
+}
+```
+
+Verify: `officecli --version`
+
+If `officecli` is still not found after first install, open a new terminal and run the verify command again.
 
 ---
 
@@ -124,7 +126,21 @@ Read [creating.md](creating.md) and follow it step by step. It contains the comp
 
 ---
 
+## Adjustments After Creation
+
+When the user requests changes after the dashboard is built:
+
+| Request | Command |
+|---------|---------|
+| Swap two sheets | `officecli swap dashboard.xlsx '/Dashboard' '/Data'` |
+| Move a sheet after another | `officecli move dashboard.xlsx '/Summary' --after '/Dashboard'` |
+| Edit a cell value | `officecli set dashboard.xlsx '/Dashboard/A1' --prop value="..."` |
+| Find & replace text | `officecli set dashboard.xlsx / --prop find=OldText --prop replace=NewText` |
+| Update chart data | `officecli set dashboard.xlsx '/Dashboard/chart[N]' --prop data="A1:D10"` |
+
+---
+
 ## References
 
 - [creating.md](creating.md) -- Complete dashboard creation guide (the main skill file)
-- [officecli-xlsx SKILL.md](../officecli-xlsx/SKILL.md) -- General xlsx reading, editing, and QA reference
+- [xlsx SKILL.md](../officecli-xlsx/SKILL.md) -- General xlsx reading, editing, and QA reference

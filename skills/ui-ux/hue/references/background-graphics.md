@@ -10,7 +10,7 @@ Brands signal identity through background imagery as strongly as through typogra
 
 **Why a catalog exists.** We cannot copy the brand's actual imagery — commissioned illustrations, licensed photography, proprietary SVG systems all belong to the brand. Instead, we classify the brand's background treatment into one of seven categories and generate a code-based approximation that captures the *feel* without reproducing the asset.
 
-**Rule for Claude.** This step is **mandatory** for every design skill. Even brands with no distinctive background treatment get documented as `type: absent` — the slot is never skipped. This prevents the quiet failure of forgetting background imagery entirely.
+**Rule.** This step is **mandatory** for every design skill. Even brands with no distinctive background treatment get documented as `type: absent` — the slot is never skipped. This prevents the quiet failure of forgetting background imagery entirely.
 
 ## Two tiers
 
@@ -340,19 +340,19 @@ Motion is an orthogonal flag, not a new type. Any Tier 1 type can have any motio
 
 **Examples.** Nothing, Braun, Linear (light mode marketing), brutalist designs, Stripe (some pages), Apple product pages (the product is the image, the background is intentionally nothing).
 
-**Technical method.** Just `background: var(--bg);`. No filter, no gradient, no pattern. The absence IS the design.
+**Technical method.** Just `background: var(--background);`. No filter, no gradient, no pattern. The absence IS the design.
 
 **Recipe:**
 
 ```css
 .bg-absent {
-  background: var(--bg);
+  background: var(--background);
 }
 ```
 
 **Critical rule:** Do NOT add decoration because the slot feels empty. `type: absent` is a *choice* — the brand explicitly rejects background imagery as a design decision. Adding a subtle gradient "just to fill the space" violates the brand.
 
-**Difference from Flat Color Field (which doesn't exist anymore):** Earlier versions had `flat` as a type that implied "we didn't find anything special, so we put nothing." `absent` is different: it means "the brand actively chose to have nothing, and that choice is load-bearing identity." When Claude picks `absent`, it must be because the brand's own site has no background imagery, and that absence is observable and deliberate.
+**Difference from Flat Color Field (which doesn't exist anymore):** Earlier versions had `flat` as a type that implied "we didn't find anything special, so we put nothing." `absent` is different: it means "the brand actively chose to have nothing, and that choice is load-bearing identity." When you pick `absent`, it must be because the brand's own site has no background imagery, and that absence is observable and deliberate.
 
 **Tuning knobs.** None. If you feel the urge to add something, reconsider whether this is actually an `absent` brand or whether you're forcing it.
 
@@ -444,7 +444,7 @@ Not every view uses backgrounds the same way:
 
 | View | Where to apply |
 |------|---------------|
-| **Landing Page** | Hero section (primary), optionally final CTA block. Body stays on `var(--bg)`. |
+| **Landing Page** | Hero section (primary), optionally final CTA block. Body stays on `var(--background)`. |
 | **Component Library** | Nowhere. The library is documentation — backgrounds would distract from the components. |
 | **Bento Grid preview** | Optionally behind the grid if the brand is strongly background-driven (e.g. mymind) — but use a subdued variant so widgets stay legible. Never on the widgets themselves. |
 | **App Screen** | Depends on the specific screen being rendered. Match the brand's real product treatment. |

@@ -2,26 +2,26 @@
   "version": 1,
   "entries": {
     "apple/asc-app-create-ui": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-app-create-ui",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-app-create-ui",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.149218-04:00",
+      "installed_at": "2026-05-01T12:27:23.267061-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-app-create-ui",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "d609f927834415b220e79f6d35fdd6669ec8462b",
       "file_hashes": {
         "SKILL.md": "sha256:a50aa8fd7bc50f30abee4165db3253d4d1a3e3dec62a91fa555ac3ec96eb9ccf"
       }
     },
     "apple/asc-aso-audit": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-aso-audit",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-aso-audit",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.173517-04:00",
+      "installed_at": "2026-05-01T12:27:23.810834-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-aso-audit",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "c33fb22e5658f6a9bd9db73b80589d2add78aecf",
       "file_hashes": {
         "SKILL.md": "sha256:02e12f30a90c19e9e1a82a2c5a3e644c3e0297020f7bc5a9156ced43c84f105f",
@@ -29,130 +29,130 @@
       }
     },
     "apple/asc-build-lifecycle": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-build-lifecycle",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-build-lifecycle",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.188594-04:00",
+      "installed_at": "2026-05-01T12:27:22.918301-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-build-lifecycle",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "ace286d720b4ad94978b39d1ee06d3cef436a268",
       "file_hashes": {
-        "SKILL.md": "sha256:8ed4fe913aede25b68f2aeecfad2e98a4bd5b3e28ecd109f6374418ff078b822"
+        "SKILL.md": "sha256:d82fc9d18980202d34b0ed26a40bca61d61e4ebb1df2d4036905fb27c4f1a4dd"
       }
     },
     "apple/asc-cli-usage": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-cli-usage",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-cli-usage",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.202306-04:00",
+      "installed_at": "2026-05-01T12:27:22.982607-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-cli-usage",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "ada613fa96a82d2878c33b019eef6d25f4ca366a",
       "file_hashes": {
-        "SKILL.md": "sha256:369d9f7cf959f472c17cecd152409fa28e44ee5897254ce4aee58c6708eba535"
+        "SKILL.md": "sha256:00715cc7faf56d1af903d136aec0eb6e77bada52a0cd9a741b8615a80ef885dc"
       }
     },
     "apple/asc-crash-triage": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-crash-triage",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-crash-triage",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.222382-04:00",
+      "installed_at": "2026-05-01T12:27:23.874149-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-crash-triage",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "ddd74903f7d5ca6a3ab2adca3a5fe5d16bf91a2c",
       "file_hashes": {
         "SKILL.md": "sha256:3553b13b4c073acd867f1543d8c85ad0cd4d0a7dfbd82382f81a5df3366c5c06"
       }
     },
     "apple/asc-id-resolver": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-id-resolver",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-id-resolver",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.248649-04:00",
+      "installed_at": "2026-05-01T12:27:23.33046-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-id-resolver",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "85ff98668ac706893b868ade6af7092c532cd523",
       "file_hashes": {
         "SKILL.md": "sha256:c4e127cb28999c4477841243d14f67a9547fb729871d7957f8c47651a62734bf"
       }
     },
     "apple/asc-localize-metadata": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-localize-metadata",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-localize-metadata",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.27275-04:00",
+      "installed_at": "2026-05-01T12:27:23.943216-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-localize-metadata",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "1e87ce90ca6947562c838b38130fd56e3c0dfbba",
       "file_hashes": {
         "SKILL.md": "sha256:236ea1c1a659b4d8dcd3bd745c3af30018f6fa140596c61110e989a6a398aa5c"
       }
     },
     "apple/asc-metadata-sync": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-metadata-sync",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-metadata-sync",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.289854-04:00",
+      "installed_at": "2026-05-01T12:27:23.398569-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-metadata-sync",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "83dc3f3864609cca8cbf8b2b7b803d9d68e002c8",
       "file_hashes": {
         "SKILL.md": "sha256:c794ccafb31a55d3eaa2a0e8b7411ccd3f232142229cecd4f0c68126bc135f31"
       }
     },
     "apple/asc-notarization": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-notarization",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-notarization",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.308962-04:00",
+      "installed_at": "2026-05-01T12:27:23.466147-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-notarization",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "36d8850790528df621beafcd6e511a6d24d685c0",
       "file_hashes": {
         "SKILL.md": "sha256:e719161403467be2990421519ae7934b28458f5cd055443d3e0ef8f1bd83e043"
       }
     },
     "apple/asc-ppp-pricing": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-ppp-pricing",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-ppp-pricing",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.32903-04:00",
+      "installed_at": "2026-05-01T12:27:24.012432-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-ppp-pricing",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "fd5840ed039e7ebc19b7ecd9dc46e213a96bc838",
       "file_hashes": {
         "SKILL.md": "sha256:968ee23f141f9a560f5183c49f37451bb878f9065105c8f5c4a40fd36b18ea4b"
       }
     },
     "apple/asc-release-flow": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-release-flow",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-release-flow",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.353091-04:00",
+      "installed_at": "2026-05-01T12:27:23.056516-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-release-flow",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "addf433e8eb33e663e8f26a3dd6d0eed3bfb79e7",
       "file_hashes": {
         "SKILL.md": "sha256:48d48d535e7cd21c897e88a6956cc1098b5363934638e9a8629ac389e81d3eee"
       }
     },
     "apple/asc-revenuecat-catalog-sync": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-revenuecat-catalog-sync",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-revenuecat-catalog-sync",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.375446-04:00",
+      "installed_at": "2026-05-01T12:27:23.536761-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-revenuecat-catalog-sync",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "f31c9607b4568fff8eef9cca0d7797694a06c984",
       "file_hashes": {
         "SKILL.md": "sha256:86189201f4f861601fb5af89f3ef596f133d0fc7ce8efc19d07474ef988cb359",
@@ -161,104 +161,104 @@
       }
     },
     "apple/asc-screenshot-resize": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-screenshot-resize",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-screenshot-resize",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.39362-04:00",
+      "installed_at": "2026-05-01T12:27:23.600948-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-screenshot-resize",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "d3fa2b7cafb77b3a71b119c9fa24a45c29d3cc1c",
       "file_hashes": {
         "SKILL.md": "sha256:323f10f56daf484b19d59bef0ed8fc603d95d963a572d3d45f5d272d9ca45102"
       }
     },
     "apple/asc-shots-pipeline": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-shots-pipeline",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-shots-pipeline",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.416915-04:00",
+      "installed_at": "2026-05-01T12:27:23.132481-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-shots-pipeline",
-      "version": "6b31882",
-      "tree_hash": "a7f6e081d0e4d72bbe039034e72351d7d7cc2e8e",
+      "version": "c45a9fa",
+      "tree_hash": "edc9d5ad9be5623c346bcc737bd99d83fcd98588",
       "file_hashes": {
-        "SKILL.md": "sha256:1c633752947bd80332201745a52d5246e87468c399e55f2b715b191a296bd047"
+        "SKILL.md": "sha256:29259d5851180ec681d78922c1665450bae47bec02ab45a7ecf08b8b45be70b8"
       }
     },
     "apple/asc-signing-setup": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-signing-setup",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-signing-setup",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.434642-04:00",
+      "installed_at": "2026-05-01T12:27:24.076093-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-signing-setup",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "bd4f057bee3bec8efd98af282b416815ac5e9b48",
       "file_hashes": {
         "SKILL.md": "sha256:0095530ad4066d7010bd673ecd5bb31f225b4b45549f5eee3f3104d7d74a717a"
       }
     },
     "apple/asc-submission-health": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-submission-health",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-submission-health",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.454254-04:00",
+      "installed_at": "2026-05-01T12:27:23.667195-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-submission-health",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "f27fe85da252110c50a1e635daa83358c08cb87e",
       "file_hashes": {
         "SKILL.md": "sha256:764049ef1e7b3267d6a652e17e71e63587ca8194eb26203155d66eb8901df8ea"
       }
     },
     "apple/asc-subscription-localization": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-subscription-localization",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-subscription-localization",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.475521-04:00",
+      "installed_at": "2026-05-01T12:27:23.736375-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-subscription-localization",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "b7d47e584af0e780e5ca40c3418ec6dd0f6f8e71",
       "file_hashes": {
         "SKILL.md": "sha256:3e95420ede01f49e63a1a5e6ac34bae531066d300c7634f867209668ad27a816"
       }
     },
     "apple/asc-testflight-orchestration": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-testflight-orchestration",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-testflight-orchestration",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.490611-04:00",
+      "installed_at": "2026-05-01T12:27:24.139196-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-testflight-orchestration",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "335fe9c5a2826320f9663b4e9c9fbb0722f6d34e",
       "file_hashes": {
         "SKILL.md": "sha256:94e473daa89c207b2546c0463d88c1c52354c88b4fecea399658c450c659a261"
       }
     },
     "apple/asc-wall-submit": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-wall-submit",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-wall-submit",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.50591-04:00",
+      "installed_at": "2026-05-01T12:27:22.856458-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-wall-submit",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "80e3a2f914a7f07aa7641d523eadab226f869f41",
       "file_hashes": {
         "SKILL.md": "sha256:d19bfaff35f88b516ee90a4a6a1f645d0255c6192578d0c3fdb05a6227efe999"
       }
     },
     "apple/asc-whats-new-writer": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-whats-new-writer",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-whats-new-writer",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.528065-04:00",
+      "installed_at": "2026-05-01T12:27:24.209721-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-whats-new-writer",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "95607774f0b4f620cc4a02a33bc4a3281845a76b",
       "file_hashes": {
         "SKILL.md": "sha256:592c33a56caf79e60598f48c01be1bac2d4ef57fb9148805993c44383ea8e78d",
@@ -266,42 +266,42 @@
       }
     },
     "apple/asc-workflow": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-workflow",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-workflow",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.547415-04:00",
+      "installed_at": "2026-05-01T12:27:24.275678-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-workflow",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "4bcebb36b1957d8fefb0332fbb57dcd7bb9825d3",
       "file_hashes": {
         "SKILL.md": "sha256:5c6bd0aff3ec38b310043132c2a16b2109ec0256be60ae77e7dc74b308ca2e8e"
       }
     },
     "apple/asc-xcode-build": {
-      "source": "github.com/rudrankriyam/asc-skills/skills/asc-xcode-build",
+      "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-xcode-build",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:37.564535-04:00",
+      "installed_at": "2026-05-01T12:27:23.201137-04:00",
       "repo_url": "https://github.com/rudrankriyam/asc-skills.git",
       "subdir": "skills/asc-xcode-build",
-      "version": "6b31882",
+      "version": "c45a9fa",
       "tree_hash": "f35488cd60f541c0d788040bf54fa371858b1f4e",
       "file_hashes": {
-        "SKILL.md": "sha256:fcb7f3b91449cb032d1061096326d0ba29cddc617b6675bbb608ef89c58cc499"
+        "SKILL.md": "sha256:9854797f2b18ff7b2d128909d26d2e069e2872cf346a97631ae15c328d5347ea"
       }
     },
     "apple/swiftui-expert-skill": {
-      "source": "github.com/AvdLee/SwiftUI-Agent-Skill/swiftui-expert-skill",
+      "source": "https://github.com/AvdLee/SwiftUI-Agent-Skill.git/swiftui-expert-skill",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-04-07T13:12:06.411182-04:00",
+      "installed_at": "2026-05-01T12:27:24.920081-04:00",
       "repo_url": "https://github.com/AvdLee/SwiftUI-Agent-Skill.git",
       "subdir": "swiftui-expert-skill",
-      "version": "4573a25",
-      "tree_hash": "ad7bdf396973dd08ac9f2ce5f2fd6849f88f2c26",
+      "version": "0066966",
+      "tree_hash": "f7732544337abfe9e75772a550b10425c8300a3f",
       "file_hashes": {
-        "SKILL.md": "sha256:7ce4190ca5b602dee2ce67b49cdccd4a8d2d41f18a8910fe965071fb5493f74f",
+        "SKILL.md": "sha256:94c3c375764d22ffc7b956f590d997ef32bee781e0e3690580dde01432e9df77",
         "references/accessibility-patterns.md": "sha256:bb942dd3b31fa24aa051943a6b7754a2de45a263dda0da3ac9dc2c7ce43b14d2",
         "references/animation-advanced.md": "sha256:45f32863f332379d4831ea736f4f2591688eec4125b325ba52bc9311b3202a30",
         "references/animation-basics.md": "sha256:5c6e8911c4011d772db061d3438ec07491bf1c467ab87af4d56e21720a189c9f",
@@ -321,24 +321,40 @@
         "references/scroll-patterns.md": "sha256:9366882f1336e46b47beb80f3a4206674530a064f0577fde0ca5d8628c8c7ea1",
         "references/sheet-navigation-patterns.md": "sha256:eda4200c089b0baeb77d29a0ad94ed99062a1c79a78fdd7dfa59b00347d701e8",
         "references/state-management.md": "sha256:839d5ea42e3281d69c9d0ec3f797c5dd9f7cdf61e3f3cf273b234efbef40eeda",
-        "references/view-structure.md": "sha256:d67ae7e7c82df42dd3b1337c3245be481c243796c8a41550360775e61aebb4a0"
+        "references/text-patterns.md": "sha256:58d2fc91e553a67787c31aceee75421836bc1d5085df2562b7c8abd3cbd80a30",
+        "references/trace-analysis.md": "sha256:7b0aba8e633a079bad03597c51657fc9b744035ea064fe4198b55e41e5ec4bc1",
+        "references/trace-recording.md": "sha256:bded408f9133fd3848548f698b19e213a655bb59141df28112bcdc222720712a",
+        "references/view-structure.md": "sha256:43f37285d1e60efcb0fc4de1dcdf2cb6c57c87f22a335fc7ca65fd289e27f62b",
+        "scripts/analyze_trace.py": "sha256:f40d49cfd4b5afcea717560787c34dcef1574f831a55a7d846303910df539636",
+        "scripts/instruments_parser/__init__.py": "sha256:fdf7c99bed236e0fb71524b155be864a00a71af4997d6848c6c33f49fce62861",
+        "scripts/instruments_parser/causes.py": "sha256:cf6e067e5f47130562522ed27ca4f2551d0b2de669b5063db950e220e19cbd1f",
+        "scripts/instruments_parser/correlate.py": "sha256:c4bd0c6d14cc96e03cf058ae134c661ace6de5d9b95d417e742278a9c86d064b",
+        "scripts/instruments_parser/events.py": "sha256:e389fed14c398732aadb04bddeed399d4856eca24741396e3c845d4a4a95be57",
+        "scripts/instruments_parser/hangs.py": "sha256:af779727b7342186606021acad8f38dfb88778ee068a95d0a9b119f415bc5162",
+        "scripts/instruments_parser/hitches.py": "sha256:39c4a6d96fa4447709eeff98f033a2a6cac1a70b205fd543b7711e1d4759dd2f",
+        "scripts/instruments_parser/summary.py": "sha256:dc856a29008aa2218cf30fc82db133f75efc1f67580b27fb3077f17ccc365296",
+        "scripts/instruments_parser/swiftui.py": "sha256:f499b222b24c2129208284ccc61d6d0ac27bfe67831a5f7db51848f83d20fdd5",
+        "scripts/instruments_parser/time_profiler.py": "sha256:dd3ab3f6e8e41b8ad00bbbd38ac96ada12a945bd82e51c923ac912fc46bff9b6",
+        "scripts/instruments_parser/xctrace.py": "sha256:b680bddb80d7f63ff97b7ba69b1c9ddda57d4080d601e9a1a47f09e81c2870ce",
+        "scripts/instruments_parser/xml_utils.py": "sha256:f0f4476f0f1f0ce9ad5779509b59c2c77b0f7438a57d358aa76e715e7a23b4d6",
+        "scripts/record_trace.py": "sha256:915d97c9f68b3065fe7921a31709e82d299cf113b310e78b855776e9cdde33d3"
       }
     },
     "documents-office/morph-ppt": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/morph-ppt",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/morph-ppt",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:30.53481-04:00",
+      "installed_at": "2026-05-01T12:27:31.899716-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/morph-ppt",
-      "version": "9cc0541",
-      "tree_hash": "ccd86af6711a9b1555ae1f013250d97bf15309af",
+      "version": "e039e64",
+      "tree_hash": "b74053bb061b619e644d37ed10f9f8e6433c9eb9",
       "file_hashes": {
-        "SKILL.md": "sha256:c71b903221753fa645e901d48ca3d299cf8de440e9806b643869b5115363179d",
+        "SKILL.md": "sha256:54fae15fae9260d67689b702d11f08e5137f7223a50f1d191a034f1fcdfd49b4",
         "reference/decision-rules.md": "sha256:e259f4b1b49096fe08b20b507b10bdc2bb0f126d257602de8959972c29fd274d",
         "reference/morph-helpers.py": "sha256:e0c512038752d194d61595a4e56afd17b022e4a57a50a0f21eb5f417c1babc1f",
         "reference/morph-helpers.sh": "sha256:3f4fa0e710b20305b9161253dc1fad2d329d3c8a93a22e4b210bac98784bad9f",
-        "reference/officecli-pptx-min.md": "sha256:1e1744d5d2456282152414f5aced41e78c36d176a13b5f34c7babb68449b12f0",
+        "reference/officecli-pptx-min.md": "sha256:529184a7a80a2046ee3eb2b2b38479639eb5047982bfb2ab9f5a25ea984c8b55",
         "reference/pptx-design.md": "sha256:700d61811c57313b94f173a0699f3f3b69c25c2d1d2970badbe0f3d0c9f56973",
         "reference/quality-gates.md": "sha256:b56b8a285a5a15fa6a04a5c584d7a5e91032951e68150d6771351466f86f834e",
         "reference/styles/INDEX.md": "sha256:435093029ee661d5cac20fd2d5e2de576e5542e7daa1e1949663a09bf27586f3",
@@ -450,117 +466,109 @@
       }
     },
     "documents-office/officecli-academic-paper": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-academic-paper",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-academic-paper",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:32.241281-04:00",
+      "installed_at": "2026-05-01T12:27:32.006795-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-academic-paper",
-      "version": "9cc0541",
-      "tree_hash": "2c4d34afdaa184eb97357e4f771635766e2e509c",
+      "version": "e039e64",
+      "tree_hash": "bdead41a60fe81b83cf276b7c78526fff6b01ccf",
       "file_hashes": {
-        "SKILL.md": "sha256:86bc5f6dff456fb3dbbde41d9cf800c352f0f4ce66eb0fb27ade1c4fc128a2fb",
-        "creating.md": "sha256:c1b87c8caaac5d96e9472773a98014cef670fdd8c3164bce68616a4b4b9e0646"
+        "SKILL.md": "sha256:2641184c703031003a7cf49acd8bc4c2da1c7c680687d382b57c1900b4d27aab"
       }
     },
     "documents-office/officecli-data-dashboard": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-data-dashboard",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-data-dashboard",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:33.917703-04:00",
+      "installed_at": "2026-05-01T12:27:32.12685-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-data-dashboard",
-      "version": "9cc0541",
-      "tree_hash": "4701dfd84f23c55a016bf20a7d9178b715fb7d0e",
+      "version": "e039e64",
+      "tree_hash": "d5a84b077691f4a826703d476ce1038a0f46006b",
       "file_hashes": {
-        "SKILL.md": "sha256:7ca8e713674ad642ae532e9d63c226bad3d21b809a5b91d5bfeb53e82d1a1292",
+        "SKILL.md": "sha256:dc45b8ee840afc06e217b4d5a029d5fcbeacd90071dd6d9a0949419a42093cf3",
         "creating.md": "sha256:3f7b5682b04acd393491422d31ca06f09bd730cb153fb2466b0b6506c7443d9b"
       }
     },
     "documents-office/officecli-docx": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-docx",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-docx",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:23.651166-04:00",
+      "installed_at": "2026-05-01T12:27:32.241933-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-docx",
-      "version": "9cc0541",
-      "tree_hash": "3ce90efb9174058b5efa36d7546327aec11830e9",
+      "version": "e039e64",
+      "tree_hash": "3972d71ec3efc69da9fa75f3fece0876f9e4207e",
       "file_hashes": {
-        "SKILL.md": "sha256:3a43223c2e354f290f53504d8ce2eb55236bda567ef2d160bb8d05d3d5988ffc",
-        "creating.md": "sha256:2bccf89c97c2f7c97a70aa1dc28f115f7eabf4a8ee1071448107934501c29dd0",
-        "editing.md": "sha256:bc28c9a9f7679759d1001bf4cd8b2bf9f4291fd3dede16973468104fa6c537ce"
+        "SKILL.md": "sha256:576ee2f3512309f48459f72012abb4af558e13e68c5987d2242a6fb5bba6c6f5"
       }
     },
     "documents-office/officecli-financial-model": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-financial-model",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-financial-model",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:35.580083-04:00",
+      "installed_at": "2026-05-01T12:27:32.354379-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-financial-model",
-      "version": "9cc0541",
-      "tree_hash": "acfb556a5af6edb5f530c904368caf5cfe91b78a",
+      "version": "e039e64",
+      "tree_hash": "180367d6e58723c9445adada298746d14b8ac11a",
       "file_hashes": {
-        "SKILL.md": "sha256:2184e6c51b410d3cb89d0a7a76a87ff2a9546da54fbf13ef49d8332ac1bef54a",
+        "SKILL.md": "sha256:9c8c63a90f0999252d442df863f3635c5ffdaba465616e562d40d98c248df4ef",
         "creating.md": "sha256:5dc162c21aeb38f24faeca2c2779df5d62d028e9c9838232cb655e58f32bb447"
       }
     },
     "documents-office/officecli-pitch-deck": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-pitch-deck",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-pitch-deck",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:28.699597-04:00",
+      "installed_at": "2026-05-01T12:27:32.459429-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-pitch-deck",
-      "version": "9cc0541",
-      "tree_hash": "a8c87ff271002b9cd27aacefb196b623efde6713",
+      "version": "e039e64",
+      "tree_hash": "1cd7e4f3fb0a9aee9377e0f2925ac1e560d15012",
       "file_hashes": {
-        "SKILL.md": "sha256:0a4e45aaa2c3fe7c9e762c4834a2070f433b04430bbef1ea7ea15736f450fd29",
-        "creating.md": "sha256:b8ed481d93af13558ab30c2845a6d67a67b82abd27e6d1d37c502078cbc6b9af"
+        "SKILL.md": "sha256:b209ba5cb230c51f5cd7d6cf0ab29375c3e7b7a31ea3a4789d072ec1d057ff56"
       }
     },
     "documents-office/officecli-pptx": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-pptx",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-pptx",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:27.000876-04:00",
+      "installed_at": "2026-05-01T12:27:32.572056-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-pptx",
-      "version": "9cc0541",
-      "tree_hash": "e29c851dcc451b3429801bdee339b052a5b4d269",
+      "version": "e039e64",
+      "tree_hash": "04c37372f4c136b9beae953690c0433fae1f6b0c",
       "file_hashes": {
-        "SKILL.md": "sha256:877a5cca4eec83350f4ff3dfef5d36c1d04b4c1a8b52a3ee81e6282fe0476cfe",
-        "creating.md": "sha256:c26939f949a5676b3718c9475d5393eef6ef3d1230eff409ecae3ad60ff19139",
-        "editing.md": "sha256:de02145affdf824b75ac91c48151862083f5ba3e67041a2518f55a38ec163623"
+        "SKILL.md": "sha256:427bf25a82f25f1bdd573a453a4db9d94208fe71bbeaf6867305d60c657ea27f"
       }
     },
     "documents-office/officecli-xlsx": {
-      "source": "github.com/iOfficeAI/OfficeCLI/skills/officecli-xlsx",
+      "source": "https://github.com/iOfficeAI/OfficeCLI.git/skills/officecli-xlsx",
       "type": "github-subdir",
       "group": "documents-office",
-      "installed_at": "2026-04-03T09:12:25.340841-04:00",
+      "installed_at": "2026-05-01T12:27:32.662038-04:00",
       "repo_url": "https://github.com/iOfficeAI/OfficeCLI.git",
       "subdir": "skills/officecli-xlsx",
-      "version": "9cc0541",
-      "tree_hash": "8b8d83e9af977e25afb03bef95ae06c194c628cb",
+      "version": "e039e64",
+      "tree_hash": "2cb298f8ec46c75e4baccdbbdd7248e4a2b126a3",
       "file_hashes": {
-        "SKILL.md": "sha256:e80c4bc3f8419f0787302aeee5b1d91dba2a1d43d4814e784d1a7ede8cc7913d",
-        "creating.md": "sha256:0cdbbdea931db3c141ebc4d04dedf58aa18f71ce518e2ac0a8ada15d75cb56aa",
-        "editing.md": "sha256:58920993ab377211bef1a72251b687a4a382325f67545ad0bd5328be32b2a5ed"
+        "SKILL.md": "sha256:14bfb210f73c6eff09d5f7149c4f2afca0380c2deadf828ed53c2ad7420b7b35"
       }
     },
     "meta-tools/skillshare": {
-      "source": "github.com/runkids/skillshare/skills/skillshare",
+      "source": "https://github.com/runkids/skillshare.git/skills/skillshare",
       "type": "github-subdir",
       "group": "meta-tools",
-      "installed_at": "2026-04-07T10:56:51.06011-04:00",
+      "installed_at": "2026-05-01T12:27:35.121785-04:00",
       "repo_url": "https://github.com/runkids/skillshare.git",
       "subdir": "skills/skillshare",
-      "version": "7a010a9",
-      "tree_hash": "e69406664b615ff7276d030adee8c2f384f22b1e",
+      "version": "0821cb7",
+      "tree_hash": "97725b3566f0a8246f19f43df4f2805cd993034d",
       "file_hashes": {
-        "SKILL.md": "sha256:faabd4e6603fc9afda7c368b520ca109f48dd3823ee8819c9b0d883f315863b8",
+        "SKILL.md": "sha256:abe1875cd6cc73263828b2f523d18c44059d8e7f07a676320165654d59f035b4",
         "references/TROUBLESHOOTING.md": "sha256:14855dbd2f20ad7042941959f257c79f768d103e89e55d74d8c3b3d38f9ff5ee",
         "references/audit.md": "sha256:85a31c32f17f39ce2baa5189a8004c6adec506e5fcf7d20378caa103b015fd5d",
         "references/backup.md": "sha256:96e2e8d5e2d7cfb8765c2eebb4e6d733b79258de8b3d974fca8972557f7326a6",
@@ -569,79 +577,81 @@
         "references/install.md": "sha256:2b444bfcd211fae59421631ecd49331b4de287c311354f8ed3ca19f204d223db",
         "references/log.md": "sha256:406e85525f53f4deaa0f48bf8b3b53db3e032b99f5a0e926c84542d51b3a3625",
         "references/status.md": "sha256:0143c8250ecbedfa14607b82cbfb23107294b6c1e053b5726629556b7a47412c",
-        "references/sync.md": "sha256:f9447ffbd0a48f9d7910e90861905727d41a679d284a9e3e09f96d4a1663c6c3",
-        "references/targets.md": "sha256:a883a8b720b5d6b7f467d194d497e2d1f3b6ab99d676c86146d74716ed23c0ca",
-        "references/trash.md": "sha256:fd7c7d95724ff4bec693be35e57ae9ab1a7c2c845df15d9bb60aa044862cdfe0",
+        "references/sync.md": "sha256:75577dce829fda6050b3b761915b70d9aef0d6bdb3c010d2fef7b7b22e226a8e",
+        "references/targets.md": "sha256:130b0b07b17a88d4bc09af0262a6b161421946f5442295dc5bc828f95226763e",
+        "references/trash.md": "sha256:fb94aa6b71d469fa8f6b5e728fcab531b6eb010a2092389b02eaaadf3ebc98cf",
         "scripts/run.sh": "sha256:e434ebdb7d3ae0b37c00ddc36687bc975da9e766b8cb863f9aed9a624ebbdfa9"
       }
     },
     "ui-ux/hue": {
-      "source": "github.com/dominikmartn/hue",
+      "source": "https://github.com/dominikmartn/hue.git",
       "type": "github",
-      "installed_at": "2026-04-15T14:00:11.20987-04:00",
+      "group": "ui-ux",
+      "installed_at": "2026-05-01T12:27:35.919693-04:00",
       "repo_url": "https://github.com/dominikmartn/hue.git",
-      "version": "6a82563",
+      "version": "0c29147",
       "file_hashes": {
         ".gitignore": "sha256:6a218028adf67b24b5f4783152dade9650675b40fdfba5622a8a853a6f1fbbb1",
-        "README.md": "sha256:158c6a369b00eedb1226254d8c7109b38b104163b01d4005007a83ef59447172",
-        "SKILL.md": "sha256:0b9c4186ae850931176a90ed7ca23dd3256e1643d299126b6648f9d6e67cd036",
-        "examples/atlas/design-model.yaml": "sha256:0234a333699a0081ad248400ea3994ce06c87d302a2892c763f70fed5a2b785d",
+        "README.md": "sha256:313ac45ba22de1fee70007621b0be05935e1ee57d5e15769ae57c98ed20cfa8e",
+        "SKILL.md": "sha256:642fbeb0babb8f5247c450d1690188fd445fcfbac1c648332bcf170afa18d6c5",
+        "docs/2026-04-17-cross-platform-codex.md": "sha256:a6c51c1db3bf838bf581604651a0b4c4b6b42f300f48b1545da74dc5c8e5cf12",
+        "examples/atlas/design-model.yaml": "sha256:810a058b4ffa8968d0d3b9129fdb8ae1651adc1324eb782f53b6c661ed2d5d28",
         "examples/atlas/landing-page.html": "sha256:42bce1a217d179836378a08afbdcd351beccadc86ba4c49abaf26bf12152d896",
-        "examples/auris/design-model.yaml": "sha256:ae7486aa96bc52d994a450a9af3ad295d293aa935c993e320bc8d5d5aebf3eee",
+        "examples/auris/design-model.yaml": "sha256:73c6d1a1ddfe4e056a49e61b64faa6865747f61256f67d5f54884fafc61f00fb",
         "examples/auris/landing-page.html": "sha256:91f94d1432fe2f625387cb9bf68f3cc3ac567f30b9b261bed999c94929256ced",
-        "examples/drift/design-model.yaml": "sha256:10d82d97d21e16445ef25082d31b126f3928f225cc61c18b44f55839b6347081",
+        "examples/drift/design-model.yaml": "sha256:9d2874bcf2c5e58436cfb868ee50cdde82955ad7890aea85382303ae1521b8c7",
         "examples/drift/landing-page.html": "sha256:1d42ad3af16f15814c0a46ac1940816b41bbc64769a053df9ee84bbb02b5d42c",
-        "examples/fizz/design-model.yaml": "sha256:d66066689d18e8de8f243060fd4b871a3119c3558ed874175b53ab55ce148208",
+        "examples/fizz/design-model.yaml": "sha256:a2139381edca879e5fb1baa188ed03c465b040a35d5259f7124f16a51f53ff52",
         "examples/fizz/landing-page.html": "sha256:cc2230776c0584aecd69c817b3fae9e0f6f4bc86c18bcb327a454b5ff119ce55",
         "examples/halcyon/component-library.html": "sha256:195a6fe141f9491469f619940fec8d4230ad1df1920035b289c087d6a746f1f3",
-        "examples/halcyon/design-model.yaml": "sha256:424693fbe42073045a4ce6e92aa905ba91178bfeaea97d524f3e9db3fcb4eab6",
+        "examples/halcyon/design-model.yaml": "sha256:e9e1fc95991ce653e1f5dd1d269298133a68886b27587df54dbcd148405d6725",
         "examples/halcyon/landing-page.html": "sha256:a138cda2b40ca852d7e118fea6634f688daca59b8898784e62b958dee0bcd280",
         "examples/index.html": "sha256:2fe8eceff13a4f170b97d5712cb03186997b4f75fe21379a505ddb1f224b1189",
-        "examples/kiln/design-model.yaml": "sha256:ccd66955485831a083718070c50119686d26d2f820b7d058e60bec6b683a5d12",
+        "examples/kiln/design-model.yaml": "sha256:31983184d548e657f86cc8a8234eb353eafb342f05052e05b125f3d01f3b2f3d",
         "examples/kiln/landing-page.html": "sha256:5d4d4a30254fed4140cdfc6536d754e043a69fae66ad77ea9da7701810559e6c",
-        "examples/ledger/design-model.yaml": "sha256:4a7dbc20bc7f52d6f5a530e8b866e98c6d0494f1d3bb87266f57fc0bd2b536a4",
+        "examples/ledger/design-model.yaml": "sha256:47bcbf886d4a503ff844f05bf0a63bba2e0f2b67028d519e11f7e07d057dba80",
         "examples/ledger/landing-page.html": "sha256:599b333681d45c29ba7d0dd0f2c1e09ade47b4fed7d4df60badff2faa25bd84f",
-        "examples/meadow/design-model.yaml": "sha256:40d8b13f50e3cae01f4803c781f219d2df355611bc4ba895c118fcdd5b8f4c83",
+        "examples/meadow/design-model.yaml": "sha256:aad03731a18cb040faa925b0e1ee0dd64a8af037ecd1ffbdf071419a37d2d44e",
         "examples/meadow/landing-page.html": "sha256:0486662ae1ef3896d55a09f7d3ba8f2e0b84e3822bb8ccff7f1455ca2af5edcd",
-        "examples/orivion/design-model.yaml": "sha256:b218bda4409702bf629a2a43943cf64b4843d7dfede9f5e70134b8d0531bd2ea",
+        "examples/orivion/design-model.yaml": "sha256:513a3080d5d701bda29f90bd2347482eefdcbfe471f9f9afebf2ce96813c894f",
         "examples/orivion/landing-page.html": "sha256:679f18afee6ab16aeb043398618dbd3051d4069e341591bd167db7cfbc5c78ef",
-        "examples/oxide/design-model.yaml": "sha256:60b4140a8349cb5c06089b61a20e0140ca0c5c738a490261d1f6d9a76a3ad8de",
+        "examples/oxide/design-model.yaml": "sha256:284d09bd952f58d87d6ee610c7cfa73ccb7d3a351d0848a98b74e88a4ee76ef7",
         "examples/oxide/landing-page.html": "sha256:6c93d828dcde8e33b69d14746835c2ecbe9d6cd8a9270c9f7abc07037a9bb301",
-        "examples/prism/design-model.yaml": "sha256:e12dbd4f45d95a79ec2f200b831839ab489b02fe298f711f50b2742ab829e4b4",
+        "examples/prism/design-model.yaml": "sha256:70883ee201df1b14ccbcf8e56b7401a8f05de03a9eb893a0d5d02ae75cd5f4cb",
         "examples/prism/landing-page.html": "sha256:9cbabf544d34acb3bf3df78a31bd14a7f97ab6874f9e9667fb20318c7a2426d9",
-        "examples/relay/design-model.yaml": "sha256:6bfed0cc410ca7076f15a0932c3c9d6575bb2cae94aa04ec6ebb1c716c2dfade",
+        "examples/relay/design-model.yaml": "sha256:13657c6b2236eaad0df0330c7b0f423097edf25a4d42190b4ad314766a9e81b4",
         "examples/relay/landing-page.html": "sha256:0ce5f9742e0830df2b3ab328e33afb9ea3e0709c65ed13dc89b690bc4451d7be",
         "examples/ridge/app-screen.html": "sha256:e9258d0e8e42a24a259e215cddf6ab9e4590b8b87909d1f1a1e33c23fbe0cc49",
-        "examples/ridge/design-model.yaml": "sha256:953f84ef219b262a30a3e98d3023e49f227f98b7fe4f17030705817a1bfe5078",
+        "examples/ridge/design-model.yaml": "sha256:a6a301ee7cb6128615a8f8e49abf20c06695ddb99ce1fe661a80ee9b268f85fb",
         "examples/ridge/landing-page.html": "sha256:d60b8465b487b3d7de513abe98ca9281d76ce72c26287d1dfac266b2745f9292",
-        "examples/solvent/design-model.yaml": "sha256:b56a809a1758d70ee6121e1357c6f43367c623fbc875f202ec8ca5bc1ce4b35c",
+        "examples/solvent/design-model.yaml": "sha256:88d6d607433e7a86d0d8cbab31b6be206b27fb2f3919d984ac2dd1392ad8503a",
         "examples/solvent/landing-page.html": "sha256:5c75eb1076af3d762b0cccf069edbf0ecbe07e18f0902d217ff2e26d3a3e26b2",
         "examples/stint/app-screen.html": "sha256:883e16aa750b8f998d39cf22e7b525678719c8cdc005d5a96839550fdfeef5ec",
-        "examples/stint/design-model.yaml": "sha256:e7188392f84ae5a5e690fcdadfada5886066f3aa9f7d582259313fbe24ed11a9",
+        "examples/stint/design-model.yaml": "sha256:b7bfeed64234a1d7590f0bafbed4cbdb528736c44840fcc29dae2d63a394bf68",
         "examples/stint/landing-page.html": "sha256:927e469135066a261f65c78471d28393c41d90f45ad89226aa09fbf1fe79538b",
-        "examples/thrive/design-model.yaml": "sha256:d67648afd9dab9609fe05abd304b7091a07db363d6c8f9b5203644903f24c5ee",
+        "examples/thrive/design-model.yaml": "sha256:64a521dbfd75e24514bf7f2af010c8b51c0a8f0e17a2dee6555f4931f3e7257c",
         "examples/thrive/landing-page.html": "sha256:f54ded471757a882588bc2986711c9f2a44d4b96148caa5843f5c26125fde9b0",
-        "examples/velvet/design-model.yaml": "sha256:64456f28a3f47cc8e0a8a6b205744b4abdb826fddab3c2227f3c95b16564ddef",
+        "examples/velvet/design-model.yaml": "sha256:9f9fcda8bce8a4ee1f66703b5720e155d307b113dd053d77fef13f698b477553",
         "examples/velvet/landing-page.html": "sha256:52e1a07f1c7a3111fbe3f9ebbd2f58859d2985c80a5f281e63381e9ce2d9109e",
-        "references/app-screen-template.md": "sha256:0c43a2f828a20628ba67bd5f0af5243d3fb11e2b765da1aa5af59f61f625d9f4",
-        "references/background-graphics.md": "sha256:b4a5b999f27dc14d5ee9c32602ce79c48f78595ac2f596173000d1474aef3b76",
-        "references/background-shaders.md": "sha256:0201ed8718a5d47ba5e83265c0cba88f1567e549b5438e972a3245dbe799fe89",
-        "references/component-library-template.md": "sha256:7986dd2c1495ef1e6c99a227b949e1d0e7ecc93acf2f821e3e10c3842e42dc04",
-        "references/components-template.md": "sha256:519a51bbdb63d5f7d5fc52f34f0165c031128ab58ab291373f4709a54dbda674",
-        "references/hero-stage.md": "sha256:6a7e8d2e1adc60d9388b05f65892cc6fdb36fbf2c2f45a899af28d19491f6362",
-        "references/icon-kits.md": "sha256:71b3acac1a6939ef0cb869bad0612a3627683934d986ff244733fa21d3370085",
-        "references/landing-page-template.md": "sha256:cee1595619990fb7c1d96c213361dcea023351dbd76471e62283a9ff5934833c",
-        "references/platform-mapping-template.md": "sha256:c6adb736a9b3c63b50d35e6945914598708c9a9245fb4abaa2cb12c29fa507e5",
-        "references/preview-template.md": "sha256:04eed47405856b0bbbdcab1e2a19187f9f951eb54249e535d6b1306f6a0d7a17",
-        "references/skill-template.md": "sha256:231675e15937744ce44ff00620d7480d0e15e4b8d3d930fa0eb7fe1aa767e49d",
-        "references/tokens-template.md": "sha256:6c2a34063891f638da04c160fbccb359030325793783f2bf4b7699d2219763c3"
-      },
-      "group": "ui-ux"
+        "references/app-screen-template.md": "sha256:fb99d868b7fd030907662a97c3aebec32d8c0a1514b996ffe18b8931ae1a2535",
+        "references/background-graphics.md": "sha256:526d4687854d701aa4a38d26dfeed40401b01114587e97cbeceac1c2f322c984",
+        "references/background-shaders.md": "sha256:be8186f32525da0c44a705ef1057db5868a8c0ef687652443a559e20de0ecda3",
+        "references/component-library-template.md": "sha256:6a974cb50835c7ff2048325ce898d931352e5ddcf98d7ea04b861dcc29026932",
+        "references/components-template.md": "sha256:1be112774e14c294799197e4bbf284939042efd44dea5ddca0c3f2691a2920a1",
+        "references/hero-stage.md": "sha256:b5f22660c36fb03c4b91ceea17353058e1e0de55019702ba80930762a077844f",
+        "references/icon-kits.md": "sha256:62c0989c1f46d6f95a524a659a9639dbb9f5ecfc1e935d59c9e7a7ae910af758",
+        "references/landing-page-template.md": "sha256:f5c04d2035635b42bfbab98a62f36f8548bcbcaa21175663c7c29b7e54c72c6e",
+        "references/platform-mapping-template.md": "sha256:d5b8ccb452a65b01558307a3c6917feb2e19b998b13aa07d4b19a4908e253858",
+        "references/preview-template.md": "sha256:93baeb86c06d5ef5b972e652261e574674b45044c9752df80a28762c25b3443d",
+        "references/skill-template.md": "sha256:deca928317278a2414aac9044580a14b4d76d8700d00326a975707918e19da0a",
+        "references/tokens-template.md": "sha256:e3491304f953b7c00cfa4bce514f564cf91191b1b4eaed709655157ff5699b21"
+      }
     },
     "ui-ux/motion-design": {
-      "source": "github.com/LottieFiles/motion-design-skill/skills/motion-design",
+      "source": "https://github.com/LottieFiles/motion-design-skill.git/skills/motion-design",
       "type": "github-subdir",
-      "installed_at": "2026-04-16T02:05:22.080676-04:00",
+      "group": "ui-ux",
+      "installed_at": "2026-05-01T12:27:36.279076-04:00",
       "repo_url": "https://github.com/LottieFiles/motion-design-skill.git",
       "subdir": "skills/motion-design",
       "version": "b6606e1",
@@ -664,8 +674,7 @@
         "reference/quality-checklist.md": "sha256:c11bf193b700d9c9ebc5d871f1d5f193bccc441c4eccc0509b53a40d6e8dc558",
         "reference/timing-easing-tables.md": "sha256:e478f3b99c4cac3f96eca008e20f8808d4cfae165f5799f260092baf9b6ebcff",
         "reference/troubleshooting.md": "sha256:69e5aaeee108231d51187143ae3fce4db7a42936f10682908ca9462a008a047a"
-      },
-      "group": "ui-ux"
+      }
     }
   }
 }

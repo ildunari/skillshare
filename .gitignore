@@ -14,3 +14,7 @@ __pycache__/
 *.tmp
 *.bak
 *.swp
+
+# Private skills — skillshare-managed locally, never pushed to public repo.
+skills/documents-office/fixing-office-accessibility/
+skills/documents-office/using-a11yfix/

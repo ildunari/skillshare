@@ -61,16 +61,9 @@ A minimal `ExportOptions.plist` for App Store distribution:
 ```
 
 ### 3. Upload with asc
-Prefer `asc publish testflight` when the goal is an actual TestFlight build, especially for an external tester group:
 ```bash
-asc publish testflight \
-  --app "APP_ID" \
-  --ipa "/tmp/YourAppExport/YourApp.ipa" \
-  --group "External Testers" \
-  --wait --timeout 30m --output json
+asc builds upload --app "APP_ID" --ipa "/tmp/YourAppExport/YourApp.ipa"
 ```
-
-Use `asc builds upload` only when you intentionally want a raw upload step without the full TestFlight publish flow.
 
 ## macOS Build Flow
 

@@ -39,12 +39,6 @@ Use this skill when you need to run or design `asc` commands for App Store Conne
 - Prefer keychain auth via `asc auth login`.
 - Fallback env vars: `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_PRIVATE_KEY_PATH`, `ASC_PRIVATE_KEY`, `ASC_PRIVATE_KEY_B64`.
 - `ASC_APP_ID` can provide a default app ID.
-- If keychain-backed `asc` commands hang or stall during `auth status`, TestFlight group lookups, or build queries on this machine, retry with explicit API-key env and `ASC_BYPASS_KEYCHAIN=1`.
-  - Known-good pattern on Studio:
-    - `ASC_BYPASS_KEYCHAIN=1`
-    - `ASC_KEY_ID=...`
-    - `ASC_ISSUER_ID=...`
-    - `ASC_PRIVATE_KEY_PATH=...`
 - When permissions are unclear, inspect exact API key role coverage with `asc web auth capabilities`.
   - This lives under the experimental web auth surface.
   - It can resolve the current local auth by default, or inspect a specific key with `--key-id`.
@@ -52,4 +46,3 @@ Use this skill when you need to run or design `asc` commands for App Store Conne
 ## Timeouts
 - `ASC_TIMEOUT` / `ASC_TIMEOUT_SECONDS` control request timeouts.
 - `ASC_UPLOAD_TIMEOUT` / `ASC_UPLOAD_TIMEOUT_SECONDS` control upload timeouts.
-- For long-running TestFlight publish flows, prefer command-level waiting flags as well: `--wait --timeout 30m --output json`.
