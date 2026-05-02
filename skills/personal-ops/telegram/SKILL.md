@@ -20,7 +20,9 @@ Control Telegram via the `telegram` CLI. Uses Telethon to connect as your real u
 
 ## CLI Location
 
-`/opt/homebrew/bin/telegram`
+Expected CLI: `/opt/homebrew/bin/telegram`.
+
+On Mac Studio as of 2026-05-02, `telegram`, `telegram-cli`, and `tg` were not on `PATH`, while Telegram Desktop was present at `/Applications/Telegram.app`. If this skill is needed for user-account sending, first install/restore the CLI or use another verified Telegram user-session path; do not assume `/opt/homebrew/bin/telegram` exists.
 
 ## First-Time Setup
 
