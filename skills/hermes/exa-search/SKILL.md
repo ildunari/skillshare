@@ -7,7 +7,7 @@ description: >
   Triggers on: "exa search", "find recent papers on", "search arxiv for", 
   "find news from last month about", "search github for", "research papers about",
   any search that needs date ranges, domain filtering, or content-type scoping.
-targets: [hermes-default, hermes-gpt, hermes-coding]
+targets: [hermes-default, hermes-gpt]
 ---
 
 # Exa Neural Search
