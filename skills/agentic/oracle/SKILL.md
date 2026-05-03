@@ -1,114 +1,143 @@
 ---
 name: oracle
-description: Use when you want a second-model review through the `@steipete/oracle` CLI by bundling a prompt with a tightly scoped set of repo files, especially for debugging, refactor review, design critique, prompt validation, or cross-checking a tricky conclusion. Also use when the user explicitly asks for Oracle, wants a browser- or API-backed second pass, or asks to package context and files for an external model review.
+description: >-
+  Use when you want a second-model review through the `@steipete/oracle` CLI by
+  bundling a prompt with a tightly scoped set of repo files. Use for debugging,
+  refactor review, design critique, prompt validation, or cross-checking a
+  tricky conclusion. Supports GPT-5.5 Pro/GPT-5.5 browser runs with standard or
+  extended thinking.
+metadata:
+  hermes:
+    command_priority: 420
 ---
 
-# Oracle (CLI) — best use
+# Oracle CLI
 
-Oracle bundles your prompt + selected files into one “one-shot” request so another model can answer with real repo context (API or browser automation). Treat outputs as advisory: verify against the codebase + tests.
+Oracle bundles your prompt plus selected files into one external-model request. Treat the answer as a strong second opinion, not ground truth: verify it against the repo and tests before acting.
 
-## Main use case (browser, GPT‑5.4 Pro)
+Current reference checked: `@steipete/oracle` npm `0.9.0` and upstream `steipete/oracle` main docs as of 2026-05-03. The npm help may lag the README for brand-new browser flags; upstream documents GPT-5.5 Pro/GPT-5.5 and `--browser-thinking-time`.
 
-Default workflow here: `--engine browser` with GPT‑5.4 Pro in ChatGPT. This is the “human in the loop” path: it can take ~10 minutes to ~1 hour; expect a stored session you can reattach to.
+## Default recommendation
 
-Recommended defaults:
+Use browser mode with GPT-5.5 Pro and extended thinking when Kosta asks for Oracle and the question is hard enough to justify the wait:
 
-- Engine: browser (`--engine browser`)
-- Model: GPT‑5.4 Pro (either `--model gpt-5.4-pro` or a ChatGPT picker label like `--model "5.4 Pro"`)
-- Attachments: directories/globs + excludes; avoid secrets.
+```bash
+npx -y @steipete/oracle \
+  --engine browser \
+  --model gpt-5.5-pro \
+  --browser-thinking-time extended \
+  -p "<task>" \
+  --file "src/**"
+```
 
-## Golden path (fast + reliable)
+Use standard thinking for faster/cheaper-ish browser passes where you mostly want a sanity check:
 
-1. Pick a tight file set (fewest files that still contain the truth).
-2. Preview what you’re about to send (`--dry-run` + `--files-report` when needed).
-3. Run in browser mode for the usual GPT‑5.4 Pro ChatGPT workflow; use API only when you explicitly want it.
-4. If the run detaches/timeouts: reattach to the stored session (don’t re-run).
+```bash
+npx -y @steipete/oracle \
+  --engine browser \
+  --model gpt-5.5-pro \
+  --browser-thinking-time standard \
+  -p "<task>" \
+  --file "src/**"
+```
 
-## Commands (preferred)
+If Kosta explicitly wants non-Pro GPT-5.5, use `--model gpt-5.5` with the same `--browser-thinking-time standard|extended` choice.
 
-- Show help (once/session):
-  - `npx -y @steipete/oracle --help`
+## Pick standard vs extended
 
-- Preview (no tokens):
-  - `npx -y @steipete/oracle --dry-run summary -p "<task>" --file "src/**" --file "!**/*.test.*"`
-  - `npx -y @steipete/oracle --dry-run full -p "<task>" --file "src/**"`
+- **standard**: quick second pass, small bug, prompt review, API-shape check, or when the attached file set is already very narrow.
+- **extended**: architecture, merge conflict review, subtle debugging, multi-file refactor, release-readiness, security/reliability review, or anything where a shallow answer would waste more time than the slower run.
 
-- Token/cost sanity:
-  - `npx -y @steipete/oracle --dry-run summary --files-report -p "<task>" --file "src/**"`
+Default to **extended** for ambiguous “ask Oracle” requests. Say which mode you picked in the prompt slug or short preface.
 
-- Browser run (main path; long-running is normal):
-  - `npx -y @steipete/oracle --engine browser --model gpt-5.4-pro -p "<task>" --file "src/**"`
+## Golden path
 
-- Manual paste fallback (assemble bundle, copy to clipboard):
-  - `npx -y @steipete/oracle --render --copy -p "<task>" --file "src/**"`
-  - Note: `--copy` is a hidden alias for `--copy-markdown`.
+1. Pick the smallest file set that still contains the truth. Include entrypoints, failing tests, configs, and nearby docs; exclude secrets and generated output.
+2. Preview first:
 
-## Attaching files (`--file`)
+```bash
+npx -y @steipete/oracle --dry-run summary --files-report \
+  -p "<task>" \
+  --file "src/**" --file "!**/*.snap"
+```
 
-`--file` accepts files, directories, and globs. You can pass it multiple times; entries can be comma-separated.
+3. Run browser GPT-5.5 Pro with `standard` or `extended` thinking.
+4. If the run detaches or times out, reattach. Do **not** immediately re-run the same prompt.
 
-- Include:
-  - `--file "src/**"` (directory glob)
-  - `--file src/index.ts` (literal file)
-  - `--file docs --file README.md` (literal directory + file)
+## Useful commands
 
-- Exclude (prefix with `!`):
-  - `--file "src/**" --file "!src/**/*.test.ts" --file "!**/*.snap"`
+Show help:
 
-- Defaults (important behavior from the implementation):
-  - Default-ignored dirs: `node_modules`, `dist`, `coverage`, `.git`, `.turbo`, `.next`, `build`, `tmp` (skipped unless you explicitly pass them as literal dirs/files).
-  - Honors `.gitignore` when expanding globs.
-  - Does not follow symlinks (glob expansion uses `followSymbolicLinks: false`).
-  - Dotfiles are filtered unless you explicitly opt in with a pattern that includes a dot-segment (e.g. `--file ".github/**"`).
-  - Default cap: files > 1 MB are rejected unless you raise `ORACLE_MAX_FILE_SIZE_BYTES` or `maxFileSizeBytes` in `~/.oracle/config.json`.
+```bash
+npx -y @steipete/oracle --help
+npx -y @steipete/oracle --help --verbose
+npx -y @steipete/oracle --debug-help
+```
 
-## Budget + observability
+Preview full bundle without sending:
 
-- Target: keep total input under ~196k tokens.
-- Use `--files-report` (and/or `--dry-run json`) to spot the token hogs before spending.
-- If you need hidden/advanced knobs: `npx -y @steipete/oracle --help --verbose`.
+```bash
+npx -y @steipete/oracle --dry-run full \
+  -p "<task>" \
+  --file "src/**"
+```
 
-## Engines (API vs browser)
+Manual paste fallback:
 
-- Auto-pick: uses `api` when `OPENAI_API_KEY` is set, otherwise `browser`.
-- Browser engine supports GPT + Gemini only; use `--engine api` for Claude/Grok/Codex or multi-model runs.
-- **API runs require explicit user consent** before starting because they incur usage costs.
-- Browser attachments:
-  - `--browser-attachments auto|never|always` (auto pastes inline up to ~60k chars then uploads).
-- Remote browser host (signed-in machine runs automation):
-  - Host: `oracle serve --host 0.0.0.0 --port 9473 --token <secret>`
-  - Client: `oracle --engine browser --remote-host <host:port> --remote-token <secret> -p "<task>" --file "src/**"`
+```bash
+npx -y @steipete/oracle --render --copy \
+  -p "<task>" \
+  --file "src/**"
+```
 
-## Sessions + slugs (don’t lose work)
+Session recovery:
 
-- Stored under `~/.oracle/sessions` (override with `ORACLE_HOME_DIR`).
-- Runs may detach or take a long time (browser + GPT‑5.4 Pro often does). If the CLI times out: don’t re-run; reattach.
-  - List: `oracle status --hours 72`
-  - Attach: `oracle session <id> --render`
-- Use `--slug "<3-5 words>"` to keep session IDs readable.
-- Duplicate prompt guard exists; use `--force` only when you truly want a fresh run.
+```bash
+npx -y @steipete/oracle status --hours 72 --limit 50
+npx -y @steipete/oracle session <session-id> --render
+```
 
-## Prompt template (high signal)
+## Attaching files
 
-Oracle starts with **zero** project knowledge. Assume the model cannot infer your stack, build tooling, conventions, or “obvious” paths. Include:
+`--file` accepts files, directories, and globs. Pass it multiple times; comma-separated paths also work.
 
-- Project briefing (stack + build/test commands + platform constraints).
-- “Where things live” (key directories, entrypoints, config files, dependency boundaries).
-- Exact question + what you tried + the error text (verbatim).
-- Constraints (“don’t change X”, “must keep public API”, “perf budget”, etc).
-- Desired output (“return patch plan + tests”, “list risky assumptions”, “give 3 options with tradeoffs”).
+Examples:
 
-### “Exhaustive prompt” pattern (for later restoration)
+```bash
+--file "src/**"
+--file src/index.ts
+--file docs --file README.md
+--file "src/**" --file "!src/**/*.test.ts" --file "!**/*.snap"
+```
 
-When you know this will be a long investigation, write a prompt that can stand alone later:
+Important behavior:
 
-- Top: 6–30 sentence project briefing + current goal.
-- Middle: concrete repro steps + exact errors + what you already tried.
-- Bottom: attach _all_ context files needed so a fresh model can fully understand (entrypoints, configs, key modules, docs).
+- Default ignored dirs include `node_modules`, `dist`, `coverage`, `.git`, `.turbo`, `.next`, `build`, and `tmp` unless explicitly passed.
+- Glob expansion honors `.gitignore`.
+- Symlinks are not followed by default.
+- Dotfiles are filtered unless the pattern includes a dot-segment, e.g. `--file ".github/**"`.
+- Files over the default 1 MB cap are rejected unless `ORACLE_MAX_FILE_SIZE_BYTES` or `~/.oracle/config.json` raises `maxFileSizeBytes`.
 
-If you need to reproduce the same context later, re-run with the same prompt + `--file …` set (Oracle runs are one-shot; the model doesn’t remember prior runs).
+## Prompt template
+
+Oracle starts with no project memory. A good prompt includes:
+
+- Project briefing: stack, target OS/toolchain, services, build/test commands.
+- File map: which attached paths matter and what role each file plays.
+- Exact question, prior attempts, and verbatim errors.
+- Constraints: APIs not to change, compatibility, performance, style, rollout risk.
+- Desired output: patch plan, risk list, test plan, alternatives, or final recommendation.
+
+For long investigations, write a self-contained prompt that can be restored later: 6–30 sentences of context, concrete repro steps, exact errors, and all required files.
+
+## Engine rules
+
+- Browser mode is the normal path for GPT-5.5 Pro without API keys.
+- API mode incurs usage cost; get explicit user consent before starting API runs unless Kosta explicitly requested an API run.
+- Auto engine selection uses API when `OPENAI_API_KEY` is set, otherwise browser, so pass `--engine browser` when you mean ChatGPT browser automation.
+- Browser model selection can be controlled with `--browser-model-strategy select|current|ignore`. Use `current` when the browser is already on the exact desired ChatGPT model.
+- `~/.oracle/config.json` can set defaults such as `model: "gpt-5.5-pro"` and `browser.thinkingTime: "extended"`, but CLI flags win.
 
 ## Safety
 
-- Don’t attach secrets by default (`.env`, key files, auth tokens). Redact aggressively; share only what’s required.
-- Prefer “just enough context”: fewer files + better prompt beats whole-repo dumps.
+Do not attach secrets by default: `.env`, private keys, tokens, cookie databases, credential exports, and auth logs. Redact aggressively. Prefer fewer files plus a clearer prompt over whole-repo dumps.
