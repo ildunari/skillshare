@@ -1,0 +1,36 @@
+{
+  "asset_name": "<Asset Name>",
+  "asset_slug": "<asset-slug>",
+  "asset_type": "character",
+  "camera": "side-view",
+  "style": "<art direction>",
+  "description": "<one sentence>",
+  "cell": {
+    "width": 128,
+    "height": 128
+  },
+  "sheet": {
+    "columns": 8,
+    "rows": 1,
+    "background": "chroma-key",
+    "chroma_key": "#00ff00"
+  },
+  "palette": [],
+  "identity_lock": [],
+  "animations": [
+    {
+      "id": "idle",
+      "frames": 6,
+      "loop": true,
+      "purpose": "neutral readable loop",
+      "frame_duration_ms": 120
+    }
+  ],
+  "files": {
+    "brief": "brief.md",
+    "base_prompt": "prompts/00-base.md",
+    "spritesheet": "final/spritesheet.png",
+    "contact_sheet": "qa/contact-sheet.png"
+  }
+}
+

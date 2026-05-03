@@ -1,0 +1,65 @@
+{
+  "skill_name": "sprite-sheet-maker",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Make me a full sprite sheet plan for a torchlight prop in a dark roguelite dungeon. I want idle flame, flare, dim, extinguish, and relight, and I want it generated with OpenAI imagegen later.",
+      "expected_output": "A run-ready brief with prop-specific rows, base prompt, row prompts, cell/grid recommendation, chroma-key guidance, and QA notes for flame readability.",
+      "files": [],
+      "assertions": [
+        "Includes prop-specific torch animations instead of character defaults.",
+        "Mentions using $imagegen or OpenAI image generation without direct API bypass.",
+        "Includes background/alpha or chroma-key cleanup guidance.",
+        "Includes QA criteria for flame readability and frame separation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need character ideation and a complete moveset sprite sheet for a tiny knight with a lantern spear: idle, run, jump, light attack, heavy attack, hurt, and death. Help me think through the concept first, then make the prompts.",
+      "expected_output": "Several compact character concepts or a recommended direction, followed by an identity-locked manifest and prompts for all requested moves.",
+      "files": [],
+      "assertions": [
+        "Provides concept ideation before finalizing the sheet.",
+        "Includes all requested moves with frame counts or timing notes.",
+        "Defines identity locks for the lantern spear character.",
+        "Provides base and row prompt structure."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Assume I provided a creature sketch as a reference. Turn it into a game-ready sprite sheet plan for a top-down RPG enemy, so I need walk and attack directions, hurt, and defeat. Keep the same face and markings from the reference.",
+      "expected_output": "A reference-aware workflow that labels input images, preserves identity and markings, chooses top-down directional rows, and blocks unsafe mirroring.",
+      "files": [],
+      "assertions": [
+        "Labels the sketch as an identity reference.",
+        "Chooses top-down directional walk and attack rows.",
+        "Mentions preserving face and markings.",
+        "Warns against unsafe mirroring when asymmetry matters."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Set up the folder and prompt files for a 96x96 pickup sprite called Moon Salt. It needs idle, sparkle, collect, and respawn. Don't generate images yet, just prep the run so another agent can continue.",
+      "expected_output": "A scaffold-only run plan that uses the bundled script or equivalent folder contract, creates/mentions manifest and prompt files, and avoids image generation.",
+      "files": [],
+      "assertions": [
+        "Does not claim images were generated.",
+        "Uses or describes the sprite-runs folder contract.",
+        "Includes manifest/prompt files for idle, sparkle, collect, and respawn.",
+        "Keeps the output ready for a later agent handoff."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review this sprite sheet manifest for engine handoff: it has a 128x128 side-view character with idle 6 frames, run 8 frames, attack 8 frames, hurt 4 frames. Tell me what would break in Unity or Godot.",
+      "expected_output": "A validation-oriented review that checks manifest structure, frame counts, engine import concerns, timing, filtering/compression, and missing final asset metadata.",
+      "files": [],
+      "assertions": [
+        "Mentions manifest validation or required manifest fields.",
+        "Includes Unity or Godot import concerns.",
+        "Checks cell size, frame counts, and animation ids.",
+        "Identifies missing file/timing/background metadata if not provided."
+      ]
+    }
+  ]
+}
