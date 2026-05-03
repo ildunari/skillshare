@@ -44,6 +44,8 @@ Do not trust a single updater. On this machine, important apps can be Homebrew c
 - Some apps are installed outside `/Applications`; include `/Applications/AI`, `/Applications/Coding`, and `~/Applications`.
 - Do not bypass a bad cask checksum just to get unstuck. Prefer official release metadata checksum verification and direct app install.
 - Do not call the update job comprehensive until the script itself captures the classes you manually checked.
+- Duplicate app bundle IDs across scan roots are a real problem: Factory, CraftCodex, InjectionIII, and Codex Beta all had copies in multiple `/Applications` subdirectories with different versions. The audit script now reports `duplicate_bundle_ids`. When you see duplicates, recommend keeping the newer copy and removing the older one, but do not delete app bundles without explicit confirmation.
+- Hermes WebUI update failures can be false negatives after a successful fast-forward: if `ai.hermes.webui` is present as `~/Library/LaunchAgents/ai.hermes.webui.plist` but unloaded, `launchctl kickstart user/$(id -u)/ai.hermes.webui` returns “Could not find service.” Bootstrap the plist into `user/$(id -u)` first, then kickstart, and poll `/health` for a few seconds before declaring failure.
 - DMG automation can fail if you parse `hdiutil attach -plist` as a non-seekable stream; fall back to `hdiutil info` or plain `hdiutil attach` output parsing when needed.
 
 ## Good handoff

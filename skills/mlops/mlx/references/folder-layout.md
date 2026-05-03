@@ -39,4 +39,4 @@ project-root/
     description-trigger-evals.json
 ```
 
-For Claude Code, copy the skill folders to `.claude/skills/` or `~/.claude/skills/`. For Codex CLI, `.agents/skills/` is a suitable project-local layout. For other agents using the open skill format, keep each folder’s `SKILL.md` and bundled scripts intact.
+For Claude Code, copy the skill folders to `.claude/skills/` or `~/.claude/skills/`. For Codex CLI, use `.codex/skills/` or `~/.codex/skills/`; do not mirror Codex skills into `.agents/skills/`, which Codex may also discover and show as duplicates. For other agents using the open skill format, keep each folder's `SKILL.md` and bundled scripts intact.
