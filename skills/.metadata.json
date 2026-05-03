@@ -593,7 +593,7 @@
       "file_hashes": {
         ".gitignore": "sha256:6a218028adf67b24b5f4783152dade9650675b40fdfba5622a8a853a6f1fbbb1",
         "README.md": "sha256:313ac45ba22de1fee70007621b0be05935e1ee57d5e15769ae57c98ed20cfa8e",
-        "SKILL.md": "sha256:642fbeb0babb8f5247c450d1690188fd445fcfbac1c648332bcf170afa18d6c5",
+        "SKILL.md": "sha256:1e5a5ab7f5413e48f5f5aa25353f294006b0fa2dfab79b9c95c885d9b7f44195",
         "docs/2026-04-17-cross-platform-codex.md": "sha256:a6c51c1db3bf838bf581604651a0b4c4b6b42f300f48b1545da74dc5c8e5cf12",
         "examples/atlas/design-model.yaml": "sha256:810a058b4ffa8968d0d3b9129fdb8ae1651adc1324eb782f53b6c661ed2d5d28",
         "examples/atlas/landing-page.html": "sha256:42bce1a217d179836378a08afbdcd351beccadc86ba4c49abaf26bf12152d896",
