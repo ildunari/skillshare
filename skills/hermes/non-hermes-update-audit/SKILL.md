@@ -24,6 +24,7 @@ Do not trust a single updater. On this machine, important apps can be Homebrew c
    - Direct apps: scan `.app` bundles in `/Applications`, `/Applications/AI`, `/Applications/Coding`, and `~/Applications` and compare against known release sources when possible.
    - App Store: use `mas outdated` if `mas` is installed.
    - Include npm globals and git checkout status if the audit script already tracks them.
+   - Keep routine media/tooling formulae such as `ffmpeg` in the auto-safe formula allowlist once verified, so minor patch bumps do not churn as report-only classification work.
 
 3. Update safely by install class.
    - For normal Homebrew casks, prefer `brew upgrade --cask ...`; if an appdir mismatch or stale state blocks it, use a targeted `brew reinstall --cask --force ... --appdir=<actual app dir>` rather than broad cleanup.
