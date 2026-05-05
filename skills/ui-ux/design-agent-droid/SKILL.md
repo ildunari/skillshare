@@ -1,4 +1,3 @@
-Atuin AI is not enabled. Please enable it in your settings or run `atuin setup`.
 ---
 name: "Design Agent Droid"
 description: "Run a focused UI polish or mockup-to-implementation pass through Factory/Droid using the custom droid `design-agent-droid`. Prefer GLM-5V Turbo when available; current working fallback/default is GLM-5.1 on the coding-plan endpoint."

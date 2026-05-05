@@ -1,4 +1,3 @@
-Atuin AI is not enabled. Please enable it in your settings or run `atuin setup`.
 ---
 name: "Design Agent Claude"
 description: "Run a focused UI polish or mockup-to-implementation pass through Claude Code using the custom subagent `design-agent-claude`. Default to Opus 4.6 with high effort; fall back to Sonnet 4.6 when Opus is unavailable or unnecessary."
