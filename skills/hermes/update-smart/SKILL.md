@@ -65,6 +65,19 @@ Do not push remotes unless Kosta explicitly asks. Local commits are fine and pre
    - `hermes version` and `hermes update --check`
    - service health endpoints for WebUI or other updated sidecars
    - avoid claiming completion if the live process is still running old code and needs a safe restart
+   - **post-restart miniapp/Telegram regression check** (catches dropped local customizations during clean-branch rebuild). Run after both gateways are back up:
+
+     ```bash
+     for ep in /api/model-info /api/session-usage /api/subscription-usage /api/subscription-providers \
+               /api/processes /api/background-tasks /api/commands /miniapp/; do
+       for port in 8642 8643; do
+         code=$(curl -sS -m 3 -o /dev/null -w "%{http_code}" "http://127.0.0.1:$port$ep")
+         [[ "$code" == "200" || "$code" == "401" ]] || echo "REGRESSION $port $ep -> $code"
+       done
+     done
+     ```
+
+     A 404 on any of those means a route was dropped during merge — re-port the handler and route registration from `backup/pre-*` to `gateway/platforms/api_server.py`. Historically dropped during clean-branch rebuilds: `_handle_subscription_providers`. Also verify `agent/display.py` still maps `"thinking": ("☁️", "Thinking")` in `render_compact_tool_progress` (the `("__compact__", "thinking")` event from `gateway/run.py:_emit_compact_thinking` renders that bucket as the thinking emoji in Telegram replies). Also confirm `~/.config/hermes-state/miniapp/index.html` still has the `savedSid` validation guard around `CS.getItem('hermes_sid')` so the Session ID field doesn't render as `[object Object]`.
 8. Gateway safety:
    - If the current conversation is arriving through Telegram/Discord/webhook, do not restart the gateway unless Kosta explicitly accepts the interruption.
    - It is okay to leave updated code on disk and say a safe restart is needed.
