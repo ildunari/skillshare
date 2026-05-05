@@ -1,6 +1,11 @@
 {
   "version": 1,
   "entries": {
+    "_vibeforge1111-keep-codex-fast": {
+      "source": "https://github.com/vibeforge1111/keep-codex-fast.git",
+      "tracked": true,
+      "branch": "main"
+    },
     "apple/asc-app-create-ui": {
       "source": "https://github.com/rudrankriyam/asc-skills.git/skills/asc-app-create-ui",
       "type": "github-subdir",
@@ -338,6 +343,33 @@
         "scripts/instruments_parser/xctrace.py": "sha256:b680bddb80d7f63ff97b7ba69b1c9ddda57d4080d601e9a1a47f09e81c2870ce",
         "scripts/instruments_parser/xml_utils.py": "sha256:f0f4476f0f1f0ce9ad5779509b59c2c77b0f7438a57d358aa76e715e7a23b4d6",
         "scripts/record_trace.py": "sha256:915d97c9f68b3065fe7921a31709e82d299cf113b310e78b855776e9cdde33d3"
+      }
+    },
+    "creative/sprite-sheet-maker": {
+      "source": "/Users/kosta/.codex/skills/sprite-sheet-maker",
+      "type": "local",
+      "group": "creative",
+      "installed_at": "2026-05-03T00:28:56.698993-04:00",
+      "file_hashes": {
+        "FEEDBACK.md": "sha256:e3f11ff3b0bf85f31c51b552e00e423048b24bf3ef36dd7b2a6ff0b882fea595",
+        "SKILL.md": "sha256:23d471297ca09584a79a9588112db55f304b4597a1b40f63f2ea941e91d8aecc",
+        "evals/evals.json": "sha256:9603a9202aa137e243015b026140f878478e0f5479fe8bae20bc5947e1e6cb3f",
+        "references/action-taxonomy.md": "sha256:7e98bad9fca6cca2c79c93019052eb2356adfff0f8b9009463914a5d676dd969",
+        "references/art-direction.md": "sha256:69a82bb13ff4e4c1e70359063e800dabb32b7a7a8a1f9888923fd8a122840527",
+        "references/creative-brief.md": "sha256:e23a6d24c70627533fc6cdb31889db84c7a3ebe60f8c125268e087d8e6005dc2",
+        "references/engine-handoff.md": "sha256:d947c0a41f242dc1392b841dfc06e83d8f99a80e2e5c203121cb50fec31967e5",
+        "references/openai-imagegen-workflow.md": "sha256:1f1403a70a4a2ea56d159dc9b00aaec55a23f2342df3e11faf6fdbe45b82e958",
+        "references/production-workflow.md": "sha256:c76d4776dcd65eabceefde245dd3e852050eee4e280bf32a44a0228f8ac429a8",
+        "references/prompt-recipes.md": "sha256:ea0c54988876e77899abbc8f6588a96223caa13fabda519c873621cd04b21bcb",
+        "references/qa-rubric.md": "sha256:2d29f8b6820b8ebe7cb7d319a14a5e915046223da11bded174b6156a4245da3a",
+        "references/repair-playbook.md": "sha256:4ee2de1b9cccfb02f2f97c5704eee28ebbf896f95cf5bb5a18a670cb64f653e3",
+        "scripts/create_sprite_run.py": "sha256:d88bac82fd0b6c13fe0a277ee6d3c5bf84ad9c4b7d8a6be7875bb4f618b9e2fc",
+        "scripts/validate_manifest.py": "sha256:3de6ae4a100bb035837c2d8401513c3c68f83a6fbac101489a9af8ba7fc25b0c",
+        "templates/base-prompt.md": "sha256:2e3e5f1110f3365aee05c8123037f2956c6a3b9408fc085bab304645c5fcb17b",
+        "templates/brief.md": "sha256:39c8cfb0ba100d09b01203cf50ac87976746da41c824b165dff834bfd1259db2",
+        "templates/manifest.json": "sha256:c28e342a66d7f2aadcdd0ebf1d67797587a27cdaf634ae7bbd95be2e086408f0",
+        "templates/row-prompt.md": "sha256:95442278902ae2e015bb835a9e164b099db56cc68988dc542fd7c4b1172c69db",
+        "templates/subagent-row-handoff.md": "sha256:e3614006c38412cecfd36d5717c39c976419afac37cd40037dc4f9763f6dab86"
       }
     },
     "documents-office/morph-ppt": {
