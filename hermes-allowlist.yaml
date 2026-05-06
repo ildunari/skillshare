@@ -90,6 +90,7 @@ skills:
 - mlops/mlx-local-benchmarking
 - mlops/mlx-troubleshooting-repro
 - mlops/mlx-hub-packaging
+- mlops/mlx-speculative-decoding
 - hermes/mem0-first-memory-harvest
 - hermes/update-smart
 - hermes/telegram-managed-bots

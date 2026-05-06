@@ -30,6 +30,8 @@ Use `mlx-troubleshooting-repro` when there is a concrete error, crash, bad outpu
 
 Use `mlx-hub-packaging` only after validation passes and the user wants a reusable local package, Hugging Face upload, model card, or MLX Community-style repo.
 
+Use `mlx-speculative-decoding` when the user asks about speculative decoding, draft models, DFlash, MTP drafters, faster generation through speculation, or `--draft-model` for `mlx-lm`/`mlx-vlm`. The skill captures runtime support gaps, decision thresholds, drafter selection, and verified per-chip results so the agent doesn't repeat known-bad experiments.
+
 ## Default sequence
 
 For an unknown model, use this sequence:
