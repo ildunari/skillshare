@@ -12,7 +12,7 @@ description: >
   where the deliverable is a .docx file or involves editing one.
 compatibility: >
   Requires python-docx and/or docx (npm). LibreOffice + Poppler for visual rendering.
-  pandoc for Markdown → DOCX fast path. See Dependencies section.
+  pandoc for Markdown → DOCX fast path. markitdown for text extraction. See Dependencies section.
 ---
 
 <!-- Merged from "doc" and "docx-enhanced". Both source directories archived. -->
@@ -150,14 +150,47 @@ Limit to two font families — one for headings, one for body.
 
 ---
 
+## Prerequisite checks
+
+Run this before starting work to catch missing tools early:
+
+```bash
+# Python libraries
+python3 -c "import docx" 2>/dev/null && echo "python-docx OK" || echo "MISSING: pip install python-docx"
+python3 -c "import markitdown" 2>/dev/null && echo "markitdown OK" || echo "MISSING: pip install markitdown"
+
+# System tools
+command -v pandoc >/dev/null && pandoc --version | head -1 || echo "MISSING: brew install pandoc"
+command -v pdftoppm >/dev/null && echo "poppler OK" || echo "MISSING: brew install poppler"
+
+# LibreOffice — macOS path varies
+_soffice() {
+  command -v soffice 2>/dev/null \
+    || ls /Applications/LibreOffice.app/Contents/MacOS/soffice 2>/dev/null \
+    || echo ""
+}
+[ -n "$(_soffice)" ] && echo "LibreOffice OK" || echo "MISSING: brew install --cask libreoffice"
+
+# Node docx package (only if using docx-js path)
+node -e "require('docx')" 2>/dev/null && echo "docx npm OK" || echo "MISSING: npm install docx"
+```
+
+If any tool is missing, install it (see Dependencies) before proceeding. Don't skip tools — silent failures produce corrupt or empty output.
+
+---
+
 ## Reading and analyzing content
 
 ### Text extraction
 
 ```bash
-python -m markitdown path-to-file.docx
-# Or with pandoc (preserves structure, handles tracked changes):
+# markitdown (preferred — handles tables, lists, inline formatting)
+python3 -m markitdown path-to-file.docx
+
+# pandoc fallback (preserves structure, handles tracked changes):
 pandoc --track-changes=all path-to-file.docx -o output.md
+# Verify: output.md should be non-empty
+[ -s output.md ] || echo "WARNING: pandoc produced empty output"
 ```
 
 ### Raw XML access
@@ -166,6 +199,8 @@ For comments, complex formatting, document structure, embedded media, and metada
 
 ```bash
 python ooxml/scripts/unpack.py <office_file> <output_directory>
+# Verify unpacked correctly:
+[ -f <output_directory>/word/document.xml ] || echo "FAILED: document.xml missing — unpack failed"
 ```
 
 Key file structures:
@@ -191,17 +226,47 @@ Use **docx-js** (JavaScript, `docx` npm package). Before writing any code, read:
 2. **Plan structure** — outline the document tree (front matter, body sections, back matter), decide on navigation components
 3. **Select styles** — map every element to a named style
 4. **Generate** — write the docx-js code. No direct formatting except inline emphasis.
-5. **Validate** — check against QA rules in `references/quality-pipeline.md`
+5. **Run automated QA** — execute the QA script; fix any reported violations before delivery:
+   ```bash
+   python scripts/qa/run_qa.py "$OUTPUT" 2>&1 | tail -30
+   ```
+6. **Validate visually** — render and inspect (see Visual validation section)
+
+### Verify output after generation
+
+```bash
+# Confirm file was written and is non-trivially sized
+OUTPUT=output/doc/my-document.docx
+[ -f "$OUTPUT" ] || { echo "FAILED: output file not created"; exit 1; }
+SIZE=$(stat -f%z "$OUTPUT" 2>/dev/null || stat -c%s "$OUTPUT")
+[ "$SIZE" -gt 4096 ] || echo "WARNING: file is suspiciously small (${SIZE} bytes) — check for generation errors"
+
+# Quick structural integrity check (requires python-docx)
+python3 -c "
+import docx, sys
+try:
+    d = docx.Document('$OUTPUT')
+    print(f'OK: {len(d.paragraphs)} paragraphs, {len(d.tables)} tables')
+except Exception as e:
+    print(f'CORRUPT: {e}'); sys.exit(1)
+"
+```
 
 ### Fast creation path: Pandoc (Markdown → DOCX)
 
 For structurally simple documents (headings, paragraphs, lists, basic tables, inline figures), use the Pandoc fast path. Read: `references/pandoc-fast-path.md`
 
 ```bash
+# Verify reference doc exists before running
+REF=assets/pandoc/reference_business_report_modern.docx
+[ -f "$REF" ] || { echo "MISSING reference doc: $REF"; exit 1; }
+
 pandoc input.md \
-  --reference-doc=assets/pandoc/reference_business_report_modern.docx \
+  --reference-doc="$REF" \
   --toc --toc-depth=2 \
   -o output.docx
+
+[ -s output.docx ] || echo "FAILED: pandoc produced no output"
 ```
 
 Profiles (reference docs):
@@ -229,9 +294,33 @@ Use the **Document library** (Python, bundled at `scripts/document.py`). Before 
 
 ### Editing workflow
 
-1. Unpack: `python ooxml/scripts/unpack.py <office_file> <output_directory>`
-2. Create and run a Python script using the Document library (see ooxml.md)
-3. Pack: `python ooxml/scripts/pack.py <input_directory> <office_file>`
+1. **Check script exists**:
+   ```bash
+   [ -f ooxml/scripts/unpack.py ] || echo "ERROR: ooxml/scripts/unpack.py not found — skill scripts missing"
+   [ -f ooxml/scripts/pack.py ]   || echo "ERROR: ooxml/scripts/pack.py not found"
+   ```
+
+2. **Unpack**:
+   ```bash
+   UNPACK_DIR=$(mktemp -d /tmp/docx_unpack_XXXXXX)
+   python ooxml/scripts/unpack.py <office_file> "$UNPACK_DIR"
+   [ -f "$UNPACK_DIR/word/document.xml" ] || { echo "FAILED: unpack produced no document.xml"; exit 1; }
+   ```
+
+3. Create and run a Python script using the Document library (see ooxml.md)
+
+4. **Pack**:
+   ```bash
+   python ooxml/scripts/pack.py "$UNPACK_DIR" output.docx
+   [ -s output.docx ] || echo "FAILED: pack produced empty output"
+   ```
+
+5. **Verify**:
+   ```bash
+   python3 -c "import docx; d=docx.Document('output.docx'); print(f'OK: {len(d.paragraphs)} paragraphs')"
+   ```
+
+6. **Cleanup**: `rm -rf "$UNPACK_DIR"`
 
 ---
 
@@ -241,47 +330,70 @@ For reviewing someone else's document or any legal/academic/business document ed
 
 **Principle: minimal, precise edits.** Only mark text that actually changes. Break replacements into: [unchanged text] + [deletion] + [insertion] + [unchanged text]. Preserve the original run's RSID for unchanged text.
 
-**Batching strategy**: group 3–10 related changes per batch. Test each batch before the next.
+**Batching strategy**: group 3–10 related changes per batch. Verify each batch before the next.
 
 ### Workflow
 
 1. **Get markdown representation**:
    ```bash
    pandoc --track-changes=all path-to-file.docx -o current.md
+   [ -s current.md ] || echo "WARNING: empty output — check pandoc version (needs ≥2.x)"
    ```
 
 2. **Identify and group changes**: Review the document and identify ALL changes needed, organizing them into logical batches by section or type.
 
 3. **Read documentation and unpack**:
    - **MANDATORY**: Read [`ooxml.md`](ooxml.md) completely, especially "Document Library" and "Tracked Change Patterns"
-   - Unpack: `python ooxml/scripts/unpack.py <file.docx> <dir>`
+   - Unpack:
+     ```bash
+     UNPACK_DIR=$(mktemp -d /tmp/docx_redline_XXXXXX)
+     python ooxml/scripts/unpack.py <file.docx> "$UNPACK_DIR"
+     [ -f "$UNPACK_DIR/word/document.xml" ] || { echo "FAILED: unpack"; exit 1; }
+     ```
 
 4. **Implement changes in batches**: For each batch:
    - Map text to XML: grep `word/document.xml` for text to verify how text is split across `<w:r>` elements
    - Create and run script using `get_node` to find nodes, implement changes, then `doc.save()`
+   - **After each batch — pack to a staging file and verify before continuing**:
+     ```bash
+     BATCH_OUT=$(mktemp /tmp/docx_batch_XXXXXX.docx)
+     python ooxml/scripts/pack.py "$UNPACK_DIR" "$BATCH_OUT"
+     [ -s "$BATCH_OUT" ] || { echo "FAILED: batch pack empty — fix before continuing"; exit 1; }
+     python3 -c "import docx; d=docx.Document('$BATCH_OUT'); print(f'batch OK: {len(d.paragraphs)} paragraphs')"
+     rm -f "$BATCH_OUT"
+     ```
 
-5. **Pack**: `python ooxml/scripts/pack.py unpacked reviewed-document.docx`
+5. **Pack**:
+   ```bash
+   python ooxml/scripts/pack.py "$UNPACK_DIR" reviewed-document.docx
+   [ -s reviewed-document.docx ] || { echo "FAILED: pack empty"; exit 1; }
+   ```
 
 6. **Verify**:
    ```bash
    pandoc --track-changes=all reviewed-document.docx -o verification.md
+   # Diff to confirm expected changes landed:
+   diff current.md verification.md | head -40
    ```
+
+7. **Cleanup**: `rm -rf "$UNPACK_DIR"`
 
 ### Handling documents that already contain tracked changes/comments
 
 1. **Report what's in the document**:
    ```bash
+   [ -f scripts/tracked_changes_report.py ] || echo "WARNING: script missing"
    python scripts/tracked_changes_report.py input.docx --output changes.json --pretty
    ```
 
-2. **Accept/reject existing revisions** (optional, recommended before adding new tracked changes):
+2. **Accept/reject existing revisions** — **destructive: confirm with user before running** (irreversible without the original file):
    ```bash
    python scripts/tracked_changes_resolve.py input.docx --accept-all -o accepted.docx
    python scripts/tracked_changes_resolve.py input.docx --reject-all -o rejected.docx
    python scripts/tracked_changes_resolve.py input.docx --accept --author "Jane Doe" -o jane_accepted.docx
    ```
 
-3. **Resolve or delete comments**:
+3. **Resolve or delete comments** — **destructive: confirm with user before running**:
    ```bash
    python scripts/tracked_changes_resolve.py input.docx --resolve-comments -o comments_resolved.docx
    python scripts/tracked_changes_resolve.py input.docx --delete-comments -o comments_deleted.docx
@@ -296,21 +408,31 @@ Read: `references/tracked-changes.md` for the OOXML model and safe patterns.
 For layout review, render DOCX → PDF → images:
 
 ```bash
-# LibreOffice headless
-soffice -env:UserInstallation=file:///tmp/lo_profile_$$ --headless --convert-to pdf --outdir $OUTDIR $INPUT_DOCX
-# Or:
-soffice --headless --convert-to pdf document.docx
+# Resolve soffice path (macOS app bundle vs PATH)
+SOFFICE=$(command -v soffice 2>/dev/null \
+  || echo "/Applications/LibreOffice.app/Contents/MacOS/soffice")
+[ -x "$SOFFICE" ] || { echo "ERROR: LibreOffice not found at $SOFFICE"; exit 1; }
 
-# PDF to PNG/JPEG
-pdftoppm -png $OUTDIR/$BASENAME.pdf $OUTDIR/$BASENAME
-# Or JPEG:
-pdftoppm -jpeg -r 150 document.pdf page
+OUTDIR=$(mktemp -d /tmp/docx_render_XXXXXX)
+INPUT_DOCX="$1"   # pass the docx path
+BASENAME=$(basename "$INPUT_DOCX" .docx)
 
-# Bundled helper:
-python3 scripts/render_docx.py /path/to/file.docx --output_dir /tmp/docx_pages
+# Convert to PDF
+"$SOFFICE" -env:UserInstallation="file:///tmp/lo_profile_$$" \
+  --headless --convert-to pdf --outdir "$OUTDIR" "$INPUT_DOCX"
+[ -f "$OUTDIR/$BASENAME.pdf" ] || { echo "FAILED: PDF not produced"; exit 1; }
+
+# PDF to PNG (one file per page)
+pdftoppm -png -r 150 "$OUTDIR/$BASENAME.pdf" "$OUTDIR/$BASENAME"
+ls "$OUTDIR/$BASENAME"*.png 2>/dev/null | wc -l | xargs -I{} echo "{} page(s) rendered"
+
+# Bundled helper (equivalent):
+# python3 scripts/render_docx.py /path/to/file.docx --output_dir /tmp/docx_pages
 ```
 
 Re-render and inspect every page at 100% zoom before final delivery.
+
+**LibreOffice failure recovery**: If `--convert-to pdf` silently produces no output, check `$SOFFICE --version` — older LibreOffice versions (pre-7) have known headless conversion bugs. Update to 7.x or later via `brew upgrade --cask libreoffice`.
 
 ---
 
@@ -348,22 +470,26 @@ Write concise code. Avoid verbose variable names and redundant operations. Avoid
 
 ```bash
 # Python
-uv pip install python-docx pdf2image
+uv pip install python-docx pdf2image markitdown
 # Or:
-python3 -m pip install python-docx pdf2image
+python3 -m pip install python-docx pdf2image markitdown
 
 # Node
 npm install docx  # for docx-js creation
 
 # System (macOS)
-brew install libreoffice poppler pandoc
+brew install poppler pandoc
+brew install --cask libreoffice  # note: --cask, not formula
 
 # System (Ubuntu/Debian)
 sudo apt-get install -y libreoffice poppler-utils pandoc
 ```
+
+**macOS note**: LibreOffice installs to `/Applications/LibreOffice.app/`. The `soffice` binary is at `Contents/MacOS/soffice` inside the bundle and may not be on `$PATH`. Use the path resolution pattern in the Visual validation section above.
 
 ## Environment (temp/output conventions)
 
 - Use `tmp/docs/` for intermediate files; delete when done.
 - Write final artifacts under `output/doc/` when working in a project repo.
 - Keep filenames stable and descriptive.
+- Always clean up temp unpack dirs (`rm -rf "$UNPACK_DIR"`) after packing.

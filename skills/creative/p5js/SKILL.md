@@ -2,14 +2,14 @@
 name: p5js
 description: "Production pipeline for interactive and generative visual art using\
   \ p5.js. Creates browser-based sketches, generative art, data visualizations, interactive\
-  \ experiences, 3D scenes, audio-reactive visuals, and motion graphics \u2014 exported\
+  \ experiences, 3D scenes, audio-reactive visuals, and motion graphics — exported\
   \ as HTML, PNG, GIF, MP4, or SVG. Covers: 2D/3D rendering, noise and particle systems,\
   \ flow fields, shaders (GLSL), pixel manipulation, kinetic typography, WebGL scenes,\
   \ audio analysis, mouse/keyboard interaction, and headless high-res export. Use\
   \ when users request: p5.js sketches, creative coding, generative art, interactive\
   \ visualizations, canvas animations, browser-based visual art, data viz, shader\
   \ effects, or any p5.js project."
-version: 1.0.0
+version: 1.1.0
 metadata:
   hermes:
     tags:
@@ -266,24 +266,50 @@ Key implementation patterns:
 - **Class-based entities**: Particles, agents, shapes as classes with `update()` + `display()` methods
 - **Offscreen buffers**: `createGraphics()` for layered composition, trails, masks
 
-### Step 4: Preview & Iterate
+### Step 4: Preview
 
-- Open HTML file directly in browser — no server needed for basic sketches
-- For `loadImage()`/`loadFont()` from local files: use `scripts/serve.sh` or `python3 -m http.server`
-- Chrome DevTools Performance tab to verify 60fps
-- Test at target export resolution, not just the window size
-- Adjust parameters until the visual matches the concept from Step 1
+After writing the HTML file, open it immediately — no confirmation needed:
+
+```bash
+open sketch.html          # macOS — no server needed for CDN-only sketches
+```
+
+For sketches that `loadImage()` or `loadFont()` from local files, a dev server is required (browser CORS blocks local file reads). Start one automatically, checking for port conflict first:
+
+```bash
+# Start server only if port is free
+lsof -ti:8080 | grep -q . || python3 -m http.server 8080 &
+open http://localhost:8080/sketch.html
+```
+
+After opening, verify expected behavior:
+- Sketch renders on first load without console errors
+- Chrome DevTools → Performance tab confirms target fps
+- Test at export resolution, not just window size
+
+To iterate: edit the HTML file, then re-run `open sketch.html` (or reload the browser tab at the server URL).
 
 ### Step 5: Export
 
 | Format | Method | Command |
 |--------|--------|---------|
-| **PNG** | `saveCanvas('output', 'png')` in `keyPressed()` | Press 's' to save |
+| **PNG** | `saveCanvas('output', 'png')` in `keyPressed()` | Press 's' in browser |
 | **High-res PNG** | Puppeteer headless capture | `node scripts/export-frames.js sketch.html --width 3840 --height 2160 --frames 1` |
-| **GIF** | `saveGif('output', 5)` — captures N seconds | Press 'g' to save |
+| **GIF** | `saveGif('output', 5)` — captures N seconds | Press 'g' in browser |
 | **Frame sequence** | `saveFrames('frame', 'png', 10, 30)` — 10s at 30fps | Then `ffmpeg -i frame-%04d.png -c:v libx264 output.mp4` |
 | **MP4** | Puppeteer frame capture + ffmpeg | `bash scripts/render.sh sketch.html output.mp4 --duration 30 --fps 30` |
 | **SVG** | `createCanvas(w, h, SVG)` with p5.js-svg | `save('output.svg')` |
+
+After running any headless export command, verify the artifact:
+
+```bash
+# After export-frames.js
+ls -lh output.png 2>/dev/null || echo "ERROR: output.png not created"
+
+# After render.sh / ffmpeg
+ls -lh output.mp4 2>/dev/null || echo "ERROR: output.mp4 not created"
+ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 output.mp4
+```
 
 ### Step 6: Quality Verification
 
@@ -467,7 +493,7 @@ Required when embedding multiple sketches on one page or integrating with framew
 
 ### Export — Key Bindings Convention
 
-Every sketch should include these in `keyPressed()`:
+Every sketch includes these in `keyPressed()`:
 
 ```javascript
 function keyPressed() {
@@ -500,12 +526,16 @@ For multi-scene videos, use the per-clip architecture: one HTML per scene, rende
 When building p5.js sketches:
 
 1. **Write the HTML file** — single self-contained file, all code inline
-2. **Open in browser** — `open sketch.html` (macOS) or `xdg-open sketch.html` (Linux)
-3. **Local assets** (fonts, images) require a server: `python3 -m http.server 8080` in the project directory, then open `http://localhost:8080/sketch.html`
-4. **Export PNG/GIF** — add `keyPressed()` shortcuts as shown above, tell the user which key to press
-5. **Headless export** — `node scripts/export-frames.js sketch.html --frames 300` for automated frame capture (sketch must use `noLoop()` + `_p5Ready`)
-6. **MP4 rendering** — `bash scripts/render.sh sketch.html output.mp4 --duration 30`
-7. **Iterative refinement** — edit the HTML file, user refreshes browser to see changes
+2. **Open in browser immediately** — run `open sketch.html` right after writing; no prompt needed for a new local file
+3. **Local assets** (fonts, images) need a dev server — check port, start in background, open URL:
+   ```bash
+   lsof -ti:8080 | grep -q . || python3 -m http.server 8080 &
+   open http://localhost:8080/sketch.html
+   ```
+4. **Key bindings are wired** — `s` saves PNG, `g` saves GIF, `r` randomizes seed, `space` pauses. For automated capture without browser interaction, use headless export in step 5
+5. **Headless export** — run directly: `node scripts/export-frames.js sketch.html --frames 300` (sketch must use `noLoop()` + `_p5Ready`). Verify after: `ls -lh output.png`
+6. **MP4 rendering** — run directly: `bash scripts/render.sh sketch.html output.mp4 --duration 30`. Verify after: `ls -lh output.mp4`
+7. **Iterative refinement** — edit the HTML file, then re-run `open sketch.html` (or reload the browser tab). No server restart needed unless you add new local asset references
 8. **Load references on demand** — use `skill_view(name="p5js", file_path="references/...")` to load specific reference files as needed during implementation
 
 ## Performance Targets

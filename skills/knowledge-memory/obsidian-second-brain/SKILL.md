@@ -19,6 +19,22 @@ description: >-
 
 Kosta's second brain is an Obsidian vault called **"Brain"** synced via iCloud. It follows a structured knowledge management system organized into three main sections — **Brown** (PhD/academic), **Tech** (tools & reference), and **NSFW** — plus shared infrastructure (inbox, daily notes, templates).
 
+## Ask vs Act
+
+**Act immediately** (no confirmation needed):
+- Creating any new note (all sections)
+- Appending to guide pages
+- Creating/updating daily notes
+- Quick-capturing to `inbox/`
+
+**Pause and confirm** before:
+- Overwriting an existing note (`--force` or equivalent)
+- Deleting or archiving notes
+- Moving notes between top-level sections
+- Modifying template files under `templates/`
+
+Rule: if the operation is reversible locally and the destination path is deterministic, do it.
+
 ## Access Methods
 
 Two ways to interact with the vault:
@@ -26,7 +42,7 @@ Two ways to interact with the vault:
 1. **Obsidian CLI** — `obsidian vault="Brain" <command>` (requires Obsidian running)
 2. **MCP proxy** — via ForgeMax `obsidian_brain` server (retrieve_tools, call_tool_read/write)
 
-Prefer the CLI for direct operations. Use `vault="Brain"` on every command.
+Prefer the CLI for direct operations. Use `vault="Brain"` on every command. If the CLI returns an error about Obsidian not running, fall back to MCP proxy and note which method succeeded.
 
 ## Vault Structure
 
@@ -197,19 +213,24 @@ Tags follow a hierarchical namespace pattern:
 
 ## Workflow: Adding Something to the Second Brain
 
+**Determine section first:**
+- Academic/research/lab-related → **`brown/`**
+- Tool, app, service, or tech reference → **`tech/`**
+- NSFW content → **`nsfw/`**
+- Not sure → **`inbox/quick/`** (sort later)
+
+Then create the note and verify. No confirmation needed for new notes.
+
 ### Quick capture (unsorted)
 ```bash
 obsidian vault="Brain" create name="<descriptive-name>" path="inbox/quick/<name>.md" content="<content>" silent
 ```
 
-### Typed note (sorted immediately)
-
-**Determine the section first:**
-- Is it academic/research/lab-related? → **`brown/`**
-- Is it a tool, app, service, or tech reference? → **`tech/`**
-- Is it NSFW content? → **`nsfw/`**
-
-Then create the note in the correct folder with proper frontmatter.
+**Verify:**
+```bash
+obsidian vault="Brain" open path="inbox/quick/<name>.md"
+```
+If the CLI returns a not-found error, retry with MCP proxy: `call_tool_write(obsidian_brain, create, {...})`.
 
 ### Example: Adding a new tool
 ```bash
@@ -243,10 +264,18 @@ brew install my-tool
 - [GitHub](https://example.com)" silent
 ```
 
-Then update the relevant guide:
+Then update the relevant guide (append, not overwrite — safe):
 ```bash
 obsidian vault="Brain" append file="mac-tools" content="- [[my-tool]] — Short description"
 ```
+
+**Verify both steps succeeded:**
+```bash
+obsidian vault="Brain" read path="tech/mac-tools/my-tool.md" | head -5
+obsidian vault="Brain" search query="[[my-tool]]" limit=1
+```
+
+If guide append fails (file not found), check the guide path matches `tech/guides/mac-tools.md` and retry with full path.
 
 ### Example: Adding a literature note
 ```bash
@@ -283,9 +312,28 @@ updated: 2026-03-08
 ## Raw notes" silent
 ```
 
+Then append to reading queue:
+```bash
+obsidian vault="Brain" append file="reading-queue" content="- [[smith2025-hydrogel]] — Hydrogel-Based Drug Delivery Systems (2025)"
+```
+
+**Verify:**
+```bash
+obsidian vault="Brain" read path="brown/literature/smith2025-hydrogel.md" | head -3
+```
+
+### Handling conflicts (existing note at target path)
+
+Before overwriting, check:
+```bash
+obsidian vault="Brain" read path="<target-path>" 2>/dev/null | head -5
+```
+
+If the note exists and Kosta didn't explicitly say to overwrite it, stop and report what's there. Do not silently clobber.
+
 ## Guide Pages (MOCs)
 
-Guide pages are curated index notes with Dataview queries. When adding a new note that fits a guide's scope, append a link to the guide's "Recent Additions" section.
+Guide pages are curated index notes with Dataview queries. When adding a new note that fits a guide's scope, append a link to the guide's "Recent Additions" section. Append is always safe; never rewrite a guide page wholesale without being asked.
 
 ### Tech guides (in `tech/guides/`)
 - `agent-tools.md` — MCP servers, skills, agent profiles

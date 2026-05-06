@@ -48,6 +48,7 @@ skills:
 - hermes/codex-image-gen-default
 - hermes/mac-shell-compression-hygiene
 - automation/cua-driver-computer-use
+- automation/serve-sim
 - personal-ops/xurl
 - hermes/plan
 - hermes/hermes-webui-mobile-evaluation

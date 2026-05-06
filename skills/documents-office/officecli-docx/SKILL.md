@@ -28,7 +28,15 @@ if (-not (Get-Command officecli -ErrorAction SilentlyContinue)) {
 
 Verify: `officecli --version`
 
-If `officecli` is still not found after first install, open a new terminal and run the verify command again.
+If `officecli` is still not found after first install, the binary is likely in a directory not yet on your PATH. Source your shell profile to pick up the change without opening a new terminal:
+
+```bash
+source ~/.zshrc 2>/dev/null || source ~/.bashrc 2>/dev/null
+officecli --version
+# Still not found? Locate the binary and add its directory:
+find /usr/local/bin "$HOME/.local/bin" "$HOME/bin" -name officecli 2>/dev/null | head -1
+# Then: export PATH="/path/to/dir:$PATH"
+```
 
 If the install command above fails (e.g. blocked by security policy, no network access, or insufficient permissions), install manually — download the binary for your platform from https://github.com/iOfficeAI/OfficeCLI/releases — then re-run the verify command.
 
@@ -83,7 +91,12 @@ Before reaching for a command, know what a good docx looks like. These are the d
 
 ### Visual delivery floor (applies to EVERY document)
 
-Before you declare done, run `officecli view "$FILE" html` and Read the returned HTML path to confirm all of these:
+Before you declare done, run `officecli view "$FILE" html` — the command prints the HTML file path to stdout; Read that path to confirm all of these:
+
+```bash
+HTML=$(officecli close "$FILE" 2>/dev/null; officecli view "$FILE" html)
+# $HTML now holds the path. Read it.
+```
 
 - **No placeholder tokens rendered as data.** `$xxx$`, `{var}`, `{{name}}`, `<TODO>`, `lorem`, `xxxx` must never appear in a heading, body paragraph, cover page, TOC, caption, header, or footer. These are build-time tokens that escaped replacement. If you want a literal `{name}` in a template for a human to fill, wrap it in a visible instruction paragraph ("Replace `{name}` before sending") so no one confuses it with finished content.
 - **No truncated titles or overflowing cells.** Long headings / table cell values must fit the page and the column. If a cell overflows, widen the column or set `wrapText` on the cell.
@@ -104,8 +117,22 @@ If any of the above fails, STOP and fix before declaring done.
 
 Six steps. Every non-trivial build follows this shape.
 
-1. **Choose the mode.** Always use `officecli open <file>` at the start and `officecli close <file>` at the end. Resident mode is the default, not an optimization — it avoids re-parsing the XML on every command. For many paragraphs of the same style, use `batch` (≤ 12 ops per block for reliability).
-2. **Orient.** For a new file, `officecli create doc.docx`. For existing, `officecli view doc.docx outline` first — get the heading tree, section count, whether a TOC / watermark / tracked changes are already there. Never start editing blind.
+1. **Choose the mode.** Always use `officecli open <file>` at the start and `officecli close <file>` at the end. Resident mode is the default, not an optimization — it avoids re-parsing the XML on every command. For many paragraphs of the same style, use `batch` (≤ 12 ops per block for reliability). Open with a failure check:
+
+   ```bash
+   officecli open "$FILE" || { echo "ERROR: could not open '$FILE' — check path and permissions"; exit 1; }
+   ```
+
+2. **Orient.** For a new file, `officecli create doc.docx`. For existing, check the file exists and inspect structure:
+
+   ```bash
+   # For existing files — verify before editing:
+   [[ -f "$FILE" ]] || { echo "ERROR: '$FILE' not found"; exit 1; }
+   officecli view "$FILE" outline
+   ```
+
+   Get the heading tree, section count, whether a TOC / watermark / tracked changes are already there. Never start editing blind.
+
 3. **Build incrementally.** Structural first, content next, formatting last. Styles and numbering defs → sections / page setup → headings and body → tables / images / fields / TOC → headers / footers → comments. After each structural op, `get` it back to confirm shape before stacking on top.
 4. **Format to spec.** Explicit heading sizes, spacing, widths, alignment, tabs, list indents. Formatting is not optional polish — per Requirements for Outputs it is part of the deliverable.
 5. **Close, then recalculate fields.** `officecli close doc.docx` writes XML to disk. TOC / PAGE / NUMPAGES / SEQ / PAGEREF fields have **cached values** that may be stale or empty. When a human opens the file in Word, they press F9 to recalc. For the CLI's purposes, confirm fields *exist* (via `get --depth 3` finding `<w:fldChar>`) rather than trusting the text value — the text is the cached render, the field is the truth.
@@ -118,14 +145,14 @@ Minimal viable docx: a heading, a body paragraph, a subheading, and a footer wit
 ```bash
 FILE="review.docx"
 officecli create "$FILE"
-officecli open "$FILE"
+officecli open "$FILE" || { echo "ERROR: open failed"; exit 1; }
 officecli add "$FILE" /body --type paragraph --prop text="Q4 2026 Review" --prop style=Heading1 --prop size=20pt --prop bold=true --prop spaceAfter=12pt
 officecli add "$FILE" /body --type paragraph --prop text="Revenue grew 18% year-over-year, ahead of plan." --prop size=11pt --prop spaceAfter=8pt
 officecli add "$FILE" /body --type paragraph --prop text="Key Drivers" --prop style=Heading2 --prop size=14pt --prop bold=true --prop spaceBefore=12pt --prop spaceAfter=6pt
 officecli add "$FILE" /body --type paragraph --prop text="Enterprise renewals, upsell, and a new EMEA region." --prop size=11pt
 officecli add "$FILE" / --type footer --prop type=default --prop alignment=center --prop size=9pt --prop text="Page " --prop field=page
 officecli close "$FILE"
-officecli validate "$FILE"
+officecli validate "$FILE" | grep -q "no errors found" && echo "PASS: validate clean" || { echo "REJECT: validate failed — check output above"; exit 1; }
 ```
 
 Verified: `validate` returns `no errors found`; `get /footer[1] --depth 3` shows the 5-run PAGE field chain (the begin / instrText / separate / cached value / end runs that wrap the live field), not a static `"Page"` string; for the raw `<w:fldChar>` XML behind those runs, use `officecli raw doc.docx "/footer[1]" | grep fldChar`. This is the shape of every build: open → structure → content → format → footer/fields → close → validate.
@@ -135,9 +162,15 @@ Verified: `validate` returns `no errors found`; `get /footer[1] --depth 3` shows
 Start wide, then narrow. `outline` tells you what structure is already there; jump into `view text` / `get` / `query` only once you know where to look.
 
 **Open the rendered document to eyeball your own work.**
-- `officecli view $FILE html` — Read the returned HTML to audit the rendered output. Headings, tables, page breaks visible. Catches heading hierarchy issues, empty paragraphs-as-spacing, missing TOC entries.
-- `officecli watch $FILE` keeps a live preview running for the human user — they can open it at their own discretion. Use only when the user wants to watch along; agent self-check uses `view html` above.
-Use `view html` as your **first visual check after a batch of edits**. For final visual verification, the user opens the `.docx` in their Word / WPS / Pages viewer.
+
+`officecli view $FILE html` prints the path to a temporary HTML file on stdout — capture and Read it:
+
+```bash
+HTML=$(officecli view "$FILE" html)
+# Then: Read "$HTML"    ← audit headings, tables, page breaks, layout
+```
+
+Keep a live preview running for the human user with `officecli watch $FILE` — they open it at their own discretion. Use `view html` (captured path) as your **first visual check after a batch of edits**. For final visual verification, the user opens the `.docx` in their Word / WPS / Pages viewer.
 
 **Orient.** Heading tree, section count, table / image counts, watermark, tracked changes presence.
 
@@ -314,9 +347,11 @@ Ship-check: `officecli query "$FILE" 'p:contains("Update field to see")'` must r
 
 ### Images
 
-Pictures go inside a run. Alt text is mandatory for accessibility, but **add rejects `alt` at create time** (CLI bug C-D-3): add first, then `set`.
+Pictures go inside a run. Alt text is mandatory for accessibility, but **add rejects `alt` at create time** (CLI bug C-D-3): add first, then `set`. Verify the source file exists before adding:
 
 ```bash
+# Prerequisite: confirm source file is present before the add
+[[ -f "chart.png" ]] || { echo "ERROR: chart.png not found — add will fail"; exit 1; }
 officecli add doc.docx "/body/p[5]" --type picture --prop src=chart.png --prop width=4in
 officecli set doc.docx "/body/p[5]/r[last()]" --prop alt="Q4 revenue by region, bar chart"
 ```
@@ -370,8 +405,8 @@ officecli add "$FILE" / --type footer --prop type=default --prop text="Page " --
 officecli add "$FILE" "/footer[1]/p[1]" --type field --prop fieldType=page
 officecli add "$FILE" "/footer[1]/p[1]" --type run --prop text=" of "
 officecli add "$FILE" "/footer[1]/p[1]" --type field --prop fieldType=numpages
-# Verify the 3 field fragments exist:
-officecli get "$FILE" "/footer[1]/p[1]" --depth 1 | grep -o fldChar | wc -l   # expect ≥ 4 (begin+separate+end per field; DON'T use `grep -c` — single-line XML always returns 1)
+# Verify the field fragments exist (use -o not -c — single-line XML makes -c always return 1):
+officecli get "$FILE" "/footer[1]/p[1]" --depth 1 | grep -o fldChar | wc -l   # expect ≥ 4
 ```
 
 **(c) Header row with fill and white bold text.** Don't chain `shd.fill=` (broken). Order matters: populate the header row's cell text FIRST (runs don't exist in empty cells, so a `set .../tc[N]/p[1]/r[1]` on empty cells errors with "No r found"), THEN apply cell fill, THEN run formatting. Visual outcome: dark-blue header band with white bold labels, zebra-striped data rows.
@@ -436,7 +471,7 @@ officecli add "$FILE" /body --type paragraph --prop text="2. Market Diagnosis ..
 # ... one per heading
 ```
 
-Use this when the live-field option leaves the literal prompt visible to the reader. Page numbers are manually set. For approximate pagination preview: `officecli view "$FILE" html` and read the returned HTML file to eyeball layout. For exact page numbers: open in your target viewer (Word / WPS / etc.) — precise numbers only come from the final render in that viewer. This recipe assumes you can get approximate page positions from the document structure. `add --type toc` (live field) remains correct for recipients whose viewer recalculates on open (or who will press F9) — this recipe is for everyone else.
+Use this when the live-field option leaves the literal prompt visible to the reader. Page numbers are manually set. For approximate pagination preview: `HTML=$(officecli view "$FILE" html)` then Read `$HTML`. For exact page numbers: open in your target viewer (Word / WPS / etc.) — precise numbers only come from the final render in that viewer. This recipe assumes you can get approximate page positions from the document structure. `add --type toc` (live field) remains correct for recipients whose viewer recalculates on open (or who will press F9) — this recipe is for everyone else.
 
 ### Forcing page breaks — belt-and-suspenders for cross-viewer reliability
 
@@ -453,7 +488,7 @@ Neither alone guarantees a break in every client. Observed on officecli 1.0.60: 
 
 **`break=newPage` alias (1.0.61+).** The paragraph / section prop `--prop break=newPage` is a shorter alias that maps to `pageBreakBefore=true` (accepts `newPage | page | nextPage | pageBreak`). Same underlying XML, same behavior — so the belt-and-suspenders rule still applies: use `add --type pagebreak` before the heading AND set `pageBreakBefore=true` / `break=newPage` on the heading paragraph itself. ⚠️ `pageBreakBefore`/`break=` passed to `add` may be silently dropped — always apply it via a subsequent `set`.
 
-Apply to every H1, the TOC heading, and the cover-closing paragraph. Preview via `view html` (read the returned HTML path) and count pages to confirm.
+Apply to every H1, the TOC heading, and the cover-closing paragraph. Preview via `HTML=$(officecli view "$FILE" html)` then Read `$HTML` and count pages to confirm.
 
 ### Template delivery — separating Template Notes from end-user content
 
@@ -501,21 +536,49 @@ Your first document is almost never correct. Treat QA as a bug hunt, not a confi
 
 ### Minimum cycle before "done"
 
-1. `officecli view doc.docx issues` — empty paras, missing alt text, formatting anomalies.
-2. `officecli view doc.docx outline` — heading hierarchy, TOC presence, section count. No skipped levels (H1 → H3).
-3. `officecli view doc.docx text --max-lines 400` — content pass: typos, stray `\$` / `\t` / `\n` literals, placeholder tokens.
-4. Query for known classes of defect:
-   ```bash
-   officecli query doc.docx 'p:contains("lorem")'
-   officecli query doc.docx 'p:contains("xxxx")'
-   officecli query doc.docx 'p:contains("TODO")'
-   officecli query doc.docx 'p:contains("{{")'
-   officecli query doc.docx 'p:empty'
-   officecli query doc.docx 'image:no-alt'
-   ```
-5. `officecli validate doc.docx` — schema check. Close any resident first (see Known Issues).
-6. **Visual pass — walk every page via the HTML preview.** Run `officecli view doc.docx html` and Read the returned HTML path. Walk every page. "validate pass" is not delivery; "the preview looks like a real document" is delivery. For human review, run `officecli watch doc.docx` (user opens the live preview at their own discretion) or have them open the `.docx` directly in Word / WPS.
-7. If anything failed, fix, then **rerun the full cycle**. One fix commonly creates another problem.
+Run this script before declaring the document complete. Each WARN increments the defect counter; a non-zero count means stop and fix before delivery.
+
+```bash
+FILE="doc.docx"   # adjust to your filename
+DEFECTS=0
+
+# 1 — structural issues (empty paras, missing alt text, formatting anomalies)
+echo "=== issues ===" && officecli view "$FILE" issues
+
+# 2 — heading hierarchy: no skipped levels (H1 → H3), TOC presence, section count
+echo "=== outline ===" && officecli view "$FILE" outline
+
+# 3 — text content pass: stray \$ / \t / \n literals, placeholder tokens
+echo "=== text ===" && officecli view "$FILE" text --max-lines 400
+
+# 4 — known defect-class queries
+for PATTERN in \
+  'p:contains("lorem")' \
+  'p:contains("xxxx")' \
+  'p:contains("TODO")' \
+  'p:contains("{{")' \
+  'p:empty' \
+  'image:no-alt'; do
+  RESULT=$(officecli query "$FILE" "$PATTERN")
+  [[ -n "$RESULT" ]] && { echo "WARN [$PATTERN]: $RESULT"; DEFECTS=$((DEFECTS+1)); }
+done
+
+# 5 — close first (|| true suppresses exit-1 when no resident is open), then validate
+officecli close "$FILE" 2>/dev/null || true
+officecli validate "$FILE" | grep -q "no errors found" \
+  || { echo "WARN: validate failed — reopen, fix schema errors, close, and re-validate"; DEFECTS=$((DEFECTS+1)); }
+
+# 6 — visual pass: capture the HTML path, then Read it
+HTML=$(officecli view "$FILE" html)
+echo "HTML preview: $HTML"
+# Read "$HTML"  ← audit every page for layout, headings, overflow, and placeholder leakage
+
+[[ $DEFECTS -eq 0 ]] \
+  && echo "QA PASS — 0 defect classes found" \
+  || echo "WARN: $DEFECTS defect class(es) found — fix and rerun the full cycle"
+```
+
+"validate pass" is not delivery; "the preview looks like a real document" is delivery. For human review, run `officecli watch doc.docx` (user opens the live preview at their own discretion) or have them open the `.docx` directly in Word / WPS. One fix commonly creates another problem — always rerun the full cycle after any change.
 
 ### Delivery Gate (run before handing off — any failure = REJECT, do NOT deliver)
 
@@ -524,20 +587,28 @@ The three checks below are the automated half of the QA cycle; they catch the fi
 ```bash
 FILE="doc.docx"
 
-# Gate 1 — schema. Any error = REJECT.
-officecli close "$FILE" 2>/dev/null
-officecli validate "$FILE" | grep -q "no errors found" || { echo "REJECT: validate failed"; exit 1; }
+# Prerequisites — fail fast on missing file or open resident
+[[ -f "$FILE" ]] || { echo "REJECT: '$FILE' not found"; exit 1; }
+
+# Gate 1 — schema. Always close first; validate while resident is open gives false errors.
+officecli close "$FILE" 2>/dev/null || true
+officecli validate "$FILE" | grep -q "no errors found" \
+  || { echo "REJECT: validate failed — reopen, fix schema errors, close, and re-validate"; exit 1; }
+echo "Gate 1 OK"
 
 # Gate 2 — token leak via CLI text-layer view. Greps for tokens that must NEVER appear in a delivered file.
 officecli view "$FILE" text | \
-  grep -nE '(\$[A-Za-z_]+\$|\{\{[^}]+\}\}|<TODO>|xxxx|lorem|Update field to see|\\[\$tn])' && \
-  { echo "REJECT: token leak (see line(s) above)"; exit 1; } || echo "Gate 2 OK"
+  grep -nE '(\$[A-Za-z_]+\$|\{\{[^}]+\}\}|<TODO>|xxxx|lorem|Update field to see|\\[$tn])' \
+  && { echo "REJECT: token leak (see line(s) above)"; exit 1; }
+echo "Gate 2 OK"
 
 # Gate 3 — live-field structural spot-check. A footer showing the literal word "Page" with no live PAGE field is a static run.
-# Use `query` (operates on semantic elements) OR `raw` (inspects the XML part) — both reveal fldChar.
-officecli query "$FILE" 'field[fieldType=page]' | grep -q . || \
-  officecli raw "$FILE" "/footer[1]" 2>/dev/null | grep -q fldChar || \
-  { echo "REJECT: no live PAGE field found"; exit 1; }
+# Use `query` (semantic) OR `raw` (XML) — both reveal fldChar.
+officecli query "$FILE" 'field[fieldType=page]' | grep -q . \
+  || officecli raw "$FILE" "/footer[1]" 2>/dev/null | grep -q fldChar \
+  || { echo "REJECT: no live PAGE field found — re-add footer with --prop field=page"; exit 1; }
+echo "Gate 3 OK"
+
 echo "Delivery Gate PASS"
 ```
 
@@ -628,7 +699,7 @@ Specialty-only (skip unless you hit them):
 
 ### Renderer quirks (cross-viewer)
 
-`officecli view html` is the right tool for structural QA (overflow, placeholder leakage, hierarchy, layout) — Read the returned HTML path. Some features vary by the viewer the end user opens the file in. Observed divergences, all [RENDERER-BUG]:
+`officecli view html` prints the path to a temporary HTML file on stdout — capture with `HTML=$(officecli view "$FILE" html)` and Read it. Some features vary by the viewer the end user opens the file in. Observed divergences, all [RENDERER-BUG]:
 
 - **PAGE field may render as literal "Page" (no number)** in some viewers until the reader recalculates. Judge field presence by `get --depth 3` finding `<w:fldChar>`, not by eyeballing a digit.
 - **TOC cached page numbers may read "1 1 1 1"** until a human opens the file and recalculates (F9 in Word).
@@ -640,13 +711,33 @@ Before calling a color, field, or chart broken, open the file in the user's targ
 
 ### `validate` caveats
 
-- **Do NOT run `validate` while a resident is open.** `view --open` and `validate` briefly conflict on the file; `validate` reports spurious `drawing` / `tableParts` errors. Always `officecli close <file>` first.
+- **Do NOT run `validate` while a resident is open.** `view --open` and `validate` briefly conflict on the file; `validate` reports spurious `drawing` / `tableParts` errors. Always `officecli close <file>` first. The delivery gate does this automatically — replicate the close-before-validate pattern whenever running validate manually.
 - **`validate` does not check design.** Heading hierarchy, typography, placeholder leakage, empty covers pass validate but fail delivery. See QA section.
 
 ### Batch / resident mode
 
-- **Batch + resident occasional failure** (1-in-10 to 1-in-15). Symptom: "Failed to send to resident". Retry the command, or close/reopen the file. Split large batch arrays into ≤ 12-op chunks for reliability.
-- **Echo into batch breaks on `$` / `'`.** Use heredoc: `cat <<'EOF' | officecli batch doc.docx` — single-quoted delimiter prevents shell expansion.
+- **Batch + resident occasional failure** (1-in-10 to 1-in-15). Symptom: "Failed to send to resident". Exact recovery — close, reopen, then re-run the failed command:
+
+  ```bash
+  officecli close "$FILE" && officecli open "$FILE"
+  # Then re-run the failed command.
+  ```
+
+  Split large batch arrays into ≤ 12-op chunks for reliability.
+
+- **Echo into batch breaks on `$` / `'`.** Use heredoc with a single-quoted delimiter — this prevents all shell expansion inside the JSON:
+
+  ```bash
+  cat <<'EOF' | officecli batch "$FILE"
+  [
+    {"verb":"add","path":"/body","type":"paragraph","props":{"text":"Line one","style":"Normal"}},
+    {"verb":"add","path":"/body","type":"paragraph","props":{"text":"Line two","style":"Normal"}}
+  ]
+  EOF
+  ```
+
+  The `'EOF'` (single-quoted) is required. Without quotes, `$FILE`, `$USER`, etc. inside the JSON would be shell-expanded before the CLI sees them.
+
 - **Table `--index` positioning unreliable.** `--index N` on table add may be ignored. Add content in the intended order; or remove/re-add surrounding elements.
 
 ### Common pitfalls
@@ -668,6 +759,8 @@ Before calling a color, field, or chart broken, open the file in the user's targ
 | Row-level `c1="line1\nline2"` for multi-line cell | `\n` lands as a literal. Use recipe (e): seed one bullet, then `add paragraph` to the cell for each subsequent line |
 | Raw-set when dotted-attr would work | Prefer L2 (`pbdr.top=`, `ind.left=`, `font.size=`) over L3 raw-set. `shd.fill=` and `ind.firstLine=` are NOT safe — use canonical `shd=clear;XXXXXX` and `firstLineIndent=N` |
 | Next paragraph picks up the previous Heading style | If a Heading2 `Next body line` sneaks through, set explicit `--prop style=Normal` on the following paragraph |
+| Editing a file without confirming it exists | For existing files, run `[[ -f "$FILE" ]] \|\| { echo "not found"; exit 1; }` before `open` |
+| Running `validate` while resident is open | Always `officecli close "$FILE"` first — open residents cause false schema errors |
 | Modifying a file open in Word | Close it in Word first |
 
 ### Help pointer

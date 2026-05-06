@@ -27,6 +27,31 @@ officecli auto-updates daily in the background.
 
 ---
 
+## Automation Policy
+
+**Act without asking** for:
+- Any read/inspect op (`view`, `get`, `query`, `validate`, `stats`) on any file
+- `create` on a path that does not yet exist
+- `add` / `set` on a local file the user named or just created
+- `remove` / `move` / `swap` when the user explicitly named the target (e.g. "remove paragraph 4", "swap slides 2 and 5")
+- `clone` via `--from` (non-destructive — original is untouched)
+- Resident-mode `open`/`close` wrapping when issuing 3+ commands on the same file
+- Batch mode when issuing 5+ operations on the same file
+
+**Pause and confirm** before:
+- `create` on a path that already exists (`[[ -f <file> ]]` → alert and stop)
+- `remove` / `move` / `swap` on content not explicitly specified by the user
+- Writing to a path outside the working directory or a shared/network location
+- Gateway or external API calls
+
+**Always verify after any modification sequence:**
+```bash
+officecli validate <file> && officecli view <file> issues --limit 10 || echo "VALIDATION FAILED — see errors above"
+```
+If validate exits non-zero, report the exact error and stop; do not silently continue.
+
+---
+
 ## Strategy
 
 **L1 (read) -> L2 (DOM edit) -> L3 (raw XML)**. Always prefer higher layers. Add `--json` for structured output.
@@ -50,7 +75,7 @@ Replace `pptx` with `docx` or `xlsx`. Commands: `view`, `get`, `query`, `set`, `
 
 ## Performance: Resident Mode
 
-For multi-step workflows (3+ commands on the same file), use `open`/`close`:
+For multi-step workflows (3+ commands on the same file), automatically use resident mode — no need to ask:
 ```bash
 officecli open report.docx       # keep in memory — fast subsequent commands
 officecli set report.docx ...    # no file I/O overhead
@@ -64,25 +89,34 @@ officecli close report.docx      # save and release
 **PPT:**
 ```bash
 officecli create slides.pptx
+officecli open slides.pptx
 officecli add slides.pptx / --type slide --prop title="Q4 Report" --prop background=1A1A2E
 officecli add slides.pptx /slide[1] --type shape --prop text="Revenue grew 25%" --prop x=2cm --prop y=5cm --prop font=Arial --prop size=24 --prop color=FFFFFF
 officecli set slides.pptx /slide[1] --prop transition=fade --prop advanceTime=3000
+officecli close slides.pptx
+officecli validate slides.pptx && officecli view slides.pptx issues --limit 10 || echo "VALIDATION FAILED"
 ```
 
 **Word:**
 ```bash
 officecli create report.docx
+officecli open report.docx
 officecli add report.docx /body --type paragraph --prop text="Executive Summary" --prop style=Heading1
 officecli add report.docx /body --type paragraph --prop text="Revenue increased by 25% year-over-year."
+officecli close report.docx
+officecli validate report.docx && officecli view report.docx issues --limit 10 || echo "VALIDATION FAILED"
 ```
 
 **Excel:**
 ```bash
 officecli create data.xlsx
+officecli open data.xlsx
 officecli set data.xlsx /Sheet1/A1 --prop value="Name" --prop bold=true
 officecli set data.xlsx /Sheet1/B1 --prop value="Score" --prop bold=true
 officecli set data.xlsx /Sheet1/A2 --prop value="Alice"
 officecli set data.xlsx /Sheet1/B2 --prop value=95
+officecli close data.xlsx
+officecli validate data.xlsx && officecli view data.xlsx stats || echo "VALIDATION FAILED"
 ```
 
 ---
@@ -188,6 +222,8 @@ officecli remove <file> '/body/p[4]'
 
 ### batch — multiple operations in one save cycle
 
+Use batch automatically for 5+ operations on the same file (fewer round-trips, single save):
+
 ```bash
 echo '[
   {"command":"set","path":"/Sheet1/A1","props":{"value":"Name","bold":"true"}},
@@ -214,6 +250,20 @@ officecli add-part <file> <parent>                   # create new document part 
 **raw-set actions:** `append`, `prepend`, `insertbefore`, `insertafter`, `replace`, `remove`, `setattr`.
 
 Run `officecli <format> raw` for available parts per format.
+
+---
+
+## Failure Recovery
+
+| Symptom | Recovery |
+|---------|---------|
+| `officecli: command not found` | Re-run install script; then `source ~/.zshrc` |
+| `validate` exits non-zero | Run `officecli raw <file> <part>` to inspect the offending part; fix via `raw-set` or undo the last L2 op |
+| `validate` passes but `view issues` reports problems | Address issues before delivery; use `--type format\|content\|structure` to filter |
+| Path not found (`/slide[3]` etc.) | Run `officecli get <file> /` to list available paths |
+| File locked / permission denied | Close the file in PowerPoint/WPS/Excel first |
+| `set` silently ignores a property | Run `officecli <format> set <element>.<property>` to confirm exact property name |
+| `create` on existing file | Stop; confirm with user before overwriting |
 
 ---
 
@@ -252,5 +302,5 @@ This skill covers the officecli CLI basics. For complex scenarios, load the dedi
 
 - Paths are **1-based** (XPath convention): `'/body/p[3]'` = third paragraph
 - `--index` is **0-based** (array convention): `--index 0` = first position
-- After modifications, verify with `validate` and/or `view issues`
+- After modifications, run `validate` then `view issues` — don't skip
 - **When unsure**, run `officecli <format> <command> [element[.property]]` instead of guessing

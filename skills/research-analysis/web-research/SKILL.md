@@ -32,10 +32,12 @@ Agentic, multi-step web research with sub-agent spawning, evidence-ledger artifa
 
 | Mode | When to Use | Tool Budget | Stop Threshold |
 |------|-------------|-------------|----------------|
-| **quick** | Fast answers, simple questions | 20 calls | Coverage ≥60%, Confidence ≥0.65 |
-| **standard** | Balanced research (default) | 40 calls | Coverage ≥80%, Confidence ≥0.75 |
-| **deep** | Thorough investigation | 60 calls | Coverage ≥90%, Confidence ≥0.80 |
+| **quick** | Fast answers, simple questions | 20 calls | ≥3/5 sub-questions answered, ≥2 sources each |
+| **standard** | Balanced research (default) | 40 calls | ≥4/5 sub-questions answered, ≥2 sources each |
+| **deep** | Thorough investigation | 60 calls | All sub-questions answered, ≥3 independent sources each |
 | **product-parity-hunt** | Finding integrated stacks/platforms | 60-80 calls | Parity gates satisfied (see below) |
+
+**Coverage definition**: A sub-question is "answered" when ≥2 independent, non-marketing sources either agree on an answer or the disagreement is documented. Confidence is expressed as source count + corroboration, not a float — e.g., "3 independent sources agree; 1 contradicts; treating as confirmed with caveat."
 
 ### Auto-Escalation to Product-Parity-Hunt
 
@@ -54,26 +56,37 @@ When auto-escalating, inform the user: "This looks like a product-parity hunt. I
 
 ## Quick Start
 
-1. Read `references/tool-policy.md` for tool priority and concurrency rules
-2. Use the **Task tool** to spawn a research sub-agent
-3. Sub-agent writes artifacts to `~/research/<slug>/` and returns executive summary
-4. For comprehensive reference, load `references/scaffold.md`
+1. Check which search tools are available this session (see Tool Priority below).
+2. Use the **Task tool** to spawn a research sub-agent using the Quick Spawn Template.
+3. Sub-agent writes artifacts to `~/research/<slug>/` and returns executive summary.
+4. For deep/parity modes, follow the full Execution Loop below.
+
+**Note**: Reference files (`references/scaffold.md`, `references/tool-policy.md`, etc.) are supplementary and may not be present. If absent, use this SKILL.md as the complete protocol.
 
 ---
 
 ## Tool Priority
 
+Use tools in priority order; skip any that are unavailable in the current session.
+
 | Priority | Tool | Use For |
 |----------|------|---------|
-| 1 | `mcp__brave-search__brave_web_search` | Breadth searches, query expansion |
-| 2 | `mcp__exa__web_search_exa` | High-quality extraction |
-| 3 | `mcp__exa__web_search_advanced_exa` | Filtered searches (domain, date, category) |
-| 4 | `mcp__firecrawl__firecrawl_scrape` | JS-heavy sites, clean markdown |
-| 5 | `mcp__firecrawl__firecrawl_map` | Site discovery, docs portals |
-| 6 | `WebFetch` | Quick static pages (cheap) |
-| 7 | Browser tools | Interactive/login only |
+| 1 | `mcp__tavily__tavily_search` | Breadth searches, query expansion |
+| 2 | `mcp__tavily__tavily_research` | Deep single-topic research |
+| 3 | `mcp__zai-search__web_search_prime` | Alternative breadth searches |
+| 4 | `mcp__tavily__tavily_extract` | Structured extraction from known URLs |
+| 5 | `mcp__claude_ai_Firecrawl__firecrawl_scrape` | JS-heavy sites, clean markdown |
+| 6 | `mcp__claude_ai_Firecrawl__firecrawl_map` | Site discovery, docs portals |
+| 7 | `mcp__zai-reader__webReader` | Reading specific pages cleanly |
+| 8 | `WebFetch` | Quick static pages (cheap fallback) |
+| 9 | `WebSearch` | Last-resort native search |
+| 10 | Browser tools | Interactive/login only |
 
-Also available as fallback: `search_query` → `open`/`click`/`find` (native Codex web tools). Use Firecrawl only when native tools fail — document the fallback.
+**Availability check**: Before spawning a sub-agent, note which tier-1 tools are available. If `mcp__tavily__tavily_search` is absent, step down to `mcp__zai-search__web_search_prime`. Document the fallback in `action-log.md`. Do not reference unavailable tools in spawn prompts.
+
+**Legacy note**: Earlier versions listed `mcp__brave-search__brave_web_search` and `mcp__exa__web_search_exa`. These are superseded by the Tavily/ZAI stack above. If brave-search or exa appears in your session, they can be used as tier-1/2 alternatives.
+
+**Firecrawl concurrency limit**: 2 concurrent jobs max.
 
 ---
 
@@ -84,7 +97,7 @@ Use the **Task tool** with:
 ```
 subagent_type: "search-specialist"
 description: "research:<topic-slug>"
-prompt: [See spawn template in references/spawn-template.md]
+prompt: [See Quick Spawn Template below]
 ```
 
 ### Quick Spawn Template
@@ -99,65 +112,71 @@ You are an agentic web research sub-agent.
 <quick / standard / deep>
 
 ## Protocol
-1. Decompose into 3-7 sub-questions
-2. Breadth phase: Brave search for coverage (max 4 searches before fetching)
-3. Depth phase: Fetch/scrape top results, extract claims
-4. Iterate: Update gaps, search again if novelty remains
-5. Synthesize: Compile structured report
+1. Decompose into 3-7 concrete sub-questions (write them to plan.md first).
+2. Breadth phase: Search for coverage (max 4 searches before fetching anything).
+3. Depth phase: Fetch/scrape top results, extract claims, note source URL + date.
+4. Iterate: Update open questions, search again only if novelty remains.
+5. Synthesize: Compile structured report with all claims mapped to source URLs.
 
-## Tool Priority (use in order)
-1. mcp__brave-search__brave_web_search — breadth
-2. mcp__exa__web_search_exa — quality extraction
-3. mcp__firecrawl__firecrawl_scrape — JS-heavy sites
-4. WebFetch — static pages
+## Tool Priority (use in order; skip unavailable tools)
+1. mcp__tavily__tavily_search — breadth
+2. mcp__tavily__tavily_research — deep single-topic
+3. mcp__zai-search__web_search_prime — alternative breadth
+4. mcp__claude_ai_Firecrawl__firecrawl_scrape — JS-heavy sites
+5. mcp__zai-reader__webReader — clean page reading
+6. WebFetch — static pages
+7. WebSearch — last-resort native
 
 ## Iteration Discipline
-- Max 4 search calls before fetching something
-- Fetch 2-6 pages per batch, then reassess
-- Firecrawl concurrency limit: 2 concurrent jobs
+- Max 4 search calls before fetching something.
+- Fetch 2-6 pages per batch, then reassess coverage.
+- Firecrawl concurrency limit: 2 concurrent jobs.
+- If last iteration produced zero new claims: switch query family or escalate scope.
 
-## Artifacts
-Write to ~/research/<slug>/:
-- plan.md
-- action-log.md
-- evidence-ledger.md
-- report.md
-- stop-report.md (if stopping early)
+## Artifacts (write to ~/research/<slug>/)
+- plan.md — sub-questions list (write BEFORE first tool call)
+- action-log.md — every tool call, result summary, and tool used
+- evidence-ledger.md — url | title | date | claim(s) | reliability
+- report.md — final structured report
+- stop-report.md — if stopping early (explain which gates failed)
 
-## Stop Conditions
-- Coverage ≥80% of sub-questions
-- Confidence ≥0.75 on key claims
-- Novelty <0.15 (diminishing returns)
-- OR budget exhausted
+## Stop Conditions (standard mode)
+- ≥4 of 5 sub-questions answered (≥2 independent non-marketing sources each)
+- No sub-question has zero coverage
+- OR budget exhausted (document remaining gaps in stop-report.md)
+
+## Citation Format
+Each claim in report.md must have inline citation: [Source Title](URL) (YYYY-MM-DD).
+If date unknown, write (date unknown). Never omit the URL.
 
 ## Return Format
 1. Executive summary (5-10 bullets)
 2. Key findings by sub-question
-3. Sources with URLs
-4. Open questions
-5. Confidence assessment
+3. Sources with URLs and dates
+4. Open questions (unanswered or conflicting)
+5. Evidence quality note (how many independent sources; any marketing-only claims)
 ```
 
 ---
 
-## Execution Loop (when running inline, not as sub-agent)
+## Execution Loop (inline, not sub-agent)
 
-1. Expand the user request into 3-8 concrete sub-questions.
+1. Write `plan.md` with 3-8 concrete sub-questions **before any tool calls**.
 2. Check ledger to avoid duplicate sources.
 3. Dispatch workers by independent question clusters (3-5 parallel tracks max).
 4. Collect worker reports.
 5. Update ledger:
-   - Visited sources (url/title/date/status/reliability)
-   - Claims with supporting URLs
+   - Visited sources: url / title / date / status / reliability
+   - Claims with supporting URLs and dates
    - Conflicts and unresolved gaps
 6. Re-dispatch only unresolved/conflicting items.
-7. Stop when coverage and confidence targets are reached.
+7. Stop when coverage targets are met (see mode table above).
 
 ## Ledger Discipline
 
 Keep a compact in-context ledger each round. Never re-search the same source unless:
-- A freshness re-check is required
-- A previous extraction failed
+- A freshness re-check is required (time-sensitive claim)
+- A previous extraction failed (document the failure)
 - A new sub-question needs different evidence from the same source
 
 ---
@@ -169,7 +188,7 @@ Keep a compact in-context ledger each round. Never re-search the same source unl
 ```
 1. Run small search batch (≤4 queries)
 2. Pick top results, fetch 2-6 pages
-3. Update coverage/novelty/disagreements
+3. Update coverage (sub-questions answered / total)
 4. Only then decide next search batch
 ```
 
@@ -177,21 +196,29 @@ Rule: No more than 4 search calls in a row without fetching/scraping something.
 
 ### Anti-Stagnation Rule
 
-If the last iteration produced no new candidates, no coverage improvements, and no reduction in open questions — the next iteration MUST expand scope by:
+If the last iteration produced no new claims, no coverage improvements, and no reduction in open questions — the next iteration MUST expand scope by:
 - Adding a new solution-class target
 - Adding a new query family
-- Trying different search terms
+- Trying different search terms (synonyms, competitor names, technical alternatives)
+
+### Tool Failure Recovery
+
+If a tool call returns an error or empty result:
+1. Log the failure in `action-log.md` with tool name and error.
+2. Step down to the next priority tool immediately.
+3. If all tier-1/2 tools fail: use `WebFetch` with direct URLs found via any prior search.
+4. Do not silently skip a sub-question due to tool failures — document the gap.
 
 ---
 
 ## Quality Gates
 
 - Time-sensitive claims must include explicit dates.
-- Non-trivial claims should have at least 2 reliable sources.
-- Conflicts must be called out and resolved or labeled unresolved.
-- Final answer includes confidence tags and uncertainty notes.
-- Every claim in report maps to evidence URL in `evidence-ledger.md`.
-- No marketing-only claims: if the only evidence is a marketing page, parity score cannot exceed 1.
+- Non-trivial claims must have at least 2 reliable, independent (non-marketing) sources.
+- Conflicts must be called out and either resolved or labeled "unresolved — see evidence-ledger.md".
+- Final answer includes evidence quality notes (source count, any marketing-only sources).
+- Every claim in report.md maps to a URL entry in `evidence-ledger.md`.
+- Marketing-only claims are tagged `[marketing-only]` and excluded from coverage count.
 
 ---
 
@@ -250,22 +277,17 @@ You may NOT stop until ALL are true:
 ## Follow-up Research
 
 For follow-ups on the same topic:
-1. Read previous artifacts (plan.md, evidence-ledger.md)
+1. Read previous artifacts (plan.md, evidence-ledger.md).
 2. Spawn new agent with context: "Continue research on <topic>. Previous findings at <path>."
-3. Or pass key findings directly in the prompt
+3. Or pass key findings directly in the prompt.
 
 ---
 
 ## References
 
-- `references/scaffold.md` — Full research scaffold v2 (comprehensive, 1000+ lines)
+The following reference files may exist alongside this SKILL.md in the installed skill directory. They are supplementary — this file is the complete protocol.
+
+- `references/scaffold.md` — Full research scaffold v2 (comprehensive)
 - `references/tool-policy.md` — Tool choice + concurrency defaults
 - `references/templates.md` — Artifact templates (plan/action/evidence/report)
-- `references/spawn-template.md` — Full spawn prompt template
-
-## Scripts
-
-```bash
-# Initialize topic folder with empty templates
-scripts/init_topic.sh <slug>
-```
+- `references/spawn-template.md` — Extended spawn prompt template

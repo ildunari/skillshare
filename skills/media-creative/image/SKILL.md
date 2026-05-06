@@ -1,7 +1,7 @@
 ---
 name: image
 description: Use whenever Kosta invokes /image or asks Hermes to generate, draw, create, mock up, render, or edit an image using the default Codex/GPT Image 2 path. This is the preferred default image-generation skill; use ComfyUI only when the user explicitly asks for local models, LoRAs, SDXL/Flux workflows, or advanced node/control workflows. Turns loose requests into strong GPT Image 2 prompts and calls Hermes image_generate.
-version: 0.1.0
+version: 0.3.0
 author: Hermes Agent
 license: MIT
 targets: [hermes-default, hermes-gpt, claude-hermes]
@@ -19,14 +19,27 @@ Do **not** route ordinary `/image` requests to ComfyUI. ComfyUI is for explicit 
 
 ## First move
 
-If the request is clear enough, generate immediately. Do not ask style questions unless the missing choice would materially change the result.
+**Generate immediately.** Do not ask clarifying questions unless the user's intent is genuinely ambiguous (e.g., "image" with no other content, or an unresolvable conflict like "landscape portrait of a building in square format"). All of these are clear enough — proceed without asking:
 
-Use these defaults:
+- Any subject described in ≥4 words
+- Any `/image <noun/scene/concept>` with obvious visual interpretation
+- Requests that name style, mood, format, brand, or use case
+- Edit requests with before/after described
+- UI/mockup/screenshot requests (even if only the category is named)
 
-- General image: `square`
-- Hero/banner/wide scene/UI desktop: `landscape`
-- Phone wallpaper/poster/mobile UI/portrait: `portrait`
-- Provider/model: whatever Hermes `image_generate` is configured to use, currently Codex GPT Image 2 medium
+**Never ask about**: style, aspect ratio, level of detail, color palette, realism vs. illustration, number of variants, model, or background — unless the user explicitly raised it. Infer defaults from context.
+
+## Aspect ratio inference
+
+Pick the ratio before prompting. Use the first matching rule:
+
+| Trigger words / context | Ratio |
+|---|---|
+| wide, banner, hero, desktop, cinematic, landscape, panorama, scene, wallpaper (horizontal) | `landscape` |
+| phone, mobile, portrait, poster, tall, story (IG/social), wallpaper (vertical) | `portrait` |
+| everything else (product shot, logo mark, avatar, icon, thumbnail, default) | `square` |
+
+When the request contains conflicting signals (e.g., "portrait of a landscape"), pick `portrait` for human subjects and `landscape` for scenes.
 
 ## Prompt structure
 
@@ -63,24 +76,32 @@ Short requests do not need the whole template. A crisp paragraph is fine when it
 
 ## GPT Image 2 rules that matter
 
-- Use action words: **create**, **draw**, **render**, or **edit**. For edits, say “edit the image by changing X” rather than vague “combine/merge.”
-- For photorealism, include **photorealistic** or “real photograph / professional photography / iPhone photo.” Do not rely on “8K, ultra detailed, masterpiece” boilerplate.
+- Use action words: **create**, **draw**, **render**, or **edit**. For edits, say "edit the image by changing X" rather than vague "combine/merge."
+- For photorealism, include **photorealistic** or "real photograph / professional photography / iPhone photo." Do not rely on "8K, ultra detailed, masterpiece" boilerplate.
 - Be concrete about visual facts: materials, shape, texture, placement, lighting, camera angle, and mood.
 - For text in the image, put exact copy in quotes, specify typography and placement, and say **verbatim, no extra text**. Spell unusual words letter-by-letter if accuracy matters.
-- For edits or reference-based work, separate **Change** from **Preserve**. Example: “Change only the background to a rainy Tokyo street. Preserve the person’s face, pose, clothing, camera angle, lighting direction, and color grade.”
+- For edits or reference-based work, separate **Change** from **Preserve**. Example: "Change only the background to a rainy Tokyo street. Preserve the person's face, pose, clothing, camera angle, lighting direction, and color grade."
 - Iterate with small changes. If the first result is close, ask for one targeted edit rather than rewriting everything.
 - For dense charts/spreadsheets/tiny labels, warn that image generation is the wrong final-format tool; use real document/design tooling if precision matters.
 - GPT Image 2 does not support transparent backgrounds in the current API path. If transparency is requested, generate on a plain high-contrast background or use post-processing unless the configured provider changes.
 
 ## Calling the tool
 
-Call:
-
 ```python
 image_generate(prompt=<final prompt>, aspect_ratio="landscape" | "square" | "portrait")
 ```
 
-After generation, return the image directly. Add only a short note if useful, e.g. “I kept it square and optimized for product-shot realism.”
+`aspect_ratio` must be exactly one of `"landscape"`, `"square"`, or `"portrait"`. No other values are accepted.
+
+After generation, return the image directly. Add only a short note if useful, e.g. "I kept it square and optimized for product-shot realism."
+
+## Failure recovery
+
+If `image_generate` returns an error or empty result:
+
+1. **Content policy rejection** — rewrite the prompt to remove potentially flagged phrasing (e.g., real brand names, explicit depictions, celebrity likenesses). Try once with cleaned prompt before reporting.
+2. **Tool unavailable / timeout** — report: "image_generate failed: [error]. Try again or check Hermes tool status."
+3. **Result misses a key explicit constraint** — after receiving the result, check it against the request's primary constraints: required text present and legible, correct orientation for the use case, correct subject. If a constraint is clearly violated (text missing or garbled, wrong orientation, wrong subject count), identify the broken constraint, rewrite that section of the prompt only, and retry once automatically — do not ask permission. Deliver the final result with a one-line note on what was fixed. If the second attempt also fails the constraint, report both attempts and the specific mismatch.
 
 ## When to use high-effort prompting
 
