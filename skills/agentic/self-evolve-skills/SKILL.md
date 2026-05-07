@@ -1,5 +1,5 @@
 ---
-name: claude-code-skill-evolution
+name: self-evolve-skills
 description: Run Claude Code as a sandboxed iterative skill-improvement optimizer. Use when Kosta wants to burn Claude subscription quota productively, improve Hermes/Skillshare/Claude skills, run Sonnet/Opus lanes, compare skill variants, collect token/cost stats, detect plateau, or generate reviewable patches without touching live skills.
 metadata:
   targets:
@@ -9,7 +9,7 @@ metadata:
     - claude-hermes
 ---
 
-# Claude Code Skill Evolution
+# Self-Evolve Skills
 
 Use this when the goal is not just to edit a skill once, but to make Claude Code spend real effort improving it in a controlled, measurable way.
 
@@ -50,7 +50,7 @@ If a target is a Hermes/Skillshare skill, prefer canonical Skillshare source ove
 Create a timestamped run root:
 
 ```text
-~/.hermes/evolution-runs/claude-code-skill-evolution/YYYYMMDD-HHMMSS/
+~/.hermes/evolution-runs/self-evolve-skills/YYYYMMDD-HHMMSS/
 ```
 
 For each skill:
