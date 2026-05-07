@@ -167,6 +167,55 @@ Execute these phases in order. If any phase fails critically, skip to Phase F (c
 
 ---
 
+### Phase G: Session-Side Report (final output)
+
+After all the file-side work is done, output a structured report to the session — this is what the user sees when the automation finishes. **Never a single paragraph.** Use this section order:
+
+#### Opening summary (1–2 sentences)
+Plain English: how many sessions were processed, how many signals applied, did validation pass.
+
+#### Run stats — small markdown table
+| Metric | Count |
+|--------|------:|
+| Sessions processed | N |
+| Sessions skipped | N |
+| Signals extracted | N |
+| Signals applied | N (after dedup) |
+| Duplicates dropped | N |
+| Validation | ✅ PASS / ❌ FAIL |
+
+#### Personality file changes — datatable
+
+```datatable
+{
+  "title": "Personality File Changes — {date}",
+  "columns": [
+    { "key": "file",       "label": "File",          "type": "text" },
+    { "key": "added",      "label": "Added",         "type": "number" },
+    { "key": "modified",   "label": "Modified",      "type": "number" },
+    { "key": "removed",    "label": "Removed",       "type": "number" },
+    { "key": "lineDelta",  "label": "Line Δ",        "type": "text" },
+    { "key": "status",     "label": "Status",        "type": "badge" }
+  ],
+  "rows": [
+    { "file": "SOUL.md",         "added": A, "modified": M, "removed": R, "lineDelta": "+X / -Y", "status": "updated" },
+    { "file": "USER.md",         "added": A, "modified": M, "removed": R, "lineDelta": "+X / -Y", "status": "updated" },
+    { "file": "INSTRUCTIONS.md", "added": 0, "modified": 0, "removed": 0, "lineDelta": "0",       "status": "no-change" }
+  ]
+}
+```
+
+#### Notable signals applied (top 3–5)
+Bullet list of the most meaningful signals applied this run (not every one — just what stands out). One line each.
+
+#### Errors / skipped batches (only if any)
+Plain bullet list with what failed and why.
+
+#### Next steps (1 line)
+e.g. "All clean — next run on YYYY-MM-DD." or "Validation soft-failed on USER.md cap; trimmed N entries."
+
+---
+
 ## Weekly Compaction Variant (Sundays)
 
 When the automation prompt says "weekly compaction", run this variant instead of the daily pipeline:
@@ -190,6 +239,7 @@ When the automation prompt says "weekly compaction", run this variant instead of
    - [USER.md] Added/removed/modified: description
    - [INSTRUCTIONS.md] No changes
    ```
+7. **Session-side report** — output the same structured Phase G report as the daily run, but with a different opening summary that frames it as a compaction (e.g. "Weekly compaction: deduped X entries, removed Y stale, no new signals extracted"). Keep the run-stats table, file-changes datatable, and "Notable changes" bullet list. Replace "Notable signals applied" with "Notable compaction changes" — what was deduped, what was pruned, what was reorganized.
 
 ---
 

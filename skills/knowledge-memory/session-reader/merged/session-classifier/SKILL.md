@@ -148,11 +148,44 @@ with open(path, 'w') as f:
 
 ## Step 4 — Report
 
-Output a summary:
-- Total sessions scanned
-- Sessions already classified (skipped)
-- Sessions newly classified (with before/after labels and status)
-- Any errors or sessions that couldn't be read
+Produce a structured visual report — **never a single paragraph**. Use this exact section order:
+
+### 4a. Opening summary (1–2 sentences)
+Plain English: how many sessions were scanned, how many got classified this run, anything noteworthy (e.g., a spike in `needs-review`).
+
+### 4b. Run stats — small markdown table
+| Metric | Count |
+|--------|------:|
+| Total sessions scanned | N |
+| Already classified (skipped) | N |
+| Newly classified | N |
+| Errors / unreadable | N |
+
+### 4c. Classifications — datatable
+
+Render an interactive datatable for every session newly classified this run. Inline rows (typical run is well under 20).
+
+```datatable
+{
+  "title": "Sessions Classified — {date}",
+  "columns": [
+    { "key": "session",     "label": "Session ID",      "type": "text" },
+    { "key": "title",       "label": "Title",           "type": "text" },
+    { "key": "labels",      "label": "Labels Applied",  "type": "text" },
+    { "key": "status",      "label": "Status",          "type": "badge" },
+    { "key": "confidence",  "label": "Confidence",      "type": "badge" }
+  ],
+  "rows": [...]
+}
+```
+
+`status` values: `done`, `in-progress`, `needs-review`, `archived`. `confidence`: `high`, `medium`, `low`.
+
+### 4d. Errors & skipped (only if any)
+Plain bullet list with the session id and the reason (corrupt jsonl, parse failure, own-session skip, etc.).
+
+### 4e. Next steps (1 line)
+e.g. "12 sessions still marked `needs-review` — consider running a manual sweep." or "All sessions classified cleanly."
 
 ## Rules
 

@@ -117,14 +117,79 @@ Don't restructure existing guide pages — just add the new entry in the appropr
 
 ## Step 6 — Daily Report
 
-Write a `## Inbox Processing Report` section to `daily/YYYY-MM-DD.md` (create if it doesn't exist). Include:
+Two outputs: a **vault-side report** (written into `daily/YYYY-MM-DD.md`) and a **session-side report** (rendered back to the user in the automation session). Both must be structured — never a single paragraph.
 
-- Run timestamp
-- Total entries found vs processed
-- For each processed entry: original filename, destination path, type, brief description
-- Any new categories/subcategories created
-- Entries skipped (with reason — duplicate, already processed, etc.)
-- Questions that were researched and answered
+### 6a. Vault-side report — `## Inbox Processing Report` in `daily/YYYY-MM-DD.md`
+
+Append/create this section. Use markdown sections, not a wall of text:
+
+```
+## Inbox Processing Report
+**Run:** YYYY-MM-DD HH:MM EDT
+
+### Summary
+| Metric | Count |
+|--------|------:|
+| Items found in inbox | N |
+| Items processed     | N |
+| Items skipped       | N |
+| New notes created   | N |
+| Guides updated      | N |
+
+### Processed
+- `original-filename.md` → `destination/path.md` — _type_ — one-line description
+- ...
+
+### Skipped (with reason)
+- `filename.md` — duplicate of existing note `path.md`
+- ...
+
+### Questions researched
+- _question_ → answer summary (links to the research notes that captured it)
+
+### New categories/subcategories created
+- list, or "none"
+```
+
+### 6b. Session-side report (final output to the user)
+
+After the vault report is written, output a structured report to the session — this is what the user sees when the automation finishes. Use this exact section order:
+
+#### Opening summary (1–2 sentences)
+Plain English: how many items were processed, anything notable.
+
+#### Run stats — small markdown table
+| Metric | Count |
+|--------|------:|
+| Items found | N |
+| Processed | N |
+| Skipped | N |
+| Notes created | N |
+| Guides updated | N |
+| Manifest written | yes/no |
+
+#### Items processed — datatable
+```datatable
+{
+  "title": "Inbox Items Processed — {date}",
+  "columns": [
+    { "key": "source",      "label": "Source File",   "type": "text" },
+    { "key": "destination", "label": "Filed To",      "type": "text" },
+    { "key": "type",        "label": "Type",          "type": "badge" },
+    { "key": "summary",     "label": "Summary",       "type": "text" }
+  ],
+  "rows": [...]
+}
+```
+
+#### Skipped (only if any)
+Plain bullet list: filename + reason.
+
+#### Errors / warnings (only if any)
+Plain bullet list: what failed and where.
+
+#### Next steps (1 line)
+Mention any items left in the inbox that need human attention, or "Inbox clean."
 
 ## Step 7 — Git Commit & Push
 

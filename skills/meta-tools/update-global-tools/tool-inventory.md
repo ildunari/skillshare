@@ -1,6 +1,6 @@
 # Tool Inventory
 
-> Auto-maintained by the update-global-tools skill. Last full scan: 2026-03-28 (afternoon).
+> Auto-maintained by the update-global-tools skill. Last full scan: 2026-05-07.
 
 ## Homebrew Formulae (Key Tools)
 
@@ -14,7 +14,7 @@
 - **Version**: 0.8.0
 - **Repo**: steipete/bird
 - **Update**: `npm update -g @steipete/bird`
-- **Last Update Notes**: Current as of 2026-03-17
+- **Last Update Notes**: ⚠️ npm deprecation warning as of 2026-05-03: "Package no longer supported." Monitor for replacement.
 
 ### bun
 - **Version**: 1.3.11
@@ -53,10 +53,10 @@
 - **Last Update Notes**: Minor bump from 2.88.1
 
 ### gogcli (gog)
-- **Version**: 0.12.0
+- **Version**: 0.15.0
 - **Repo**: steipete/gogcli
 - **Update**: `brew upgrade gogcli`
-- **Last Update Notes**: Workspace Admin users/groups, Go 1.26.1
+- **Last Update Notes**: 0.14.0 → 0.15.0. Raw export subcommand on all services (docs/sheets/drive/gmail/calendar etc). Drive storage auditing (`tree`, `du`, `inventory`). Contact deduplication preview (JSON plan, no writes). Agent-safe Gmail reads (`--safe`/`--sanitize-content`). Google Docs font/color/tab management. Sheets table + conditional-format. Docker images + bundled `gog` skill.
 
 ### llvm
 - **Version**: 22.1.1
@@ -70,11 +70,17 @@
 - **Update**: `brew upgrade maestro` (formula); `brew upgrade --cask maestro` (app)
 - **Last Update Notes**: Cask bumped 0.14.5 → 0.15.2; CLI unchanged at 2.3.0
 
+### ffmpeg
+- **Version**: 8.1.1
+- **Repo**: FFmpeg/FFmpeg
+- **Update**: `brew upgrade ffmpeg`
+- **Last Update Notes**: Patch from 8.1_1
+
 ### mas
-- **Version**: 6.0.1
+- **Version**: 7.0.0
 - **Repo**: mas-cli/mas
 - **Update**: `brew upgrade mas`
-- **Last Update Notes**: Major version bump from 5.2.0
+- **Last Update Notes**: Major bump from 6.0.1. JSON output (`--json` flag) added to `config`, `list`, `lookup`/`info`, `outdated`, `search` commands — now pipe-friendly with jq. Improved tabular display. Bug fix: unrecognized IDs in `uninstall` no longer repeat error. No breaking changes vs 6.x — safe to upgrade from 6.0.1.
 
 ### node
 - **Version**: 25.8.2
@@ -125,16 +131,16 @@
 - **Last Update Notes**: Patch from 1.96.3
 
 ### uv
-- **Version**: 0.11.2
+- **Version**: 0.11.11
 - **Repo**: astral-sh/uv
 - **Update**: `brew upgrade uv`
-- **Last Update Notes**: Patch from 0.11.1
+- **Last Update Notes**: Patch from 0.11.10
 
 ### xcodebuildmcp
-- **Version**: 2.3.1
+- **Version**: 2.3.2
 - **Repo**: nicklockwood/xcodebuildmcp
-- **Update**: `brew upgrade xcodebuildmcp`
-- **Last Update Notes**: Patch from 2.3.0
+- **Update**: `brew upgrade xcodebuildmcp` (also npm global `xcodebuildmcp@2.3.2`)
+- **Last Update Notes**: Patch from 2.3.1
 
 ### xcodegen
 - **Version**: 2.45.3
@@ -156,21 +162,21 @@
 - **Last Update Notes**: Patch from 2.33.0
 
 ### codexbar
-- **Version**: 0.19.0
+- **Version**: 0.24
 - **Repo**: steipete/codexbar
 - **Update**: `brew reinstall --cask codexbar` (app sometimes not in /Applications)
-- **Last Update Notes**: Bumped from 0.18.0; reinstalled to fix app path
+- **Last Update Notes**: Bumped from 0.23
 
 ### discord
-- **Version**: 0.0.382
+- **Version**: 0.0.389
 - **Update**: `brew upgrade --cask discord`
-- **Last Update Notes**: Patch from 0.0.381
+- **Last Update Notes**: Patch from 0.0.388
 
 ### droid (cask)
-- **Version**: 0.89.0
+- **Version**: 0.120.1
 - **Repo**: nicklabs/droid
 - **Update**: `brew upgrade --cask droid`
-- **Last Update Notes**: Bumped from 0.88.0
+- **Last Update Notes**: Minor bump from 0.119.0
 
 ### flutter
 - **Version**: 3.41.6
@@ -179,10 +185,10 @@
 - **Last Update Notes**: Patch from 3.41.5
 
 ### tuist
-- **Version**: 4.169.2
+- **Version**: 4.191.8
 - **Repo**: tuist/tuist
 - **Update**: `brew upgrade --cask tuist`
-- **Last Update Notes**: Patch from 4.169.1
+- **Last Update Notes**: Patch from 4.191.7
 
 ## npm Global Packages
 
@@ -193,48 +199,53 @@
 - **Last Update Notes**: Added to inventory 2026-03-27. IDE-style terminal autocomplete.
 
 ### @factory/cli
-- **Version**: 0.89.0
+- **Version**: 0.120.1
 - **Update**: `npm update -g @factory/cli`
-- **Last Update Notes**: Bumped from 0.88.0
+- **Last Update Notes**: Minor bump from 0.119.0
 
 ### @google/gemini-cli
-- **Version**: 0.35.3
+- **Version**: 0.41.2
 - **Repo**: google/gemini-cli
 - **Update**: `npm update -g @google/gemini-cli`
-- **Last Update Notes**: Patch from 0.35.2
+- **Last Update Notes**: Patch from 0.41.1
 
 ### @openai/codex
-- **Version**: 0.117.0
+- **Version**: 0.128.0
 - **Repo**: openai/codex
 - **Update**: `npm update -g @openai/codex`
-- **Last Update Notes**: Bumped from 0.116.0
+- **Last Update Notes**: 0.117.0 → 0.128.0. Realtime voice v2 (WebRTC, media controls). Plugin marketplace (`codex marketplace add`). Amazon Bedrock built-in provider. MCP resource reads + parallel calls. `Ctrl+R` history search, `/side` conversations, `codex update` self-update. Hooks now stable (configurable in `config.toml`). Persistent `/goal` workflows + MultiAgent v2.
 
 ### agent-browser
-- **Version**: 0.23.0
+- **Version**: 0.26.0
 - **Repo**: nicklabs/agent-browser
 - **Update**: `npm update -g agent-browser`
-- **Last Update Notes**: Minor bump from 0.22.3
+- **Last Update Notes**: Bumped from 0.23.0
 
 ### npm
-- **Version**: 11.12.1
+- **Version**: 11.14.0
 - **Update**: `npm update -g npm`
-- **Last Update Notes**: Patch from 11.12.0
+- **Last Update Notes**: Minor bump from 11.13.0
 
 ### pnpm
-- **Version**: 10.33.0
+- **Version**: 11.0.8
 - **Repo**: pnpm/pnpm
 - **Update**: `npm update -g pnpm`
-- **Last Update Notes**: Minor bump from 10.32.1
+- **Last Update Notes**: MAJOR: 10.33.4 → 11.0.8. Node 22+ required (drops 18–21). Now pure ESM. Config split: non-auth `.npmrc` settings must move to `pnpm-workspace.yaml` (use `pnpm_config_*` env vars, not `npm_config_*`). `allowBuilds` replaces all old build-permission fields (`onlyBuiltDependencies`, etc.). Supply-chain protection on by default (24h hold on new packages, `strictDepBuilds=true`). SQLite-backed store (v11), `undici` HTTP stack. New commands: `pnpm ci`, `pnpm clean`, `pnpm sbom`. Run `pnpm setup` after upgrade.
 
 ### remodex
-- **Version**: 1.3.7
-- **Update**: `npm update -g remodex`
-- **Last Update Notes**: Patch from 1.3.6
+- **Version**: (removed)
+- **Update**: Was `npm update -g remodex`
+- **Last Update Notes**: No longer installed globally as of 2026-05-04
 
 ### supergateway
 - **Version**: (removed)
 - **Update**: Was `npm update -g supergateway`
 - **Last Update Notes**: No longer installed globally as of 2026-03-28
+
+### serve-sim
+- **Version**: 0.1.16
+- **Update**: `npm update -g serve-sim`
+- **Last Update Notes**: Patch from 0.1.14
 
 ### uipro-cli
 - **Version**: 2.2.3
@@ -249,10 +260,10 @@
 ## uv-managed Tools
 
 ### zotero-mcp-server
-- **Version**: 0.1.3
+- **Version**: 0.3.0
 - **Repo**: zotero-mcp/zotero-mcp-server (PyPI)
 - **Update**: `uv tool upgrade zotero-mcp-server`
-- **Last Update Notes**: Added to inventory 2026-03-27. MCP server for Zotero reference manager (also configured as a Craft Agent source).
+- **Last Update Notes**: 0.1.3 → 0.3.0 (significant pre-1.0 bump). MCP server for Zotero reference manager (also configured as a Craft Agent source).
 
 ### hf (HuggingFace CLI)
 - **Version**: 1.8.0
@@ -269,10 +280,10 @@
 ## npm Global Packages (MCP)
 
 ### @_davideast/stitch-mcp
-- **Version**: 0.5.1
+- **Version**: 0.5.5
 - **Repo**: davideast/stitch-mcp
 - **Update**: `npm update -g @_davideast/stitch-mcp`
-- **Last Update Notes**: Added to inventory 2026-03-28. MCP server by David East.
+- **Last Update Notes**: Patch bumps from 0.5.1
 
 ## uv-managed Tools (MCP)
 
@@ -297,22 +308,22 @@
 - **Last Update Notes**: Added to inventory 2026-03-27. MCP server for Pencil.app.
 
 ### rtk
-- **Version**: 0.34.0
+- **Version**: 0.39.0
 - **Repo**: rtk-ai/rtk
 - **Update**: `brew upgrade rtk`
-- **Last Update Notes**: Minor bump from 0.33.1
+- **Last Update Notes**: Minor bump from 0.38.0
 
 ### claude (Claude Code)
-- **Version**: 2.1.86
-- **Location**: ~/.local/share/claude/versions/2.1.86
+- **Version**: 2.1.132
+- **Location**: ~/.local/share/claude/versions/2.1.132
 - **Update**: `claude update` (self-updating)
-- **Last Update Notes**: Patch from 2.1.85
+- **Last Update Notes**: Auto-updated from 2.1.131
 
 ### droid (CLI binary)
-- **Version**: 0.89.0
-- **Location**: ~/.local/bin/droid
-- **Update**: Check droid docs or reinstall from cask
-- **Last Update Notes**: Matches cask version (0.89.0)
+- **Version**: 0.120.1
+- **Location**: ~/.local/bin/droid → /opt/homebrew/bin/droid (Homebrew-managed)
+- **Update**: `brew upgrade --cask droid`
+- **Last Update Notes**: Minor bump from 0.119.0; matches cask version
 
 ### factoryd
 - **Version**: 0.25.0
@@ -337,10 +348,192 @@
 - **Update**: `brew upgrade rust`
 - **Last Update Notes**: Bumped from 1.93.1
 
+## Developer Utilities (Homebrew)
+
+Tracked but don't need changelog notes — just version bumps.
+
+### bat
+- **Version**: 0.26.1
+- **Update**: `brew upgrade bat`
+- **Last Update Notes**: Added 2026-05-03. `cat` replacement with syntax highlighting.
+
+### btop
+- **Version**: 1.4.7
+- **Update**: `brew upgrade btop`
+- **Last Update Notes**: Added 2026-05-03. System resource monitor (htop alternative).
+
+### eza
+- **Version**: 0.23.4
+- **Update**: `brew upgrade eza`
+- **Last Update Notes**: Added 2026-05-03. Modern `ls` replacement.
+
+### fastlane
+- **Version**: 2.233.1
+- **Update**: `brew upgrade fastlane`
+- **Last Update Notes**: Added 2026-05-03. iOS/Android CI automation.
+
+### git
+- **Version**: 2.54.0
+- **Update**: `brew upgrade git`
+- **Last Update Notes**: Added 2026-05-03. Homebrew-managed git.
+
+### jq
+- **Version**: 1.8.1
+- **Update**: `brew upgrade jq`
+- **Last Update Notes**: Added 2026-05-03. JSON processor.
+
+### ripgrep (rg)
+- **Version**: 15.1.0
+- **Update**: `brew upgrade ripgrep`
+- **Last Update Notes**: Added 2026-05-03. Fast grep replacement.
+
+### skillshare
+- **Version**: 0.19.7
+- **Update**: `brew upgrade skillshare`
+- **Last Update Notes**: Patch from 0.19.5
+
+### swiftlint
+- **Version**: 0.63.2
+- **Update**: `brew upgrade swiftlint`
+- **Last Update Notes**: Added 2026-05-03. Swift linter.
+
+### tmux
+- **Version**: 3.6a
+- **Update**: `brew upgrade tmux`
+- **Last Update Notes**: Added 2026-05-03. Terminal multiplexer.
+
+### zoxide
+- **Version**: 0.9.9
+- **Update**: `brew upgrade zoxide`
+- **Last Update Notes**: Added 2026-05-03. Smart `cd` with frecency tracking.
+
+### pipx
+- **Version**: 1.11.2
+- **Update**: `brew upgrade pipx`
+- **Last Update Notes**: Patch from 1.11.1
+
+## npm Global Packages (New)
+
+### firecrawl-cli
+- **Version**: 1.16.2
+- **Update**: `npm update -g firecrawl-cli`
+- **Last Update Notes**: Patch from 1.16.1
+
+### wrangler
+- **Version**: 4.88.0
+- **Update**: `npm update -g wrangler`
+- **Last Update Notes**: Patch from 4.87.0
+
+## Standalone Binaries (New)
+
+### cursor-agent
+- **Version**: 2026.04.08-a41fba1
+- **Location**: ~/.local/bin/cursor-agent
+- **Update**: Manual — check Cursor release notes
+- **Last Update Notes**: Added 2026-05-03. Cursor AI agent binary.
+
+### forge
+- **Version**: 2.9.8
+- **Location**: ~/.local/bin/forge (31MB binary)
+- **Update**: Manual — self-update or reinstall
+- **Last Update Notes**: Added 2026-05-03. ForgeMax agent binary.
+
+### hermes
+- **Version**: v0.12.0 (rolling — 226 commits pulled 2026-05-07)
+- **Location**: ~/.local/bin/hermes
+- **Update**: `hermes update`
+- **Last Update Notes**: Rolling update (226 commits since last sync). linear skill updated; 2 user-modified skills preserved. grpcio/google-cloud-pubsub deps added. Version tag still v0.12.0.
+
+## uv-managed Tools (New)
+
+### mcp2cli
+- **Version**: 3.0.2
+- **Update**: `uv tool upgrade mcp2cli`
+- **Last Update Notes**: Added 2026-05-03. MCP-to-CLI bridge.
+
+## Developer Utilities (Homebrew, Newly Discovered)
+
+### cmake
+- **Version**: 4.3.2
+- **Update**: `brew upgrade cmake`
+- **Last Update Notes**: Added 2026-05-05. Build system generator.
+
+### cocoapods
+- **Version**: 1.16.2
+- **Update**: `brew upgrade cocoapods`
+- **Last Update Notes**: Added 2026-05-05. iOS/macOS dependency manager (`pod` CLI).
+
+### direnv
+- **Version**: 2.37.1
+- **Update**: `brew upgrade direnv`
+- **Last Update Notes**: Added 2026-05-05. Per-directory shell environment switcher.
+
+### ios-deploy
+- **Version**: 1.12.2
+- **Update**: `brew upgrade ios-deploy`
+- **Last Update Notes**: Added 2026-05-05. Deploy iOS apps to devices without Xcode.
+
+### syncthing
+- **Version**: 2.0.16
+- **Update**: `brew upgrade syncthing`
+- **Last Update Notes**: Added 2026-05-05. Continuous file sync daemon.
+
+### xcbeautify
+- **Version**: 3.2.1
+- **Update**: `brew upgrade xcbeautify`
+- **Last Update Notes**: Added 2026-05-05. Formatter for xcodebuild output.
+
+### yq
+- **Version**: 4.53.2
+- **Update**: `brew upgrade yq`
+- **Last Update Notes**: Added 2026-05-05. YAML/JSON/XML processor (like jq for YAML).
+
+## Standalone Binaries (~/.local/bin, Newly Discovered)
+
+### officecli
+- **Version**: 1.0.69
+- **Location**: ~/.local/bin/officecli (Mach-O binary)
+- **Update**: Manual — part of office-cli Craft Agent source
+- **Last Update Notes**: Added 2026-05-05. AI-friendly CLI for .docx/.xlsx/.pptx — backs the office-cli Craft Agent source.
+
+### serena-mcp-router
+- **Version**: unversioned (Python scripts)
+- **Location**: ~/.local/bin/serena* (cluster of 5 scripts)
+- **Update**: Manual — oraios/serena on GitHub
+- **Last Update Notes**: Added 2026-05-05. MCP proxy router for Serena coding assistant; manages project-scoped MCP instances.
+
+### go-llm-proxy (VibeProxy)
+- **Version**: dev
+- **Location**: ~/.local/bin/go-llm-proxy
+- **Update**: Manual — rebuild from source
+- **Last Update Notes**: Added 2026-05-06. LLM API proxy/router (VibeProxy) — routes Droid/Codex through alternative models (z.ai GLM, etc.) via OpenAI-compatible protocol. Per-request SQLite metrics, multi-user API key config.
+
+### a11yfix
+- **Version**: 0.1.0
+- **Location**: ~/.local/bin/a11yfix
+- **Update**: Manual (Kosta's own tool)
+- **Last Update Notes**: Added 2026-05-06. Detects and fixes accessibility issues in .docx and .pptx files using Claude SDK. Has `--report-only` mode and rollup/status subcommands.
+
+### chrome-cdp
+- **Version**: unversioned (shell script)
+- **Location**: ~/.local/bin/chrome-cdp
+- **Update**: Manual
+- **Last Update Notes**: Added 2026-05-07. Bash script wrapper for Chrome DevTools Protocol — `start|stop|status` subcommands. Likely part of browser automation infrastructure (autocli source or similar).
+
 ## Libraries (Homebrew, auto-updated)
 
 These are dependencies that get pulled in by `brew upgrade`. No manual tracking needed:
-ada-url, freetype, giflib, harfbuzz, libiconv, libngtcp2, libunistring, libuv, mosh, protobuf, simdjson, tree, mlx, mlx-c
+ada-url, freetype, giflib, glib, harfbuzz, libiconv, libngtcp2, libunistring, libuv, mosh, protobuf, simdjson, tree, mlx, mlx-c
+
+---
+
+## Removed Tools (DO NOT reinstall — assume user removed them on purpose)
+
+When a tracked tool is no longer found on the system after the recursive `/Applications` + binary scan, it gets moved here instead of being reinstalled. Future runs read this list and skip it during discovery. To bring something back, the user must remove its line here AND reinstall it manually.
+
+<!-- Format: - **tool** — last seen vX.Y.Z, removed YYYY-MM-DD. Reason: not found on system. -->
+
+(none yet)
 
 ---
 

@@ -159,7 +159,9 @@ Only append — never restructure or remove from guide pages.
 
 ## Step 8 — Log & Report
 
-### wiki/log.md
+Three outputs: a **vault log entry**, a **daily note section**, and a **session-side report** (rendered back to the user). All structured — never single paragraphs.
+
+### 8a. wiki/log.md (vault log)
 Append a run entry:
 ```
 ## YYYY-MM-DD HH:MM EDT — [daily|weekly] weave
@@ -172,14 +174,72 @@ Append a run entry:
 - Guide pages updated: [list]
 ```
 
-### Daily note
-Append to `daily/YYYY-MM-DD.md`:
+### 8b. Daily note (vault `daily/YYYY-MM-DD.md`)
+Append:
 ```
 ## Wiki Weave Report
 **Run:** YYYY-MM-DD HH:MM EDT — [daily|weekly]
-- Processed N notes, added N links
-- [Brief summary of what was connected]
+
+| Metric | Count |
+|--------|------:|
+| Notes processed | N |
+| Inline links added | N |
+| Related Notes added | N |
+| Backlinks added | N |
+| Orphans resolved | N |
+| Guide pages updated | N |
+
+**Notable connections:** brief 1-2 sentence highlight of the most interesting connections made (or "routine weave, no standout connections").
 ```
+
+### 8c. Session-side report (final output to the user)
+
+Output a structured report to the session — what the user sees when the automation finishes. **Never a single paragraph.** Use this section order:
+
+#### Opening summary (1–2 sentences)
+Plain English: daily vs weekly, how many notes touched, anything notable (orphan rescue, big cluster).
+
+#### Run stats — small markdown table
+| Metric | Count |
+|--------|------:|
+| Mode | daily / weekly |
+| Notes processed | N |
+| Inline links added | N |
+| Related Notes added | N |
+| Backlinks added | N |
+| Orphans resolved | N |
+| Under-linked notes remaining | N |
+| Guide pages updated | N |
+
+#### Notes touched — datatable
+
+```datatable
+{
+  "title": "Notes Woven — {date}",
+  "columns": [
+    { "key": "note",      "label": "Note",            "type": "text" },
+    { "key": "section",   "label": "Vault Section",   "type": "badge" },
+    { "key": "outLinks",  "label": "+Outbound",       "type": "number" },
+    { "key": "inLinks",   "label": "+Inbound",        "type": "number" },
+    { "key": "guides",    "label": "Guide Updates",   "type": "text" }
+  ],
+  "rows": [...]
+}
+```
+
+`section` examples: `ai-agents`, `tech`, `coding`, `brown`, `areas`, `guides`, `nsfw`.
+
+#### Notable connections (top 3–5)
+Bullet list of the most meaningful new connections made — only the ones a human reader would find interesting.
+
+#### Orphans / under-linked still remaining (only if any)
+Short bullet list of notes that still have <3 outbound wikilinks after this run, with a one-line hint of what they could connect to.
+
+#### Errors / skipped (only if any)
+Plain bullets.
+
+#### Next steps (1 line)
+e.g. "Weekly fortification scheduled for Sunday 22:00." or "12 orphans still in `tech/` — needs a manual sweep."
 
 ## Step 9 — Git Commit & Push
 
