@@ -21,7 +21,7 @@ Prefer Claude Code's `auto` permission mode for delegated Claude Code lanes:
 ```bash
 claude --print --input-format text --output-format json \
   --permission-mode auto \
-  < /tmp/claude-task.md
+  "$(cat /tmp/claude-task.md)"
 ```
 
 Use `auto` because it lets Claude Code run without repeated permission prompts while still routing risky actions through Claude Code's classifier. It is less disruptive than `plan`/`default` and safer than `bypassPermissions`.
@@ -46,7 +46,9 @@ Use these defaults:
 
 ## Preferred one-shot pattern
 
-Run from the repo/workdir that should provide project context. For anything longer than a sentence or two, write the prompt to a file and redirect stdin. This avoids shell quoting/argument parsing mistakes where Claude sees only `json` or receives no prompt.
+Run from the repo/workdir that should provide project context. For anything longer than a sentence or two, write the prompt to a file first, then pass the file content as the positional prompt. On Kosta's Mac Studio, do **not** use stdin redirection (`< /tmp/task.md`) with the native Claude Code binary from Hermes background processes — it has produced `stty: stdin isn't a terminal` and no useful result.
+
+Safe tested pattern:
 
 ```bash
 cat > /tmp/claude-task.md <<'PROMPT'
@@ -55,9 +57,11 @@ PROMPT
 
 claude --print --input-format text --output-format json \
   --permission-mode auto \
-  --append-system-prompt-file .hermes/prompts/claude-planning.md \
-  < /tmp/claude-task.md
+  --append-system-prompt "Return files read, commands run, findings, blockers, and exact verification steps." \
+  "$(cat /tmp/claude-task.md)"
 ```
+
+Smoke-tested on Mac Studio: `claude --print --input-format text --output-format json --permission-mode auto "$(cat /tmp/claude-smoke-prompt.txt)"` returned JSON success with result `OK_CLAUDE_SMOKE` and a `session_id`. Capture that `session_id` from JSON for reliable resume/debugging.
 
 Use `--agent <name>` for a configured Claude Code agent:
 
@@ -68,7 +72,7 @@ PROMPT
 
 claude --print --input-format text --output-format json \
   --agent design-agent-claude \
-  < /tmp/claude-task.md
+  "$(cat /tmp/claude-task.md)"
 ```
 
 Short one-liners can still use a positional prompt, but avoid `"$(cat prompt.md)"` for real tasks.
@@ -87,10 +91,10 @@ PROMPT
 claude --print --input-format text --output-format json \
   --permission-mode auto \
   --append-system-prompt "Return files changed, checks run, blockers, and exact verification commands." \
-  < /tmp/claude-task.md
+  "$(cat /tmp/claude-task.md)"
 ```
 
-Start it with the host's managed background task API when one exists, not shell `&`, `nohup`, or `disown`. Use the host's polling/log APIs to inspect progress. If an early background notification says `no stdin data received` or asks what to do with `JSON`, that run did not receive the intended prompt; ignore that failed run, relaunch with the stdin pattern above, and verify the successful run's output separately. When it finishes, verify diffs and tests independently before telling Kosta it succeeded.
+Start it with the host's managed background task API when one exists, not shell `&`, `nohup`, or `disown`. Use the host's polling/log APIs to inspect progress. If an early background notification says `stty: stdin isn't a terminal`, `no stdin data received`, or asks what to do with `JSON`, that run did not launch correctly; kill/ignore it, relaunch with the positional prompt-file pattern above, and verify the successful run's JSON output separately. When it finishes, parse/capture the `session_id`, verify diffs and tests independently, and only then rely on the report.
 
 ## Interactive / back-and-forth pattern
 
@@ -111,10 +115,10 @@ Use this mode sparingly from Telegram because interactive sessions need active p
 ## Prompting rules
 
 - Pass all task context explicitly; Claude Code does not know the Hermes parent chat unless you include it.
-- Prefer prompt text via stdin or a prompt file when it is long.
+- Prefer prompt files plus positional prompt expansion (`"$(cat /tmp/claude-task.md)"`) for long prompts on Mac Studio; avoid stdin redirection from Hermes background processes because it can fail with `stty: stdin isn't a terminal`.
 - Use `--append-system-prompt` or `--append-system-prompt-file` to preserve Claude Code's default behavior while adding lane-specific instructions.
 - Use `--system-prompt` only when intentionally replacing Claude Code's default system prompt.
-- For `--add-dir`, put the prompt before variadic flags or use stdin/prompt files to avoid argument parsing mistakes.
+- For `--add-dir`, put the prompt before variadic flags or use the tested prompt-file positional pattern to avoid argument parsing mistakes.
 - Directories added with `--add-dir` grant file access but do not normally load their `.claude/` agents or memory as project config.
 
 ## Permissions and tools
