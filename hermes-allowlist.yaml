@@ -93,6 +93,7 @@ skills:
 - mlops/mlx-speculative-decoding
 - hermes/mem0-first-memory-harvest
 - hermes/update-smart
+- hermes/skill-lifecycle-automation
 - hermes/telegram-managed-bots
 - documents-office/beautiful-mermaid
 - communication/telegram-native-actions
