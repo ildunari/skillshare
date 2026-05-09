@@ -62,8 +62,12 @@ Do not push remotes unless Kosta explicitly asks. Local commits are fine and pre
 7. Verify in layers:
    - syntax/compile checks for touched Python files
    - focused tests for changed behavior
-   - `hermes version` and `hermes update --check`
+   - `hermes version` and `hermes update --check` when safe; in Telegram, prefer direct `git fetch/status` for a pending-update check because the approval scanner may over-match harmless `hermes update --check` as gateway-disruptive
    - service health endpoints for WebUI or other updated sidecars
+   - after all tests/builds, run a final git cleanliness check for every touched repo; tests/builds can leave follow-up edits, so do not call the update clean from an earlier status check
+   - if final validation produced legitimate durable fixes, commit them before the final report; otherwise explicitly report the dirty tree and why it is intentionally uncommitted
+   - for “any updates pending?” reports, fetch first and include ahead/behind counts — a repo can be clean but still behind upstream again
+   - when the update scope says “all,” include non-Hermes audit leftovers and PATH shadowing, not just Hermes repos; `xcodebuildmcp` may need both Homebrew and npm-global updates because the npm binary shadows the formula on Kosta’s PATH
    - avoid claiming completion if the live process is still running old code and needs a safe restart
    - **post-restart miniapp/Telegram regression check** (catches dropped local customizations during clean-branch rebuild). Run after both gateways are back up:
 
@@ -78,9 +82,12 @@ Do not push remotes unless Kosta explicitly asks. Local commits are fine and pre
      ```
 
      A 404 on any of those means a route was dropped during merge — re-port the handler and route registration from `backup/pre-*` to `gateway/platforms/api_server.py`. Historically dropped during clean-branch rebuilds: `_handle_subscription_providers`. Also verify `agent/display.py` still maps `"thinking": ("☁️", "Thinking")` in `render_compact_tool_progress` (the `("__compact__", "thinking")` event from `gateway/run.py:_emit_compact_thinking` renders that bucket as the thinking emoji in Telegram replies). Also confirm `~/.config/hermes-state/miniapp/index.html` still has the `savedSid` validation guard around `CS.getItem('hermes_sid')` so the Session ID field doesn't render as `[object Object]`.
+
+     Telegram DM-topic post-update check: if `gateway/platforms/telegram.py` changed or conflicted, do not stop at API/miniapp checks. Run the focused Telegram topic suite and inspect that private/DM topic normal sends, stale-reply retries, and media retries keep `message_thread_id` rather than using `direct_messages_topic_id` or dropping topic kwargs. The failure mode is subtle: progress/tool HUD appears in the selected topic, but the final assistant output goes to `All` or disappears from the visible topic. See `references/telegram-dm-topic-regression-guard-2026-05-09.md` and `hermes__telegram-gateway/references/telegram-dm-topic-post-update-regression-2026-05-09.md`.
 8. Gateway safety:
    - If the current conversation is arriving through Telegram/Discord/webhook, do not restart the gateway unless Kosta explicitly accepts the interruption.
    - It is okay to leave updated code on disk and say a safe restart is needed.
+   - When Kosta has approved a restart from Telegram, schedule it with the terminal tool's native background mode plus a short `sleep`, not shell `&`; some tool environments reject foreground commands that self-background. Log the restart and run a follow-up health probe.
 
 ## Output style
 
@@ -98,3 +105,8 @@ Keep the digest factual and evidence-backed. Do not pad it with every file touch
 ## Built-in `/update` comparison
 
 If Kosta asks whether `/update` does this: answer no. `/update` currently spawns `hermes update --gateway`; it stashes local working tree changes, switches to `main`, pulls/resets from `origin/main`, then optionally restores the stash. That is not the same as Kosta's smart local-git workflow because it does not preserve the local customization branch as the primary branch, does not audit/replay local commits deliberately, and does not include WebUI/Skillshare/non-Hermes sidecar verification.
+
+## Session references
+
+- `references/post-smart-update-cleanliness-and-drift-check-2026-05-07.md` — final cleanliness/drift check lesson after a smart update: commit validation fallout before claiming clean, fetch before pending-update reports, and prefer direct git checks over `hermes update --check` inside Telegram when the approval scanner over-matches.
+- `references/mac-studio-smart-update-all-2026-05-07.md` — all-scope Mac Studio update pass covering Hermes agent, Workspace, non-Hermes tools/apps, delayed gateway restart from Telegram, xcodebuildmcp dual-install shadowing, QLMarkdown direct app update, and final health checks.
