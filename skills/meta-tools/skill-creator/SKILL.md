@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+description: Load when creating, editing, auditing, maintaining, or optimizing agent skills; when users ask to turn a workflow into a skill, improve a SKILL.md, add gotchas/evals, benchmark skill behavior, tune routing descriptions, package/distribute skills, or apply skill-writing research such as Perplexity/Agent Skills guidance.
 ---
 
 <!-- Canonical skill-authoring workflow. writing-skills was archived as a legacy predecessor on 2026-04-01. -->
@@ -66,16 +66,34 @@ It's OK to briefly explain terms if you're in doubt, and feel free to clarify te
 
 ---
 
+## Skill quality principles
+
+Treat a skill as context architecture, not documentation. The user pays for the skill index every session, pays for the loaded body after trigger, and pays for resource files only if the agent reads them. Before adding any sentence, ask: **would the agent likely get this wrong without it?** If not, delete it or move it to a conditional resource.
+
+Use this order of operations by default:
+
+1. Decide whether a skill should exist. Create or expand a skill only for durable knowledge, hidden workflow, taste/judgment, consistency requirements, known model failures, or repeatedly reinvented deterministic work. Do not create a skill just to list commands the model already knows or to duplicate global system instructions.
+2. Write evals before or alongside the skill. Include positive trigger examples, known failure cases, and near-miss negative examples where a different skill or no skill should win. Negative examples are high-value because one off-target skill can degrade all the others.
+3. Make the description a routing trigger. It should describe the user intent and phrases that should load the skill, not summarize the internal workflow. Prefer terse descriptions that start conceptually with “Load when...” and aim for about 50 words unless the local platform needs more.
+4. Write the body as failure-prevention guidance. Skip obvious tutorials. Keep durable gotchas, judgment calls, routing boundaries, and “what not to do” cases. Explain why guidance matters instead of piling on brittle step-by-step commands.
+5. Use the directory. Put deterministic repeated work in `scripts/`, heavy conditional docs in `references/`, reusable templates/schemas in `assets/`, and first-run setup/config in a sidecar file when the platform supports it. `SKILL.md` is the hub, not the landfill.
+6. Maintain append-mostly. After shipping, prefer adding a concise gotcha for a newly observed failure. Change the description only when routing behavior is wrong, and then add/update routing evals to prove the change does not steal neighboring tasks.
+
+Read `references/perplexity-agent-skills-2026-05-01.md` when doing a serious redesign, reviewing whether a skill should exist, or changing routing/description philosophy.
+
+---
+
 ## Creating a skill
 
 ### Capture Intent
 
 Start by understanding the user's intent. The current conversation might already contain a workflow the user wants to capture (e.g., they say "turn this into a skill"). If so, extract answers from the conversation history first — the tools used, the sequence of steps, corrections the user made, input/output formats observed. The user may need to fill the gaps, and should confirm before proceeding to the next step.
 
-1. What should this skill enable Claude to do?
-2. When should this skill trigger? (what user phrases/contexts)
-3. What's the expected output format?
-4. Should we set up test cases to verify the skill works? Skills with objectively verifiable outputs (file transforms, data extraction, code generation, fixed workflow steps) benefit from test cases. Skills with subjective outputs (writing style, art) often don't need them. Suggest the appropriate default based on the skill type, but let the user decide.
+1. What durable failure, hidden workflow, taste/judgment, or consistency problem should this skill solve? If the answer is “a command sequence the model already knows,” recommend documentation or a script instead.
+2. When should this skill trigger? Capture real user phrases, including casual/frustrated phrasing, not just formal taxonomy.
+3. What near-miss prompts should **not** trigger this skill because another skill or ordinary tools should win?
+4. What's the expected output format?
+5. Should we set up test cases to verify the skill works? Skills with objectively verifiable outputs (file transforms, data extraction, code generation, fixed workflow steps) benefit from test cases. Skills with subjective outputs (writing style, art) still need trigger/near-miss evals even if end-output grading stays qualitative.
 
 ### Interview and Research
 
@@ -88,7 +106,9 @@ Check available MCPs - if useful for research (searching docs, finding similar s
 Based on the user interview, fill in these components:
 
 - **name**: Skill identifier
-- **description**: When to trigger, what it does. This is the primary triggering mechanism - include both what the skill does AND specific contexts for when to use it. All "when to use" info goes here, not in the body. Note: currently Claude has a tendency to "undertrigger" skills -- to not use them when they'd be useful. To combat this, please make the skill descriptions a little bit "pushy". So for instance, instead of "How to build a simple fast dashboard to display internal Anthropic data.", you might write "How to build a simple fast dashboard to display internal Anthropic data. Make sure to use this skill whenever the user mentions dashboards, data visualization, internal metrics, or wants to display any kind of company data, even if they don't explicitly ask for a 'dashboard.'"
+- **description**: The routing trigger. Describe when to load the skill using real user intent/phrases; do not summarize the workflow. Keep it dense and terse because it lives in the always-on skill index. A good description usually reads like “Load when the user asks to babysit CI, watch a PR land, or diagnose a flaky check,” not “This skill monitors pull requests.” Include near-boundary phrasing only when it improves routing precision.
+- **depends**: Optional hierarchical dependencies for skills that genuinely need another skill loaded with them. Use sparingly; every dependency increases context cost.
+- **metadata**: Optional platform/eval/review fields. Keep runtime minutiae out of model-visible body when a sidecar config or frontmatter stripping can carry it.
 - **compatibility**: Required tools, dependencies (optional, rarely needed)
 - **the rest of the skill :)**
 
@@ -102,9 +122,10 @@ skill-name/
 │   ├── YAML frontmatter (name, description required)
 │   └── Markdown instructions
 └── Bundled Resources (optional)
-    ├── scripts/    - Executable code for deterministic/repetitive tasks
-    ├── references/ - Docs loaded into context as needed
-    └── assets/     - Files used in output (templates, icons, fonts)
+    ├── scripts/    - Deterministic/repetitive logic the agent should run, not reinvent
+    ├── references/ - Heavy docs loaded only when a condition requires them
+    ├── assets/     - Templates, schemas, icons, fonts, examples copied into outputs
+    └── config.*    - Optional first-run/user setup or platform metadata
 ```
 
 #### Progressive Disclosure
@@ -117,9 +138,10 @@ Skills use a three-level loading system:
 These word counts are approximate and you can feel free to go longer if needed.
 
 **Key patterns:**
-- Keep SKILL.md under 500 lines; if you're approaching this limit, add an additional layer of hierarchy along with clear pointers about where the model using the skill should go next to follow up.
-- Reference files clearly from SKILL.md with guidance on when to read them
-- For large reference files (>300 lines), include a table of contents
+- Keep SKILL.md under 500 lines and ideally much tighter; if it grows, add hierarchy with clear pointers about where to go next.
+- Move conditional or bulky material out of the loaded body. Put API error tables, style catalogs, long examples, or domain subtopics in `references/` and tell the agent exactly when to read them.
+- Put repeated deterministic work in `scripts/` when eval transcripts show agents keep rebuilding the same helper. Give the model code to compose, not reconstruct.
+- For large reference files (>300 lines), include a table of contents or an index/search helper so the agent can choose the right spoke quickly.
 
 **Domain organization**: When a skill supports multiple domains/frameworks, organize by variant:
 ```
@@ -164,7 +186,7 @@ Try to explain to the model why things are important in lieu of heavy-handed mus
 
 ### Test Cases
 
-After writing the skill draft, come up with 2-3 realistic test prompts — the kind of thing a real user would actually say. Share them with the user: [you don't have to use this exact language] "Here are a few test cases I'd like to try. Do these look right, or do you want to add more?" Then run them.
+Write evals before or alongside the skill draft. Start with 2-3 realistic hero prompts plus near-miss negative prompts — the kind of thing a real user would actually say. Source them from real user queries, known failures, and neighboring-skill confusion. Share them with the user: [you don't have to use this exact language] "Here are the trigger and near-miss cases I'd like to test. Do these look right, or do you want to add more?" Then run them.
 
 Save test cases to `evals/evals.json`. Don't write assertions yet — just the prompts. You'll draft assertions in the next step while the runs are in progress.
 
@@ -321,11 +343,13 @@ This is the heart of the loop. You've run the test cases, the user has reviewed 
 
 1. **Generalize from the feedback.** The big picture thing that's happening here is that we're trying to create skills that can be used a million times (maybe literally, maybe even more who knows) across many different prompts. Here you and the user are iterating on only a few examples over and over again because it helps move faster. The user knows these examples in and out and it's quick for them to assess new outputs. But if the skill you and the user are codeveloping works only for those examples, it's useless. Rather than put in fiddly overfitty changes, or oppressively constrictive MUSTs, if there's some stubborn issue, you might try branching out and using different metaphors, or recommending different patterns of working. It's relatively cheap to try and maybe you'll land on something great.
 
-2. **Keep the prompt lean.** Remove things that aren't pulling their weight. Make sure to read the transcripts, not just the final outputs — if it looks like the skill is making the model waste a bunch of time doing things that are unproductive, you can try getting rid of the parts of the skill that are making it do that and seeing what happens.
+2. **Keep the prompt lean.** Remove things that aren't pulling their weight. Make sure to read the transcripts, not just the final outputs — if it looks like the skill is making the model waste a bunch of time doing things that are unproductive, delete those instructions or move conditional detail into a resource file. Every sentence is a tax: would the agent get this wrong without it?
 
-3. **Explain the why.** Try hard to explain the **why** behind everything you're asking the model to do. Today's LLMs are *smart*. They have good theory of mind and when given a good harness can go beyond rote instructions and really make things happen. Even if the feedback from the user is terse or frustrated, try to actually understand the task and why the user is writing what they wrote, and what they actually wrote, and then transmit this understanding into the instructions. If you find yourself writing ALWAYS or NEVER in all caps, or using super rigid structures, that's a yellow flag — if possible, reframe and explain the reasoning so that the model understands why the thing you're asking for is important. That's a more humane, powerful, and effective approach.
+3. **Treat gotchas as the maintenance flywheel.** When the agent fails, append a concise gotcha or negative example. When the skill loads off-target, tighten the description and add negative evals. When it fails to load, add real trigger phrasing and positive evals. Avoid rewriting the whole skill when a targeted gotcha captures the lesson.
 
-4. **Look for repeated work across test cases.** Read the transcripts from the test runs and notice if the subagents all independently wrote similar helper scripts or took the same multi-step approach to something. If all 3 test cases resulted in the subagent writing a `create_docx.py` or a `build_chart.py`, that's a strong signal the skill should bundle that script. Write it once, put it in `scripts/`, and tell the skill to use it. This saves every future invocation from reinventing the wheel.
+4. **Explain the why.** Try hard to explain the **why** behind everything you're asking the model to do. Today's LLMs are *smart*. They have good theory of mind and when given a good harness can go beyond rote instructions and really make things happen. Even if the feedback from the user is terse or frustrated, try to actually understand the task and why the user is writing what they wrote, and what they actually wrote, and then transmit this understanding into the instructions. If you find yourself writing ALWAYS or NEVER in all caps, or using super rigid structures, that's a yellow flag — if possible, reframe and explain the reasoning so that the model understands why the thing you're asking for is important. That's a more humane, powerful, and effective approach.
+
+5. **Look for repeated work across test cases.** Read the transcripts from the test runs and notice if the subagents all independently wrote similar helper scripts or took the same multi-step approach to something. If all 3 test cases resulted in the subagent writing a `create_docx.py` or a `build_chart.py`, that's a strong signal the skill should bundle that script. Write it once, put it in `scripts/`, and tell the skill to use it. This saves every future invocation from reinventing the wheel.
 
 This task is pretty important (we are trying to create billions a year in economic value here!) and your thinking time is not the blocker; take your time and really mull things over. I'd suggest writing a draft revision and then looking at it anew and making improvements. Really do your best to get into the head of the user and understand what they want and need.
 
@@ -360,7 +384,7 @@ The description field in SKILL.md frontmatter is the primary mechanism that dete
 
 ### Step 1: Generate trigger eval queries
 
-Create 20 eval queries — a mix of should-trigger and should-not-trigger. Save as JSON:
+Create 20 eval queries — a mix of should-trigger and should-not-trigger. Treat this as routing precision/recall testing, not just description polish. Include real user phrasing, known failures, and adjacent-domain near misses where another skill or no skill should win. Save as JSON:
 
 ```json
 [
