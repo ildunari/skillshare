@@ -50,7 +50,8 @@ What this means:
    - `PY`
 3. Check running gateway processes:
    - `ps aux | egrep 'hermes_cli.main( --profile gpt)? gateway run --replace' | grep -v egrep`
-4. If behavior still seems wrong after restart, verify which profile/process is actually handling the platform message.
+4. Verify representative bucket mappings directly, especially after adding new web/search providers. `web_search`, `web_extract`, `fast_web_search`, `fetch_page_clean`, `scrape_page_answer`, `mcp_exa_web_*`, and `mcp_firecrawl_firecrawl_*` should all map to the `web` bucket and render as `🌐×N Searching the web`, not the generic `⚙️×N Using tools` bucket.
+5. If behavior still seems wrong after restart, verify which profile/process is actually handling the platform message.
 
 ## Safe restart pattern for one default + one gpt gateway
 
