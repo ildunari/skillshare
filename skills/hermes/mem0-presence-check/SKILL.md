@@ -201,3 +201,4 @@ If the diagnosis shows root Hermes is healthy but the active profile is isolated
 - Session history proving old mem0 tools existed does not prove the active profile still loads mem0 today
 - A mem0-first cron prompt does not prove cron can actually use mem0 if `skip_memory=True` is still set
 - Do not mistake `sync_turn` extraction failures for total mem0 failure; benchmark the explicit tools separately
+- Do not assume a graph-side Neo4j error means the vector memory is absent; if a write errors after insertion, verify with `mem0_search` before retrying or duplicating the fact

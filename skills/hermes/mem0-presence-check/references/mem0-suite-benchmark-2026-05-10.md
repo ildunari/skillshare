@@ -36,6 +36,10 @@ Benchmark artifact from that run: `/tmp/mem0-bench-hermes-mem0-bench-1778421260.
 - Put procedures, command sequences, and debugging playbooks in Skillshare skills, not mem0.
 - Do not rely on `sync_turn` to preserve important facts until the extraction path is fixed and re-tested.
 
+## Additional write-path pitfall
+
+A later live write showed that graph insertion can fail after vector insertion when mem0 generates a Neo4j relationship name containing a hyphen, e.g. `serves_as_canonical_long-term_store_for`, causing a Cypher syntax error. In that case the REST/API call may return 500 even though the vector memory was already inserted and searchable. For operational purposes, a focused vector `mem0_search` is the source-of-truth verification; do not assume a graph-side error means the memory is absent. Prefer plain wording without hyphen-heavy relationship phrases in smoke-test facts.
+
 ## Regression signal
 
 After future plugin/backend edits, run at least:
