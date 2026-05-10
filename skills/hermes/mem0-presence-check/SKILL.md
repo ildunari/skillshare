@@ -12,6 +12,8 @@ Use this when the user says mem0 used to work, but it is not being listed now.
 
 ## What this usually means
 
+A 2026-05 benchmark found the current self-hosted mem0 suite is healthy for deliberate tool use but not for passive conversation capture. `mem0_profile`, `mem0_search`, `mem0_recall_recent`, `mem0_add_document`, and explicit `mem0_conclude` work. The flaky path is organic `sync_turn` inference: it may log `Error in new_retrieved_facts: Expecting value...`, create graph relations, and still fail to create vector-searchable memories.
+
 There are often two separate things named "mem0":
 
 1. A Hermes memory-provider plugin, commonly `mem0_oss`
@@ -99,6 +101,7 @@ Lead with the answer:
 3. Confirm runtime prerequisites, not just config files.
    - Do not stop after finding `memory.provider: mem0_oss`
    - Check that the active runtime environment can actually import the mem0 stack and its embedding / DB dependencies
+   - Check the backend containers/processes too: `mem0-api`, `mem0-postgres`, `mem0-neo4j`, and `mem0-autoheal` should be healthy on this machine
    - Typical failures include missing packages such as:
      - `mem0ai`
      - `google-genai`
@@ -109,11 +112,16 @@ Lead with the answer:
      - `croniter` for cron-path execution if the failure only appears there
    - If config is present but imports fail, the tool surface may omit mem0 or cron may complete without actually writing memories
 
-4. Confirm the runtime behavior in code when needed.
+4. Confirm deliberate writes and searchability, not just tool presence.
+   - Use `mem0_conclude` for an isolated test fact with a temporary test user or clearly disposable wording, then `mem0_search` for the same phrase.
+   - Explicit writes should go through `infer=false`; if they are not searchable afterward, treat that as a regression.
+   - Do not use passive `sync_turn` as the main smoke test. It is currently the known weak path, not proof that the suite is broken globally.
+
+5. Confirm the runtime behavior in code when needed.
    - In `run_agent.py`, external memory providers are only activated when `memory.provider` is set in the active config
    - If that field is empty for the active profile, mem0 tools will not be injected into the live tool surface
 
-5. Check cron separately if the user mentions nightly harvesting.
+6. Check cron separately if the user mentions nightly harvesting.
    - Inspect `~/.hermes/cron/jobs.json` and `~/.hermes/profiles/<profile>/cron/jobs.json` to see whether the mem0/nightly job is actually enabled and whether root/profile cron state has drifted.
    - Inspect `~/.hermes/hermes-agent/cron/scheduler.py` for `skip_memory=True`
    - `skip_memory=True` blocks both built-in memory and the mem0 provider loader, so a mem0-first cron prompt can still be non-functional at runtime
@@ -153,6 +161,7 @@ If the diagnosis shows root Hermes is healthy but the active profile is isolated
 - profile-specific session JSON files may lack `mem0_*` tools, confirming the active profile is not loading the provider
 - `~/.hermes/cron/jobs.json` shows whether the nightly mem0 harvest job is enabled or disabled
 - `cron/scheduler.py` may still contain `skip_memory=True`, which disables mem0 in cron runs
+- `tests/plugins/memory/test_mem0_v2.py` covers the plugin contract; after mem0 plugin edits, run it before claiming the path is fixed
 - Claude config files do or do not include the standalone MCP registration
 
 ## Backend/index location and shared-store checks
@@ -191,3 +200,4 @@ If the diagnosis shows root Hermes is healthy but the active profile is isolated
 - Do not claim the custom MCP server is active unless you actually found it in Claude config
 - Session history proving old mem0 tools existed does not prove the active profile still loads mem0 today
 - A mem0-first cron prompt does not prove cron can actually use mem0 if `skip_memory=True` is still set
+- Do not mistake `sync_turn` extraction failures for total mem0 failure; benchmark the explicit tools separately

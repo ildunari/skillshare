@@ -10,6 +10,8 @@ Use this for nightly or ad hoc durable-memory harvesting.
 
 The point is simple: review recent Hermes conversations, keep only facts that will still matter later, and persist them into live mem0 without polluting memory with task logs or transient noise.
 
+Recent benchmark finding: explicit `mem0_conclude`, `mem0_add_document`, `mem0_search`, `mem0_profile`, and `mem0_recall_recent` are the reliable paths. Organic `sync_turn` inference is not reliable enough for durable recall right now: it can produce graph relations while failing to create vector-searchable memories, with API logs like `Error in new_retrieved_facts: Expecting value...`. Harvest jobs should therefore write deliberate facts with `mem0_conclude` and verify searchability when the fact is important.
+
 ## Start with the hard gate
 
 Before doing anything else, verify that live mem0 tools are actually exposed in this run.
@@ -95,19 +97,22 @@ For each candidate fact:
 
 1. Run `mem0_search` with a focused query and the likely category.
 2. If a near-duplicate already exists, skip it.
-3. If an older memory exists but the new version is sharper or more complete, still write it with `mem0_conclude` and let mem0 reconcile.
+3. If an older memory exists but the new version is sharper or more complete, still write it with `mem0_conclude`; the Hermes mem0 plugin now stores explicit writes with `infer=false` so the stated fact becomes searchable rather than depending on extraction.
+4. For critical operational facts, run one focused `mem0_search` after writing and confirm the new/updated fact is retrievable.
 
 Do not batch-write guesses without checking. The nightly job is only useful if it stays clean.
 
 ## Writing pattern
 
-Use plain prose in `mem0_conclude`.
+Use plain prose in `mem0_conclude`. Treat `mem0_conclude` as the canonical durable-write API; do not rely on passive conversation capture or organic `sync_turn` for facts that matter.
 
 Prefer the format:
 - one fact per write
 - one sentence if possible
 - explicit, concrete wording
+- include `category` every time
 - include `machine` when the fact is host-specific
+- set `sensitive=true` for private/credential-adjacent facts and `expires_at` for temporal ones
 
 Examples:
 - `Hermes user-facing /verbose should cycle off -> all -> compact -> verbose -> off; tool_progress new stays config-valid but should not appear in the visible cycle.`
@@ -147,6 +152,7 @@ Suggested structure:
 
 - Do not assume old mem0-related skills still exist in the live registry.
 - Do not treat a successful cron completion as proof that mem0 writes happened.
+- Do not rely on organic `sync_turn` extraction for durable recall until the extractor path is fixed and re-benchmarked; explicit `mem0_conclude` is the safe path.
 - Do not store findings just because they were repeated in session summaries; repetition is not durability.
 - Do not over-trust truncated or indirect recall when the evidence is weak.
 - Do not use built-in `memory` as a catch-all overflow store.
