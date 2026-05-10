@@ -7,6 +7,8 @@ metadata:
     - hermes-gpt
     - claude
     - claude-hermes
+  hermes:
+    command_priority: 430
 ---
 
 # Self-Evolve Skills

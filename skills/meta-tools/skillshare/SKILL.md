@@ -16,6 +16,8 @@ description: |
 argument-hint: "[command] [target] [--json] [--dry-run] [-p|-g]"
 metadata:
   version: v0.19.3
+  hermes:
+    command_priority: 300
 ---
 
 # Skillshare CLI
