@@ -1,6 +1,6 @@
 ---
 name: hermes-codex-image-gen-default
-description: Configure or diagnose Hermes image generation so the image_generate tool uses OpenAI GPT Image 2 through Codex/ChatGPT OAuth instead of a separate OpenAI API key. Use when Kosta asks about Codex image gen, GPT Image 2, image_gen.provider, default image generation, or making Hermes image generation use Codex auth.
+description: Configure, diagnose, and use Hermes Codex/OpenAI GPT Image 2 image generation. Use when Kosta asks about Codex image gen, GPT Image 2, image_gen.provider, default image generation, making Hermes image generation use Codex auth, or improving GPT Image 2 rendering/prompt quality. For actual image creation, route to the /image skill and the bundled GPT Image Craft references.
 version: 0.1.0
 author: Hermes Agent
 license: MIT
@@ -50,6 +50,21 @@ gpt-image-2-high
 ```
 
 Use `medium` as the default unless Kosta asks for fastest/cheapest iteration or highest fidelity.
+
+
+## Rendering and prompt-craft lane
+
+If the user asks how to render, make, edit, improve, or debug an image, do not stop at provider configuration. Use the default Hermes `/image` skill (`media-creative__image`) and the bundled GPT Image Craft pack attached here under `references/gpt-image-craft/`. The same pack is also installed as the cross-agent `gpt-image-craft` skill for non-Hermes tools.
+
+For serious image work, choose the relevant reference instead of inventing prompt advice from memory:
+
+- `references/gpt-image-craft/model-and-workflow.md` — GPT Image 2 API/UI choices, size, quality, formats, streaming, limitations.
+- `references/gpt-image-craft/prompt-framework.md` — prompt architecture, iteration tactics, text-in-image guidance.
+- `references/gpt-image-craft/prompt-recipes.md` — ready-to-adapt templates.
+- `references/gpt-image-craft/troubleshooting.md` — fixes for common failure modes.
+- `references/gpt-image-craft/styles/` — scientific figures, data graphics, photorealism, UI/marketing, sprites, illustration, print/type, product/editing, and niche aesthetics.
+
+Use `scripts/image_prompt_audit.py` for complex, text-heavy, API-oriented, or constraint-heavy prompts before spending image quota. It is a static checker; it does not call the API.
 
 ## Verify without burning an image call
 

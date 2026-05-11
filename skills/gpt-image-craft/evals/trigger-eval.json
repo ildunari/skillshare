@@ -1,0 +1,82 @@
+[
+  {
+    "query": "make me a paste-ready prompt for ChatGPT Images 2.0 to create a science textbook diagram of the Krebs cycle",
+    "should_trigger": true
+  },
+  {
+    "query": "debug my gpt-image-2 prompt, it keeps putting fake checkerboard transparency behind my sticker",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a 9:16 infographic poster prompt about wildfire preparedness with exact headings",
+    "should_trigger": true
+  },
+  {
+    "query": "turn this product photo concept into a high-end ecommerce image prompt, preserve the label",
+    "should_trigger": true
+  },
+  {
+    "query": "write three prompt variants for a photorealistic candid flash photo campaign",
+    "should_trigger": true
+  },
+  {
+    "query": "give me settings and prompt for a 4x3 pixel sprite sheet for a game jam",
+    "should_trigger": true
+  },
+  {
+    "query": "make a UI mockup image prompt for a fintech dashboard with readable labels",
+    "should_trigger": true
+  },
+  {
+    "query": "how should I prompt GPT Image 2 for a comic storyboard page with no garbled speech bubbles",
+    "should_trigger": true
+  },
+  {
+    "query": "create an image-generation style guide for 20 thumbnail concepts",
+    "should_trigger": true
+  },
+  {
+    "query": "I want a generated academic figure concept but the actual graph values must stay exact",
+    "should_trigger": true
+  },
+  {
+    "query": "make a matplotlib chart from my CSV and export it as SVG",
+    "should_trigger": false
+  },
+  {
+    "query": "build a PowerPoint deck with a scientific textbook look",
+    "should_trigger": false
+  },
+  {
+    "query": "summarize the OpenAI image API release notes for my team",
+    "should_trigger": false
+  },
+  {
+    "query": "write ad copy for a sparkling water billboard, no image prompt needed",
+    "should_trigger": false
+  },
+  {
+    "query": "edit this PNG in Photoshop to remove the background using a deterministic selection workflow",
+    "should_trigger": false
+  },
+  {
+    "query": "create a React dashboard with charts and responsive layout",
+    "should_trigger": false
+  },
+  {
+    "query": "make an Excel graph with exact quarterly numbers and formulas",
+    "should_trigger": false
+  },
+  {
+    "query": "find online examples of Swiss poster design",
+    "should_trigger": false
+  },
+  {
+    "query": "design a Figma prototype for a mobile checkout flow",
+    "should_trigger": false
+  },
+  {
+    "query": "OCR the labels in this existing scientific figure",
+    "should_trigger": false
+  }
+]

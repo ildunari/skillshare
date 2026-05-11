@@ -1,0 +1,53 @@
+{
+  "skill_name": "gpt-image-craft",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "need a clean bio textbook figure for AP students showing cellular respiration. make me the actual prompt + settings for chatgpt image gen 2, landscape, readable labels, not fake fancy art",
+      "expected_output": "A ready-to-run GPT Image 2 prompt package for a scientific textbook figure with model/size/quality parameters, label constraints, and quality checks.",
+      "files": [],
+      "expectations": [
+        "The output includes a ready-to-run prompt with goal, canvas, subject, visual system, required labels, constraints, and quality bar.",
+        "The output recommends gpt-image-2 with landscape size and high or medium quality.",
+        "The output warns to inspect scientific accuracy and label readability.",
+        "The output avoids unsupported factual claims not supplied by the user."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i have quarterly revenue numbers and want a beautiful exact chart image for a board memo. q1 13.2, q2 14.8, q3 16.1, q4 18.7. how should i prompt it?",
+      "expected_output": "A workflow that separates deterministic chart creation from generated art direction, preserving exact values and labels.",
+      "files": [],
+      "expectations": [
+        "The output states that exact chart values should be created or verified outside image generation.",
+        "The output includes a prompt for styling or framing the chart without altering plotted data.",
+        "The output includes exact data values supplied by the user.",
+        "The output provides quality checks for axes, labels, legend, and source notes."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "make a prompt for a 4x3 sprite sheet of a tiny mushroom courier guy, cozy fantasy, needs to be usable in a game, no blurry nonsense",
+      "expected_output": "A sprite-sheet prompt package with grid, poses, pixel/art constraints, extraction-friendly background, and iteration advice.",
+      "files": [],
+      "expectations": [
+        "The output specifies a 4x3 grid with equal cells and one centered sprite per cell.",
+        "The output includes pose/action guidance for 12 sprites.",
+        "The output includes no anti-aliasing, no blur, crisp silhouette, and plain background or extraction guidance.",
+        "The output recommends size and quality parameters appropriate for small assets."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "debug this gpt-image-2 prompt: 'make my product png transparent background, exact label text, chart of usage data, cinematic cyberpunk watercolor minimalist, lots of copy'",
+      "expected_output": "A prompt critique that identifies transparency mismatch, overloaded style conflicts, exact-label/text risk, chart/data risk, and offers a cleaner rewrite.",
+      "files": [],
+      "expectations": [
+        "The output flags that gpt-image-2 should not be promised true transparent background.",
+        "The output identifies conflicting style overload.",
+        "The output warns about exact label text and chart accuracy risk.",
+        "The output provides a rewritten prompt with preservation constraints and a safer background-removal workflow."
+      ]
+    }
+  ]
+}

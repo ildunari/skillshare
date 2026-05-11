@@ -1,0 +1,14 @@
+Validation report
+
+Date: 2026-05-11
+
+Commands run:
+
+python /mnt/data/validate_skill.py /mnt/data/gpt-image-craft
+Result: ✓ Skill is valid! (0 warning(s))
+
+python /mnt/data/gpt-image-craft/tests/run_static_checks.py
+Result: Static checks passed
+
+python /mnt/data/gpt-image-craft/scripts/image_prompt_audit.py --prompt "make my product png transparent background, exact label text, chart of usage data, cinematic cyberpunk watercolor minimalist, lots of copy" --model gpt-image-2 --size 1536x1024 --quality high
+Result: Script flagged expected risks: transparency unsupported for gpt-image-2, chart/data without numeric data, exact chart/data accuracy risk, and exact text not quoted.

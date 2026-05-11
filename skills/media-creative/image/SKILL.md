@@ -1,7 +1,7 @@
 ---
 name: image
-description: Use whenever Kosta invokes /image or asks Hermes to generate, draw, create, mock up, render, or edit an image using the default Codex/GPT Image 2 path. This is the preferred default image-generation skill; use ComfyUI only when the user explicitly asks for local models, LoRAs, SDXL/Flux workflows, or advanced node/control workflows. Turns loose requests into strong GPT Image 2 prompts and calls Hermes image_generate.
-version: 0.3.0
+description: Use whenever Kosta invokes /image or asks Hermes to generate, draw, create, render, edit, improve, or debug an image using the default Codex/GPT Image 2 path. Produces strong prompts, picks practical aspect ratio/quality defaults, calls image_generate when appropriate, and uses the bundled GPT Image Craft references for scientific figures, infographics, UI mockups, product shots, photorealism, sprites, posters, typography, and image-edit workflows.
+version: 0.4.0
 author: Hermes Agent
 license: MIT
 targets: [hermes-default, hermes-gpt, claude-hermes]
@@ -13,107 +13,139 @@ metadata:
 
 # Image — Codex GPT Image 2
 
-Use this as Kosta's default image command. `/image <request>` means: understand the desired artifact, write a good GPT Image 2 prompt, then call Hermes' `image_generate` tool.
+Use this as Kosta's default image command. `/image <request>` means: understand the desired artifact, build a production-grade GPT Image 2 prompt, choose the practical Hermes aspect ratio, and call `image_generate` directly unless the user is only asking for prompt help.
 
-Do **not** route ordinary `/image` requests to ComfyUI. ComfyUI is for explicit local/LoRA/workflow requests. The default path is Codex/OpenAI GPT Image 2 through Hermes `image_generate`.
+The skill now includes the full GPT Image Craft pack from `references/gpt-image-craft/`, plus the local non-generating prompt audit script at `scripts/image_prompt_audit.py`. Use those resources instead of winging it when the request is more than a simple one-shot picture.
 
 ## First move
 
-**Generate immediately.** Do not ask clarifying questions unless the user's intent is genuinely ambiguous (e.g., "image" with no other content, or an unresolvable conflict like "landscape portrait of a building in square format"). All of these are clear enough — proceed without asking:
+Generate immediately when the user clearly wants an image. Do not ask about style, aspect ratio, detail level, palette, realism, number of variants, or background unless the request is genuinely ambiguous or contradictory. Infer defaults from the use case and proceed.
 
-- Any subject described in ≥4 words
-- Any `/image <noun/scene/concept>` with obvious visual interpretation
-- Requests that name style, mood, format, brand, or use case
-- Edit requests with before/after described
-- UI/mockup/screenshot requests (even if only the category is named)
+Return a prompt package instead of calling the tool when the user asks for a reusable prompt, API parameters, critique/debugging, or a production workflow that may run outside Hermes.
 
-**Never ask about**: style, aspect ratio, level of detail, color palette, realism vs. illustration, number of variants, model, or background — unless the user explicitly raised it. Infer defaults from context.
+## Pick the lane
 
-## Aspect ratio inference
+- **Simple visual request:** write one concise, concrete prompt and call `image_generate`.
+- **Prompt/debug/API request:** return a prompt package with use case, prompt, parameters, iteration notes, and quality checks.
+- **Scientific figure, chart, infographic, UI, poster, product, sprite, or typography-heavy request:** read the matching GPT Image Craft reference first.
+- **Exact numeric charts, audited diagrams, legal/medical claims, or source-dependent factual graphics:** separate the factual artifact from the generated image. Use deterministic code/SVG/document tooling for exact data; use GPT Image 2 for styled explainers, covers, mockups, or visual companions.
+- **Image edits/reference workflows:** explicitly separate **Change** from **Preserve**. Do not promise reference-conditioned editing through Hermes `image_generate` unless the active provider/tool schema supports image inputs; use a direct script/API path if source images must be submitted.
 
-Pick the ratio before prompting. Use the first matching rule:
+## Hermes aspect ratio inference
 
-| Trigger words / context | Ratio |
-|---|---|
-| wide, banner, hero, desktop, cinematic, landscape, panorama, scene, wallpaper (horizontal) | `landscape` |
-| phone, mobile, portrait, poster, tall, story (IG/social), wallpaper (vertical) | `portrait` |
-| everything else (product shot, logo mark, avatar, icon, thumbnail, default) | `square` |
+Hermes `image_generate` currently accepts only `square`, `landscape`, or `portrait`. Pick before prompting:
 
-When the request contains conflicting signals (e.g., "portrait of a landscape"), pick `portrait` for human subjects and `landscape` for scenes.
+- `landscape`: wide, banner, hero, desktop, cinematic, panorama, scene, slide, dashboard, chart, infographic, wallpaper-horizontal.
+- `portrait`: phone, mobile, portrait, poster, story, character sheet, book cover, wallpaper-vertical.
+- `square`: product shot, logo mark, avatar, icon, thumbnail, sprite sheet, default.
 
-## Prompt structure
+When signals conflict, optimize for the deliverable: human portrait → `portrait`; scene/slide/chart → `landscape`; product/icon/avatar → `square`.
 
-Rewrite the user request into a concise production prompt. GPT Image 2 responds best to structure, not keyword sludge.
+## GPT Image 2 prompt architecture
 
-Use this order when it helps:
+For serious prompts, use this structure. For casual art, collapse it into a crisp paragraph carrying the same information.
 
 ```text
-Create/draw/render [artifact type and intended use].
-
-Scene / background:
-[where it exists, environment, mood]
-
-Subject:
-[main subject, pose/action, scale, expression, important relationships]
-
-Visual details:
-[materials, textures, era, palette, realism/style, visible props]
-
-Composition:
-[framing, viewpoint, placement, negative space, orientation]
-
-Lighting:
-[soft window light, golden hour, studio, high contrast, etc.]
-
-Exact text, if any:
-"TEXT TO RENDER" — [font style, color, placement]. No other text.
-
-Constraints:
-[no watermark, no logos/trademarks, no extra text, preserve X, avoid Y]
+Goal: [deliverable and audience]
+Canvas: [aspect ratio/orientation/output context]
+Subject: [main subject, setting, action]
+Visual system: [medium, style, lighting, palette, texture, typography]
+Composition: [layout, hierarchy, camera/viewpoint, spacing]
+Required content: [exact text, labels, data, UI components]
+Constraints: [what to preserve, avoid, or keep unchanged]
+Quality bar: [photorealistic, textbook-clear, print-ready, sprite-readable, etc.]
 ```
 
-Short requests do not need the whole template. A crisp paragraph is fine when it carries the same information.
+Why this order: it makes the model choose the visual mode and artifact type before filling detail, which reduces style drift and incoherent layouts.
 
-## GPT Image 2 rules that matter
+## Model and parameter defaults
 
-- Use action words: **create**, **draw**, **render**, or **edit**. For edits, say "edit the image by changing X" rather than vague "combine/merge."
-- For photorealism, include **photorealistic** or "real photograph / professional photography / iPhone photo." Do not rely on "8K, ultra detailed, masterpiece" boilerplate.
-- Be concrete about visual facts: materials, shape, texture, placement, lighting, camera angle, and mood.
-- For text in the image, put exact copy in quotes, specify typography and placement, and say **verbatim, no extra text**. Spell unusual words letter-by-letter if accuracy matters.
-- For edits or reference-based work, separate **Change** from **Preserve**. Example: "Change only the background to a rainy Tokyo street. Preserve the person's face, pose, clothing, camera angle, lighting direction, and color grade."
-- Iterate with small changes. If the first result is close, ask for one targeted edit rather than rewriting everything.
-- For dense charts/spreadsheets/tiny labels, warn that image generation is the wrong final-format tool; use real document/design tooling if precision matters.
-- GPT Image 2 does not support transparent backgrounds in the current API path. If transparency is requested, generate on a plain high-contrast background or use post-processing unless the configured provider changes.
+Kosta's default Hermes path is Codex/OpenAI GPT Image 2 through `image_generate`.
 
-## Calling the tool
+- Use `gpt-image-2` / `gpt-image-2-medium` for most finished assets.
+- Use low/fast draft quality only for exploratory variants or thumbnails.
+- Use high quality for small text, scientific diagrams, dense infographics, UI mockups, publication figures, close portraits, product details, or anything where one better attempt is cheaper than several retries.
+- Use `png` for normal outputs; use `jpeg`/`webp` only when an external API path explicitly needs it.
+- Do not promise true transparent backgrounds in the current GPT Image 2 API path. Generate on a plain high-contrast background and remove it downstream, or use another provider/workflow that supports transparency.
+
+Useful direct-API sizes from GPT Image Craft when not constrained by the Hermes wrapper: `1024x1024`, `1536x1024`, `1024x1536`, `2048x1152`, `2560x1440`. Current GPT Image 2 flexible-size constraints still apply; use the Codex provider/direct script path for arbitrary sizes rather than pretending `image_generate` accepts them.
+
+## Prompt details that matter
+
+- Use action words: **create**, **draw**, **render**, or **edit**. For edits, say “edit the image by changing X,” not vague “combine/merge.”
+- For photorealism, say **photorealistic**, “real photograph,” “professional photography,” or “iPhone photo,” plus camera/lighting cues. Skip boilerplate like “8K masterpiece.”
+- Be concrete about materials, shapes, texture, placement, lighting, camera angle, and mood.
+- For exact text, quote the exact copy, specify typography and placement, and say “render once, verbatim, no extra text.” Spell unusual words if accuracy matters.
+- For dense charts/spreadsheets/tiny labels, warn that image generation is the wrong final-format tool and use deterministic rendering if precision matters.
+- For brands, characters, living artists, real people, or protected logos, prefer original designs and broad style descriptors unless the user has rights/authorization.
+- Do not promise C2PA/provenance removal.
+
+## Use the bundled references
+
+Read only the relevant file under `references/gpt-image-craft/`:
+
+- `model-and-workflow.md` — GPT Image 2 API/UI choices, size, quality, formats, streaming, limitations.
+- `prompt-framework.md` — prompt architecture, iteration tactics, text-in-image guidance.
+- `styles/science-education-figures.md` — scientific textbook art and academic figures.
+- `styles/data-graphs-infographics.md` — charts, dashboards, timelines, infographics.
+- `styles/realism-photography-cinematic.md` — photorealism, documentary, portraits, product, cinematic.
+- `styles/design-marketing-ui.md` — ads, logos, UI mockups, branding, pitch/social assets.
+- `styles/game-assets-icons-sprites.md` — sprites, icons, pixel art, thumbnails, game art.
+- `styles/illustration-comics-character.md` — manga, comics, children's books, character sheets, storyboards.
+- `styles/print-editorial-typography.md` — magazine spreads, covers, posters, multilingual type.
+- `styles/product-ecommerce-editing.md` — product extraction, virtual try-on, object edits, interior swaps, style transfer.
+- `styles/niche-style-atlas.md` — compact formulas for many aesthetics.
+- `prompt-recipes.md` — ready-to-adapt templates.
+- `troubleshooting.md` — fixes for common failure modes.
+- `research-sources.md` — source notes and evidence levels.
+
+## Prompt package output
+
+When not generating directly, include:
+
+1. Use case and intent — what the image is for and how it should be judged.
+2. Prompt — ready to paste into ChatGPT or an image API.
+3. Parameters — model, aspect/size, quality, format, number of variants, generation vs edit.
+4. Iteration notes — one to three targeted follow-ups.
+5. Quality check — what to inspect after generation: text, labels, hands, layout, factual claims, identity consistency, transparency/background.
+
+For API-oriented users, include a compact spec:
+
+```text
+model: gpt-image-2
+endpoint: images.generate or images.edit
+size: 1536x1024
+quality: high
+output_format: png
+n: 1 to 4
+prompt: ...
+```
+
+## Optional prompt audit
+
+For complex, text-heavy, API-oriented, or constraint-heavy prompts, run the non-generating checker before calling an API/direct path:
+
+```bash
+python scripts/image_prompt_audit.py --prompt-file prompt.txt --model gpt-image-2 --size 1536x1024 --quality high
+```
+
+It flags invalid sizes, transparency mismatch, exact chart/data risks, missing quoted text, style overload, and prompt overloading. It does not spend image quota.
+
+## Calling the Hermes tool
 
 ```python
 image_generate(prompt=<final prompt>, aspect_ratio="landscape" | "square" | "portrait")
 ```
 
-`aspect_ratio` must be exactly one of `"landscape"`, `"square"`, or `"portrait"`. No other values are accepted.
-
-After generation, return the image directly. Add only a short note if useful, e.g. "I kept it square and optimized for product-shot realism."
+After generation, return the image directly. Add only a short useful note, e.g. “I kept it square and optimized for product-shot realism.”
 
 ## Failure recovery
 
-If `image_generate` returns an error or empty result:
+If `image_generate` errors or returns empty:
 
-1. **Content policy rejection** — rewrite the prompt to remove potentially flagged phrasing (e.g., real brand names, explicit depictions, celebrity likenesses). Try once with cleaned prompt before reporting.
-2. **Tool unavailable / timeout** — report: "image_generate failed: [error]. Try again or check Hermes tool status."
-3. **Result misses a key explicit constraint** — after receiving the result, check it against the request's primary constraints: required text present and legible, correct orientation for the use case, correct subject. If a constraint is clearly violated (text missing or garbled, wrong orientation, wrong subject count), identify the broken constraint, rewrite that section of the prompt only, and retry once automatically — do not ask permission. Deliver the final result with a one-line note on what was fixed. If the second attempt also fails the constraint, report both attempts and the specific mismatch.
-
-## When to use high-effort prompting
-
-Use the full structured prompt for:
-
-- UI mockups, screenshots, app screens, product concepts
-- Posters, ads, packaging, logos/marks, thumbnails with text
-- Infographics and diagrams
-- Photorealistic product/people/scene images
-- Edits where identity, geometry, layout, or brand feel must be preserved
-
-For UI/UX images, also follow the `gpt-image-2-uiux-prompting` skill if available.
+1. Content/policy rejection: clean real-brand, protected-character, celebrity-likeness, sexual, or risky wording; retry once.
+2. Tool unavailable/timeout: report the exact error and the generated prompt so Kosta can rerun or diagnose.
+3. Missed explicit constraint: inspect the output. If text, orientation, subject count, layout, or core content is clearly wrong, rewrite only the failed section and retry once automatically. If the second attempt also misses, report both attempts and the mismatch.
 
 ## Examples
 
@@ -143,7 +175,3 @@ Visual style: calm editorial UI, warm off-white background, muted sage and clay 
 Exact visible text: headline "Find your quiet minute", CTA "Start", secondary link "Sign in". No other text.
 Constraints: straight-on screenshot, normal iPhone proportions, no device mockup frame, no poster layout, no duplicate buttons, no fake logos, no watermark.
 ```
-
-## References
-
-- `references/gpt-image-2-prompting.md` — current GPT Image 2 prompt rules and constraints.
