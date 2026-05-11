@@ -50,10 +50,23 @@ Do not push remotes unless Kosta explicitly asks. Local commits are fine and pre
    - fetch upstream/origin
    - merge upstream into the local branch deliberately; do not blindly reset local work to `origin/main`
    - resolve conflicts file-by-file, preserving intended local behavior
+   - for large/risky merges, use the escalation gate below before finalizing conflict resolution
 5. Reapply or preserve local behavior from git:
    - compare local branch changes against upstream
    - keep carried local patches that are still needed
    - drop only patches that upstream clearly absorbed or made obsolete
+
+## Large merge escalation gate
+
+Trigger this gate before completing a merge when any condition is true: conflict files include `gateway/run.py`, `gateway/platforms/*`, `gateway/stream_consumer.py`, `agent/display.py`, `tools/approval.py`, `tools/terminal_tool.py`, profile config, Skillshare skills, or WebUI routing; a single file diff is >500 lines; total merge diff is >1500 lines; tests are deleted/rewritten; local commits touch the same files as upstream; or the merge changes Telegram/Discord visible behavior.
+
+When triggered, split review into parallel subagents before committing:
+- **Local-behavior preservation reviewer:** compare `git diff main...HEAD`, `git diff HEAD^..HEAD`, and the newest `backup/pre-*` branch for dropped local symbols/flows. Return exact file:function/line evidence and whether upstream absorbed, conflicted with, or lost each behavior.
+- **Regression-test reviewer:** inspect changed surfaces and propose/add focused tests for user-visible local behavior, especially Telegram routing, compact HUD, context badges/buttons, update/restart safety, provider/media config, Mini App/API routes, and terminal/approval paths.
+- **Runtime-verification reviewer:** identify the smallest commands, health probes, and live checks needed after the merge/restart. Include whether the live gateway is still running old code.
+
+Verify subagent findings yourself before editing or claiming success. If a dropped behavior is real, either restore it with a test in the same update pass or explicitly report it as a deliberate removal with evidence. Do not let large merges finish with “tests pass” unless the sentinel tests cover the carried local behavior.
+
 6. Install/rebuild/sync:
    - reinstall Hermes from the updated checkout as appropriate
    - sync skills through Skillshare, not manual profile copying, when skill distribution changed
