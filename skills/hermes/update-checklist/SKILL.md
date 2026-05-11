@@ -30,6 +30,13 @@ Do not call the setup update-safe if important repo work exists only in:
 
 ## Pre-update flow
 
+Before any large upstream merge on this repo, enable local merge safety aids once:
+```bash
+git config rerere.enabled true
+git config merge.conflictStyle zdiff3
+```
+`rerere` reuses previously-correct conflict resolutions; `zdiff3` shows the common ancestor in conflicts so local behavior is less likely to be accidentally dropped.
+
 1. Switch to the canonical branch:
 ```bash
 cd ~/.hermes/hermes-agent
@@ -91,7 +98,12 @@ Examples on this machine have included:
 - local memory/provider behavior
 - local TTS/provider wiring
 
-Run focused tests and syntax checks for the touched features, not just a generic smoke test.
+Run focused tests and syntax checks for the touched features, not just a generic smoke test. For Telegram gateway merges, the minimum sentinel is:
+```bash
+python -m py_compile gateway/platforms/telegram.py gateway/stream_consumer.py gateway/run.py
+python -m pytest tests/gateway/test_telegram_context_badge_connect.py tests/gateway/test_stream_consumer.py -q
+```
+Also verify runtime symbols survived the merge when user-visible affordances depend on local code: `TelegramAdapter.attach_context_badge`, `ctx:`/`compact:` callbacks, `GatewayStreamConsumer.final_message_id`, and post-stream context-badge scheduling in `gateway/run.py`.
 
 ## Patch layer policy
 
