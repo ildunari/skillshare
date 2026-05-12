@@ -1,0 +1,29 @@
+{
+  "skill_name": "self-evolve-codex",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "goal - write a goal for yourself to improve /Users/kosta/.config/skillshare/skills/meta-tools/example-skill on plugin-eval score and trigger precision, max 20 runs or until plateau, and benchmark every iteration",
+      "expected_output": "Creates or drafts a Codex goal, defines target/metrics/max runs/plateau, sets up a run log, and refuses to edit canonical source before baseline.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Use /goal to keep improving this Codex skill for 3 hours. Stop if the eval score stops improving and give me a benchmark table at the end.",
+      "expected_output": "Translates the request into a bounded goal with a wall-clock budget, plateau rule, baseline, metrics.jsonl, and final benchmark report.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Please make this SKILL.md a little clearer and fix the typo.",
+      "expected_output": "Does not trigger a self-evolution loop; treats this as a normal one-shot edit unless the user asks for metrics or repeated improvement.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Improve my PowerPoint plugin based on plugin-eval. Keep trying candidates, but don't sync Skillshare or push until I review the winner.",
+      "expected_output": "Runs a sandboxed candidate loop, uses plugin-eval findings as the brief, preserves canonical source until final review, and records benchmark evidence.",
+      "files": []
+    }
+  ]
+}
