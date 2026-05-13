@@ -1,25 +1,21 @@
 ---
 name: self-evolve-skills
-description: Run a sandboxed iterative skill-improvement optimizer. Use when Kosta wants to improve Hermes/Skillshare/Claude skills, compare model/provider lanes, collect token/cost stats, detect plateau, or generate reviewable patches without touching live skills. Use Claude Code only when explicitly requested or when the goal is to spend Claude quota; otherwise prefer the current Hermes profile/model as the worker and judge lane.
+description: Run Claude Code as a sandboxed iterative skill-improvement optimizer. Use when Kosta explicitly wants Claude/Sonnet/Opus lanes, wants to burn Claude subscription quota productively, compare Claude-generated variants with other judges, collect Claude Code token/cost stats, detect plateau, or generate reviewable patches without touching live skills. For Hermes-native self-evolve runs, use hermes__hermes-self-evolve-skills instead.
 metadata:
   targets:
-    - hermes-default
-    - hermes-gpt
     - claude
     - claude-hermes
   hermes:
     command_priority: 430
 ---
 
-# Self-Evolve Skills
+# Self-Evolve Skills — Claude Code Lane
 
-Use this when the goal is not just to edit a skill once, but to make an agent spend real effort improving it in a controlled, measurable way.
+Use this when the goal is not just to edit a skill once, but to make Claude Code spend real effort improving it in a controlled, measurable way.
 
-The key idea: the optimizer is not the applier. It works in copied sandboxes, produces candidates, judges them against a rubric, iterates until progress stalls, and leaves reviewable artifacts. Live Skillshare/Hermes files are patched only after review.
+The key idea: Claude Code is the optimizer, not the applier. It works in copied sandboxes, produces candidates, judges them against a rubric, iterates until progress stalls, and leaves reviewable artifacts. Live Skillshare/Hermes files are patched only after review.
 
-## Model/provider selection
-
-Do not assume Claude. If Kosta asks for “self-evolve” from Hermes/GPT without naming Claude, run the loop through the active Hermes profile/model (`hermes -z ...` or the current agent tools) and record the provider/model used. Use Claude Code only when he explicitly asks for Claude/Sonnet/Opus, wants to burn Claude subscription quota, or needs Claude Code’s sandboxed editing behavior for that run.
+For Hermes/GPT-native runs where Kosta did not ask for Claude, use `hermes__hermes-self-evolve-skills` instead. Do not silently route Hermes self-evolution through Claude Code.
 
 ## Default stance
 
@@ -29,8 +25,8 @@ Automate aggressively when the action is safe, local, reversible, and predictabl
 
 Use this for:
 
-- improving one or more `SKILL.md` files
-- spending Claude weekly cap on useful improvement work, if explicitly requested
+- spending Claude weekly cap on useful improvement work, when explicitly requested
+- improving one or more `SKILL.md` files through Claude Code
 - comparing Sonnet-generated variants with Opus or cheaper judges
 - discovering stale commands, broken paths, missing verification, unsafe user-confirmation patterns, or voice flattening
 - producing patch bundles for manual application
@@ -43,10 +39,10 @@ Before launching a run, define:
 
 - target skills: canonical source paths, usually under `~/.config/skillshare/skills/`
 - wall-clock budget and stop buffer
-- max iterations per skill, usually 3–5
+- max iterations per skill: default **10 minimum**, **30 maximum**, unless the user gives a smaller budget; stop earlier only for the plateau rule or an auto-reject/safety/budget condition
 - max parallel skills, usually 2–3
-- worker model/provider, usually the current Hermes profile unless Kosta asks for a specific lane
-- judge model/provider; use a different model only when the run explicitly compares lanes or the current profile cannot judge cheaply enough
+- worker model, usually Sonnet
+- judge model: Haiku/Sonnet for frequent cheap scoring, Opus for finalist review
 - protected clauses: specific lines, sections, user preferences, safety rules, or deliberate voice that must not be removed
 
 If a target is a Hermes/Skillshare skill, prefer canonical Skillshare source over copied live profile files.
@@ -122,17 +118,18 @@ For each skill, run:
 1. Snapshot original into `original/SKILL.md`.
 2. Write `protected.md`: clauses that must survive, including Kosta preferences and safety boundaries.
 3. Write `rubric.md` with scoring dimensions and auto-reject rules.
-4. Ask the selected worker lane to produce candidate variant A focused on correctness and verification.
-5. Ask the selected worker lane to produce candidate variant B focused on safe automation and fewer nanny prompts.
-6. Optionally ask the selected worker lane to produce candidate variant C focused on concision and path/tool reliability.
-7. Judge candidates blind with the selected judge lane using `rubric.md` and `protected.md`.
+4. Ask Sonnet to produce candidate variant A focused on correctness and verification.
+5. Ask Sonnet to produce candidate variant B focused on safe automation and fewer nanny prompts.
+6. Optionally ask Sonnet to produce candidate variant C focused on concision and path/tool reliability.
+7. Judge candidates blind with Haiku/Sonnet using `rubric.md` and `protected.md`.
 8. Feed only concrete judge failures into the next improvement round.
 9. Continue until plateau or budget stop.
-10. Run a stronger/different-model final review only when the run requested cross-model review.
+10. Run Opus final review only on finalists.
 
 Plateau rule:
 
-- Stop after two consecutive rounds with improvement <3 points.
+- Kosta's default substantial-run expectation is **minimum 10 loops**, **maximum 30 loops**, or stop when the plateau rule below fires. Do not stop after a couple of tidy edits just because the obvious patch landed; design harder evals and keep improving until the run has real signal.
+- Stop after **four consecutive runs/loops** with no material improvement, or improvement below the run's configured significance threshold.
 - Stop immediately if the best candidate gets worse twice, starts adding generic bloat, or trips an auto-reject rule.
 - Stop 15–20 minutes before quota/reset/window end to collect artifacts and kill stragglers.
 
@@ -177,41 +174,30 @@ ps -axo pid,ppid,command | grep 'claude --print' | grep -v grep
 
 A harmless `stty: stdin isn't a terminal` warning can appear in background Claude Code runs. Treat it as noise if the process exits 0 and artifacts are written.
 
+If a headless Claude worker edits the sandbox but hangs without returning JSON, do not let it run indefinitely. Kill it after the configured per-iteration timeout, then inspect the sandbox diff, run the benchmark/verification locally, and either reject or promote the candidate based on evidence. In the final report, label this honestly as a recovered/stuck worker rather than a clean Claude iteration; synthesize loop metrics only from artifacts you actually have.
+
 ## Stats to collect
 
-After every worker and judge run, parse Claude Code JSON and write `USAGE_SUMMARY.json`:
+After every worker and judge run, parse Claude Code JSON and write `USAGE_SUMMARY.json`. Track enough metrics to explain both quality and operating cost:
 
-```json
-{
-  "skill": "web-research",
-  "iteration": 2,
-  "variant": "automation",
-  "model": "claude-sonnet-4-6",
-  "turns": 12,
-  "duration_ms": 300000,
-  "total_cost_usd": 0.75,
-  "input_tokens": 10,
-  "cache_creation_input_tokens": 50000,
-  "cache_read_input_tokens": 600000,
-  "output_tokens": 15000,
-  "score": 84,
-  "decision": "advance"
-}
-```
+- wall-clock duration per loop and per worker/judge call
+- model, turns, tool/API calls, exit reason, and errors
+- input, cache-creation, cache-read, output, and total token volume
+- estimated context loaded into each run, plus any benchmark-specific context/token estimate
+- relative `total_cost_usd` when available, labeled as relative accounting under subscription plans
+- candidate score, score delta vs previous best, pass/fail counts, and plateau counter
+- files changed, bytes/lines changed, verification commands, and whether target sync/installed-copy verification passed
 
-Report both:
-
-- Claude Code cost/token accounting, useful for comparing runs
-- total token volume including cache read/write/output, useful for weekly-cap burn intuition
-
-Do not pretend subscription cap maps exactly to `total_cost_usd`; label it as relative accounting.
+Report both Claude Code cost/token accounting and total token volume including cache read/write/output. Do not pretend subscription cap maps exactly to `total_cost_usd`; label it as relative accounting.
 
 ## Eval prompts
 
-Document-only review is not enough. Add at least two lightweight behavioral eval prompts per skill:
+Document-only review is not enough. Add **hard, complex behavioral eval prompts** per skill, not just easy happy paths. Include at least:
 
-- one happy-path task where the improved skill should make the agent act correctly
-- one edge case that should trigger a safety boundary or fallback
+- one realistic happy-path task where the improved skill should make the agent act correctly
+- one hard-to-track or ambiguous retrieval/debugging task that requires following breadcrumbs, checking prior context, or reconciling conflicting files
+- one edge case that should trigger a safety boundary, fallback, idempotency rule, or explicit clarification
+- one regression test for a failure mode observed in the session that motivated the skill update
 
 The judge should answer: would the candidate skill cause a future agent to behave better on these prompts than the original? Require concrete evidence from the text.
 

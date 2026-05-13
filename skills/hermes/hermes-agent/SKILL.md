@@ -59,7 +59,7 @@ After loading this skill, immediately load the more specific Hermes skill if the
 - Provider/media/image/voice configuration: `hermes-provider-media-configuration`
 - Smart update workflow: `hermes__update-smart`
 - Skillshare syncing/allowlists: `skillshare`
-- Skill improvement/evolution: `agentic__self-evolve-skills` and `hermes__skill-lifecycle-automation`
+- Skill improvement/evolution: `hermes__hermes-self-evolve-skills` for Hermes-native runs, `agentic__self-evolve-skills` only for explicit Claude Code/Sonnet/Opus lanes, and `hermes__skill-lifecycle-automation` for lifecycle automation
 
 If several apply, pick the one closest to the user's requested action and keep the rest out of context unless needed.
 
