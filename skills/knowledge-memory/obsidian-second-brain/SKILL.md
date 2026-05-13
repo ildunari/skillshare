@@ -46,6 +46,8 @@ Prefer the CLI for direct operations. Use `vault="Brain"` on every command. If t
 
 ## Vault Structure
 
+Current observed vault root (Mac Studio, 2026-05-13): `Brain/` exists at `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Brain` with ~707 Markdown notes. Besides the historical `brown/`, `tech/`, and `nsfw/` sections, the live vault also has active top-level sections including `ai-agents/`, `coding/`, `claudian/`, `daily/`, `guides/`, `inbox/`, `sidekick/`, `wiki/`, and `templates/`. Prefer the live filesystem over this static tree if they differ.
+
 ```
 Brain/
 ├── brown/              # PhD & Academic (Brown University)
