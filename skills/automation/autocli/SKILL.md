@@ -24,6 +24,21 @@ AutoCLI is a fast Rust CLI that turns websites and some local tools/apps into co
 
 Think of it as: “try a purpose-built website/app CLI first, then fall back to browser automation if needed.”
 
+## URL-to-markdown extraction with curl.md
+
+For one-off webpage-to-markdown extraction, use Hermes `curlmd_fetch` first when the goal is clean markdown context and no site-specific tool exists. It wraps `curl.md` with bounded timeouts, retry/backoff, authenticated token use from `CURLMD_API_KEY`/1Password when available, and a plain `curl` fallback for stalls, rate limits, weak/blocked pages, or CLI failures.
+
+Current docs/observed behavior:
+- Basic use inside Hermes: call `curlmd_fetch(url="https://example.com")`; terminal fallback is `npx -y curl.md@0.1.1 <url>`.
+- Authenticated Mac Studio token is stored in 1Password item `CLI / curl.md API Token - Hermes Mac Studio`; expose it as `CURLMD_API_KEY` or pass `--token` for non-interactive terminal calls.
+- Query-string targets need encoding as a path segment, e.g. PubMed search: `https://curl.md/pubmed.ncbi.nlm.nih.gov/%3Fterm=PLGA+drug+delivery`; otherwise the target query can be treated as curl.md API params and fetch the home page.
+- Anonymous limits: standard fetches `100/hour`; `objective=` narrowing only `3/hour`. Authenticated limits: `1,000/hour` and `10/hour`. Paid usage skips these limits.
+- Good fits from benchmark: docs, public forum pages like LPSG threads, normal GitHub repos, Apple docs, and PubMed encoded-query pages.
+- Poor fits from benchmark: X profiles return empty shells (use `xurl` first), Reddit can return verification shells, YouTube can 429, and GitHub repo names containing dots such as `wevm/curl.md` can fail with upstream 404.
+- Treat `x-tokens-count`, `x-tokens-saved`, `x-cache`, and rate-limit headers as useful benchmark telemetry, but judge extraction quality by content hits and blocked/error markers, not HTTP 200 alone.
+
+See `references/curlmd-heavy-site-benchmark-2026-05-13.md` for the benchmark matrix, rate-limit receipts, query-string gotcha, and routing notes.
+
 ## Environment notes
 
 - Expect the `autocli` binary to be available on `PATH`.
