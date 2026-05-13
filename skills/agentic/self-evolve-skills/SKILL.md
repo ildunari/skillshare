@@ -1,6 +1,6 @@
 ---
 name: self-evolve-skills
-description: Run Claude Code as a sandboxed iterative skill-improvement optimizer. Use when Kosta wants to burn Claude subscription quota productively, improve Hermes/Skillshare/Claude skills, run Sonnet/Opus lanes, compare skill variants, collect token/cost stats, detect plateau, or generate reviewable patches without touching live skills.
+description: Run a sandboxed iterative skill-improvement optimizer. Use when Kosta wants to improve Hermes/Skillshare/Claude skills, compare model/provider lanes, collect token/cost stats, detect plateau, or generate reviewable patches without touching live skills. Use Claude Code only when explicitly requested or when the goal is to spend Claude quota; otherwise prefer the current Hermes profile/model as the worker and judge lane.
 metadata:
   targets:
     - hermes-default
@@ -13,9 +13,13 @@ metadata:
 
 # Self-Evolve Skills
 
-Use this when the goal is not just to edit a skill once, but to make Claude Code spend real effort improving it in a controlled, measurable way.
+Use this when the goal is not just to edit a skill once, but to make an agent spend real effort improving it in a controlled, measurable way.
 
-The key idea: Claude Code is the optimizer, not the applier. It works in copied sandboxes, produces candidates, judges them against a rubric, iterates until progress stalls, and leaves reviewable artifacts. Live Skillshare/Hermes files are patched only after review.
+The key idea: the optimizer is not the applier. It works in copied sandboxes, produces candidates, judges them against a rubric, iterates until progress stalls, and leaves reviewable artifacts. Live Skillshare/Hermes files are patched only after review.
+
+## Model/provider selection
+
+Do not assume Claude. If Kosta asks for “self-evolve” from Hermes/GPT without naming Claude, run the loop through the active Hermes profile/model (`hermes -z ...` or the current agent tools) and record the provider/model used. Use Claude Code only when he explicitly asks for Claude/Sonnet/Opus, wants to burn Claude subscription quota, or needs Claude Code’s sandboxed editing behavior for that run.
 
 ## Default stance
 
@@ -25,8 +29,8 @@ Automate aggressively when the action is safe, local, reversible, and predictabl
 
 Use this for:
 
-- spending Claude weekly cap on useful improvement work
 - improving one or more `SKILL.md` files
+- spending Claude weekly cap on useful improvement work, if explicitly requested
 - comparing Sonnet-generated variants with Opus or cheaper judges
 - discovering stale commands, broken paths, missing verification, unsafe user-confirmation patterns, or voice flattening
 - producing patch bundles for manual application
@@ -41,8 +45,8 @@ Before launching a run, define:
 - wall-clock budget and stop buffer
 - max iterations per skill, usually 3–5
 - max parallel skills, usually 2–3
-- worker model, usually Sonnet
-- judge model: Haiku/Sonnet for frequent cheap scoring, Opus for finalist review
+- worker model/provider, usually the current Hermes profile unless Kosta asks for a specific lane
+- judge model/provider; use a different model only when the run explicitly compares lanes or the current profile cannot judge cheaply enough
 - protected clauses: specific lines, sections, user preferences, safety rules, or deliberate voice that must not be removed
 
 If a target is a Hermes/Skillshare skill, prefer canonical Skillshare source over copied live profile files.
@@ -118,13 +122,13 @@ For each skill, run:
 1. Snapshot original into `original/SKILL.md`.
 2. Write `protected.md`: clauses that must survive, including Kosta preferences and safety boundaries.
 3. Write `rubric.md` with scoring dimensions and auto-reject rules.
-4. Ask Sonnet to produce candidate variant A focused on correctness and verification.
-5. Ask Sonnet to produce candidate variant B focused on safe automation and fewer nanny prompts.
-6. Optionally ask Sonnet to produce candidate variant C focused on concision and path/tool reliability.
-7. Judge candidates blind with Haiku/Sonnet using `rubric.md` and `protected.md`.
+4. Ask the selected worker lane to produce candidate variant A focused on correctness and verification.
+5. Ask the selected worker lane to produce candidate variant B focused on safe automation and fewer nanny prompts.
+6. Optionally ask the selected worker lane to produce candidate variant C focused on concision and path/tool reliability.
+7. Judge candidates blind with the selected judge lane using `rubric.md` and `protected.md`.
 8. Feed only concrete judge failures into the next improvement round.
 9. Continue until plateau or budget stop.
-10. Run Opus final review only on finalists.
+10. Run a stronger/different-model final review only when the run requested cross-model review.
 
 Plateau rule:
 
