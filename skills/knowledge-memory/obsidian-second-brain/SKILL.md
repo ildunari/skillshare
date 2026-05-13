@@ -42,7 +42,7 @@ Two ways to interact with the vault:
 1. **Obsidian CLI** — `obsidian vault="Brain" <command>` (requires Obsidian running)
 2. **MCP proxy** — via ForgeMax `obsidian_brain` server (retrieve_tools, call_tool_read/write)
 
-Prefer the CLI for direct operations. Use `vault="Brain"` on every command. If the CLI returns an error about Obsidian not running, fall back to MCP proxy and note which method succeeded.
+Prefer the CLI for direct operations. Use `vault="Brain"` on every command. If the CLI returns an error (Obsidian unavailable or not running), fall back to direct filesystem reads/writes against the vault path, note which method succeeded, and verify via `head` or `ls`.
 
 ## Vault Structure
 
@@ -184,12 +184,17 @@ All notes use these common properties:
 ```yaml
 type: <note-type>          # Required — determines template and behavior
 status: <status>           # Varies by type (see below)
+aliases:                   # Optional — alternate names for Obsidian search/link
+  - alternate name
+  - short acronym
 tags:                      # Always include type tag + domain tag
   - type/<type-tag>
   - domain/<domain>
 created: YYYY-MM-DD        # Creation date
 updated: YYYY-MM-DD        # Last meaningful update
 ```
+
+**YAML quoting rules**: Always quote `url:`, `install_command:`, and any value containing a colon (e.g., `title: "Fast: A CLI Tool"`). Array fields use the `  - item` list style.
 
 ### Status values by type
 
@@ -217,7 +222,9 @@ Tags follow a hierarchical namespace pattern:
 
 **Determine section first:**
 - Academic/research/lab-related → **`brown/`**
-- Tool, app, service, or tech reference → **`tech/`**
+- Agent tools, MCP servers, skills, agent profiles, automation infra → **`ai-agents/`** (live section; fallback to `tech/agent-tools/` only if the active note is clearly there)
+- Software dev notes, coding projects → **`coding/`** or `tech/projects/`
+- General tool, app, service, or tech reference → **`tech/`**
 - NSFW content → **`nsfw/`**
 - Not sure → **`inbox/quick/`** (sort later)
 
@@ -241,8 +248,11 @@ type: tool
 status: active
 tool_category: cli
 install_method: homebrew
-install_command: brew install my-tool
-url: https://example.com
+install_command: \"brew install my-tool\"
+url: \"https://example.com\"
+aliases:
+  - my tool
+  - mytool
 tags:
   - type/catalog
   - domain/macos

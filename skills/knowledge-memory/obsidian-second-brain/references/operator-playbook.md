@@ -15,15 +15,16 @@ Use a layered search ladder, stopping as soon as the evidence is strong enough:
 Prefer returning exact paths plus the breadcrumb trail that led there, not just a single matching line.
 
 ## Breadcrumb and wiki-walk procedure
-For wiki-like navigation, walk from broad MOCs to specific notes and back:
+For wiki-like navigation, walk from broad MOCs to specific notes and back using 3-hop chains:
 
 - Start with top-level guides such as `ai-agents/guides/agent-tools.md`, `tech/guides/*.md`, `brown/guides/*.md`, or `guides/weekly-dashboard.md`.
 - Follow explicit `[[wikilinks]]`, embedded notes, and Dataview/list sections.
 - Inspect backlinks to understand why a note matters and where it belongs.
-- Preserve breadcrumbs in the answer or note body: `[[agent-tools]] → [[skills-sh]] → [[serve-sim]]`.
+- **3-hop wiki-walk example**: `[[agent-tools]] → [[skills-sh]] → [[serve-sim]]` (guide → index note → target).
+- Preserve breadcrumbs in the answer or note body using `→` arrows between `[[wikilinks]]`.
 - If a guide is stale, append a short `## Recent Additions` entry rather than rewriting the whole page.
 
-When adding a new note, include a `## Related` section with 2-6 high-value internal links and update at least one relevant guide when the destination is clear.
+When adding a new note, include a `## Related` section with 2–6 high-value internal links and update at least one relevant guide when the destination is clear.
 
 ## Storage and routing decision tree
 Route new knowledge by primary use, not by source format:
@@ -44,6 +45,9 @@ Use the matching spec sheet in `references/vault-templates.md` before writing. R
 ---
 type: <note-type>
 status: <valid-status-if-the-type-uses-status>
+aliases:
+  - alternate name
+  - short acronym
 tags:
   - type/<type-or-catalog-tag>
   - domain/<domain>
@@ -52,7 +56,13 @@ updated: YYYY-MM-DD
 ---
 ```
 
-Do not invent status values if the template defines valid ones. Preserve existing frontmatter key style in nearby notes. Use quoted strings for URLs, titles with colons, commands, and values that YAML may misread.
+**YAML edge cases — always quote these:**
+- Title or name containing a colon: `title: "Fast: A CLI Tool"` ✓  (bare `title: Fast: A CLI` ✗)
+- URL values: `url: "https://example.com"` ✓  (bare URLs can break YAML parsers)
+- `install_command:` with flags: `install_command: "brew install --cask mytool"` ✓
+- Arrays of strings with special chars: use `  - "value: with colon"` list style
+
+Do not invent status values if the template defines valid ones. Preserve existing frontmatter key style in nearby notes.
 
 ## Pretty Obsidian formatting patterns
 Make notes readable in Obsidian, not just valid Markdown:
@@ -102,19 +112,22 @@ Use `scripts/bench_obsidian_second_brain.py --json` for the baseline determinist
 ## Edge cases and fallbacks
 Common edge cases:
 
-- Obsidian CLI installed but Obsidian app not running: use filesystem reads/writes or MCP fallback, then verify paths directly.
+- **Obsidian CLI unavailable or not running**: fall back to filesystem reads/writes (`cat`, `echo >>`, or Python) and verify via `ls` / `head`. Note in the response which method succeeded. Never block on CLI when filesystem is available.
 - iCloud duplicate or stale paths: prefer the live `Brain` vault under `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Brain`; report suspicious duplicate vaults.
 - Existing note conflict: read and summarize the existing note, then ask before overwrite.
-- Ambiguous destination: create in `inbox/quick/` with good frontmatter and breadcrumbs for later filing.
+- **Ambiguous routing** — e.g., an agent tool that's both an MCP server and in `ai-agents/`: check for an existing note in `ai-agents/` first; if absent, check `tech/agent-tools/`; if still absent, create in `ai-agents/` and add a pointer from `tech/guides/agent-tools.md`.
+- Ambiguous destination with no clear section: create in `inbox/quick/` with good frontmatter and breadcrumbs for later filing.
 - Broken links after renames: avoid manual moves without confirmation; Obsidian tracks renames better than raw filesystem moves.
 - Sensitive/NSFW notes: preserve privacy, avoid unnecessary excerpts, and use paths/metadata when enough.
 
 ## Complex eval prompts
 Use these eval prompts when checking future improvements:
 
-1. Find a concept from a vague query, show the breadcrumb trail through guides/backlinks, and identify the most authoritative note.
-2. File a new MCP server from a URL into the correct neighborhood, create a pretty note with frontmatter/callouts/sources, and update the relevant guide idempotently.
-3. Convert a rough paper citation into a literature note with citekey, Brown project links, questions, and reading-queue entry.
-4. Update an existing tool note without clobbering custom sections or duplicating guide links.
-5. Handle Obsidian CLI unavailable by falling back to filesystem verification while still producing a valid note.
-6. Search for hard-to-track data that may live under `ai-agents/`, `tech/`, `coding/`, `daily/`, or `inbox/` using path, property, full-text, and graph passes.
+1. **Vague retrieval**: Find a concept from a vague query (e.g., "the memory thing we built for Hermes"), show the full breadcrumb trail through guides/backlinks, and identify the most authoritative note across `ai-agents/`, `tech/`, `coding/`, `brown/`, `daily/`, and `inbox/`.
+2. **3-hop wiki-walk**: Starting from `guides/weekly-dashboard.md`, walk to the relevant MOC, then to a specific skill or tool note via 3 explicit `[[wikilinks]]` hops.
+3. **Ambiguous routing**: File a new MCP server that could go in `ai-agents/` or `tech/agent-tools/` — show the disambiguation logic, create the note, and update both guides idempotently.
+4. **Duplicate guide-link prevention**: Attempt to add the same link to a guide twice; verify the count remains 1.
+5. **Incomplete citation**: Detect a literature note missing `citekey` and `doi`, explain what's missing, then complete it with full frontmatter and reading-queue entry.
+6. **CLI unavailable fallback**: Obsidian CLI unavailable — produce a valid note via filesystem writes, verify via `head` or Python read, and report which fallback path was used.
+7. **YAML edge cases**: Create a note whose title contains a colon, whose `url` is a full HTTPS address, and whose `aliases` field has two entries — verify the YAML round-trips without parse errors.
+8. **Integrated find-create-link-verify**: Retrieve an existing note, create a related new note that links back to it, append both to the guide page exactly once, then verify all three operations.

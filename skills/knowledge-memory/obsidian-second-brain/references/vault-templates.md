@@ -53,6 +53,8 @@ tool_category: cli | gui-app | system-extension | mcp-server | shell-tool | app 
 install_method: homebrew | manual | app-store | npm | pip | cargo | n/a
 install_command: ""
 url: ""
+aliases:
+  - "common name or abbreviation"
 tags:
   - type/catalog
   - domain/<relevant-domain>
@@ -62,6 +64,8 @@ updated: YYYY-MM-DD
 ```
 
 **Sections:** Description, Install, Usage, Links
+
+> **YAML note:** Quote `url:` and `install_command:` values. Quote `title:` / `name:` if they contain a colon. The `aliases:` list enables Obsidian search by alternate names.
 
 ---
 
@@ -75,6 +79,8 @@ type: reference
 status: draft | stable | outdated
 topic: []
 sources: []
+aliases:
+  - "alternate name or acronym"
 tags:
   - type/reference
 created: YYYY-MM-DD
