@@ -363,6 +363,17 @@ Guide pages are curated index notes with Dataview queries. When adding a new not
 - **Obsidian Linter** — Auto-formatting
 - **BRAT** — Beta plugin manager
 
+
+## Hard-mode operator workflow
+
+For hard-to-track data, breadcrumb following, high-quality note creation, or skill-evaluation work, use `references/operator-playbook.md` before acting. It covers the search ladder, wiki-walk procedure, storage routing, spec sheets, pretty Obsidian formatting, safe modification, verification gates, edge cases, and benchmark metrics.
+
+Run the deterministic benchmark when changing this skill or when behavior feels stale:
+
+```bash
+python ~/.config/skillshare/skills/knowledge-memory/obsidian-second-brain/scripts/bench_obsidian_second_brain.py --json
+```
+
 ## Reference Files
 
 For detailed information on specific topics, see:
