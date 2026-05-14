@@ -52,9 +52,11 @@ Do not push remotes unless Kosta explicitly asks. Local commits are fine and pre
    - resolve conflicts file-by-file, preserving intended local behavior
    - for large/risky merges, use the escalation gate below before finalizing conflict resolution
 5. Reapply or preserve local behavior from git:
-   - compare local branch changes against upstream
+   - compare local branch changes against upstream with `git diff --name-status`, `git diff --stat`, and `git log --cherry-pick` / `git cherry -v`; do not rely on memory or a clean working tree as proof
+   - classify every local-only commit or carried patch as `port`, `superseded`, `retire`, or `split`, with evidence from the diff or upstream replacement
    - keep carried local patches that are still needed
    - drop only patches that upstream clearly absorbed or made obsolete
+   - run the smart merge gate scripts when a legacy/customization branch exists; if `commit-ledger.json`, `symbol-parity.json`, or `deleted-tests.json` contains unresolved items, do not finalize the update until each item is restored, explicitly retired, or documented as upstream-absorbed
 
 ## Large merge escalation gate
 
