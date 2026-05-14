@@ -10,18 +10,26 @@ Use this when the current agent wants Claude Code to act as a separate worker/la
 
 ## Position
 
-Claude Code should usually be launched as a normal CLI subprocess with `claude -p`, not through Hermes `delegate_task(acp_command="claude")`.
+For subscription-quota conservation after the June 15, 2026 Agent SDK credit split, prefer interactive Claude Code with `--prefill` when a human or PTY controller can submit the prefilled prompt. `claude -p` / `--print` is Agent SDK/headless mode and should be reserved for truly unattended scripts, CI, structured JSON capture, or cases where no interactive lane is possible.
 
-Current observed state on this machine: Claude Code 2.1.123 does **not** document raw `claude --acp --stdio` in `claude --help`. Do not copy older or guessed ACP examples that treat the raw `claude` binary as an ACP server.
+Canonical prefilled launch:
+
+```bash
+cat > /tmp/claude-task.md <<'PROMPT'
+<task prompt>
+PROMPT
+
+claude --permission-mode auto --prefill "$(cat /tmp/claude-task.md)"
+```
+
+Current observed state on Kosta's Macs: Claude Code 2.1.140+ accepts hidden `--prefill` even though it is not listed in `claude --help`; official docs warn that starting June 15, 2026 Agent SDK and `claude -p` usage on subscription plans draws from a separate monthly Agent SDK credit. Claude Code docs also state that `claude --help` does not list every flag. Do not copy older or guessed ACP examples that treat the raw `claude` binary as an ACP server.
 
 ## Permission mode default
 
 Prefer Claude Code's `auto` permission mode for delegated Claude Code lanes:
 
 ```bash
-claude --print --input-format text --output-format json \
-  --permission-mode auto \
-  "$(cat /tmp/claude-task.md)"
+claude --permission-mode auto --prefill "$(cat /tmp/claude-task.md)"
 ```
 
 Use `auto` because it lets Claude Code run without repeated permission prompts while still routing risky actions through Claude Code's classifier. It is less disruptive than `plan`/`default` and safer than `bypassPermissions`.
@@ -37,64 +45,58 @@ Important caveats:
 
 Use these defaults:
 
-- **One-shot read-only plan/review**: foreground `claude -p --permission-mode auto --output-format json` by default so inspection commands are not denied; use `plan` only when edits must be impossible.
-- **One-shot implementation with bounded scope**: foreground `claude -p --permission-mode auto`; fall back to `acceptEdits` if auto is unavailable. Independently verify diffs/tests.
-- **Long-running implementation or test loop**: run Claude Code through the host's background process mechanism when available, then poll logs and verify output yourself before reporting success.
+- **Human/PTY-steered plan, review, or implementation**: foreground `claude --permission-mode auto --prefill "$(cat /tmp/claude-task.md)"` so the task opens in interactive Claude Code instead of spending Agent SDK / `-p` credits.
+- **Truly unattended one-shot read-only plan/review**: `claude -p --permission-mode auto --output-format json` only when you need machine-readable output and no human/PTY submit path exists.
+- **Truly unattended one-shot implementation with bounded scope**: `claude -p --permission-mode auto`; fall back to `acceptEdits` if auto is unavailable. Independently verify diffs/tests.
+- **Long-running implementation or test loop**: prefer an interactive PTY/tmux Claude Code lane with `--prefill`; use managed background `claude -p` only when the parent system must consume structured JSON without user interaction.
 - **Interactive back-and-forth**: run Claude Code in PTY mode or use Claude Code's native `--worktree --tmux` when the user wants to steer it manually across multiple turns.
 - **Configured specialist**: add `--agent <name>`.
 - **ACP subagent lane**: use the host's native delegation tool for isolated workers, not raw Claude Code ACP unless using a real ACP adapter.
 
-## Preferred one-shot pattern
+## Preferred prefilled interactive pattern
 
-Run from the repo/workdir that should provide project context. For anything longer than a sentence or two, write the prompt to a file first, then pass the file content as the positional prompt. On Kosta's Mac Studio, do **not** use stdin redirection (`< /tmp/task.md`) with the native Claude Code binary from Hermes background processes — it has produced `stty: stdin isn't a terminal` and no useful result.
-
-Safe tested pattern:
+Run from the repo/workdir that should provide project context. For anything longer than a sentence or two, write the prompt to a file first, then prefill the interactive prompt. This avoids `claude -p` / Agent SDK credits when a human or PTY controller can press Enter and steer the run:
 
 ```bash
 cat > /tmp/claude-task.md <<'PROMPT'
 <task prompt>
 PROMPT
 
-claude --print --input-format text --output-format json \
-  --permission-mode auto \
+claude --permission-mode auto \
   --append-system-prompt "Return files read, commands run, findings, blockers, and exact verification steps." \
-  "$(cat /tmp/claude-task.md)"
+  --prefill "$(cat /tmp/claude-task.md)"
 ```
 
-Smoke-tested on Mac Studio: `claude --print --input-format text --output-format json --permission-mode auto "$(cat /tmp/claude-smoke-prompt.txt)"` returned JSON success with result `OK_CLAUDE_SMOKE` and a `session_id`. Capture that `session_id` from JSON for reliable resume/debugging.
-
-Use `--agent <name>` for a configured Claude Code agent:
+For a configured Claude Code agent:
 
 ```bash
 cat > /tmp/claude-task.md <<'PROMPT'
 <task prompt>
 PROMPT
 
-claude --print --input-format text --output-format json \
-  --agent design-agent-claude \
-  "$(cat /tmp/claude-task.md)"
+claude --agent design-agent-claude \
+  --prefill "$(cat /tmp/claude-task.md)"
 ```
 
-Short one-liners can still use a positional prompt, but avoid `"$(cat prompt.md)"` for real tasks.
+Only use the old `claude --print --input-format text --output-format json ... "$(cat /tmp/claude-task.md)"` pattern when the caller truly needs unattended machine-readable output. On Kosta's Mac Studio, do **not** use stdin redirection (`< /tmp/task.md`) with the native Claude Code binary from Hermes background processes — it has produced `stty: stdin isn't a terminal` and no useful result.
 
 Use `--agents '<json>'` for ephemeral session-local agents when a file-backed agent is overkill.
 
 ## Background pattern
 
-Use the host's background process tracking when Claude Code may take minutes, run tests, or iterate on a non-trivial repo change:
+Use the host's PTY/tmux/background process tracking when Claude Code may take minutes, run tests, or iterate on a non-trivial repo change. Prefer an interactive prefilled lane so it stays on normal Claude Code subscription usage:
 
 ```bash
 cat > /tmp/claude-task.md <<'PROMPT'
 <implementation task>
 PROMPT
 
-claude --print --input-format text --output-format json \
-  --permission-mode auto \
+claude --permission-mode auto \
   --append-system-prompt "Return files changed, checks run, blockers, and exact verification commands." \
-  "$(cat /tmp/claude-task.md)"
+  --prefill "$(cat /tmp/claude-task.md)"
 ```
 
-Start it with the host's managed background task API when one exists, not shell `&`, `nohup`, or `disown`. Use the host's polling/log APIs to inspect progress. If an early background notification says `stty: stdin isn't a terminal`, `no stdin data received`, or asks what to do with `JSON`, that run did not launch correctly; kill/ignore it, relaunch with the positional prompt-file pattern above, and verify the successful run's JSON output separately. When it finishes, parse/capture the `session_id`, verify diffs and tests independently, and only then rely on the report.
+Start it with the host's managed PTY/background task API when one exists, not shell `&`, `nohup`, or `disown`. Use the host's polling/log APIs to inspect progress. If no PTY/interactive submit path exists and machine-readable capture is required, fall back to `claude --print --input-format text --output-format json ...`; parse/capture the `session_id`, verify diffs and tests independently, and only then rely on the report.
 
 ## Interactive / back-and-forth pattern
 
@@ -115,7 +117,8 @@ Use this mode sparingly from Telegram because interactive sessions need active p
 ## Prompting rules
 
 - Pass all task context explicitly; Claude Code does not know the Hermes parent chat unless you include it.
-- Prefer prompt files plus positional prompt expansion (`"$(cat /tmp/claude-task.md)"`) for long prompts on Mac Studio; avoid stdin redirection from Hermes background processes because it can fail with `stty: stdin isn't a terminal`.
+- Prefer prompt files plus `--prefill "$(cat /tmp/claude-task.md)"` for human/PTY-steered Claude Code lanes; avoid `claude -p` unless the run must be unattended or produce structured JSON.
+- Avoid stdin redirection from Hermes background processes because it can fail with `stty: stdin isn't a terminal`.
 - Use `--append-system-prompt` or `--append-system-prompt-file` to preserve Claude Code's default behavior while adding lane-specific instructions.
 - Use `--system-prompt` only when intentionally replacing Claude Code's default system prompt.
 - For `--add-dir`, put the prompt before variadic flags or use the tested prompt-file positional pattern to avoid argument parsing mistakes.
@@ -149,7 +152,7 @@ delegate_task(
 )
 ```
 
-Test the adapter in the current environment before relying on it for real work. For most orchestration, direct `claude -p` is simpler, more debuggable, and closer to Claude Code's documented headless/programmatic mode.
+Test the adapter in the current environment before relying on it for real work. For most human-steered orchestration, interactive `claude --prefill` is simpler and avoids Agent SDK credit burn; use `claude -p` only when the parent system truly needs unattended structured output.
 
 ## Freshness check
 
@@ -157,7 +160,14 @@ Before changing scripts or instructions around Claude Code flags, run:
 
 ```bash
 claude --version
-claude --help | grep -E -- '--agent|--agents|--print|--permission-mode|--tools|--allowedTools|--append-system-prompt|--add-dir|--bare|--worktree|--tmux'
+claude --help | grep -E -- '--agent|--agents|--print|--permission-mode|--tools|--allowedTools|--append-system-prompt|--add-dir|--bare|--worktree|--tmux' || true
+python - <<'PY'
+import subprocess, time
+p = subprocess.Popen(['claude','--prefill','prefill smoke'], cwd='/tmp')
+time.sleep(2)
+print('prefill_accepted_started_interactive=', p.poll() is None)
+p.terminate()
+PY
 claude --print --permission-mode auto --input-format text --output-format json <<< 'Say ok'
 claude --acp --stdio
 ```

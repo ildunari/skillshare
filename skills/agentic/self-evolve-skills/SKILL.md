@@ -135,14 +135,32 @@ Plateau rule:
 
 ## Claude Code invocation
 
-Use Claude Code headless mode. Verify the CLI supports flags before relying on them:
+Prefer the Hermes-native self-evolve lane unless Kosta explicitly asks to burn Claude Code. For Claude Code self-evolve runs after the June 15, 2026 Agent SDK credit split, prefer interactive/PTY workers launched with `--prefill` when a controller can submit and monitor them; reserve `claude --print` for unattended JSON-producing workers where the runner must parse machine output.
+
+Verify the CLI supports the relevant flags before relying on them:
 
 ```bash
 claude --version
-claude --help | grep -E -- '--model|--permission-mode|--print|--output-format|--no-session-persistence'
+claude --help | grep -E -- '--model|--permission-mode|--print|--output-format|--no-session-persistence' || true
+python - <<'PY'
+import subprocess, time
+p = subprocess.Popen(['claude','--prefill','prefill smoke'], cwd='/tmp')
+time.sleep(2)
+print('prefill_accepted_started_interactive=', p.poll() is None)
+p.terminate()
+PY
 ```
 
-Worker lane pattern:
+Interactive worker lane pattern:
+
+```bash
+claude \
+  --model claude-sonnet-4-6 \
+  --permission-mode acceptEdits \
+  --prefill "$(cat /tmp/worker-prompt.md)"
+```
+
+Unattended JSON fallback pattern:
 
 ```bash
 claude --print \
