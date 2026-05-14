@@ -80,7 +80,28 @@ Then restart the calling gateway so the MCP child reloads `~/.plikrc`.
 - `server_info()` — version, feature flags, what's allowed.
 - `list_profiles()` — Plik CLI profiles defined in `~/.plikrc` (currently just the default).
 
-All upload tools return `{"url": "https://macstudio.tailf7342a.ts.net/plik/#/?id=…", "id": "…", "expires_at": "…"}` shape. The URL is what Kosta clicks.
+All upload tools return `{"url": "https://macstudio.tailf7342a.ts.net/plik/#/?id=…", "id": "…", "expires_at": "…"}` shape. The URL points at the bundled Plik UI; rewrite to the custom UI (see "Two UI surfaces" below) only when sharing the link with a human who will load it interactively. For machine-to-machine and quick chat shares, the bundled URL is fine.
+
+## Two UI surfaces
+
+There are two web UIs on top of the same Plik backend:
+
+| Route | What it is | When |
+| --- | --- | --- |
+| `/plik/` | Plik's bundled Angular SPA (1.4.2 stock) | Fallback / admin. Stays untouched as a recovery path. Also the default for share links returned by the MCP tools. |
+| `/plik/ui/` | Custom UI built for Hermes (dark editorial theme, harmonized with the Hermes mini-app dock) | What humans actually use — Hermes mini-app dock Plik tab and Claude hybrid Plik tab both route here. |
+
+The custom UI's HTML/CSS/JS lives at `/Users/Kosta/plik-ui/` and is served by an nginx Docker container (`plik-ui`, port 9080) bound there read-only. Tailscale Funnel forwards `/plik/ui/...` to that nginx; everything else under `/plik` continues to go to the Plik backend at port 8080. Sub-paths:
+
+- `/plik/ui/` — upload composer (drag-drop + all toggles + real QR + share URL).
+- `/plik/ui/inbox.html` — list/filter/revoke your uploads.
+- `/plik/ui/d.html?id=…` — public download page for a share (handles password-protected uploads via HTTP Basic auth modal, renders comments as markdown).
+- `/plik/ui/m/` and `/plik/ui/m/inbox.html` — compact Telegram-mini-app variants of the same pages.
+- `/plik/ui/login.html` — local-login form. After login, sessions auto-redirect.
+
+Auth model in the custom UI: standard Plik cookie + `X-XSRFToken` (cookie has Path=/plik so it's readable from /plik/ui/*). API token auth via `X-PlikToken` is also supported by the server but the UI uses cookies for simplicity.
+
+To swap the public share-URL shape over to the custom UI, edit `shareUrl()` in `/Users/Kosta/plik-ui/assets/api.js` — it already builds `/plik/ui/d.html?id=…`. If MCP tools should return the custom URL shape too, that's a server-side rewrite (Plik's `PlikDomain` only controls the host, not the path).
 
 ## Edge cases
 
@@ -94,7 +115,9 @@ All upload tools return `{"url": "https://macstudio.tailf7342a.ts.net/plik/#/?id
 
 ## Operator
 
-- Backend container: `docker ps --filter name=plik`
+### Plik backend (the API)
+
+- Container: `docker ps --filter name=plik`
 - Config file: `~/plik-config/plikd.cfg` (host-mounted into container)
 - Data + sqlite DB: `~/plik-data/` (host-mounted)
 - Restart: `docker restart plik` (no Hermes-gateway impact)
@@ -103,4 +126,32 @@ All upload tools return `{"url": "https://macstudio.tailf7342a.ts.net/plik/#/?id
 - `FeatureAuthentication = "forced"` — no anonymous uploads, ever
 - `PlikDomain = "https://macstudio.tailf7342a.ts.net"` — Plik generates links matching the public origin
 
-If you change anything operational (config flags, auth model, retention, the mounted-paths), update this skill in canonical Skillshare source, sync, commit, push.
+### Custom UI (the browser frontend)
+
+- Container: `docker ps --filter name=plik-ui` (nginx:alpine, port 9080)
+- Static root: `/Users/Kosta/plik-ui/` (bind-mounted read-only)
+- Nginx config: `/Users/Kosta/plik-ui-conf/nginx.conf`
+- Public path: `https://macstudio.tailf7342a.ts.net/plik/ui` (Tailscale Funnel `/plik/ui` → `127.0.0.1:9080`)
+- Restart: `docker restart plik-ui` (no Hermes-gateway impact)
+- Cache: currently `Cache-Control: no-store` while iterating; can flip back to a short cache once the layout stabilises
+
+To edit the UI: change files under `/Users/Kosta/plik-ui/`, refresh the browser. No build step. Note that `m/index.html` and `m/inbox.html` are byte copies of `index.html` and `inbox.html` with `<body class="tg">` swapped in — patch the parents and re-copy.
+
+### Tailscale Funnel routes (state-changing — be careful)
+
+The funnel is shared across many services. To list the live routing without touching it:
+
+```bash
+tailscale serve status
+```
+
+Funnel routes touching Plik:
+- `/plik` → `http://127.0.0.1:8080/plik` (Plik backend)
+- `/plik/ui` → `http://127.0.0.1:9080` (nginx serving the custom UI)
+- `/plik-ui` → `http://127.0.0.1:9080` (alias — kept while older bot/mini-app links still reference it)
+
+Tailscale uses longest-prefix-match, so `/plik/ui/...` correctly hits nginx while `/plik/...` (anything else) hits Plik. Don't add a `/` route to the same hostname — it shadows everything.
+
+If `tailscale serve --bg --set-path=X ...` accidentally turns off funnel, restore with `tailscale serve --bg --https=443 --set-path=X ...` (note `--https=443` — that's what flags the route as funnel-exposed instead of tailnet-only).
+
+If you change anything operational (config flags, auth model, retention, the mounted-paths, the funnel layout, the UI layout), update this skill in canonical Skillshare source, sync, commit, push.
