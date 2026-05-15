@@ -1,409 +1,168 @@
 ---
-name: Liquid Glass
+name: liquid-glass
 description: >
-  Use for Apple's Liquid Glass design language on iOS 26+, macOS 26+, tvOS 26+,
-  and watchOS 26+. Covers SwiftUI, UIKit, and AppKit adoption, review, migration,
-  glassEffect APIs, morphing, accessibility, and platform fallbacks. Use only
-  when Liquid Glass or the new iOS/macOS glass design style is explicitly in
-  scope; do not proactively convert unrelated UI.
-tags: [liquid-glass, ios26, macos26, swiftui, uikit, appkit, design-system, accessibility, animations, translucency, glass]
+  Use for Apple Liquid Glass work on iOS 26+, iPadOS 26+, and related SwiftUI/UIKit
+  interfaces. Covers native glassEffect APIs, GlassEffectContainer, glassEffectID,
+  glass button styles, tab/search accessories, safe-area bars, background extension,
+  AI chat composers, floating controls, canvas overlays, morphing, motion polish,
+  accessibility, performance, dependency review, and migration from older Material UI.
+  Do not use for generic CSS glassmorphism, Android imitation, static mockups, or
+  non-Apple UI unless the user explicitly asks for inspiration only.
+license: MIT
 ---
-
-<!-- Merged from: apple-ios-liquid-glass-ux, apple-liquid-glass-ux, swiftui-liquid-glass (2026-03-30). Source directories archived 2026-04-01. -->
 
 # Liquid Glass
 
-The complete skill for Apple's Liquid Glass design language on iOS 26+, macOS 26+, tvOS 26+, and watchOS 26+. Covers UX principles, SwiftUI/UIKit/AppKit APIs, design tokens, accessibility, morphing transitions, and migration from older Materials.
+Use this skill to implement, review, or refactor Apple-native Liquid Glass UI. Prefer real SwiftUI/UIKit code and current SDK behavior over visual imitation.
 
-**Important:** Only adopt Liquid Glass when the user explicitly requests it. Do not proactively convert existing `Material`-based UI to glass effects.
+## Activation
 
-## Workflow Decision Tree
+Use when the request mentions Liquid Glass, iOS 26 UI, glassEffect, frosted Apple controls, agent composers, floating toolbars, native tab/search accessories, canvas/media overlays, or migration from older SwiftUI Materials.
 
-Choose the path matching the request:
+Stay out of scope for web CSS glassmorphism, Android, generic mockups, or legacy-only backports. If older OS support is required, keep the iOS 26 native path primary and add a minimal fallback.
 
-### 1) Review an existing feature
-- Inspect where Liquid Glass should and should not be used
-- Verify correct modifier order, shape usage, and container placement
-- Check `#available(iOS 26, *)` handling and sensible fallbacks
-- Run through the Review Checklist below
+## Workflow
 
-### 2) Improve a feature using Liquid Glass
-- Identify target components for glass treatment (surfaces, chips, buttons, cards)
-- Refactor to use `GlassEffectContainer` where multiple glass elements coexist
-- Introduce `.interactive()` only for tappable or focusable elements
-- Apply the accessibility preferences handling
+1. Identify the surface: system navigation, custom control group, composer, sheet/popover, canvas overlay, or migration.
+2. Choose the smallest native API that fits before custom drawing.
+3. Keep content readable; put glass around controls and transient chrome, not dense text bodies.
+4. Add motion only when it clarifies state, navigation, or direct manipulation.
+5. Respect Reduce Transparency, Reduce Motion, Dynamic Type, VoiceOver labels, hit targets, and contrast.
+6. Verify against the active SDK when a symbol is new, beta-sensitive, or absent from the project.
 
-### 3) Implement a new feature using Liquid Glass
-- Design glass surfaces and interactions first (shape, prominence, grouping)
-- Add glass modifiers after layout and appearance modifiers
-- Add morphing transitions only when the view hierarchy changes with animation
+## Native API Priority
 
-### 4) Migrate from older iOS (Material → Liquid Glass)
-1. **Audit and purge** — remove old `Material` fills (`.thinMaterial`, `.regularMaterial`) and custom blur shaders; eliminate redundant backgrounds on bars and sheets
-2. **Adopt `glassEffect`** — replace material fills; choose style (`.clear`, `.regular`, `.regular.tint`)
-3. **Coordinate morphs** — use `glassEffectID` with a shared namespace; without IDs SwiftUI fades instead of morphing
-4. **Fallback gracefully** — guard with `if #available(iOS 26, macOS 26, *)` and provide `.ultraThinMaterial` for older OS
-5. **Respect preferences** — handle Reduce Transparency, Increase Contrast, Reduce Motion, Clear vs Tinted, Dynamic Type
-6. **Platform-specific** — on macOS migrate `NSVisualEffectView` → `NSGlassEffectView`; on iOS migrate `UIVisualEffectView` → `UIGlassEffect`
+Use standard SwiftUI/UIKit components first:
 
-For a detailed migration plan: `docs/ios26-migration.md` and `docs/macos26-migration.md`.
+- Native `NavigationStack`, `TabView`, sheets, popovers, menus, toolbar items, and `.searchable`.
+- `Tab(role: .search)`, `tabViewBottomAccessory`, and `tabBarMinimizeBehavior` for tab/search flows.
+- `safeAreaBar` for iOS 26 custom bars when the active SDK exposes the needed behavior; otherwise use `safeAreaInset`.
+- `backgroundExtensionEffect()` for media/header imagery continuing under sidebars or inspectors.
+- `.buttonStyle(.glass)` and `.buttonStyle(.glassProminent)` before custom button backgrounds.
+- `glassEffect(_:in:)` for custom glass controls, compact overlays, pills, bars, and floating surfaces.
+- `GlassEffectContainer(spacing:)` when multiple glass elements need coherent blending, performance, or morphing.
+- `glassEffectID(_:in:)` for state or hierarchy changes that should morph instead of fade.
+- `NavigationTransition.zoom` with `matchedTransitionSource` for list/grid/card to detail continuity.
+- `.contentTransition(.symbolEffect(.replace))` for send/stop, play/pause, expand/collapse, and mic/waveform swaps.
+- UIKit public APIs such as `UIGlassEffect`, `UIGlassContainerEffect`, `UIButton.Configuration.glass()`, and standard tab/navigation/sheet behavior.
 
----
+Use `glassEffectUnion` only after verifying the active Xcode 26 SDK exposes the needed overload and the design truly needs separated elements to read as one connected glass group. Prefer `GlassEffectContainer` plus stable IDs as the generated default.
 
-## Design Principles
+Never use private APIs such as `_UILiquidLensView`, KVC on private backdrop layers, or hidden UIKit hierarchy assumptions in production code.
 
-1. **Hierarchy via style** — Express elevation: `.clear` for light surfaces, `.regular` for standard panels, `.regular.tint(...)` (prominent) for high-contrast zones. Reserve tints for meaning (primary CTA, destructive actions).
-2. **Group related elements** — Wrap adjacent glass elements in `GlassEffectContainer` to unify sampling and tint. Grouping reduces performance overhead and enables surfaces to merge gracefully.
-3. **Coordinate transitions** — Use `glassEffectID` with a shared `@Namespace` to morph surfaces during navigation or state changes. Without IDs, SwiftUI fades surfaces.
-4. **Vibrancy through dynamic colours** — Use `.foregroundStyle(.primary, .secondary, .tertiary)` so the system adjusts contrast on glass. Avoid hardcoded colours.
-5. **Motion for meaning** — Animate with springs. Keep micro-interactions subtle (< 250 ms). Disable flex/bounce when Reduce Motion is on.
-6. **Accessibility by design** — Honour Reduce Transparency, Increase Contrast, Reduce Motion, Clear vs Tinted preferences, and Dynamic Type. See `accessibility/checklist.md`.
+## Design Rules
 
-## When to Use (and When Not to Use) Liquid Glass
+Liquid Glass is a functional material for controls, navigation, overlays, and transient surfaces. It should preserve context while protecting legibility.
 
-**Good fit:** navigation bars, toolbars, tab bars, cards, panels, sheets, floating composers, and bottom accessory bars — anywhere you want to separate foreground content from rich or dynamic backdrops while keeping context visible.
+Use one main glass slab or morph domain per local control group. Avoid glass-on-glass, busy nested blur, full-screen decorative glare, and blanket tint. Tint should mean something: selected, primary, destructive, recording, streaming, or status.
 
-**Avoid:** long-form text, dense tables, and anywhere readability is paramount. Always replace glass with opaque fills when Reduce Transparency is enabled.
+For AI chat and agent apps, favor:
 
----
+- A glass bottom composer with plain readable messages above it.
+- Floating tool controls, attachment chips, status chips, and canvas/media controls.
+- Collapsible agent metadata and reasoning controls, with plain text bodies.
+- Native tab/search accessories for global active-agent or queue state.
 
-## API Quick Reference
+For visual polish, read `references/animation-visual-patterns.md`. Keep motion short, interruptible, and useful. Prefer morphing, symbol replacement, small scale/opacity changes, and direct manipulation over ornamental shimmer.
 
-### SwiftUI APIs (Cross-Platform: iOS 26+, macOS 26+, tvOS 26+, watchOS 26+)
+## Accessibility And Performance
 
-| API | Purpose | Notes |
-|-----|---------|-------|
-| `glassEffect(_ style: Glass = .regular, in shape: some InsettableShape)` | Apply Liquid Glass with a style (`.clear`, `.regular`, `.regular.tint(color)`) and shape | Replaces `.fill(.thinMaterial)` and Material fills |
-| `GlassEffectContainer(spacing:)` | Group glass elements to share a sampling region, unify tint, and morph when spacing collapses | Use `spacing` to control merge distance |
-| `glassEffectID(_ id: some Hashable, in namespace: Namespace.ID)` | Tag a surface for coordinated morphing across views or states | Source and destination must share the same ID and namespace |
-| `.buttonStyle(.glass)` / `.buttonStyle(.glassProminent)` | Glass-aware button styles; prominent adds a tint for higher contrast | Use `.tint(_:)` to override accent colour |
-| `ConcentricRectangle` | Shape that creates concentric rounded rectangles matching container curvature | For controls nested inside panels |
-| `backgroundExtensionEffect()` | Extends content appearance under sidebars/inspectors | iOS 26+, macOS 26+ |
-| `safeAreaBar(edge:alignment:spacing:content:)` | Register custom bars to use scroll-edge effects | iOS 26+, macOS 26+ |
-
-### UIKit APIs (iOS/iPadOS 26+)
-
-| API | Purpose |
-|-----|---------|
-| `UIGlassEffect(style:)` | Add Liquid Glass to `UIView`; set `tintColor` or `isInteractive` |
-| `UIGlassContainerEffect()` | Group UIKit glass views to unify sampling and merge surfaces |
-| `UIButton.Configuration.glass()` | Standard glass button for UIKit |
-| `UIButton.Configuration.prominentGlass()` | High-contrast glass button variant |
-| `UIBackgroundExtensionView` | Extends backgrounds under sidebars |
-
-### AppKit APIs (macOS 26+)
-
-| API | Purpose |
-|-----|---------|
-| `NSGlassEffectView` | `NSView` subclass for native macOS Liquid Glass |
-| `NSBackgroundExtensionView` | Extends backgrounds under sidebars and inspectors |
-| `NSButton.BezelStyle.glass` | Glass button style for AppKit |
-
-### Backwards Compatibility
-
-For iOS 17–25 and macOS 14–15, fall back to `.ultraThinMaterial` or `.thinMaterial` with a light stroke:
+In reusable components, read:
 
 ```swift
-extension View {
-    func glassOrMaterial(
-        style: Glass = .regular,
-        shape: some InsettableShape = RoundedRectangle(cornerRadius: 12)
-    ) -> some View {
-        if #available(iOS 26, macOS 26, *) {
-            self.glassEffect(style, in: shape)
-        } else {
-            self
-                .background(.ultraThinMaterial, in: shape)
-                .overlay {
-                    shape.strokeBorder(.white.opacity(0.2), lineWidth: 0.5)
-                }
+@Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+@Environment(\.accessibilityReduceMotion) private var reduceMotion
+@Environment(\.colorSchemeContrast) private var contrast
+```
+
+When transparency is reduced, replace glass with an opaque system background plus a subtle border. When motion is reduced, replace morphing and springy transitions with opacity or short ease animations.
+
+Keep hit targets around 44 points or larger. Give icon-only controls useful accessibility labels. Avoid glass behind dense text, tiny labels, or busy media unless you add a dimming or contrast layer.
+
+Control GPU cost by avoiding stacked blur, many independent full-width glass rows, display-link-driven effects, and shader overlays for ordinary controls. Use `GlassEffectContainer` around related elements to help rendering and morphing.
+
+## Code Generation Rules
+
+- Generate real Swift code before design commentary.
+- Use `@available(iOS 26.0, *)` on reusable components that call iOS 26-only APIs.
+- Match the existing project architecture and naming when editing a project.
+- Keep snippets self-contained with sample state and `#Preview` when practical.
+- Put related controls inside one `GlassEffectContainer`.
+- Use stable IDs with `glassEffectID` for morphing between compact and expanded states.
+- Use native tab/search/sheet APIs before recreating system chrome.
+- For drag interactions, use gesture translation and predicted end translation to choose the final state.
+- For visual examples, use real app surfaces: composers, toolbars, panels, canvases, media headers, command palettes, and tab accessories.
+
+## Quick Patterns
+
+### Composer group
+
+```swift
+GlassEffectContainer(spacing: 10) {
+    HStack(spacing: 10) {
+        Button("Tools", systemImage: toolsExpanded ? "xmark" : "plus") {
+            withAnimation(animation) { toolsExpanded.toggle() }
         }
+        .buttonStyle(.glass)
+        .contentTransition(.symbolEffect(.replace))
+
+        TextField("Ask, search, or delegate", text: $prompt, axis: .vertical)
+            .textFieldStyle(.plain)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .glassEffect(.regular.interactive(), in: Capsule())
+
+        Button(isStreaming ? "Stop" : "Send", systemImage: isStreaming ? "stop.fill" : "arrow.up") {
+            submitOrStop()
+        }
+        .buttonStyle(.glassProminent)
+        .contentTransition(.symbolEffect(.replace))
     }
 }
 ```
 
----
-
-## Core Guidelines
-
-- Prefer native Liquid Glass APIs over custom blurs
-- Use `GlassEffectContainer` when multiple glass elements coexist on the same surface
-- Apply `.glassEffect(...)` **after** layout and visual modifiers
-- Use `.interactive()` only for elements that respond to touch/pointer
-- Keep shapes consistent across related elements for a cohesive look
-- Always gate with `#available(iOS 26, *)` and provide a non-glass fallback
-
----
-
-## Quick Code Snippets
-
-### Basic glass surface with fallback
+### Reduced transparency fallback
 
 ```swift
-if #available(iOS 26, *) {
-    Text("Hello")
-        .padding()
-        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 16))
-} else {
-    Text("Hello")
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
-}
-```
-
-### Grouped glass elements (GlassEffectContainer)
-
-```swift
-GlassEffectContainer(spacing: 24) {
-    HStack(spacing: 24) {
-        Image(systemName: "scribble.variable")
-            .frame(width: 72, height: 72)
-            .font(.system(size: 32))
-            .glassEffect()
-        Image(systemName: "eraser.fill")
-            .frame(width: 72, height: 72)
-            .font(.system(size: 32))
-            .glassEffect()
+@ViewBuilder
+func adaptiveGlassBackground<S: InsettableShape>(_ shape: S) -> some View {
+    if reduceTransparency {
+        shape
+            .fill(.background)
+            .overlay(shape.stroke(.separator.opacity(0.6), lineWidth: 0.5))
+    } else {
+        shape.glassEffect(.regular, in: shape)
     }
 }
 ```
 
-### Prominent glass button
-
-```swift
-Button("Confirm") { }
-    .buttonStyle(.glassProminent)
-```
-
-### Morphing transition with glassEffectID
+### Morphing cluster
 
 ```swift
 @Namespace private var glassNamespace
-@State private var isExpanded = false
 
-// Compact state
-if !isExpanded {
-    Text("Tap to expand")
-        .padding()
-        .glassEffect()
-        .glassEffectID("panel", in: glassNamespace)
-} else {
-    VStack { /* expanded content */ }
-        .padding()
-        .glassEffect()
-        .glassEffectID("panel", in: glassNamespace)
-}
-```
-
-### Cross-platform panel
-
-```swift
-struct GlassPanelView: View {
-    var body: some View {
-        if #available(iOS 26, macOS 26, *) {
-            content
-                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        } else {
-            content
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .strokeBorder(.white.opacity(0.2), lineWidth: 0.5)
-                }
-        }
-    }
-    var content: some View {
-        VStack {
-            Text("Cross-Platform Glass").font(.headline)
-            Text("Works on iOS, macOS, tvOS, and watchOS").font(.caption).foregroundStyle(.secondary)
-        }
-        .padding()
+GlassEffectContainer(spacing: 8) {
+    if isExpanded {
+        expandedPanel
+            .glassEffect(.regular, in: .rect(cornerRadius: 24))
+            .glassEffectID("agent-tools", in: glassNamespace)
+    } else {
+        compactButton
+            .glassEffect(.regular.interactive(), in: Capsule())
+            .glassEffectID("agent-tools", in: glassNamespace)
     }
 }
 ```
 
----
+## Read As Needed
 
-## Review Checklist
-
-- **Availability:** `#available(iOS 26, *)` present with fallback UI
-- **Composition:** Multiple glass views wrapped in `GlassEffectContainer`
-- **Modifier order:** `glassEffect` applied after layout/appearance modifiers
-- **Interactivity:** `.interactive()` only where user interaction exists
-- **Transitions:** `glassEffectID` used with `@Namespace` for morphing
-- **Consistency:** Shapes, tinting, and spacing aligned across the feature
-- **Accessibility:** Reduce Transparency handled; no hardcoded colours on glass
-
-## Implementation Checklist
-
-- [ ] Define target elements and desired glass prominence (`.clear`, `.regular`, or prominent/tinted)
-- [ ] Wrap grouped glass elements in `GlassEffectContainer` and tune spacing
-- [ ] Use `.glassEffect(.regular.tint(...).interactive(), in: .rect(cornerRadius: ...))` as needed
-- [ ] Use `.buttonStyle(.glass)` / `.buttonStyle(.glassProminent)` for action buttons
-- [ ] Add morphing transitions with `glassEffectID` when view hierarchy changes
-- [ ] Provide fallback materials/visuals for iOS 17–25 / macOS 14–15
-- [ ] Run accessibility checklist (`accessibility/checklist.md`)
-
----
-
-## Platform-Specific Guidance
-
-### iOS/iPadOS
-
-- Tab bars, navigation bars, and toolbars automatically adopt glass — avoid painting custom backgrounds behind them
-- Half sheets are inset to show content beneath; use `GlassEffectContainer` to group controls in sheets
-- Search fields in toolbars adopt glass; use semantic search tab role for separate search tabs
-- Use `.buttonStyle(.glass)` for toolbar and bar buttons
-
-#### Composer / message input bars
-
-- If the composer is really app chrome, prefer a bottom toolbar item or `safeAreaBar(edge: .bottom)` so the system gives you the proper scroll-edge darkening and bar behaviour.
-- In a `toolbar` / `.bottomBar`, a `TextField` already picks up the correct glass treatment — do **not** add another `.glassEffect()` on top of it.
-- In a custom `safeAreaBar`, apply glass to the outer composer surface, not every child. One shared surface is usually cleaner than separate glass bubbles around the field, attachment button, and send button.
-- Group adjacent composer controls with `GlassEffectContainer` when they should read as one unit and merge naturally during motion.
-- Keep dense editable text readable. For multi-line compose areas, use glass as the shell and keep the actual text-entry region more restrained when needed instead of turning the whole editor into pure translucent glass.
-- Use `.interactive()` only on tappable controls such as send, attach, voice, or reaction buttons — not on static labels or the whole bar.
-
-```swift
-.safeAreaBar(edge: .bottom) {
-    GlassEffectContainer(spacing: 10) {
-        HStack(spacing: 10) {
-            Button {
-                // attach
-            } label: {
-                Image(systemName: "plus")
-            }
-            .buttonStyle(.glass)
-
-            TextField("Message", text: $draft, axis: .vertical)
-                .textFieldStyle(.plain)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 12)
-                .frame(minHeight: 44)
-
-            Button("Send") {
-                // send
-            }
-            .buttonStyle(.glassProminent)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-    }
-    .padding(.horizontal)
-}
-```
-
-### macOS
-
-- Windows adopt rounder corners automatically; glass integrates with standard window controls
-- Use `NavigationSplitView` and `inspector(isPresented:content:)` for glass sidebars and inspectors
-- `backgroundExtensionEffect()` creates seamless edge-to-edge content in split views
-- Use `NSGlassEffectView` for direct AppKit integration (see components below)
-
-```swift
-class GlassViewController: NSViewController {
-    override func loadView() {
-        let glassView = NSGlassEffectView(frame: NSRect(x: 0, y: 0, width: 300, height: 400))
-        self.view = glassView
-        let label = NSTextField(labelWithString: "macOS Glass Surface")
-        glassView.addSubview(label)
-    }
-}
-```
-
-### tvOS
-
-- Glass activates when elements gain focus; use `.focusable()` for custom controls
-- Standard buttons automatically adopt glass on focus
-- Requires Apple TV 4K (2nd generation) or newer
-
-```swift
-Button("Action") { }
-    .buttonStyle(.glass)
-    .focusable()
-```
-
-### watchOS
-
-- Glass limited to system controls; most glass effects are automatic via system
-- Focus on accessibility over decoration
-
----
-
-## System Integration Notes
-
-**iOS 26:** Avoid painting custom backgrounds behind system bars (nav bar, tab bar, toolbar) — conflicts with the system's scroll-edge effect. The system's Clear vs Tinted preference adjusts glass opacity OS-wide.
-
-**macOS 26:** Use standard system APIs (`NavigationSplitView`, `NSSplitViewController`) for automatic glass integration. The system manages window control (traffic lights) positioning over glass surfaces.
-
-**tvOS 26:** Standard focus APIs give glass effects automatically on focus.
-
-**watchOS 26:** Standard system components deliver glass automatically.
-
-More details: `docs/system-integration.md`
-
----
-
-## Components Available
-
-### SwiftUI Components (Cross-Platform)
-- **GlassCard** — flexible card with `.clear`, `.tinted`, and `.prominent` variants
-- **GlassButton** — semantic buttons using `.glass`/`.glassProminent`; kinds map to tints
-- **GlassSheet** — `sheet(isPresented:)` wrapper with system Liquid Glass background
-- **GlassTabBar** — floating tab bar with glass background and glass-styled buttons
-- **GlassToolbarDemo** — navigation/toolbar adopting glass automatically
-- **GlassNavigationDemo** — `NavigationStack` with glass navigation bar
-- **GlassEffectContainerExample** — unified sampling/merging demonstration
-- **GlassMorphingExample** — morphing between compact and expanded surfaces via `glassEffectID`
-- **MaterialVibrancyExamples** — correct vs incorrect foreground styles on glass
-- **AccessibilityExamples** — Reduce Transparency handling
-
-### UIKit Components (iOS/iPadOS)
-- **UIKitGlassExamples** — `UIGlassEffect` and `UIGlassContainerEffect` embedded in SwiftUI
-- **UIKitGlassButton** — `UIButton.Configuration.glass()` and `.prominentGlass()`
-- **UIKitBackgroundExtension** — `UIBackgroundExtensionView` for sidebar extension
-
-### AppKit Components (macOS)
-- **NSGlassEffectViewExample** — AppKit glass in macOS apps
-- **SidebarGlassExample** — macOS sidebar with glass in `NSSplitViewController`
-- **InspectorGlassExample** — inspector panel with `NSGlassEffectView`
-- **WindowChromeExample** — glass titlebar with automatic traffic light positioning
-- **BackgroundExtensionExample** — content extending under glass sidebars
-- **AppKitGlassButton** — `NSButton.BezelStyle.glass`
-
-Component source files live in `components/`. Demo app in `examples/DemoApp/`.
-
----
-
-## Reference Files
-
-| Path | Contents |
-|------|----------|
-| `references/liquid-glass.md` | Full API reference with code examples and checklist |
-| `docs/liquid-glass-principles.md` | Design philosophy and when/why to use glass |
-| `docs/component-guidelines.md` | Component-specific usage guidance |
-| `docs/ios26-migration.md` | Step-by-step migration from iOS 25 and earlier |
-| `docs/macos26-migration.md` | Step-by-step migration on macOS |
-| `docs/composer-patterns.md` | Bottom composer, chat input, and accessory bar patterns |
-| `docs/accessibility-guide.md` | Accessibility implementation details |
-| `docs/dark-mode-patterns.md` | Dark mode / light adaptation patterns |
-| `docs/morphing-guide.md` | `glassEffectID` morphing deep-dive |
-| `docs/system-integration.md` | System bar and chrome integration |
-| `docs/performance-tips.md` | Performance optimization for glass effects |
-| `accessibility/checklist.md` | Comprehensive accessibility verification checklist |
-| `design-tokens/colors.json` | Semantic colour token definitions |
-| `design-tokens/spacing.json` | Spacing scale tokens |
-| `design-tokens/animations.json` | Animation preset tokens |
-| `design-tokens/Colors.swift` | Swift type-safe colour token definitions |
-
-### Further Reading (WWDC 2025)
-- **Session 219 – Meet Liquid Glass:** Introduction, physics, and high-level guidelines
-- **Session 323 – Build a SwiftUI app with the new design:** SwiftUI APIs and migration strategies
-- **Session 284 – Build a UIKit app with the new design:** `UIGlassEffect` and UIKit integration
-- **Session 310 – Build an AppKit app with the new design:** `NSGlassEffectView` and macOS patterns
-
-Official docs:
-- [Adopting Liquid Glass (developer.apple.com)](https://developer.apple.com/documentation/technologyoverviews/adopting-liquid-glass)
-- [Applying Liquid Glass to custom views (Tutorial)](https://developer.apple.com/documentation/swiftui/applying-liquid-glass-to-custom-views)
-- [Materials – Human Interface Guidelines](https://developer.apple.com/design/Human-Interface-Guidelines/materials)
+- `references/api-map.md` for exact API selection.
+- `references/design-principles.md` for Apple-aligned visual rules.
+- `references/animation-visual-patterns.md` for motion, morphing, and visual polish.
+- `references/performance-accessibility.md` for guardrails.
+- `references/component-taxonomy.md` for choosing surfaces.
+- `references/library-evaluation.md` before recommending dependencies.
+- `references/source-evaluation.md` when integrating community research.
+- `recipes/ChatComposerRecipe.swift` for AI composer patterns.
+- `recipes/NativeSearchAccessoryRecipe.swift` for native tab/search/accessory patterns.
+- `snippets/29-background-extension-safe-area-bars.swift` for media extension and safe-area bars.

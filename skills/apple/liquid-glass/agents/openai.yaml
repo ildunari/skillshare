@@ -1,0 +1,8 @@
+interface:
+  display_name: "Liquid Glass"
+  short_description: "Native iOS 26 glass UI guidance"
+  brand_color: "#6A8FC2"
+  default_prompt: "Use $liquid-glass to build a native iOS 26 SwiftUI composer with restrained Liquid Glass controls."
+
+policy:
+  allow_implicit_invocation: true

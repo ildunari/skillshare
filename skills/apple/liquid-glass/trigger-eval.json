@@ -1,0 +1,90 @@
+[
+  {
+    "query": "Build me a native iOS 26 SwiftUI Liquid Glass bottom composer with tools, attachments, send/stop, and voice controls.",
+    "should_trigger": true
+  },
+  {
+    "query": "Refactor this .ultraThinMaterial toolbar into Apple Liquid Glass using glassEffect and GlassEffectContainer.",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a FabBar-like floating tab bar with a prominent plus button for my agent app, but keep it iOS 26-native where possible.",
+    "should_trigger": true
+  },
+  {
+    "query": "Add glassEffectID morphing to this expanding action cluster.",
+    "should_trigger": true
+  },
+  {
+    "query": "Audit my iOS 26 Liquid Glass code for accessibility, Reduce Transparency, and overdraw.",
+    "should_trigger": true
+  },
+  {
+    "query": "Create canvas overlay controls for images and PDFs in SwiftUI with Liquid Glass.",
+    "should_trigger": true
+  },
+  {
+    "query": "Generate a UIKit Liquid Glass segmented control using public APIs only.",
+    "should_trigger": true
+  },
+  {
+    "query": "I need tool-call chips and a collapsible reasoning panel for an AI chat app.",
+    "should_trigger": true
+  },
+  {
+    "query": "Add native iOS 26 search, tabViewBottomAccessory, and a compact active-agent strip to my SwiftUI tab app.",
+    "should_trigger": true
+  },
+  {
+    "query": "Give me a subtle shader-inspired glare on an iOS 26 Liquid Glass generate button.",
+    "should_trigger": true
+  },
+  {
+    "query": "Write CSS glassmorphism cards for a React marketing site.",
+    "should_trigger": false
+  },
+  {
+    "query": "Make an Android Jetpack Compose imitation of Apple's Liquid Glass.",
+    "should_trigger": false
+  },
+  {
+    "query": "Backport iOS 26 glass to iOS 13 only; native iOS 26 is irrelevant.",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a static Figma mockup of a frosted dashboard.",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how transparent OLED displays work physically.",
+    "should_trigger": false
+  },
+  {
+    "query": "Build a plain SwiftUI List of chat messages without any custom controls.",
+    "should_trigger": false
+  },
+  {
+    "query": "Pick a color palette for my iOS app, no implementation needed.",
+    "should_trigger": false
+  },
+  {
+    "query": "Make a Metal water ripple shader for a game background.",
+    "should_trigger": false
+  },
+  {
+    "query": "Fix my UIKit Auto Layout constraints in a settings form.",
+    "should_trigger": false
+  },
+  {
+    "query": "Generate an iOS 18-compatible blur card library for every content cell.",
+    "should_trigger": false
+  },
+  {
+    "query": "make my iPad media detail screen use backgroundExtensionEffect under the inspector and add a safe-area Liquid Glass composer",
+    "should_trigger": true
+  },
+  {
+    "query": "explain what an Info.plist UIDesignRequiresCompatibility key does in an old UIKit app, but do not design any Liquid Glass UI",
+    "should_trigger": false
+  }
+]

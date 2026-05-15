@@ -1,0 +1,69 @@
+{
+  "skill_name": "liquid-glass",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "hey build the bottom composer for our agent client. ios 26 swiftui, liquid glass, attachments row, tools expand, send turns into stop while streaming, voice button too",
+      "expected_output": "A self-contained SwiftUI iOS 26 component with native glassEffect/GlassEffectContainer, stateful send/stop/voice/tools, accessibility considerations, and preview.",
+      "files": [],
+      "expectations": [
+        "The output uses @available(iOS 26.0, *) or an equivalent iOS 26 availability gate.",
+        "The output uses GlassEffectContainer around related composer controls.",
+        "The output includes send/stop icon state change with contentTransition(.symbolEffect(.replace)).",
+        "The output includes Reduce Transparency or Reduce Motion handling.",
+        "The output includes a SwiftUI preview."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "audit this LiquidGlassKit dependency choice: should we ship DnV1eX or Theseus for our iOS 26 app? we only need native iOS 26 UI mostly",
+      "expected_output": "An audit-style recommendation that native APIs should be default, DnV1eX/Theseus are backport/shader inspiration, and private API/App Store risks are called out.",
+      "files": [],
+      "expectations": [
+        "The output recommends native iOS 26 Apple APIs as the default.",
+        "The output classifies DnV1eX/LiquidGlassKit as shader inspiration or backport-only rather than a primary dependency.",
+        "The output classifies Theseus as backport/shader inspiration rather than native iOS 26 replacement.",
+        "The output warns against private APIs or internal UIKit class probing.",
+        "The output mentions App Store or maintenance risk."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "make me a floating glass toolbar over a pdf canvas. swiftui, phone first, annotate/share/page controls, please don't make the whole pdf frosted",
+      "expected_output": "A SwiftUI iOS 26 media/canvas overlay implementation that puts glass only on controls, keeps content readable, includes preview and accessibility notes.",
+      "files": [],
+      "expectations": [
+        "The output keeps the PDF/media content itself non-glass or content-first.",
+        "The output uses glass buttons or glassEffect for overlay controls.",
+        "The output includes annotate and share controls.",
+        "The output uses phone-first safe-area or edge placement.",
+        "The output includes a SwiftUI preview."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "our SwiftUI tab app needs native iOS 26 search, a compact active-agent strip above the tab bar, and the tab bar should get out of the way when scrolling. don't build a fake tab bar unless needed.",
+      "expected_output": "A native TabView/search/accessory implementation that uses searchable, tabViewBottomAccessory, tabBarMinimizeBehavior, and avoids unnecessary custom tab recreation.",
+      "files": [],
+      "expectations": [
+        "The output uses native TabView rather than a custom tab recreation as the first choice.",
+        "The output includes searchable or a search-role tab/search guidance.",
+        "The output uses tabViewBottomAccessory or clearly describes the UIKit bottom accessory equivalent.",
+        "The output uses tabBarMinimizeBehavior or explains why it is not appropriate.",
+        "The output includes a SwiftUI preview."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "i have an iPad split view with a generated image/canvas on the detail side and a right inspector. make the visual backdrop continue under the inspector and add a bottom liquid glass ask-about-this-canvas composer. ios 26 only.",
+      "expected_output": "A native iOS 26 SwiftUI implementation using backgroundExtensionEffect for the media backdrop and safeAreaBar or safeAreaInset for the bottom composer, with glass controls but readable content.",
+      "files": [],
+      "expectations": [
+        "The output uses or explicitly recommends backgroundExtensionEffect for the media/image backdrop under sidebar or inspector chrome.",
+        "The output uses safeAreaBar or safeAreaInset for the bottom composer instead of manual keyboard-overlay positioning.",
+        "The output keeps Liquid Glass on controls/overlays rather than applying glass to the entire content body.",
+        "The output includes @available(iOS 26.0, *) or an equivalent availability guard."
+      ]
+    }
+  ]
+}
