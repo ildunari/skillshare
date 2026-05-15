@@ -1,0 +1,13 @@
+diff --git a/internal/audit/audit.go b/internal/audit/audit.go
+index 832a415..63b3069 100644
+--- a/internal/audit/audit.go
++++ b/internal/audit/audit.go
+@@ -981,7 +981,7 @@ func isScannable(name string) bool {
+ 	switch ext {
+ 	case ".md", ".txt", ".yaml", ".yml", ".json", ".toml",
+ 		".sh", ".bash", ".zsh", ".fish",
+-		".py", ".js", ".ts", ".rb", ".go", ".rs":
++		".py", ".js", ".ts", ".rb", ".go", ".rs", ".swift":
+ 		return true
+ 	}
+ 	// Also scan files without extension (e.g. Makefile, Dockerfile)

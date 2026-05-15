@@ -774,6 +774,9 @@
         "snippets/27-uikit-glass-effect-bridge.swift": "sha256:0a5064f4e297a38bc7a85ccdf7ff8be54bfaf0913611c20970a089c32d72ee1b",
         "snippets/28-source-linked-sheet-command-palette.swift": "sha256:198a6ecea79254c7ff036e0428229b0abf467b2768397ef592c2c6687f820725",
         "snippets/29-background-extension-safe-area-bars.swift": "sha256:8b504d6498bbf61466f0e96cb2eb8434fd7be1b8633df1f18de70f5e629f56e5",
+        "tests/swiftpm-harness/Package.swift": "sha256:75550a2dc4d69d29ef865acb94cf1071278e9d947a75e0f16aa7dfc076fd04cb",
+        "tests/swiftpm-harness/README.md": "sha256:0513bc73d25400e29e305cb11d6455b461c085082eb33225e0417030eaca5089",
+        "tests/swiftpm-harness/Sources/LiquidGlassHarness/LiquidGlassHarness.swift": "sha256:cc1db8d085d50b505246f7e18d1b7c62f2ab2eebbcfc4d151b47493fe28169ca",
         "trigger-eval.json": "sha256:5246be77c18c67fb3c2c700d1888c006cb860c0b044364163dceb9676680d29b"
       }
     }
