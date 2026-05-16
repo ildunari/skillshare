@@ -303,10 +303,10 @@
       "installed_at": "2026-05-01T12:27:24.920081-04:00",
       "repo_url": "https://github.com/AvdLee/SwiftUI-Agent-Skill.git",
       "subdir": "swiftui-expert-skill",
-      "version": "0066966",
-      "tree_hash": "f7732544337abfe9e75772a550b10425c8300a3f",
+      "version": "30c2b01",
+      "tree_hash": "15282882f5b6116aaa1fe5e115b4be320a204598",
       "file_hashes": {
-        "SKILL.md": "sha256:94c3c375764d22ffc7b956f590d997ef32bee781e0e3690580dde01432e9df77",
+        "SKILL.md": "sha256:6621224bf68bbc9d2a9985d5ac310663b78772736018e39846ffa527d2cf0294",
         "references/accessibility-patterns.md": "sha256:bb942dd3b31fa24aa051943a6b7754a2de45a263dda0da3ac9dc2c7ce43b14d2",
         "references/animation-advanced.md": "sha256:45f32863f332379d4831ea736f4f2591688eec4125b325ba52bc9311b3202a30",
         "references/animation-basics.md": "sha256:5c6e8911c4011d772db061d3438ec07491bf1c467ab87af4d56e21720a189c9f",
