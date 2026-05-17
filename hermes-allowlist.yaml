@@ -36,6 +36,7 @@ skills:
 - hermes/profile-gateway-display-settings
 - hermes/telegram-gateway
 - hermes/hermes-agent
+- hermes/hermes-provider-media-configuration
 - ui-ux/hue
 - ui-ux/motion-design
 - hermes-subagents/hermes-subagent-computer-use
