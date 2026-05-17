@@ -65,6 +65,8 @@ Use cheap models for broad reading and clustering, stronger models for judgment 
 
 ## Apply policy
 
+If `hermes_skill_evolution_safe_apply.py --dry-run` rejects a JSON proposal with a bogus target like `/Users/Kosta/.config/skillshare/skills/SKILL.md` while the proposal's `canonical_path` points at a real skill directory, treat that as an applier-path bug, not a substantive rejection. Manually inspect the JSON and apply only the same tiny evidence-backed hunk if the target file and old string match.
+
 Safe automatic changes are narrow:
 
 - exact command/path corrections observed in successful sessions

@@ -66,6 +66,8 @@ For serious image work, choose the relevant reference instead of inventing promp
 
 Use `scripts/image_prompt_audit.py` for complex, text-heavy, API-oriented, or constraint-heavy prompts before spending image quota. It is a static checker; it does not call the API.
 
+For reference-conditioned chart/graph cleanup, use `references/codex-chart-redraw.md`. The important lesson is to label this as a model redraw, not factual restoration; use input images with `detail: original`, stream the Codex Responses image_generation call, preserve latest partial output, and verify labels/data geometry visually before delivery.
+
 ## Verify without burning an image call
 
 From the Hermes repo:
