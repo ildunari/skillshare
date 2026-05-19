@@ -154,6 +154,71 @@ GlassEffectContainer(spacing: 8) {
 }
 ```
 
+## Verified gotchas (selection morph)
+
+These rules are SDK-verified against `iPhoneSimulator26.4.sdk/.../SwiftUICore.framework/.../SwiftUICore.swiftmodule/arm64-apple-ios-simulator.swiftinterface`:
+
+```swift
+public struct Glass : Swift.Equatable, Swift.Sendable {
+  public static var regular: Glass { get }
+  public static var clear: Glass { get }
+  public static var identity: Glass { get }            // ← REAL — frequently misdocumented
+  public func tint(_ color: Color?) -> Glass
+  public func interactive(_ isEnabled: Bool = true) -> Glass
+}
+```
+
+1. **`Glass.identity` IS a real Glass variant.** It renders no visible effect but keeps the view in the morph graph. Use it for the inactive state when you want `GlassEffectContainer` to morph the selection between cells. Many third-party docs and AI agents claim `.identity` doesn't exist — they are wrong; the SDK header above proves it.
+
+2. **Conditional rendering breaks the morph.** `.background { if isSelected { GlassView() } }` makes the container see view-destroyed + view-created, not a morph. Render the glass view for **every** cell at all times: `.identity` when inactive, `.regular.tint(...)` when active. Same `glassEffectID` + namespace across cells.
+
+3. **Don't nest `.glassEffect()` inside another `.glassEffect()` within the same `GlassEffectContainer`.** Two glass surfaces in one container mute each other — the inner tinted glass collapses to a flat color overlay, and foreground text on the inner pill can render invisibly even with `.white` or `.tint`. Use `.ultraThinMaterial` or a regular `.background` for the OUTER rail, and `.glassEffect()` ONLY on the moving inner element.
+
+4. **State-bound animation goes OUTSIDE the `GlassEffectContainer`.** `.animation(_:value:)` on or outside the container is correct (matches the Apple Music tab bar pattern). DON'T wrap state changes in `withAnimation` in the tap handler — it captures stale state on rapid taps and can desync the morph.
+
+### Bonus subtleties
+
+- `GlassEffectContainer(spacing:)` controls how far glass blobs can flow between siblings. 20–24 is typical for a cross-cell selection morph; set to 0 if you specifically want to PREVENT merging.
+- The text-invisibility symptom in #3 is a vibrancy interaction between outer-rail glass and inner-pill glass. Switching the outer rail to Material removes it.
+
+### Canonical morphing-selection pattern
+
+Use this for filter pills, tab bars, segmented controls, any "selection slides between cells" UX:
+
+```swift
+// 1. Render the selection glass for every cell, ALL the time.
+// 2. Use Glass.identity for inactive cells, .regular.tint(...).interactive() for active.
+// 3. Shared @Namespace + same glassEffectID across all cells.
+// 4. Wrap the cell row in GlassEffectContainer with spacing >= the visual gap between cells.
+// 5. Outer container = .ultraThinMaterial (NOT .glassEffect) so cell glass doesn't nest into rail glass.
+// 6. Animation is state-bound on or outside the container, NOT withAnimation in the tap handler.
+
+@Namespace private var ns
+@State private var selection: Item.ID = ...
+
+GlassEffectContainer(spacing: 24) {
+    HStack(spacing: 6) {
+        ForEach(items) { item in
+            Button { selection = item.id } label: { ItemLabel(item) }
+                .frame(maxWidth: .infinity)
+                .background {
+                    Capsule()
+                        .fill(.clear)
+                        .glassEffect(
+                            selection == item.id
+                                ? .regular.tint(.accentColor).interactive()
+                                : .identity,
+                            in: Capsule()
+                        )
+                        .glassEffectID("selection", in: ns)
+                }
+        }
+    }
+}
+.background(.ultraThinMaterial, in: Capsule())   // NOT another glassEffect!
+.animation(.spring(response: 0.34, dampingFraction: 0.82), value: selection)
+```
+
 ## Read As Needed
 
 - `references/api-map.md` for exact API selection.

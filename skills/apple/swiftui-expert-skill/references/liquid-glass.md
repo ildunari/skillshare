@@ -33,6 +33,59 @@ if #available(iOS 26, *) {
 }
 ```
 
+## Verified gotchas (selection morph)
+
+Before you write a "selection slides between cells" UX (filter pills, tab rail, segmented control), internalize these. They are SDK-verified against `iPhoneSimulator26.4.sdk/.../SwiftUICore.framework/.../SwiftUICore.swiftmodule/arm64-apple-ios-simulator.swiftinterface`:
+
+```swift
+public struct Glass : Swift.Equatable, Swift.Sendable {
+  public static var regular: Glass { get }
+  public static var clear: Glass { get }
+  public static var identity: Glass { get }            // ← REAL — frequently misdocumented
+  public func tint(_ color: Color?) -> Glass
+  public func interactive(_ isEnabled: Bool = true) -> Glass
+}
+```
+
+1. **`Glass.identity` IS a real Glass variant in iOS 26.** It renders no visible effect but keeps the view in the morph graph. Use it for inactive cells. Many third-party docs and AI agents claim `.identity` doesn't exist — they are wrong; the SDK header above proves it.
+
+2. **Conditional rendering breaks the morph.** Render glass for **every** cell at all times — `.identity` inactive, `.regular.tint(...)` active. `.background { if isSelected { GlassView() } }` makes the container see view-destroyed + view-created, not a morph.
+
+3. **Don't nest `.glassEffect()` inside another `.glassEffect()` in the same `GlassEffectContainer`.** Two glass surfaces in one container mute each other — the inner tinted glass collapses to a flat color and foreground text on the inner pill can render invisibly. Use `.ultraThinMaterial` for the outer rail, `.glassEffect()` only on the moving inner element.
+
+4. **State-bound animation goes on/outside the `GlassEffectContainer`, not in the tap handler.** `.animation(_:value:)` is correct (matches the Apple Music tab bar pattern). `withAnimation { selection = … }` inside the tap closure captures stale state on rapid taps and can desync the morph.
+
+5. **`glassEffectID` for cross-cell morph uses the SAME id on every cell.** If you give each cell a unique id (`selection == i ? "selected" : "option\(i)"`), the system sees two distinct morph targets and falls back to fade. For a Music-style selection slide, use a stable shared id like `"selection"` on every cell with the same `@Namespace`.
+
+### Canonical pattern
+
+```swift
+@Namespace private var ns
+@State private var selection: Item.ID = ...
+
+GlassEffectContainer(spacing: 24) {
+    HStack(spacing: 6) {
+        ForEach(items) { item in
+            Button { selection = item.id } label: { ItemLabel(item) }
+                .frame(maxWidth: .infinity)
+                .background {
+                    Capsule()
+                        .fill(.clear)
+                        .glassEffect(
+                            selection == item.id
+                                ? .regular.tint(.accentColor).interactive()
+                                : .identity,                       // ← Glass.identity for inactive
+                            in: Capsule()
+                        )
+                        .glassEffectID("selection", in: ns)         // ← same id across cells
+                }
+        }
+    }
+}
+.background(.ultraThinMaterial, in: Capsule())                      // ← Material, NOT glassEffect
+.animation(.spring(response: 0.34, dampingFraction: 0.82), value: selection)
+```
+
 ## Core APIs
 
 ### glassEffect Modifier
@@ -288,33 +341,44 @@ struct GlassCard: View {
 
 ### Segmented Control
 
+Canonical morphing segmented control. See "Verified gotchas" above — this example demonstrates the four rules: `Glass.identity` for inactive cells, render glass unconditionally, Material outer rail (not nested glass), state-bound `.animation(_:value:)` on the container, and a **stable shared** `glassEffectID` across all cells.
+
 ```swift
 struct GlassSegmentedControl: View {
     @Binding var selection: Int
     let options: [String]
-    @Namespace private var animation
+    @Namespace private var ns
 
     var body: some View {
         if #available(iOS 26, *) {
-            GlassEffectContainer(spacing: 4) {
+            GlassEffectContainer(spacing: 24) {
                 HStack(spacing: 4) {
                     ForEach(options.indices, id: \.self) { index in
-                        Button(options[index]) {
-                            withAnimation(.smooth) {
-                                selection = index
-                            }
+                        Button { selection = index } label: {
+                            Text(options[index])
+                                .font(.callout.weight(.semibold))
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .glassEffect(
-                            selection == index ? .prominent.interactive() : .regular.interactive(),
-                            in: .capsule
-                        )
-                        .glassEffectID(selection == index ? "selected" : "option\(index)", in: animation)
+                        .buttonStyle(.plain)
+                        .background {
+                            Capsule()
+                                .fill(.clear)
+                                .glassEffect(
+                                    selection == index
+                                        ? .regular.tint(.accentColor).interactive()
+                                        : .identity,                     // ← Glass.identity for inactive
+                                    in: Capsule()
+                                )
+                                .glassEffectID("selection", in: ns)       // ← same id across cells
+                        }
                     }
                 }
                 .padding(4)
             }
+            .background(.ultraThinMaterial, in: Capsule())               // ← Material, NOT glassEffect
+            .animation(.spring(response: 0.30, dampingFraction: 0.80), value: selection)
         } else {
             Picker("Options", selection: $selection) {
                 ForEach(options.indices, id: \.self) { index in

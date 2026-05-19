@@ -10,6 +10,13 @@ description: >-
   wikilinks, embeds, callouts, properties/frontmatter, tags, comments, highlights, math,
   Mermaid diagrams, block IDs, or any Obsidian-specific syntax when creating or editing notes.
   Supersedes obsidian-markdown for active Obsidian note and syntax work.
+metadata:
+  hermes:
+    command_priority: 430
+    command_aliases:
+      - obsidian
+      - second-brain
+      - brain
 ---
 
 <!-- Merged from: obsidian-markdown (2026-03-31). Source directory archived 2026-04-01. -->
@@ -46,10 +53,16 @@ Prefer the CLI for direct operations. Use `vault="Brain"` on every command. If t
 
 ## Vault Structure
 
-Current observed vault root (Mac Studio, 2026-05-13): `Brain/` exists at `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Brain` with ~707 Markdown notes. Besides the historical `brown/`, `tech/`, and `nsfw/` sections, the live vault also has active top-level sections including `ai-agents/`, `coding/`, `claudian/`, `daily/`, `guides/`, `inbox/`, `sidekick/`, `wiki/`, and `templates/`. Prefer the live filesystem over this static tree if they differ.
+Current observed vault root (Mac Studio, 2026-05-18): `Brain/` exists at `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Brain` with ~720 Markdown notes. Besides the historical `brown/`, `tech/`, and `nsfw/` sections, the live vault also has active top-level sections including `ai-agents/`, `apple/`, `coding/`, `claudian/`, `daily/`, `guides/`, `inbox/`, `sidekick/`, `wiki/`, and `templates/`. Prefer the live filesystem over this static tree if they differ.
 
 ```
 Brain/
+├── apple/              # Apple-platform work
+│   ├── index.md
+│   ├── swift-and-swiftui.md
+│   ├── ios-simulator-and-xcode.md
+│   ├── app-store-and-testflight.md
+│   └── apple-ui-animation-and-motion.md
 ├── brown/              # PhD & Academic (Brown University)
 │   ├── projects/       # PhD research projects
 │   │   ├── fibrosis-delivery/
