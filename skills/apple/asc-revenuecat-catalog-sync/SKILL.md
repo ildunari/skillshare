@@ -1,6 +1,9 @@
 ---
-name: asc-revenuecat-catalog-sync
 description: Reconcile App Store Connect subscriptions and in-app purchases with RevenueCat products, entitlements, offerings, and packages using asc and RevenueCat MCP. Use when setting up or syncing subscription catalogs across ASC and RevenueCat.
+metadata:
+    targets:
+        - codex
+name: asc-revenuecat-catalog-sync
 ---
 
 # asc RevenueCat catalog sync

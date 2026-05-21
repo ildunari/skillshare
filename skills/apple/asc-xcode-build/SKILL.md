@@ -1,6 +1,9 @@
 ---
-name: asc-xcode-build
 description: Build, archive, export, and manage Xcode version/build numbers with asc and xcodebuild before uploading to App Store Connect. Use when you need to create an IPA or PKG for upload.
+metadata:
+    targets:
+        - codex
+name: asc-xcode-build
 ---
 
 # Xcode Build and Export

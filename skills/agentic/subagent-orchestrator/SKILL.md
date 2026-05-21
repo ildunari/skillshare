@@ -1,10 +1,9 @@
 ---
+description: Delegate work to subagents in parallel or sequence across implementation, review, QA, research, and plan execution. Use whenever a task has 2+ independent tracks, spans multiple files or domains, or explicitly calls for subagent delegation, spawning agents, or orchestration. Supersedes `supersub` and absorbs the native delegation patterns from `delegation-autopilot`.
+metadata:
+    targets:
+        - antigravity
 name: subagent-orchestrator
-description: >
-  Delegate work to subagents in parallel or sequence across implementation, review, QA, research,
-  and plan execution. Use whenever a task has 2+ independent tracks, spans multiple files or
-  domains, or explicitly calls for subagent delegation, spawning agents, or orchestration.
-  Supersedes `supersub` and absorbs the native delegation patterns from `delegation-autopilot`.
 ---
 
 <!-- Merged from: dispatching-parallel-agents, subagent-driven-development, subagent-parallel-quality, subagent-parallel-speed (2026-04-01), delegation-autopilot (2026-04-05). Source directories archived or preserved under merged/. -->

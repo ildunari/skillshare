@@ -1,17 +1,11 @@
 ---
-name: forge-agent
-description: >-
-  Delegate coding, planning, or Apple-platform development tasks to ForgeCode
-  via the forge-agent wrapper or raw forge CLI. Use whenever the user mentions
-  Forge, forge-agent, "run this in Forge", "send this off", "delegate this",
-  "run this in another lane", "have Forge do it", "use Forge as the coder",
-  or wants work done by a separate coding agent instead of the current session.
-  Also use when asking about available Forge agents, modes, or capabilities. Do
-  not use for ordinary edits in the current session unless the user specifically
-  wants Forge. For Sage-only investigation, use forge-sage.
+description: Delegate coding, planning, or Apple-platform development tasks to ForgeCode via the forge-agent wrapper or raw forge CLI. Use whenever the user mentions Forge, forge-agent, "run this in Forge", "send this off", "delegate this", "run this in another lane", "have Forge do it", "use Forge as the coder", or wants work done by a separate coding agent instead of the current session. Also use when asking about available Forge agents, modes, or capabilities. Do not use for ordinary edits in the current session unless the user specifically wants Forge. For Sage-only investigation, use forge-sage.
 metadata:
-  author: Codex
-  version: 2.3.0
+    author: Codex
+    targets:
+        - antigravity
+    version: 2.3.0
+name: forge-agent
 ---
 
 # Forge Agent

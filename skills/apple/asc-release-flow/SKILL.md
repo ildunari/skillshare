@@ -1,6 +1,9 @@
 ---
-name: asc-release-flow
 description: Determine whether an app is ready to submit, then drive the App Store release flow with asc, including first-time submission fixes for availability, in-app purchases, subscriptions, Game Center, and App Privacy.
+metadata:
+    targets:
+        - codex
+name: asc-release-flow
 ---
 
 # Release flow (readiness-first)

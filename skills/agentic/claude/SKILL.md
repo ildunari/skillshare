@@ -1,14 +1,9 @@
 ---
-name: claude
-description: >-
-  Use when Kosta invokes /claude from Hermes/Telegram and wants a Claude Code
-  helper lane. Launch Claude Code with an interactive prefilled prompt when
-  appropriate, rather than answering as Hermes directly.
+description: Use when Kosta invokes /claude from Hermes/Telegram and wants a Claude Code helper lane. Launch Claude Code with an interactive prefilled prompt when appropriate, rather than answering as Hermes directly.
 metadata:
-  targets:
-    - hermes-default
-    - hermes-gpt
-    - claude-hermes
+    targets:
+        - antigravity
+name: claude
 ---
 
 # Claude Code Lane Shortcut

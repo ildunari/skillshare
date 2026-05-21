@@ -1,6 +1,9 @@
 ---
-name: swift-agentation
 description: Set up the Swift Agentation visual annotation toolbar in an iOS/SwiftUI/UIKit project. Agentation lets users tap UI elements in a running app, annotate them with notes, and copy structured output (Markdown or JSON) describing the exact view hierarchy, frames, and labels — which they then paste into an AI coding session for precise element identification. Use this skill whenever the user mentions agentation in an iOS context, wants to add element annotation to a Swift app, asks about pointing at UI elements for AI coding, or needs to set up swift-agentation. Also trigger when adding the swift-agentation SPM dependency or configuring Agentation.shared.install().
+metadata:
+    targets:
+        - codex
+name: swift-agentation
 ---
 
 # Swift Agentation Setup

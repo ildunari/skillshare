@@ -1,11 +1,14 @@
 ---
+description: |-
+    Protocol for creating implementation plans before coding. Provides templates for full detailed plans
+    (major changes) and quick plans (simple fixes). Use when starting new features, projects, refactors,
+    or even quick bug fixes. Triggers: planning, implementation plan, feature spec, how to approach,
+    before coding, design document.
+metadata:
+    targets:
+        - antigravity
 name: planning-protocol
 user-invocable: false
-description: |
-  Protocol for creating implementation plans before coding. Provides templates for full detailed plans
-  (major changes) and quick plans (simple fixes). Use when starting new features, projects, refactors,
-  or even quick bug fixes. Triggers: planning, implementation plan, feature spec, how to approach,
-  before coding, design document.
 ---
 
 # Planning Protocol

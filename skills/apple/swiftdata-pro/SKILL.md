@@ -1,10 +1,12 @@
 ---
-name: swiftdata-pro
 description: Writes, reviews, and improves SwiftData code using modern APIs and best practices. Use when reading, writing, or reviewing projects that use SwiftData.
 license: MIT
 metadata:
-  author: Paul Hudson
-  version: "1.0"
+    author: Paul Hudson
+    targets:
+        - codex
+    version: "1.0"
+name: swiftdata-pro
 ---
 
 Write and review SwiftData code for correctness, modern API usage, and adherence to project conventions. Report only genuine problems - do not nitpick or invent issues.

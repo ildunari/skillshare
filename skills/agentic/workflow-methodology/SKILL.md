@@ -1,6 +1,9 @@
 ---
-name: workflow-methodology
 description: Software development methodology adapted from obra/superpowers for structured planning, execution, self-review, debugging, and feedback handling. Use this skill whenever building multi-step code, planning a substantial implementation, debugging complex multi-failure problems, or applying a disciplined self-review loop. It no longer owns specialist code-review routing; use `code-reviewer-guardian` for dedicated review work. Supersedes `superpowers-methodology`.
+metadata:
+    targets:
+        - antigravity
+name: workflow-methodology
 ---
 
 # Workflow Methodology

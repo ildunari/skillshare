@@ -1,6 +1,9 @@
 ---
-name: asc-crash-triage
 description: Triage TestFlight crashes, beta feedback, and performance diagnostics using asc. Use when the user asks about TF crashes, TestFlight crash reports, beta tester feedback, app hangs, disk writes, launch diagnostics, or wants a crash summary for a build or app.
+metadata:
+    targets:
+        - codex
+name: asc-crash-triage
 ---
 
 # asc crash triage

@@ -1,6 +1,9 @@
 ---
-name: orchestration-router
 description: Use when a request spans multiple specialist domains and needs one coordinator to route work, choose the right specialist skills or agents, enforce quality gates, and synthesize one final answer. Supersedes `master-orchestrator-agent`.
+metadata:
+    targets:
+        - antigravity
+name: orchestration-router
 ---
 
 # Orchestration Router

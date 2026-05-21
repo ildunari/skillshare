@@ -1,6 +1,9 @@
 ---
+description: Use when delegating a self-contained coding task to Factory AI's Droid CLI is a better fit than native subagents, especially for alternate models, isolated git worktrees, adjustable autonomy, or Droid multi-agent missions. Do not use when the task depends on Codex-local tools, memory, or rich session context.
+metadata:
+    targets:
+        - antigravity
 name: droid
-description: "Use when delegating a self-contained coding task to Factory AI's Droid CLI is a better fit than native subagents, especially for alternate models, isolated git worktrees, adjustable autonomy, or Droid multi-agent missions. Do not use when the task depends on Codex-local tools, memory, or rich session context."
 ---
 
 # Droid — Factory AI Coding Agent

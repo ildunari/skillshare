@@ -1,6 +1,9 @@
 ---
-name: asc-signing-setup
 description: Set up bundle IDs, capabilities, signing certificates, provisioning profiles, and encrypted signing sync with the asc cli. Use when onboarding a new app, rotating signing assets, or sharing them across a team.
+metadata:
+    targets:
+        - codex
+name: asc-signing-setup
 ---
 
 # asc signing setup

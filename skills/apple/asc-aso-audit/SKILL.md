@@ -1,6 +1,9 @@
 ---
-name: asc-aso-audit
 description: Run an offline ASO audit on canonical App Store metadata under `./metadata` and surface keyword gaps using Astro MCP. Use after pulling metadata with `asc metadata pull`.
+metadata:
+    targets:
+        - codex
+name: asc-aso-audit
 ---
 
 # asc ASO audit

@@ -1,6 +1,9 @@
 ---
-name: asc-metadata-sync
 description: Sync and validate App Store metadata and localizations with asc, including legacy metadata format migration. Use when updating metadata or translations.
+metadata:
+    targets:
+        - codex
+name: asc-metadata-sync
 ---
 
 # asc metadata sync

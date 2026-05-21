@@ -1,6 +1,9 @@
 ---
-name: swift-testing-expert
 description: 'Expert guidance for Swift Testing: test structure, #expect/#require macros, traits and tags, parameterized tests, test plans, parallel execution, async waiting patterns, and XCTest migration. Use when writing new Swift tests, modernizing XCTest suites, debugging flaky tests, or improving test quality and maintainability in Apple-platform or Swift server projects.'
+metadata:
+    targets:
+        - codex
+name: swift-testing-expert
 ---
 
 # Swift Testing

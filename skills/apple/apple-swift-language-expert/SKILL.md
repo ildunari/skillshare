@@ -1,20 +1,23 @@
 ---
+description: |
+    Use when the task is about Swift language semantics or version-sensitive language features rather than app architecture, especially Swift 5.9 through Swift 6.x migrations, macros, ownership, generics, typed throws, Sendable, actors, or strict concurrency changes. Also use when the user asks what changed in a recent Swift release, whether a Swift Evolution proposal is implemented yet, or needs Swift guidance that must be checked against the current toolchain before answering.
+metadata:
+    targets:
+        - codex
 name: apple-swift-language-expert
-user-invocable: false
-description: >
-  Use when the task is about Swift language semantics or version-sensitive language features rather than app architecture, especially Swift 5.9 through Swift 6.x migrations, macros, ownership, generics, typed throws, Sendable, actors, or strict concurrency changes. Also use when the user asks what changed in a recent Swift release, whether a Swift Evolution proposal is implemented yet, or needs Swift guidance that must be checked against the current toolchain before answering.
-version: 2.0.0
 tags:
-  - swift
-  - concurrency
-  - actors
-  - sendable
-  - macros
-  - generics
-  - typed-throws
-  - ownership
-  - performance
-  - swift-6
+    - swift
+    - concurrency
+    - actors
+    - sendable
+    - macros
+    - generics
+    - typed-throws
+    - ownership
+    - performance
+    - swift-6
+user-invocable: false
+version: 2.0.0
 ---
 
 # apple‑swift‑language‑expert

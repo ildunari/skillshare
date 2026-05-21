@@ -1,6 +1,9 @@
 ---
-name: asc-shots-pipeline
 description: Orchestrate iOS screenshot automation with xcodebuild/simctl for build-run, AXe for UI actions, JSON settings and plan files, Koubou-based framing (`asc screenshots frame`), and screenshot upload (`asc screenshots upload`). Use when users ask for automated screenshot capture, AXe-driven simulator flows, frame composition, or screenshot-to-upload pipelines.
+metadata:
+    targets:
+        - codex
+name: asc-shots-pipeline
 ---
 
 # asc screenshots pipeline (xcodebuild -> AXe -> frame -> asc)

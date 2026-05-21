@@ -1,19 +1,9 @@
 ---
+description: 'Orchestrate phased document editing, data analysis, and knowledge work using sub-agents for research, drafting, verification, and review — with integrity gates between phases. Use whenever the task involves multi-phase document restructuring, data-driven content editing, grant or manuscript revision, spreadsheet analysis with narrative output, cross-document consistency work, or any productivity task where claims must be verified against source data and changes must be auditable. Triggers on: multi-section document edits, "restructure this grant/paper/report," "update these numbers throughout," "verify these claims against the data," "consolidate scattered content," "rewrite this section with new data," tracked-change workflows, or any productivity task requiring phased implementation with quality gates. Supersedes ad-hoc document editing when the work spans multiple sections, involves data verification, or requires review before finalizing.'
+metadata:
+    targets:
+        - antigravity
 name: agentic-loop-productivity
-description: >
-  Orchestrate phased document editing, data analysis, and knowledge work using
-  sub-agents for research, drafting, verification, and review — with integrity
-  gates between phases. Use whenever the task involves multi-phase document
-  restructuring, data-driven content editing, grant or manuscript revision,
-  spreadsheet analysis with narrative output, cross-document consistency work,
-  or any productivity task where claims must be verified against source data
-  and changes must be auditable. Triggers on: multi-section document edits,
-  "restructure this grant/paper/report," "update these numbers throughout,"
-  "verify these claims against the data," "consolidate scattered content,"
-  "rewrite this section with new data," tracked-change workflows, or any
-  productivity task requiring phased implementation with quality gates.
-  Supersedes ad-hoc document editing when the work spans multiple sections,
-  involves data verification, or requires review before finalizing.
 ---
 
 # Agentic Loop — Productivity

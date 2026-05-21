@@ -1,6 +1,9 @@
 ---
-name: "Brainstorming"
-description: "Use when the user wants to shape a new feature, component, workflow, or behavior change and the requirements or design are still being figured out, especially when they ask to brainstorm, spec, compare approaches, or clarify intent before implementation."
+description: Use when the user wants to shape a new feature, component, workflow, or behavior change and the requirements or design are still being figured out, especially when they ask to brainstorm, spec, compare approaches, or clarify intent before implementation.
+metadata:
+    targets:
+        - antigravity
+name: Brainstorming
 ---
 
 # Brainstorming Ideas Into Designs

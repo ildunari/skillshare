@@ -1,22 +1,14 @@
 ---
-name: liquid-glass-mcp-ui-kit
-description: >
-  Build React, Next.js, Framer, Motion, or MCP app interfaces with a
-  liquid-glass visual system and reusable code library. Trigger when the
-  user wants Apple-style liquid glass, advanced glassmorphism, frosted
-  translucent UI with refraction/reflection, SVG displacement-map
-  distortion, gooey or glassy controls, Framer-style liquid-glass motion,
-  or wants to port liquid-glass inspiration into production code for chat
-  UIs, tool panels, command docks, sidebars, modals, players, and
-  dashboards in MCP or agentic apps. Do not trigger for ordinary flat UI,
-  generic CSS cleanup, non-glass branding work, or backend-only MCP server
-  tasks.
-compatibility: >
-  Cross-platform skill format for Claude Code, Codex CLI, Cursor, ChatGPT,
-  and similar coding agents.
+compatibility: |
+    Cross-platform skill format for Claude Code, Codex CLI, Cursor, ChatGPT, and similar coding agents.
+description: |
+    Build React, Next.js, Framer, Motion, or MCP app interfaces with a liquid-glass visual system and reusable code library. Trigger when the user wants Apple-style liquid glass, advanced glassmorphism, frosted translucent UI with refraction/reflection, SVG displacement-map distortion, gooey or glassy controls, Framer-style liquid-glass motion, or wants to port liquid-glass inspiration into production code for chat UIs, tool panels, command docks, sidebars, modals, players, and dashboards in MCP or agentic apps. Do not trigger for ordinary flat UI, generic CSS cleanup, non-glass branding work, or backend-only MCP server tasks.
 metadata:
-  merged_from: liquid-glass + liquid-glass-mcp-ui
-  focus: production liquid-glass systems for MCP apps and web apps
+    focus: production liquid-glass systems for MCP apps and web apps
+    merged_from: liquid-glass + liquid-glass-mcp-ui
+    targets:
+        - codex
+name: liquid-glass-mcp-ui-kit
 ---
 
 # Liquid Glass MCP UI Kit

@@ -1,24 +1,23 @@
 ---
+description: |
+    Use when researching Apple-platform engineering topics such as iOS, macOS, Swift, Xcode, WWDC changes, Apple APIs, library choices, migration risk, or best practices, and the user needs a structured evidence-backed discovery workflow. Prefer this for open-ended Apple developer research that should end in citations, weighted findings, and actionable recommendations, not for generic web research outside the Apple ecosystem.
+metadata:
+    targets:
+        - codex
 name: apple-platform-research
-user-invocable: false
-description: >
-  Use when researching Apple-platform engineering topics such as iOS, macOS, Swift, Xcode,
-  WWDC changes, Apple APIs, library choices, migration risk, or best practices, and the user needs
-  a structured evidence-backed discovery workflow. Prefer this for open-ended Apple developer research
-  that should end in citations, weighted findings, and actionable recommendations, not for generic
-  web research outside the Apple ecosystem.
-version: 1.0.0
 tags:
-  - ios
-  - macos
-  - swift
-  - apple
-  - research
-  - discovery
-  - wwdc
-  - documentation
-  - libraries
-  - design
+    - ios
+    - macos
+    - swift
+    - apple
+    - research
+    - discovery
+    - wwdc
+    - documentation
+    - libraries
+    - design
+user-invocable: false
+version: 1.0.0
 ---
 
 # Apple Platform Research

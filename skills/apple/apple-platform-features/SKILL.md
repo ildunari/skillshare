@@ -1,35 +1,33 @@
 ---
-name: apple-platform-features
-user-invocable: false
-description: >
-  Use when implementing, reviewing, or scaffolding Apple platform capabilities
-  beyond core UI, especially WidgetKit, App Intents and Shortcuts, Live
-  Activities, ActivityKit and Dynamic Island, notifications, background tasks,
-  App Clips, StoreKit 2, universal links, Handoff, extensions, or Focus
-  Filters across iOS, iPadOS, macOS, and watchOS. Do not use for basic app
-  architecture or general SwiftUI layout work.
-version: 1.2.0
+description: |
+    Use when implementing, reviewing, or scaffolding Apple platform capabilities beyond core UI, especially WidgetKit, App Intents and Shortcuts, Live Activities, ActivityKit and Dynamic Island, notifications, background tasks, App Clips, StoreKit 2, universal links, Handoff, extensions, or Focus Filters across iOS, iPadOS, macOS, and watchOS. Do not use for basic app architecture or general SwiftUI layout work.
+ios_versions_covered: 17-26
 last_verified: "2025-10-28"
-update_frequency: "annually"
-next_review: "2026-06"
-ios_versions_covered: "17-26"
+metadata:
+    targets:
+        - codex
+name: apple-platform-features
+next_review: 2026-06
 tags:
-  - ios
-  - ipadOS
-  - macOS
-  - watchOS
-  - swift
-  - widgetkit
-  - app-intents
-  - activitykit
-  - notifications
-  - background-tasks
-  - storekit
-  - app-clips
-  - universal-links
-  - handoff
-  - extensions
-  - focus-filters
+    - ios
+    - ipadOS
+    - macOS
+    - watchOS
+    - swift
+    - widgetkit
+    - app-intents
+    - activitykit
+    - notifications
+    - background-tasks
+    - storekit
+    - app-clips
+    - universal-links
+    - handoff
+    - extensions
+    - focus-filters
+update_frequency: annually
+user-invocable: false
+version: 1.2.0
 ---
 
 # apple-platform-features

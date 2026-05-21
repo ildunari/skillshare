@@ -1,6 +1,9 @@
 ---
-name: codex-cloud-parallel
 description: Use when parallel exploration is valuable (design options, alternative fixes, competing refactors). Offload to Codex cloud tasks and return only the best result.
+metadata:
+    targets:
+        - antigravity
+name: codex-cloud-parallel
 ---
 
 ## When to use

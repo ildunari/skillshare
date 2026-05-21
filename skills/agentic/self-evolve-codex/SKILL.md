@@ -1,16 +1,11 @@
 ---
-name: self-evolve-codex
-description: >
-  Use when the user asks Codex to set or run a goal for iterative self-improvement,
-  skill improvement, prompt optimization, eval-driven refinement, plateau-based
-  loops, or bounded autonomous runs such as "improve this skill over 20 runs",
-  "goal - write yourself a goal", "keep benchmarking until plateau", or "use
-  /goal to evolve this skill". Do not use for one-shot edits without metrics.
+description: |
+    Use when the user asks Codex to set or run a goal for iterative self-improvement, skill improvement, prompt optimization, eval-driven refinement, plateau-based loops, or bounded autonomous runs such as "improve this skill over 20 runs", "goal - write yourself a goal", "keep benchmarking until plateau", or "use /goal to evolve this skill". Do not use for one-shot edits without metrics.
 metadata:
-  targets:
-    - codex
-    - skillshare
-  category: agentic
+    category: agentic
+    targets:
+        - antigravity
+name: self-evolve-codex
 ---
 
 # Self-Evolve Codex

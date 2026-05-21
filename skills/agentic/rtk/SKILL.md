@@ -1,7 +1,11 @@
 ---
-name: "RTK Token Saver"
-description: "Use when you are about to run shell commands in an agent coding workflow and want RTK to compress command output and save tokens without changing the underlying command behavior. Trigger on repeated build, test, git, search, or log commands where output volume matters, but skip it when a raw command is clearer for correctness, debugging, or meta RTK checks."
-alwaysAllow: ["Bash"]
+alwaysAllow:
+    - Bash
+description: Use when you are about to run shell commands in an agent coding workflow and want RTK to compress command output and save tokens without changing the underlying command behavior. Trigger on repeated build, test, git, search, or log commands where output volume matters, but skip it when a raw command is clearer for correctness, debugging, or meta RTK checks.
+metadata:
+    targets:
+        - antigravity
+name: RTK Token Saver
 ---
 
 # RTK (Rust Token Killer) - Token-Optimized Commands

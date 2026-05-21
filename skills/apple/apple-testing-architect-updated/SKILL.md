@@ -1,31 +1,34 @@
 ---
-name: apple-testing-architect
-user-invocable: false
-description: Comprehensive iOS/macOS testing skill covering Swift Testing (Xcode 16+), XCTest, XCUITest, snapshot testing, and CI/CD. Includes test generation, mock creation, coverage analysis, and flake detection. Use when working with Apple platform testing, migrating to Swift Testing, setting up CI/CD pipelines, or debugging test issues.
-version: 1.0.0
-last_verified: "2025-10-28"
-xcode_versions: "15+ (XCTest), 16+ (Swift Testing)"
-swift_testing_status: "early_adoption"
-update_frequency: "quarterly"
-owner: team/mobile-infra
 capabilities:
-  - test_template_generation
-  - swift_protocol_mock_generation
-  - coverage_parsing_reporting
-  - flaky_test_detection
-  - framework_migration_guidance
+    - test_template_generation
+    - swift_protocol_mock_generation
+    - coverage_parsing_reporting
+    - flaky_test_detection
+    - framework_migration_guidance
+description: Comprehensive iOS/macOS testing skill covering Swift Testing (Xcode 16+), XCTest, XCUITest, snapshot testing, and CI/CD. Includes test generation, mock creation, coverage analysis, and flake detection. Use when working with Apple platform testing, migrating to Swift Testing, setting up CI/CD pipelines, or debugging test issues.
+last_verified: "2025-10-28"
+metadata:
+    targets:
+        - codex
+name: apple-testing-architect
+owner: team/mobile-infra
 requires:
-  - Xcode 15+ (XCTest); Xcode 16+ (Swift Testing)
-  - Python 3.10+
-  - Xcode CLT tools in PATH (xcodebuild, xcresulttool, xccov, llvm-cov)
+    - Xcode 15+ (XCTest); Xcode 16+ (Swift Testing)
+    - Python 3.10+
+    - Xcode CLT tools in PATH (xcodebuild, xcresulttool, xccov, llvm-cov)
+swift_testing_status: early_adoption
 tags:
-  - testing
-  - swift
-  - ios
-  - ci
-  - swift-testing
-  - xctest
-  - xcuitest
+    - testing
+    - swift
+    - ios
+    - ci
+    - swift-testing
+    - xctest
+    - xcuitest
+update_frequency: quarterly
+user-invocable: false
+version: 1.0.0
+xcode_versions: 15+ (XCTest), 16+ (Swift Testing)
 ---
 
 # Apple Testing Architect

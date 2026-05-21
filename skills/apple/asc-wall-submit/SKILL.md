@@ -1,6 +1,9 @@
 ---
-name: asc-wall-submit
 description: Submit or update a Wall of Apps entry in the App-Store-Connect-CLI repository using `asc apps wall submit`. Use when the user says "submit to wall of apps", "add my app to the wall", or "wall-of-apps".
+metadata:
+    targets:
+        - codex
+name: asc-wall-submit
 ---
 
 # asc wall submit

@@ -1,26 +1,26 @@
 ---
-name: apple-data-persistence
-user-invocable: false
-description: >
-  Comprehensive guide for Apple-platform data persistence: SwiftData, Core Data, CloudKit, UserDefaults,
-  FileManager, and Keychain with migrations, sync patterns, and security. Use when: building iOS/macOS apps
-  with local or cloud-synced data, schema design, data migration planning, SwiftData vs Core Data decisions,
-  CloudKit sync implementation, offline-first architectures, or troubleshooting persistence issues.
-version: 2.0.0
+description: |
+    Comprehensive guide for Apple-platform data persistence: SwiftData, Core Data, CloudKit, UserDefaults, FileManager, and Keychain with migrations, sync patterns, and security. Use when: building iOS/macOS apps with local or cloud-synced data, schema design, data migration planning, SwiftData vs Core Data decisions, CloudKit sync implementation, offline-first architectures, or troubleshooting persistence issues.
 last_verified: "2025-10-28"
-update_frequency: "quarterly"
-swift_platforms: "iOS 17+, macOS 14+, watchOS 10+, visionOS 1+"
+metadata:
+    targets:
+        - codex
+name: apple-data-persistence
+swift_platforms: iOS 17+, macOS 14+, watchOS 10+, visionOS 1+
 tags:
-  - ios
-  - macos
-  - swift
-  - swiftdata
-  - coredata
-  - cloudkit
-  - persistence
-  - migration
-  - sync
-  - offline-first
+    - ios
+    - macos
+    - swift
+    - swiftdata
+    - coredata
+    - cloudkit
+    - persistence
+    - migration
+    - sync
+    - offline-first
+update_frequency: quarterly
+user-invocable: false
+version: 2.0.0
 ---
 
 # Apple Data Persistence (2025 Edition)

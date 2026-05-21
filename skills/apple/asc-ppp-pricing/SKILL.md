@@ -1,6 +1,9 @@
 ---
-name: asc-ppp-pricing
 description: Set territory-specific pricing for subscriptions and in-app purchases using current asc setup, pricing summary, price import, and price schedule commands. Use when adjusting prices by country or implementing localized PPP strategies.
+metadata:
+    targets:
+        - codex
+name: asc-ppp-pricing
 ---
 
 # PPP pricing (per-territory pricing)

@@ -1,23 +1,22 @@
 ---
+description: |
+    Use when an iOS or macOS app has a performance problem or needs profiling guidance, especially for startup time, scrolling or animation hitches, memory growth, energy use, build time, app size, Instruments traces, SwiftUI/UIKit/AppKit rendering cost, or regression measurement. Do not use for general bug fixing without a clear performance angle.
+metadata:
+    targets:
+        - codex
 name: apple-performance-engineer
-user-invocable: false
-description: >
-  Use when an iOS or macOS app has a performance problem or needs profiling
-  guidance, especially for startup time, scrolling or animation hitches,
-  memory growth, energy use, build time, app size, Instruments traces,
-  SwiftUI/UIKit/AppKit rendering cost, or regression measurement. Do not use
-  for general bug fixing without a clear performance angle.
-version: 1.0.0
 tags:
-  - iOS
-  - macOS
-  - performance
-  - Instruments
-  - Swift
-  - SwiftUI
-  - GCD
-  - CoreAnimation
-  - Metal
+    - iOS
+    - macOS
+    - performance
+    - Instruments
+    - Swift
+    - SwiftUI
+    - GCD
+    - CoreAnimation
+    - Metal
+user-invocable: false
+version: 1.0.0
 ---
 
 # Apple Performance Engineer — Skill

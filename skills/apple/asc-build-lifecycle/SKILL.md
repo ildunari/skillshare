@@ -1,6 +1,9 @@
 ---
-name: asc-build-lifecycle
 description: Track build processing, find latest builds, and clean up old builds with asc. Use when managing build retention or waiting on processing.
+metadata:
+    targets:
+        - codex
+name: asc-build-lifecycle
 ---
 
 # asc build lifecycle

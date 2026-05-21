@@ -1,28 +1,27 @@
 ---
+description: |
+    Use when designing, scaffolding, or reviewing **native macOS** UX with **AppKit + SwiftUI**, especially for windows, menus, toolbars, sidebars, preferences, status bar apps, keyboard navigation, first-responder behavior, drag and drop, focus handling, and accessibility. Do not use for general Apple UI work that is not macOS-specific.
+metadata:
+    targets:
+        - codex
 name: apple-macos-ux-full
-user-invocable: false
-description: >
-  Use when designing, scaffolding, or reviewing **native macOS** UX with
-  **AppKit + SwiftUI**, especially for windows, menus, toolbars, sidebars,
-  preferences, status bar apps, keyboard navigation, first-responder behavior,
-  drag and drop, focus handling, and accessibility. Do not use for general
-  Apple UI work that is not macOS-specific.
-version: 1.0.0
 tags:
-  - macOS
-  - AppKit
-  - SwiftUI
-  - UX
-  - Toolbar
-  - Menu
-  - Window
-  - Accessibility
-  - StatusBar
-  - Preferences
-  - NSWindow
-  - NSToolbar
-  - NavigationSplitView
-  - MenuBarExtra
+    - macOS
+    - AppKit
+    - SwiftUI
+    - UX
+    - Toolbar
+    - Menu
+    - Window
+    - Accessibility
+    - StatusBar
+    - Preferences
+    - NSWindow
+    - NSToolbar
+    - NavigationSplitView
+    - MenuBarExtra
+user-invocable: false
+version: 1.0.0
 ---
 
 # apple-macos-ux-full

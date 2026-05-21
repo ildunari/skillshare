@@ -1,6 +1,9 @@
 ---
-name: asc-whats-new-writer
 description: Generate engaging, localized App Store release notes (What's New) from git log, bullet points, or free text using canonical metadata under `./metadata`. Optionally pairs with promotional text updates.
+metadata:
+    targets:
+        - codex
+name: asc-whats-new-writer
 ---
 
 # asc What's New Writer

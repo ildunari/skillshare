@@ -1,11 +1,14 @@
 ---
+description: |-
+    Guide for orchestrating sub-agents effectively. Includes decision matrix for when to spawn agents,
+    prompt templates, report format requirements, and context management best practices.
+    Use when coordinating multi-file changes, delegating specialized work, or managing context.
+    Triggers: sub-agent, delegate, spawn agent, orchestrate, context management, multi-file.
+metadata:
+    targets:
+        - antigravity
 name: orchestration-guide
 user-invocable: false
-description: |
-  Guide for orchestrating sub-agents effectively. Includes decision matrix for when to spawn agents,
-  prompt templates, report format requirements, and context management best practices.
-  Use when coordinating multi-file changes, delegating specialized work, or managing context.
-  Triggers: sub-agent, delegate, spawn agent, orchestrate, context management, multi-file.
 ---
 
 # Orchestration Guide

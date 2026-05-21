@@ -1,34 +1,32 @@
 ---
-name: apple-architecture-patterns
-user-invocable: false
-description: >
-  Use when designing, comparing, refactoring, or reviewing architecture for
-  iOS or macOS apps, especially for MVVM, The Composable Architecture (TCA),
-  Clean Architecture, VIPER, Coordinators, Repository and dependency-injection
-  patterns, modular Swift Package structure, Swift 6+, Observation, or
-  architecture-level testing decisions. Do not use for narrow UI-only work
-  that does not involve an app-structure choice.
-version: 2.0.0
+description: |
+    Use when designing, comparing, refactoring, or reviewing architecture for iOS or macOS apps, especially for MVVM, The Composable Architecture (TCA), Clean Architecture, VIPER, Coordinators, Repository and dependency-injection patterns, modular Swift Package structure, Swift 6+, Observation, or architecture-level testing decisions. Do not use for narrow UI-only work that does not involve an app-structure choice.
 last_verified: "2025-10-28"
-update_frequency: "quarterly"
-third_party_versions:
-  tca: "Check pointfree.co for latest"
-swift_version: "6.0+"
+metadata:
+    targets:
+        - codex
+name: apple-architecture-patterns
+swift_version: 6.0+
 tags:
-  - iOS
-  - macOS
-  - Swift
-  - SwiftUI
-  - Architecture
-  - MVVM
-  - TCA
-  - CleanArchitecture
-  - VIPER
-  - Coordinators
-  - Repository
-  - DependencyInjection
-  - SwiftPackageManager
-  - Testing
+    - iOS
+    - macOS
+    - Swift
+    - SwiftUI
+    - Architecture
+    - MVVM
+    - TCA
+    - CleanArchitecture
+    - VIPER
+    - Coordinators
+    - Repository
+    - DependencyInjection
+    - SwiftPackageManager
+    - Testing
+third_party_versions:
+    tca: Check pointfree.co for latest
+update_frequency: quarterly
+user-invocable: false
+version: 2.0.0
 ---
 
 # Apple Architecture Patterns — Claude Agent Skill

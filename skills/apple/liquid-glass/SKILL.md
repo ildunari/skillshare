@@ -1,14 +1,11 @@
 ---
-name: liquid-glass
-description: >
-  Use for Apple Liquid Glass work on iOS 26+, iPadOS 26+, and related SwiftUI/UIKit
-  interfaces. Covers native glassEffect APIs, GlassEffectContainer, glassEffectID,
-  glass button styles, tab/search accessories, safe-area bars, background extension,
-  AI chat composers, floating controls, canvas overlays, morphing, motion polish,
-  accessibility, performance, dependency review, and migration from older Material UI.
-  Do not use for generic CSS glassmorphism, Android imitation, static mockups, or
-  non-Apple UI unless the user explicitly asks for inspiration only.
+description: |
+    Use for Apple Liquid Glass work on iOS 26+, iPadOS 26+, and related SwiftUI/UIKit interfaces. Covers native glassEffect APIs, GlassEffectContainer, glassEffectID, glass button styles, tab/search accessories, safe-area bars, background extension, AI chat composers, floating controls, canvas overlays, morphing, motion polish, accessibility, performance, dependency review, and migration from older Material UI. Do not use for generic CSS glassmorphism, Android imitation, static mockups, or non-Apple UI unless the user explicitly asks for inspiration only.
 license: MIT
+metadata:
+    targets:
+        - codex
+name: liquid-glass
 ---
 
 # Liquid Glass

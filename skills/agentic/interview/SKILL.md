@@ -1,9 +1,13 @@
 ---
+allowed-tools: AskUserQuestion, Write
+argument-hint:
+    - instructions
+description: Interview user in-depth to create a detailed spec. Use when the user wants to brainstorm a feature, plan an implementation, or needs help thinking through requirements. Triggers on requests like "interview me about", "help me spec out", "let's plan", or explicit /interview calls.
+metadata:
+    targets:
+        - antigravity
 name: interview
 user-invocable: true
-argument-hint: [instructions]
-description: Interview user in-depth to create a detailed spec. Use when the user wants to brainstorm a feature, plan an implementation, or needs help thinking through requirements. Triggers on requests like "interview me about", "help me spec out", "let's plan", or explicit /interview calls.
-allowed-tools: AskUserQuestion, Write
 ---
 
 # Interview Skill

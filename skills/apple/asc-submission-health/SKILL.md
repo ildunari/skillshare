@@ -1,6 +1,9 @@
 ---
-name: asc-submission-health
 description: Preflight App Store submissions, submit builds, and monitor review status with asc. Use when shipping or troubleshooting review submissions.
+metadata:
+    targets:
+        - codex
+name: asc-submission-health
 ---
 
 # asc submission health

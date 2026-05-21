@@ -1,12 +1,23 @@
 ---
+description: |
+    Use when building, reviewing, debugging, or refactoring SwiftUI on Apple platforms, especially for state management, layout, navigation, component patterns, animation, accessibility, or performance. Also use for SwiftUI-specific architecture questions, app scaffolding, deep links, and runtime performance issues such as janky scrolling, excessive view updates, layout thrash, or Instruments-guided audits.
+metadata:
+    targets:
+        - codex
 name: SwiftUI Mastery
-description: >
-  Use when building, reviewing, debugging, or refactoring SwiftUI on Apple platforms, especially
-  for state management, layout, navigation, component patterns, animation, accessibility, or
-  performance. Also use for SwiftUI-specific architecture questions, app scaffolding, deep links,
-  and runtime performance issues such as janky scrolling, excessive view updates, layout thrash,
-  or Instruments-guided audits.
-tags: [swiftui, ios, macos, watchos, tvos, ui, layout, state-management, navigation, animation, performance, accessibility]
+tags:
+    - swiftui
+    - ios
+    - macos
+    - watchos
+    - tvos
+    - ui
+    - layout
+    - state-management
+    - navigation
+    - animation
+    - performance
+    - accessibility
 ---
 
 <!-- Merged from: apple-swiftui-mastery, swiftui-expert-skill, swiftui-ui-patterns (2026-03-30) -->

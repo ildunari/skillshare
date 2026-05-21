@@ -1,14 +1,11 @@
 ---
-name: oracle
-description: >-
-  Use when you want a second-model review through the `@steipete/oracle` CLI by
-  bundling a prompt with a tightly scoped set of repo files. Use for debugging,
-  refactor review, design critique, prompt validation, or cross-checking a
-  tricky conclusion. Supports GPT-5.5 Pro/GPT-5.5 browser runs with standard or
-  extended thinking.
+description: Use when you want a second-model review through the `@steipete/oracle` CLI by bundling a prompt with a tightly scoped set of repo files. Use for debugging, refactor review, design critique, prompt validation, or cross-checking a tricky conclusion. Supports GPT-5.5 Pro/GPT-5.5 browser runs with standard or extended thinking.
 metadata:
-  hermes:
-    command_priority: 420
+    hermes:
+        command_priority: 420
+    targets:
+        - antigravity
+name: oracle
 ---
 
 # Oracle CLI

@@ -1,26 +1,25 @@
 ---
-name: apple-networking-apis
-user-invocable: false
-description: >
-  Production-grade networking & API integration patterns for iOS and macOS.
-  Use when designing, implementing, debugging, or reviewing app networking:
-  URLSession async/await, authentication (OAuth2/JWT), error handling, retries,
-  caching (ETag/URLCache), REST & GraphQL, WebSockets, network monitoring,
-  offline queues, and example code + scripts to accelerate delivery.
-version: 1.0.0
+description: |
+    Production-grade networking & API integration patterns for iOS and macOS. Use when designing, implementing, debugging, or reviewing app networking: URLSession async/await, authentication (OAuth2/JWT), error handling, retries, caching (ETag/URLCache), REST & GraphQL, WebSockets, network monitoring, offline queues, and example code + scripts to accelerate delivery.
 last_verified: "2025-10-28"
-update_frequency: "quarterly"
+metadata:
+    targets:
+        - codex
+name: apple-networking-apis
 tags:
-  - ios
-  - macos
-  - networking
-  - api
-  - urlsession
-  - swift
-  - graphql
-  - websocket
-  - caching
-  - auth
+    - ios
+    - macos
+    - networking
+    - api
+    - urlsession
+    - swift
+    - graphql
+    - websocket
+    - caching
+    - auth
+update_frequency: quarterly
+user-invocable: false
+version: 1.0.0
 ---
 
 # Apple Networking & API Integration Skill

@@ -1,6 +1,9 @@
 ---
-name: asc-testflight-orchestration
 description: Orchestrate TestFlight distribution, groups, testers, and What to Test notes using asc. Use when rolling out betas.
+metadata:
+    targets:
+        - codex
+name: asc-testflight-orchestration
 ---
 
 # asc TestFlight orchestration

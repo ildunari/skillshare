@@ -1,10 +1,12 @@
 ---
-name: swift-testing-pro
 description: Writes, reviews, and improves Swift Testing code using modern APIs and best practices. Use when reading, writing, or reviewing projects that use Swift Testing.
 license: MIT
 metadata:
-  author: Paul Hudson
-  version: "1.0"
+    author: Paul Hudson
+    targets:
+        - codex
+    version: "1.0"
+name: swift-testing-pro
 ---
 
 Write and review Swift Testing code for correctness, modern API usage, and adherence to project conventions. Report only genuine problems - do not nitpick or invent issues.

@@ -1,6 +1,9 @@
 ---
-name: asc-notarization
 description: Archive, export, and notarize macOS apps using xcodebuild and asc. Use when you need to prepare a macOS app for distribution outside the App Store with Developer ID signing and Apple notarization.
+metadata:
+    targets:
+        - codex
+name: asc-notarization
 ---
 
 # macOS Notarization

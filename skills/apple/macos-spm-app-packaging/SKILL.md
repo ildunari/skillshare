@@ -1,6 +1,9 @@
 ---
-name: macos-spm-app-packaging
 description: Scaffold, build, and package SwiftPM-based macOS apps without an Xcode project. Use when you need a from-scratch macOS app layout, SwiftPM targets/resources, a custom .app bundle assembly script, or signing/notarization/appcast steps outside Xcode.
+metadata:
+    targets:
+        - codex
+name: macos-spm-app-packaging
 ---
 
 # macOS SwiftPM App Packaging (No Xcode)

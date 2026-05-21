@@ -1,8 +1,11 @@
 ---
-name: xcodebuildmcp
+alwaysAllow:
+    - Bash
 description: Official skill for XcodeBuildMCP. Use when doing iOS/macOS/watchOS/tvOS/visionOS work (build, test, run, debug, log, UI automation).
-alwaysAllow: ["Bash"]
-targets: [claude, codex, droid, cursor, copilot, Craft-MyWorkspace, Craft-Brown, hermes]
+metadata:
+    targets:
+        - codex
+name: xcodebuildmcp
 ---
 
 # XcodeBuildMCP

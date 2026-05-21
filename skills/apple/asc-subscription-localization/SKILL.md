@@ -1,6 +1,9 @@
 ---
-name: asc-subscription-localization
 description: Bulk-localize subscription and in-app purchase display names across all App Store locales using asc. Use when you want to fill in subscription/IAP names for every language without clicking through App Store Connect manually.
+metadata:
+    targets:
+        - codex
+name: asc-subscription-localization
 ---
 
 # asc subscription localization

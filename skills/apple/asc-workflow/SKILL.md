@@ -1,6 +1,9 @@
 ---
-name: asc-workflow
 description: Define, validate, and run repo-local multi-step automations with `asc workflow` and `.asc/workflow.json`. Use when migrating from lane tools, wiring CI pipelines, or orchestrating repeatable `asc` + shell release flows with hooks, conditionals, and sub-workflows.
+metadata:
+    targets:
+        - codex
+name: asc-workflow
 ---
 
 # asc workflow

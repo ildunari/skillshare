@@ -1,6 +1,9 @@
 ---
-name: agentic-loop-builder
 description: Use when executing phased implementation that needs build verification, testing, and multi-perspective review before each commit. Triggers on multi-phase plans, protocol fixes, platform builds, or any work where sub-agents implement and reviewers gate quality. Not for single-file edits, quick fixes, or tasks that don't require a build step. Supersedes executing-plans and subagent-driven-development when platform-native review is needed alongside general code review.
+metadata:
+    targets:
+        - antigravity
+name: agentic-loop-builder
 ---
 
 # Agentic Loop Builder

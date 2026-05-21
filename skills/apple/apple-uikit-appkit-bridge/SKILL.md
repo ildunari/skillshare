@@ -1,13 +1,24 @@
 ---
-name: apple-uikit-appkit-bridge
-user-invocable: false
-description: >
-  Use when SwiftUI must interoperate with UIKit or AppKit, including `UIViewRepresentable`, `NSViewRepresentable`, hosting controllers, coordinators, delegate or data-source wiring, responder-chain integration, or incremental migration from legacy Apple UI frameworks. Also use when reviewing or debugging hybrid SwiftUI plus UIKit/AppKit code for lifecycle mismatches, state-sync bugs, memory-management issues, testing gaps, or performance risks.
-version: 1.2.0
+description: |
+    Use when SwiftUI must interoperate with UIKit or AppKit, including `UIViewRepresentable`, `NSViewRepresentable`, hosting controllers, coordinators, delegate or data-source wiring, responder-chain integration, or incremental migration from legacy Apple UI frameworks. Also use when reviewing or debugging hybrid SwiftUI plus UIKit/AppKit code for lifecycle mismatches, state-sync bugs, memory-management issues, testing gaps, or performance risks.
+ios_versions_covered: iOS 13-26, macOS 10.15-15
 last_verified: "2025-10-28"
-update_frequency: "annually"
-ios_versions_covered: "iOS 13-26, macOS 10.15-15"
-tags: [swiftui, uikit, appkit, interoperability, bridging, migration, testing, coordinator]
+metadata:
+    targets:
+        - codex
+name: apple-uikit-appkit-bridge
+tags:
+    - swiftui
+    - uikit
+    - appkit
+    - interoperability
+    - bridging
+    - migration
+    - testing
+    - coordinator
+update_frequency: annually
+user-invocable: false
+version: 1.2.0
 ---
 
 # apple-uikit-appkit-bridge

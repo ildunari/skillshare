@@ -1,12 +1,11 @@
 ---
-name: self-evolve-skills
 description: Run Claude Code as a sandboxed iterative skill-improvement optimizer. Use when Kosta explicitly wants Claude/Sonnet/Opus lanes, wants to burn Claude subscription quota productively, compare Claude-generated variants with other judges, collect Claude Code token/cost stats, detect plateau, or generate reviewable patches without touching live skills. For Hermes-native self-evolve runs, use hermes__hermes-self-evolve-skills instead.
 metadata:
-  targets:
-    - claude
-    - claude-hermes
-  hermes:
-    command_priority: 430
+    hermes:
+        command_priority: 430
+    targets:
+        - antigravity
+name: self-evolve-skills
 ---
 
 # Self-Evolve Skills — Claude Code Lane

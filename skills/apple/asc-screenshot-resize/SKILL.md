@@ -1,6 +1,9 @@
 ---
-name: asc-screenshot-resize
 description: Resize and validate App Store screenshots for all device classes using macOS sips. Use when preparing or fixing screenshots for App Store Connect submission.
+metadata:
+    targets:
+        - codex
+name: asc-screenshot-resize
 ---
 
 # asc screenshot resize

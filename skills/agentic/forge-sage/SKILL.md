@@ -1,15 +1,11 @@
 ---
-name: forge-sage
-description: >-
-  Use when the user specifically wants Sage, Forge Sage, or a read-only Forge
-  investigation lane. Trigger on requests like "use sage", "forge sage",
-  "have sage look at this", "trace this bug", "map this codepath", or "explain
-  how this works in Forge". This skill is for Sage-only investigation and
-  analysis, not implementation, review, or validation. Use forge-agent for the
-  broader Forge router.
+description: Use when the user specifically wants Sage, Forge Sage, or a read-only Forge investigation lane. Trigger on requests like "use sage", "forge sage", "have sage look at this", "trace this bug", "map this codepath", or "explain how this works in Forge". This skill is for Sage-only investigation and analysis, not implementation, review, or validation. Use forge-agent for the broader Forge router.
 metadata:
-  author: Codex
-  version: 2.2.0
+    author: Codex
+    targets:
+        - antigravity
+    version: 2.2.0
+name: forge-sage
 ---
 
 # Forge Sage
