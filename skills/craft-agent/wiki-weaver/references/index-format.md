@@ -57,6 +57,8 @@ Organize by top-level vault folder, then by subfolder. Each entry on one line:
 
 Each entry follows: `- [[full/path/to/note]] — One-line summary (type, status)`
 
+**If you use the callout-table layout** (`| Note | What it does |`) instead of bulleted lists, you MUST escape the pipe in aliased wikilinks: `[[path/note\|Display]]`. An unescaped alias pipe gets eaten by the table parser and silently destroys the row. Same rule applies to any guide page that puts aliased wikilinks inside a table cell.
+
 Extract the one-line summary from:
 1. The `> One-line summary` blockquote if present
 2. The `title` frontmatter field

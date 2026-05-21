@@ -37,6 +37,7 @@
 
 1. Only link first mention of each entity per note
 2. Use aliased links: `[[full/path/to/note|Display Name]]`
+   - **Inside Markdown table cells, escape the alias pipe as `\|`** — e.g. `[[apple/index\|Apple Work]]`. An unescaped `|` is parsed as a table column separator, which splits the link into two cells and drops everything after the alias. This applies to every `| Note | What it does |` table in `wiki/index.md` and any guide-page table that uses aliased wikilinks.
 3. Never link inside:
    - Code blocks (``` or indented)
    - YAML frontmatter (between ---)
