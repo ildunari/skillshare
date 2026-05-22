@@ -19,7 +19,7 @@ Use this for Qwen-Image and Qwen-Image-2512 on Kosta's RTX/GamingPC ComfyUI setu
 
 ## Local model coverage and default lane
 
-Known RTX local inventory includes **Qwen-Image-2512 FP8**, matching Qwen 2.5-VL text encoder, Qwen VAE, and **Qwen Lightning 4-step LoRA**. Prior runbooks also identify **FLUX.2-dev FP8** as the secondary RTX workflow for polished presentation imagery/reference-driven visuals, while Qwen stays primary for textbook/PPT figures, infographics, charts, and text/layout-heavy work. Do not declare other RTX models absent from a shallow directory listing; run a fresh recursive inventory/object_info check first. Mac Studio has other image models, but RTX is Kosta's primary image-generation machine; do not default to Mac fallbacks unless asked.
+Current RTX local inventory includes **Qwen-Image-2512 FP8**, matching Qwen 2.5-VL text encoder, Qwen VAE, and **Qwen Lightning 4-step LoRA**. A 2026-05-22 live ComfyUI API/object_info audit found Qwen installed and FLUX.2-dev **not installed yet**; keep **FLUX.2-dev FP8** as the planned secondary RTX workflow for polished presentation imagery/reference-driven visuals, while Qwen stays primary for textbook/PPT figures, infographics, charts, and text/layout-heavy work. Do not declare RTX models present or absent from shallow directory listings; use ComfyUI `/models/<category>`, `/object_info`, and targeted known model directories. Mac Studio has other image models, but RTX is Kosta's primary image-generation machine; do not default to Mac fallbacks unless asked.
 
 Use **full Qwen-Image-2512 FP8 + CacheDiT** for any image intended to ship. Use **Lightning 4-step LoRA only for draft candidates**, because local stress-test QA showed valid composition but garbled dense titles/legends.
 
