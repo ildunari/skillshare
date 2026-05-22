@@ -80,6 +80,35 @@ Drafts:
 - Qwen-Image Lightning 4-step LoRA, 4 steps, CFG `1.0`.
 - Treat as layout/candidate generation only. Do not trust final labels from Lightning without visual QA.
 
+## Batch catalog thumbnails
+
+For second-brain/catalog thumbnails, do not prompt from the title alone. Read the entry content/code summary and name the concrete UI pattern, components, and interaction. A batch of 94 technically successful files can still be a bad result if every image is a generic phone mockup.
+
+Kosta specifically prefers creative renderings of the code output / visual essence over literal phone-screen app mockups. Avoid the reflexive `SwiftUI → iPhone screen → polished app UI` chain. For effects and components, make the effect/component the subject: geometry, material, masks, layers, motion state, shadows, spacing, and the rendered composition. Only include a phone/device frame when the source code truly depends on the device surface; otherwise crop to the component or use an abstract render.
+
+Before a large batch, generate 3-5 samples from different categories and visually inspect them. If the user criticized a previous batch, delete or quarantine the old assets before regenerating so stale low-quality images do not remain linked. Use Lightning only for drafts; use the full Qwen/CacheDiT lane or another quality lane for final replacement batches.
+
+For iterative repair, keep prompts short and run an adversarial review loop: score each image 0-5 against the intended visual essence, name the single dominant failure, revise only the failing prompts, and stop when two reviewers agree the remaining issues have plateaued. Use a persistent Claude Code reviewer (`claude -p -c`) when Kosta asks for self-evolution or adversarial review; give it concise intended descriptions and image paths, not long prompt essays.
+
+If a correction arrives embedded in tool output or background-process output, treat it as an active user correction before continuing. Do not let a “process completed” notification hide user feedback like “delete these images” or “send representative samples.”
+
+For UI thumbnails, avoid words that invite Qwen to render fake explanatory text: `label`, `callout`, `annotation`, `before/after`, `heading`, `caption`. Even when the prompt says “no text,” those words often produce garbled pseudo-labels. Prefer icon-only rows, placeholder bars, arrows, panels, ghosted duplicate shapes, and cropped UI states.
+
+Use this compact schema for code-pattern/catalog thumbnails:
+
+```text
+High-quality visual-essence thumbnail for a SwiftUI code pattern. Pattern: "<specific pattern>". Rendered subject: <the component/effect itself — geometry, material, masks, layers, shadows, spacing, motion state>. Surface: <component crop / abstract render / macOS window / device frame only if the code depends on it>. Focus on what the rendered code output could look like, not a hypothetical app screen using it. No code, no watermark, no logos, no labels, no callout text, no random readable text, no gibberish labels.
+```
+
+Bad default: “SwiftUI catalog thumbnail as a flat 2D UI storyboard / app interface / iPhone screen.” That still tends to produce plausible phone mockups. Prefer “rendered component/effect as the subject.”
+
+### UI-essence failure modes to pin in the prompt
+
+Two failures recur even with the schema above; both need explicit in-prompt language, not just negatives:
+
+- **Literal device backdrops creep in.** Saying “floating macOS desktop window” or “app screen” pulls Qwen toward rendering a literal MacBook keyboard, phone bezel, or monitor frame *behind* the subject — even when the rest of the prompt is abstract. Add an explicit positive negative: `no laptop, no keyboard, no device frame` (or `no phone, no bezel` for mobile). For the backdrop, name the abstract thing you want (`soft abstract pastel desktop wallpaper gradient`, `clean off-white studio`) instead of relying on words like “desktop” or “workspace.”
+- **Edge-anchored panels flip orientation.** “Side drawer,” “bottom sheet,” “snackbar,” and similar edge-anchored overlays often render with the wrong aspect or wrong edge. Pin three things together: aspect (`tall vertical, taller than wide` or `wide horizontal, wider than tall`), edge (`attached to the left edge` / `pinned to the bottom edge`), and an explicit negative for the wrong orientation (`no horizontal drawer`). Describe the scene as a layered composition (`darkened dimmed background rectangle filling the frame, partially covered on the left half by …`) rather than a motion verb (`sliding in from the side`) — Qwen interprets composition more reliably than implied motion.
+
 ## QA before accepting an image
 
 Inspect visually at 100–200% zoom. Check:
