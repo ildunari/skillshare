@@ -1,6 +1,6 @@
 ---
 name: qwen-image-prompting
-description: Load when creating or repairing Qwen-Image/Qwen-Image-2512 prompts, ComfyUI workflows, PPT/poster/infographic/textbook figures, charts, labels, legends, academic visuals, or text-heavy generated images. Use for Kosta's GamingPC full Qwen+CacheDiT lane and for deciding when Lightning is draft-only.
+description: Load for local Qwen-Image / Qwen-Image-2512 image-generation work — prompt writing, lane and settings selection, negative-prompt routing, multi-seed attempts and QA, ComfyUI workflows, PPT/poster/infographic/chart/textbook figures, UI thumbnails and minimalist UI-shape prompts, and text-heavy academic visuals. Use Kosta's RTX/GamingPC full Qwen+CacheDiT lane; Lightning is draft-only.
 metadata:
   targets:
     - claude
@@ -15,11 +15,13 @@ metadata:
 
 # Qwen-Image Prompting
 
-Use this for Qwen-Image and Qwen-Image-2512, especially on Kosta's GamingPC ComfyUI setup for school, study, paper, poster, PDF, slide, chart, infographic, and textbook-style visuals.
+Use this for Qwen-Image and Qwen-Image-2512 on Kosta's RTX/GamingPC ComfyUI setup: school, study, paper, poster, PDF, slide, chart, infographic, textbook visuals, and local UI/shape thumbnail work. The same rules apply if the local lane is later swapped to another diffusion model, except for Qwen-specific defaults flagged below.
 
-## Default lane on Kosta's GamingPC
+## Local model coverage and default lane
 
-Use **full Qwen-Image-2512 FP8 + CacheDiT** for final text-heavy visuals. Use **Lightning 4-step LoRA only for draft candidates**, because local stress-test visual QA showed valid images but garbled dense titles/legends.
+Current RTX local inventory: **Qwen-Image-2512 FP8**, matching Qwen 2.5-VL text encoder, Qwen VAE, and **Qwen Lightning 4-step LoRA**. Do not assume SDXL, Flux, Juggernaut, or other diffusion checkpoints are on the RTX box without a fresh inventory. Mac Studio has other image models, but RTX is Kosta's primary image-generation machine; do not default to Mac fallbacks unless asked.
+
+Use **full Qwen-Image-2512 FP8 + CacheDiT** for any image intended to ship. Use **Lightning 4-step LoRA only for draft candidates**, because local stress-test QA showed valid composition but garbled dense titles/legends.
 
 Known GamingPC files:
 
@@ -59,26 +61,52 @@ Use these phrases when appropriate:
 - For charts: specify chart type, axes, units, tick labels, legend, colors, and whether values must be schematic or data-accurate.
 - For posters/PDFs: split dense content into multiple figures/slides; do not ask one image to hold a full page of tiny text.
 
-## Negative prompt
+## Negative prompt routing
+
+Never write `Exclude X`, `no X`, or `avoid X` clauses at the end of the positive prompt. Qwen frequently parses those as concepts to render (benchmark evidence: `Exclude folded paper stack` produced a paper stack on intent 01; `no device frame` produced a tablet bezel on intent 05). Put every exclusion in the dedicated negative prompt slot — `CLIPTextEncodeNegative` in ComfyUI, or the equivalent slot in any other UI.
+
+Pick the preset that matches the job, then append intent-specific tokens (e.g. `human face` for avatar placeholders, `hinges` for drawers).
+
+**Text-heavy academic / slide / poster / textbook / chart:**
 
 ```text
 low resolution, low quality, blurry text, distorted text, misspelled text, extra text, duplicated labels, unreadable small print, broken legends, incorrect axes, misaligned layout, cluttered spacing, cropped labels, random symbols, incorrect arrows, inconsistent legend colors, decorative filler text, watermark, noisy background
 ```
 
-For charts/figures add: `fake data, incorrect tick labels, mismatched legend colors, overlapping labels, cropped axis title`.
+For charts/figures also add: `fake data, incorrect tick labels, mismatched legend colors, overlapping labels, cropped axis title`.
+
+**UI essence / minimalist shapes / non-text thumbnails:**
+
+```text
+text, labels, caption, heading, annotation, callout, gibberish text, fake UI text, device frame, phone bezel, tablet bezel, laptop, keyboard, monitor frame, product mockup, paper stack, folded paper, book pages, oval, lens, lozenge, blob, perspective tilt, folded card, tilted card, card standing on edge, hinged door, swinging door, glass door, door hinges, photo-realistic face, stock photo, portrait, watermark, low resolution, blurry
+```
+
+## Prompt-build checklist
+
+Before returning a prompt, output these six items on one line each, marked addressed or `n/a`. Do not silently skip. The benchmark showed rewriters apply some rules and quietly drop others; the explicit list is the audit.
+
+1. **Geometry, count, spatial layout** pinned (shape, orientation, camera angle, exact count tied to `side by side` / `stacked` / `top-left` etc.).
+2. **Colors** named concretely when color matters (no bare `colorful` / `vibrant`).
+3. **Composition language** instead of motion verbs (`pinned to the left edge`, not `sliding in`; `larger version on the right`, not `scaling into`).
+4. **Positive prompt is clean** — no `exclude`, `no`, `avoid`, or `without` clauses.
+5. **Negatives routed** to the negative-prompt slot, with the correct preset plus intent-specific tokens.
+6. **Trigger-word scan** done: no `label / callout / caption / annotation / heading / before-after / study / diagram / explanation / how it works`, and no `mockup / product / studio / professional photography / on a desk` unless the subject genuinely is a physical mockup or device.
 
 ## Settings
 
-Final slide/poster/textbook figures:
+Pick the lane by acceptance bar, not by speed:
 
-- Full Qwen-Image-2512, 50 steps, CFG around `4.0`, official aspect ratio size.
-- CacheDiT enabled for 50-step throughput: warmup `5`, skip interval `3`.
-- 16:9 slides: `1664x928`; 4:3 figures: `1472x1104`; square: `1328x1328`; 3:2: `1584x1056`; 2:3: `1056x1584`.
+| Use case | Lane | Steps | CFG | CacheDiT |
+| --- | --- | ---: | ---: | --- |
+| Anything intended to ship (text-heavy or UI/shape) | Full Qwen-Image-2512 FP8 | `50` | `4.0` | warmup `5`, skip `3` |
+| Fast exploratory draft / candidate | Qwen Lightning 4-step LoRA | `4` | `1.0` | off |
+| Benchmark / stress / one-off experiment | record in manifest | record | record | record |
 
-Drafts:
+Aspect-ratio sizes (Qwen-Image-2512 native): 16:9 slides `1664x928`; 4:3 figures `1472x1104`; square `1328x1328`; 3:2 `1584x1056`; 2:3 `1056x1584`.
 
-- Qwen-Image Lightning 4-step LoRA, 4 steps, CFG `1.0`.
-- Treat as layout/candidate generation only. Do not trust final labels from Lightning without visual QA.
+If a final-quality request runs at fewer than `30` full-Qwen steps, warn that output is below the skill's normal ship lane and treat it as draft/benchmark until QA proves otherwise. Lightning at `4` steps is fine because it is explicitly a draft lane.
+
+For benchmark or A/B runs, always record `steps / CFG / sampler / scheduler / size / LoRA / CacheDiT / seed` in a manifest. Single-seed comparisons are directional, not conclusive — the current generalization benchmark is n=1 per intent, so its rule-by-rule conclusions should be treated as signals to refine, not proofs.
 
 ## Batch catalog thumbnails
 
@@ -92,7 +120,9 @@ For iterative repair, keep prompts short and run an adversarial review loop: sco
 
 If a correction arrives embedded in tool output or background-process output, treat it as an active user correction before continuing. Do not let a “process completed” notification hide user feedback like “delete these images” or “send representative samples.”
 
-For UI thumbnails, avoid words that invite Qwen to render fake explanatory text: `label`, `callout`, `annotation`, `before/after`, `heading`, `caption`. Even when the prompt says “no text,” those words often produce garbled pseudo-labels. Prefer icon-only rows, placeholder bars, arrows, panels, ghosted duplicate shapes, and cropped UI states.
+For any UI-essence prompt — thumbnail, motion study, component render, shape composition — avoid words that invite Qwen to fabricate explanatory text: `label`, `callout`, `annotation`, `caption`, `heading`, `before/after`, `study`, `diagram`, `explanation`, `how it works`. Even with `no text` in the negative prompt, these words tend to produce garbled pseudo-labels (benchmark intent 04: `UI motion study` produced fake labels under both tiles). Prefer icon-only rows, placeholder bars, arrows, panels, ghosted duplicate shapes, and cropped UI states.
+
+Avoid product-photo framing unless the subject is genuinely a physical object: `mockup`, `product mockup`, `product render`, `studio shot`, `professional photography`, `on a desk`, `on a surface`, `laying on a table`. These pull Qwen toward physical-object realism (benchmark intent 01: `Minimal product mockup` framing turned a flat card into a stack of paper sheets, scoring −2.0 versus the plain baseline). For flat UI/shape work, use `flat 2D UI graphic`, `minimal vector composition`, `orthographic view`, or `viewed from directly above`.
 
 Use this compact schema for code-pattern/catalog thumbnails:
 
@@ -116,7 +146,11 @@ Six failures recur even with the schema above; all need explicit in-prompt langu
 
 ## QA before accepting an image
 
-Inspect visually at 100–200% zoom. Check:
+For any image where intent matters, do not accept a sample-of-1. Generate at least **3 seeds** for the first prompt. Score each candidate `0-5` against the original intent; pick the highest; on ties, pick the one with the fewest negative-prompt violations. If the best is below `4` for normal use or below `5` for exact-text deliverables, revise the prompt and run **3 more seeds**. Stop after two prompt revisions with no material score gain — unless the user asked for the deeper self-evolution loop, which is governed by the batch section below.
+
+Run a vision reviewer before shipping. On Kosta's setup that means calling `vision_analyze` from Hermes, `mcp__zai-vision__analyze_image` where available, or — when Claude is the agent — reading the candidate image with the `Read` tool. Give the reviewer the original intent line (not the full prompt essay) and ask for `score 0-5`, `dominant failure`, and `ship / revise`. Reject below `3`; revise below the user's acceptance bar.
+
+Inspect visually at 100–200% zoom yourself before declaring ship. Check:
 
 - All quoted text appears exactly, with correct spelling, capitalization, punctuation, and units.
 - No extra/unrequested text appears.
