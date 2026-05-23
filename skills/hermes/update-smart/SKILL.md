@@ -83,6 +83,7 @@ Verify subagent findings yourself before editing or claiming success. If a dropp
    - if final validation produced legitimate durable fixes, commit them before the final report; otherwise explicitly report the dirty tree and why it is intentionally uncommitted
    - for “any updates pending?” reports, fetch first and include ahead/behind counts — a repo can be clean but still behind upstream again
    - when the update scope says “all,” include non-Hermes audit leftovers and PATH shadowing, not just Hermes repos; `xcodebuildmcp` may need both Homebrew and npm-global updates because the npm binary shadows the formula on Kosta’s PATH
+   - `non_hermes_update_audit.py --help` is not a harmless help probe in the current sidecar; it runs the audit/update flow. If you need usage, inspect the script source instead of executing `--help`.
    - avoid claiming completion if the live process is still running old code and needs a safe restart
    - **post-restart miniapp/Telegram regression check** (catches dropped local customizations during clean-branch rebuild). Run after both gateways are back up:
 
