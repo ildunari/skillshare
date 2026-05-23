@@ -32,6 +32,7 @@ Known GamingPC files:
 - Text encoder: `models\text_encoders\qwen_2.5_vl_7b_fp8_scaled.safetensors`
 - VAE: `models\vae\qwen_image_vae.safetensors`
 - Draft LoRA: `models\loras\Qwen-Image-2512-Lightning-4steps-V1.0-fp32.safetensors`
+- Style/speed LoRA catalog: `references/gamingpc-qwen-lora-catalog-2026-05-23.md`
 - CacheDiT node: `CacheDiT_Model_Optimizer`; use model type `Qwen-Image`, warmup `5`, skip interval `3` for 50-step jobs.
 
 ## Prompt as a layout spec, not a vibe
@@ -99,7 +100,8 @@ Pick the lane by acceptance bar, not by speed:
 | Use case | Lane | Steps | CFG | CacheDiT |
 | --- | --- | ---: | ---: | --- |
 | Anything intended to ship (text-heavy or UI/shape) | Full Qwen-Image-2512 FP8 | `50` | `4.0` | warmup `5`, skip `3` |
-| Fast exploratory draft / candidate | Qwen Lightning 4-step LoRA | `4` | `1.0` | off |
+| Fast exploratory draft / candidate | Qwen Lightning 4-step LoRA or Wuli Turbo LoRA | `4` | `1.0` | off |
+| Obsidian/editorial card A/B | Full Qwen + one style LoRA from LoRA catalog | `30-50` | `3.5-4.0` | optional |
 | Benchmark / stress / one-off experiment | record in manifest | record | record | record |
 
 Aspect-ratio sizes (Qwen-Image-2512 native): 16:9 slides `1664x928`; 4:3 figures `1472x1104`; square `1328x1328`; 3:2 `1584x1056`; 2:3 `1056x1584`.
@@ -111,6 +113,8 @@ For benchmark or A/B runs, always record `steps / CFG / sampler / scheduler / si
 ## Batch catalog thumbnails
 
 For second-brain/catalog thumbnails, do not prompt from the title alone. Read the entry content/code summary and name the concrete UI pattern, components, and interaction. A batch of 94 technically successful files can still be a bad result if every image is a generic phone mockup.
+
+LoRA routing for this work lives in `references/gamingpc-qwen-lora-catalog-2026-05-23.md`. Do not turn a LoRA on globally just because it exists: run the 5-note smoke test first, use at most one style LoRA at a time, and route by domain when a LoRA only helps one class of note. Good defaults: `illustration-1.0` for general editorial Obsidian cards, `Isometric Redmond` for systems/architecture/tooling notes, `Stickers Redmond` for single icon/motif covers, `Pixel Art` only for intentionally retro/playful covers. Keep speed LoRAs as draft lanes unless QA proves final quality.
 
 Kosta specifically prefers creative renderings of the code output / visual essence over literal phone-screen app mockups. Avoid the reflexive `SwiftUI → iPhone screen → polished app UI` chain. For effects and components, make the effect/component the subject: geometry, material, masks, layers, motion state, shadows, spacing, and the rendered composition. Only include a phone/device frame when the source code truly depends on the device surface; otherwise crop to the component or use an abstract render.
 
