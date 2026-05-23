@@ -11,12 +11,15 @@ BUCKETS = {
     'ai-platforms-mcp',
     'apple',
     'automation',
-    'code-quality',
+    'coding',
+    'creative',
     'documents-office',
-    'github-release',
+    'github',
+    'hermes',
     'knowledge-memory',
-    'media-creative',
+    'media',
     'meta-tools',
+    'mlops',
     'personal-ops',
     'research-analysis',
     'ui-ux',
@@ -24,7 +27,9 @@ BUCKETS = {
 
 ALLOWED_TOP_LEVEL = BUCKETS | {
     '_archived',
+    '_local-private',
     'registry.yaml',
+    '.metadata.json',
     '.gitignore',
     '.skillignore',
     '.skillignore.local',
@@ -58,7 +63,11 @@ def main() -> int:
     if unexpected:
         failures.append(f'unexpected top-level entries under skills/: {unexpected}')
 
-    nested_git = sorted(str(p.relative_to(repo_root)) for p in skills_dir.rglob('.git'))
+    nested_git = sorted(
+        str(p.relative_to(repo_root))
+        for p in skills_dir.rglob('.git')
+        if '_local-private' not in p.relative_to(skills_dir).parts
+    )
     if nested_git:
         failures.append(f'nested .git directories present: {nested_git}')
 

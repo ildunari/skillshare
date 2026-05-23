@@ -43,19 +43,24 @@ Known risks already confirmed
    - Tracked migration assets must live outside `config.yaml`.
 
 Migration buckets
+- `_archived`
+- `_local-private`
 - `agentic`
-- `code-quality`
-- `github-release`
-- `apple`
-- `ui-ux`
-- `documents-office`
-- `research-analysis`
-- `knowledge-memory`
-- `automation`
 - `ai-platforms-mcp`
+- `apple`
+- `automation`
+- `coding`
+- `creative`
+- `documents-office`
+- `github`
+- `hermes`
+- `knowledge-memory`
+- `media`
 - `meta-tools`
-- `media-creative`
+- `mlops`
 - `personal-ops`
+- `research-analysis`
+- `ui-ux`
 
 Execution plan
 1. Generate canonical old -> new map for every active non-archived skill.
