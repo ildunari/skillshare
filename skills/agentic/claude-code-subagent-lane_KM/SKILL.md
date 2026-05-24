@@ -55,6 +55,12 @@ Use these defaults:
 - **Configured specialist**: add `--agent <name>`.
 - **ACP subagent lane**: use the host's native delegation tool for isolated workers, not raw Claude Code ACP unless using a real ACP adapter.
 
+## Default review budget and stall checks
+
+For Claude Code review lanes, use a 15 minute cap by default unless Kosta gives a different limit. Check progress every 5 minutes while the lane is running so failures, blocked prompts, or silent stalls are caught during the run instead of after the timeout.
+
+For unattended `claude --print` review lanes, prefer an outer `timeout 900 ...` and poll the captured process with `ps -p <pid> -o pid=,etime=,stat=,comm=` or the host's managed process/log API at roughly 300 second intervals. Avoid `pgrep -fl` patterns that can print the whole prompt unless no safer PID is available. If a lane reaches the cap without useful output, report it as inconclusive, not as a clean review.
+
 ## Preferred prefilled interactive pattern
 
 Run from the repo/workdir that should provide project context. For anything longer than a sentence or two, write the prompt to a file first, then prefill the interactive prompt. This avoids `claude -p` / Agent SDK credits when a human or PTY controller can press Enter and steer the run:
