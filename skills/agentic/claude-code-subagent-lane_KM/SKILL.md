@@ -2,7 +2,10 @@
 description: Use when an agent should launch Claude Code as a planning, review, UI/UX, architecture, implementation, or specialized Claude Code lane. Covers one-shot `claude -p`, long-running/background jobs, interactive back-and-forth Claude Code sessions, `--agent`, `--worktree --tmux`, and ACP adapter choices.
 metadata:
     targets:
+        - codex
         - antigravity
+        - hermes-default
+        - hermes-gpt
 name: claude-code
 ---
 
