@@ -6,6 +6,9 @@ metadata:
     - codex
     - claude
     - antigravity
+    - hermes-default
+    - hermes-gpt
+    - claude-hermes
 ---
 # Hermes GPT lane
 
