@@ -3,7 +3,8 @@ description: Triage TestFlight crashes, beta feedback, and performance diagnosti
 metadata:
     targets:
         - codex
-name: asc-crash-triage_rorkai---
+name: asc-crash-triage_rorkai
+---
 # asc crash triage
 
 Use this skill to fetch, analyze, and summarize TestFlight crash reports, beta feedback, and performance diagnostics.

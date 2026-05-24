@@ -3,7 +3,8 @@ description: Delegate work to subagents in parallel or sequence across implement
 metadata:
     targets:
         - antigravity
-name: subagent-orchestrator_obra---
+name: subagent-orchestrator_obra
+---
 <!-- Merged from: dispatching-parallel-agents, subagent-driven-development, subagent-parallel-quality, subagent-parallel-speed (2026-04-01), delegation-autopilot (2026-04-05). Source directories archived or preserved under merged/. -->
 
 # Subagent Orchestrator

@@ -3,7 +3,8 @@ description: Reconcile App Store Connect subscriptions and in-app purchases with
 metadata:
     targets:
         - codex
-name: asc-revenuecat-catalog-sync_rorkai---
+name: asc-revenuecat-catalog-sync_rorkai
+---
 # asc RevenueCat catalog sync
 
 Use this skill to keep App Store Connect (ASC) and RevenueCat aligned, including creating missing ASC items and mapping them to RevenueCat resources.

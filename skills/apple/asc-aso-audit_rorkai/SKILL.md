@@ -3,7 +3,8 @@ description: Run an offline ASO audit on canonical App Store metadata under `./m
 metadata:
     targets:
         - codex
-name: asc-aso-audit_rorkai---
+name: asc-aso-audit_rorkai
+---
 # asc ASO audit
 
 Run a two-phase ASO audit: offline checks against local metadata files, then keyword gap analysis via Astro MCP.

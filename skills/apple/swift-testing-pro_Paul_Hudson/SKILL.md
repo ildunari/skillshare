@@ -6,7 +6,8 @@ metadata:
     targets:
         - codex
     version: "1.0"
-name: swift-testing-pro_Paul_Hudson---
+name: swift-testing-pro_Paul_Hudson
+---
 Write and review Swift Testing code for correctness, modern API usage, and adherence to project conventions. Report only genuine problems - do not nitpick or invent issues.
 
 Review process:

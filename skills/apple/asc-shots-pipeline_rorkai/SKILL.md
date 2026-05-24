@@ -3,7 +3,8 @@ description: Orchestrate iOS screenshot automation with xcodebuild/simctl for bu
 metadata:
     targets:
         - codex
-name: asc-shots-pipeline_rorkai---
+name: asc-shots-pipeline_rorkai
+---
 # asc screenshots pipeline (xcodebuild -> AXe -> frame -> asc)
 
 Use this skill for agent-driven screenshot workflows where the app is built and launched with Xcode CLI tools, UI is driven with AXe, and screenshots are uploaded with `asc`.

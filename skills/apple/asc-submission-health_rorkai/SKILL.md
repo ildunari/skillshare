@@ -3,7 +3,8 @@ description: Preflight App Store submissions, submit builds, and monitor review 
 metadata:
     targets:
         - codex
-name: asc-submission-health_rorkai---
+name: asc-submission-health_rorkai
+---
 # asc submission health
 
 Use this skill to reduce review submission failures and monitor status.

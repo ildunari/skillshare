@@ -5,7 +5,8 @@ metadata:
     targets:
         - antigravity
     version: 2.3.0
-name: forge-agent_openai_codex---
+name: forge-agent_openai_codex
+---
 # Forge Agent
 
 Delegate work to ForgeCode — a separate AI coding agent with its own context,

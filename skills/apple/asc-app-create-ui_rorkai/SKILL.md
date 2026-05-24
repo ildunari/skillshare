@@ -3,7 +3,8 @@ description: Create a new App Store Connect app record via browser automation. U
 metadata:
     targets:
         - codex
-name: asc-app-create-ui_rorkai---
+name: asc-app-create-ui_rorkai
+---
 # asc app create (UI automation)
 
 Use this skill to create a new App Store Connect app by driving the web UI.

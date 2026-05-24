@@ -3,7 +3,8 @@ description: Software development methodology adapted from obra/superpowers for 
 metadata:
     targets:
         - antigravity
-name: workflow-methodology_obra---
+name: workflow-methodology_obra
+---
 # Workflow Methodology
 
 > Software development thinking framework adapted from [obra/superpowers](https://github.com/obra/superpowers) for Claude.ai chat. Stripped of Claude Code tooling (subagents, git worktrees, hooks), retaining the methodology that makes the work good.

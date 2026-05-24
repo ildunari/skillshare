@@ -3,7 +3,8 @@ description: Resolve App Store Connect IDs (apps, builds, versions, groups, test
 metadata:
     targets:
         - codex
-name: asc-id-resolver_rorkai---
+name: asc-id-resolver_rorkai
+---
 # asc id resolver
 
 Use this skill to map names to IDs needed by other commands.

@@ -3,7 +3,8 @@ description: Use when delegating a self-contained coding task to Factory AI's Dr
 metadata:
     targets:
         - antigravity
-name: droid_Factory_AI---
+name: droid_Factory_AI
+---
 # Droid — Factory AI Coding Agent
 
 Delegate coding and analysis tasks to Droid (`/Users/kosta/.local/bin/droid`) when its strengths outweigh native Craft Agent subagents.

@@ -3,7 +3,8 @@ description: 'Expert guidance for Swift Testing: test structure, #expect/#requir
 metadata:
     targets:
         - codex
-name: swift-testing-expert_KM---
+name: swift-testing-expert_KM
+---
 # Swift Testing
 
 ## Overview

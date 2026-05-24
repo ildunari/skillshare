@@ -3,7 +3,8 @@ description: Sync and validate App Store metadata and localizations with asc, in
 metadata:
     targets:
         - codex
-name: asc-metadata-sync_rorkai---
+name: asc-metadata-sync_rorkai
+---
 # asc metadata sync
 
 Use this skill to keep local metadata in sync with App Store Connect.

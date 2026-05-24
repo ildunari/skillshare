@@ -3,7 +3,8 @@ description: Submit or update a Wall of Apps entry in the App-Store-Connect-CLI 
 metadata:
     targets:
         - codex
-name: asc-wall-submit_rorkai---
+name: asc-wall-submit_rorkai
+---
 # asc wall submit
 
 Use this skill to add or update a Wall of Apps entry with the built-in CLI flow.

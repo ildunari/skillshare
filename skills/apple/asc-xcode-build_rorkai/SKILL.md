@@ -3,7 +3,8 @@ description: Build, archive, export, and manage Xcode version/build numbers with
 metadata:
     targets:
         - codex
-name: asc-xcode-build_rorkai---
+name: asc-xcode-build_rorkai
+---
 # Xcode Build and Export
 
 Use this skill when you need to build an app from source and prepare it for upload to App Store Connect.

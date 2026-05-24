@@ -5,7 +5,8 @@ metadata:
         command_priority: 420
     targets:
         - antigravity
-name: oracle_steipete---
+name: oracle_steipete
+---
 # Oracle CLI
 
 Oracle bundles your prompt plus selected files into one external-model request. Treat the answer as a strong second opinion, not ground truth: verify it against the repo and tests before acting.

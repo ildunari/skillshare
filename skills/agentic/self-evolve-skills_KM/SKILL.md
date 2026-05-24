@@ -5,7 +5,8 @@ metadata:
         command_priority: 430
     targets:
         - antigravity
-name: self-evolve-skills_KM---
+name: self-evolve-skills_KM
+---
 # Self-Evolve Skills — Claude Code Lane
 
 Use this when the goal is not just to edit a skill once, but to make Claude Code spend real effort improving it in a controlled, measurable way.

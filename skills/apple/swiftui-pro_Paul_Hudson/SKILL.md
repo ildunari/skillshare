@@ -6,7 +6,8 @@ metadata:
     targets:
         - codex
     version: "1.1"
-name: swiftui-pro_Paul_Hudson---
+name: swiftui-pro_Paul_Hudson
+---
 Review Swift and SwiftUI code for correctness, modern API usage, and adherence to project conventions. Report only genuine problems - do not nitpick or invent issues.
 
 Review process:

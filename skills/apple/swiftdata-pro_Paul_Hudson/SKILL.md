@@ -6,7 +6,8 @@ metadata:
     targets:
         - codex
     version: "1.0"
-name: swiftdata-pro_Paul_Hudson---
+name: swiftdata-pro_Paul_Hudson
+---
 Write and review SwiftData code for correctness, modern API usage, and adherence to project conventions. Report only genuine problems - do not nitpick or invent issues.
 
 Review process:

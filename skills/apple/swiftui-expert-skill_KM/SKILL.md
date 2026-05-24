@@ -3,7 +3,8 @@ description: Use when writing, reviewing, or refactoring SwiftUI code for iOS or
 metadata:
     targets:
         - codex
-name: swiftui-expert-skill_KM---
+name: swiftui-expert-skill_KM
+---
 # SwiftUI Expert Skill
 
 ## Operating Rules

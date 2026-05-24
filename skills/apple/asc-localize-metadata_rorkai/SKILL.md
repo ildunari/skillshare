@@ -3,7 +3,8 @@ description: Automatically translate and sync App Store metadata (description, k
 metadata:
     targets:
         - codex
-name: asc-localize-metadata_rorkai---
+name: asc-localize-metadata_rorkai
+---
 # asc localize metadata
 
 Use this skill to pull English (or any source locale) App Store metadata, translate it with LLM, and push translations back to App Store Connect — all automated.

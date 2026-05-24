@@ -3,7 +3,8 @@ description: Bulk-localize subscription and in-app purchase display names across
 metadata:
     targets:
         - codex
-name: asc-subscription-localization_rorkai---
+name: asc-subscription-localization_rorkai
+---
 # asc subscription localization
 
 Use this skill to bulk-create or bulk-update display names (and descriptions) for subscriptions, subscription groups, and in-app purchases across all App Store Connect locales. This eliminates the tedious manual process of clicking through each language in App Store Connect to set the same display name.

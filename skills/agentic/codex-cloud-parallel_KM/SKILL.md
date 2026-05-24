@@ -3,7 +3,8 @@ description: Use when parallel exploration is valuable (design options, alternat
 metadata:
     targets:
         - antigravity
-name: codex-cloud-parallel_KM---
+name: codex-cloud-parallel_KM
+---
 ## When to use
 
 Use this skill when:

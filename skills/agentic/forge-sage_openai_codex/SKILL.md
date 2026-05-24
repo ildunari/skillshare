@@ -5,7 +5,8 @@ metadata:
     targets:
         - antigravity
     version: 2.2.0
-name: forge-sage_openai_codex---
+name: forge-sage_openai_codex
+---
 # Forge Sage
 
 Use this skill when the main goal is to send **read-only investigation work**

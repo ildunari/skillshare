@@ -3,7 +3,8 @@ description: Resize and validate App Store screenshots for all device classes us
 metadata:
     targets:
         - codex
-name: asc-screenshot-resize_rorkai---
+name: asc-screenshot-resize_rorkai
+---
 # asc screenshot resize
 
 Use this skill to resize screenshots to the exact pixel dimensions required by App Store Connect and validate they pass upload requirements. Uses the built-in macOS `sips` tool — no third-party dependencies needed.

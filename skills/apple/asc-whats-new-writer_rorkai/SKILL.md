@@ -3,7 +3,8 @@ description: Generate engaging, localized App Store release notes (What's New) f
 metadata:
     targets:
         - codex
-name: asc-whats-new-writer_rorkai---
+name: asc-whats-new-writer_rorkai
+---
 # asc What's New Writer
 
 Generate engaging, localized release notes from flexible input. Optionally pair with promotional text updates.

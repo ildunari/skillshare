@@ -5,7 +5,8 @@ license: MIT
 metadata:
     targets:
         - codex
-name: liquid-glass_KM---
+name: liquid-glass_KM
+---
 # Liquid Glass
 
 Use this skill to implement, review, or refactor Apple-native Liquid Glass UI. Prefer real SwiftUI/UIKit code and current SDK behavior over visual imitation.

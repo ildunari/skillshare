@@ -5,7 +5,8 @@ description: Official skill for XcodeBuildMCP. Use when doing iOS/macOS/watchOS/
 metadata:
     targets:
         - codex
-name: xcodebuildmcp_getsentry---
+name: xcodebuildmcp_getsentry
+---
 # XcodeBuildMCP
 
 Use XcodeBuildMCP tools instead of raw `xcodebuild`, `xcrun`, or `simctl`.

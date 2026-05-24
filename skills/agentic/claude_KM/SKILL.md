@@ -3,7 +3,8 @@ description: Use when Kosta invokes /claude from Hermes/Telegram and wants a Cla
 metadata:
     targets:
         - antigravity
-name: claude_KM---
+name: claude_KM
+---
 # Claude Code Lane Shortcut
 
 Use this skill as the short Telegram command `/claude` for Claude Code work.

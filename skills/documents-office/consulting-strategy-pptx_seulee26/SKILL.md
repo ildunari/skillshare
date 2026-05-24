@@ -1,6 +1,7 @@
 ---
 name: consulting-strategy-pptx_seulee26
-description: Use when the user asks for a McKinsey/consulting/strategy/business-review style native .pptx deck from a short brief: executive summary, KPI dashboard, market sizing, BCG matrix, roadmap, org chart, growth chart, strategic options, board update, QBR, or Korean/English consulting slides. Best for fast consulting-style deck generation using a bundled template catalog.
+description: >-
+  Use when the user asks for a McKinsey/consulting/strategy/business-review style native .pptx deck from a short brief: executive summary, KPI dashboard, market sizing, BCG matrix, roadmap, org chart, growth chart, strategic options, board update, QBR, or Korean/English consulting slides. Best for fast consulting-style deck generation using a bundled template catalog.
 metadata:
   upstream: https://github.com/seulee26/mckinsey-pptx
   best_for: Consulting-style native PPTX decks from short business briefs using ~40 packaged slide templates.

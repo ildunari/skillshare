@@ -3,7 +3,8 @@ description: Use XcodeBuildMCP to build, run, launch, and debug the current iOS 
 metadata:
     targets:
         - codex
-name: ios-debugger-agent_KM---
+name: ios-debugger-agent_KM
+---
 # iOS Debugger Agent
 
 ## Overview

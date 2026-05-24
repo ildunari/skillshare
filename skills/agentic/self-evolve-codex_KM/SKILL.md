@@ -5,7 +5,8 @@ metadata:
     category: agentic
     targets:
         - antigravity
-name: self-evolve-codex_KM---
+name: self-evolve-codex_KM
+---
 # Self-Evolve Codex
 
 Use this when the user wants Codex to improve a skill, prompt, plugin, or agent workflow through repeated measured attempts instead of one manual rewrite.

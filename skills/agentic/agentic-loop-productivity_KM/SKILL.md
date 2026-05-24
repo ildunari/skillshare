@@ -3,7 +3,8 @@ description: 'Orchestrate phased document editing, data analysis, and knowledge 
 metadata:
     targets:
         - antigravity
-name: agentic-loop-productivity_KM---
+name: agentic-loop-productivity_KM
+---
 # Agentic Loop — Productivity
 
 Orchestrate phased productivity work using sub-agents for research, drafting, verification, and review — with integrity gates between phases. The orchestrator delegates, coordinates, verifies, and fixes. Sub-agents execute focused tasks and report back with evidence.

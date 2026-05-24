@@ -3,7 +3,8 @@ description: Orchestrate TestFlight distribution, groups, testers, and What to T
 metadata:
     targets:
         - codex
-name: asc-testflight-orchestration_rorkai---
+name: asc-testflight-orchestration_rorkai
+---
 # asc TestFlight orchestration
 
 Use this skill when managing TestFlight testers, groups, and build distribution.

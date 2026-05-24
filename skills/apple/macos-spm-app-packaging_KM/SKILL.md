@@ -3,7 +3,8 @@ description: Scaffold, build, and package SwiftPM-based macOS apps without an Xc
 metadata:
     targets:
         - codex
-name: macos-spm-app-packaging_KM---
+name: macos-spm-app-packaging_KM
+---
 # macOS SwiftPM App Packaging (No Xcode)
 
 ## Overview

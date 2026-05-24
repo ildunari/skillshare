@@ -3,7 +3,8 @@ description: Track build processing, find latest builds, and clean up old builds
 metadata:
     targets:
         - codex
-name: asc-build-lifecycle_rorkai---
+name: asc-build-lifecycle_rorkai
+---
 # asc build lifecycle
 
 Use this skill to manage build state, processing, and retention.

@@ -3,7 +3,8 @@ description: Set up the Swift Agentation visual annotation toolbar in an iOS/Swi
 metadata:
     targets:
         - codex
-name: swift-agentation_ertembiyik---
+name: swift-agentation_ertembiyik
+---
 # Swift Agentation Setup
 
 Set up the [swift-agentation](https://github.com/ertembiyik/swift-agentation) visual annotation toolbar in an iOS project. This is the Swift/iOS port of the web-based agentation tool — it lets users tap elements in their running app, annotate them with notes, and copy structured output that an AI coding agent can consume to understand exactly which view they're referring to.

@@ -3,7 +3,8 @@ description: Use when executing phased implementation that needs build verificat
 metadata:
     targets:
         - antigravity
-name: agentic-loop-builder_KM---
+name: agentic-loop-builder_KM
+---
 # Agentic Loop Builder
 
 Orchestrate phased implementation using sub-agents for research, testing, coding, and review — with hard gates between phases. The orchestrator delegates, coordinates, and fixes. Sub-agents execute.

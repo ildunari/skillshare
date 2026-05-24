@@ -5,7 +5,8 @@ description: Official skill for the XcodeBuildMCP CLI. Use when doing iOS/macOS/
 metadata:
     targets:
         - codex
-name: xcodebuildmcp-cli_getsentry---
+name: xcodebuildmcp-cli_getsentry
+---
 # XcodeBuildMCP CLI
 
 Use XcodeBuildMCP tools via the `xcodebuildmcp` executable instead of raw `xcodebuild`, `xcrun`, or `simctl`.

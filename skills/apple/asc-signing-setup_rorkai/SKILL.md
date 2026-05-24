@@ -3,7 +3,8 @@ description: Set up bundle IDs, capabilities, signing certificates, provisioning
 metadata:
     targets:
         - codex
-name: asc-signing-setup_rorkai---
+name: asc-signing-setup_rorkai
+---
 # asc signing setup
 
 Use this skill when you need to create or renew signing assets for iOS/macOS apps.

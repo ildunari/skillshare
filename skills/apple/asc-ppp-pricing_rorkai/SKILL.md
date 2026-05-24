@@ -3,7 +3,8 @@ description: Set territory-specific pricing for subscriptions and in-app purchas
 metadata:
     targets:
         - codex
-name: asc-ppp-pricing_rorkai---
+name: asc-ppp-pricing_rorkai
+---
 # PPP pricing (per-territory pricing)
 
 Use this skill to create or update localized pricing across territories based on purchasing power parity (PPP) or your own regional pricing strategy.

@@ -3,7 +3,8 @@ description: Refactor and review SwiftUI view files for consistent structure, de
 metadata:
     targets:
         - codex
-name: swiftui-view-refactor_apple---
+name: swiftui-view-refactor_apple
+---
 # SwiftUI View Refactor
 
 ## Overview

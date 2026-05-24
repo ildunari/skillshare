@@ -3,7 +3,8 @@ description: Determine whether an app is ready to submit, then drive the App Sto
 metadata:
     targets:
         - codex
-name: asc-release-flow_rorkai---
+name: asc-release-flow_rorkai
+---
 # Release flow (readiness-first)
 
 Use this skill when the real question is "Can my app be ready to submit?" and then guide the user through the shortest path to a clean App Store submission, especially for first-time releases.

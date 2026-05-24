@@ -3,7 +3,8 @@ description: Archive, export, and notarize macOS apps using xcodebuild and asc. 
 metadata:
     targets:
         - codex
-name: asc-notarization_rorkai---
+name: asc-notarization_rorkai
+---
 # macOS Notarization
 
 Use this skill when you need to notarize a macOS app for distribution outside the App Store.

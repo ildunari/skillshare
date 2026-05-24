@@ -3,7 +3,8 @@ description: Define, validate, and run repo-local multi-step automations with `a
 metadata:
     targets:
         - codex
-name: asc-workflow_rorkai---
+name: asc-workflow_rorkai
+---
 # asc workflow
 
 Use this skill when you need lane-style automation inside the CLI using:

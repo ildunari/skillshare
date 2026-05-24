@@ -3,7 +3,8 @@ description: 'Expert guidance on Swift Concurrency best practices, patterns, and
 metadata:
     targets:
         - codex
-name: swift-concurrency_AntoinevanderLee---
+name: swift-concurrency_AntoinevanderLee
+---
 # Swift Concurrency
 
 ## Overview

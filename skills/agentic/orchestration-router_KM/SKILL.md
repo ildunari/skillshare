@@ -3,7 +3,8 @@ description: Use when a request spans multiple specialist domains and needs one 
 metadata:
     targets:
         - antigravity
-name: orchestration-router_KM---
+name: orchestration-router_KM
+---
 # Orchestration Router
 
 ## Overview

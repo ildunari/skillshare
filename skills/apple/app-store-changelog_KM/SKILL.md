@@ -3,7 +3,8 @@ description: Create user-facing App Store release notes by collecting and summar
 metadata:
     targets:
         - codex
-name: app-store-changelog_KM---
+name: app-store-changelog_KM
+---
 # App Store Changelog
 
 ## Overview

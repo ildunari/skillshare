@@ -3,7 +3,8 @@ description: Guidance for using asc cli in this repo (flags, output formats, pag
 metadata:
     targets:
         - codex
-name: asc-cli-usage_rorkai---
+name: asc-cli-usage_rorkai
+---
 # asc cli usage
 
 Use this skill when you need to run or design `asc` commands for App Store Connect.
