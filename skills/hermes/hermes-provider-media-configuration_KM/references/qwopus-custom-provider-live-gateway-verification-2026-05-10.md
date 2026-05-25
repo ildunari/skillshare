@@ -1,10 +1,10 @@
 # Qwopus custom provider live-gateway verification — 2026-05-10
 
-Use this when wiring local OpenAI-compatible inference providers such as GamingPC RTX `qwopus-gpu` or Mac Studio `qwopus` into Hermes.
+Use this when wiring local OpenAI-compatible inference providers such as GamingPC Atomic `qwopus-atomic` or Mac Studio `qwopus` into Hermes.
 
 ## Lesson
 
-Endpoint health and fresh CLI one-shots are not enough. In this session, both Qwopus endpoints passed `/health`, `/v1/models`, direct non-stream/stream chat, forced tool schema, long-ish prompt, and fresh `hermes -z` one-shots. A live default Telegram gateway thread still got stuck after a `session_search` tool result while using `custom:RTX`, because the already-running gateway had not been restarted/reloaded after the custom-provider timeout fix and the exact live gateway tool-loop path had not been tested.
+Endpoint health and fresh CLI one-shots are not enough. In this session, both Qwopus endpoints passed `/health`, `/v1/models`, direct non-stream/stream chat, forced tool schema, long-ish prompt, and fresh `hermes -z` one-shots. A live default Telegram gateway thread still got stuck after a `session_search` tool result while using `custom:atomic-qwopus`, because the already-running gateway had not been restarted/reloaded after the custom-provider timeout fix and the exact live gateway tool-loop path had not been tested.
 
 The missed test class was: **existing gateway process + selected custom provider + gateway session history + real tool call + second model turn after tool result**.
 
@@ -52,13 +52,13 @@ If the Telegram UI shows a stale “thinking/typing” state but the session fil
 
 If an RTX Qwopus Hermes thread visibly prints pseudo-tool syntax such as `<memory-search>...</memory-search>`, `<tool_call>`, `<tool_code>`, or JSON-looking `{"name":"terminal","arguments":...}` instead of executing a tool, check the OpenAI tool contract directly before blaming general model instability.
 
-A healthy `/health` and `/v1/models` response is not enough. In the 2026-05-12 check, the endpoint advertised `chat`, `streaming`, and `reasoning_content`, but not `tools`; direct OpenAI `tools`/`tool_choice` probes returned literal pseudo-tool text with `tool_calls=None`, and a Hermes `custom:RTX` terminal-tool one-shot returned raw JSON text instead of executing `terminal`.
+A healthy `/health` and `/v1/models` response is not enough. In the 2026-05-12 check, the endpoint advertised `chat`, `streaming`, and `reasoning_content`, but not `tools`; direct OpenAI `tools`/`tool_choice` probes returned literal pseudo-tool text with `tool_calls=None`, and a Hermes `custom:atomic-qwopus` terminal-tool one-shot returned raw JSON text instead of executing `terminal`.
 
 Operational stance: RTX Qwopus is usable for model-only chat, no-thinking short calls, and memory microtasks. Tool-heavy Telegram/Discord sessions require an explicit compatibility layer: either the proxy must return structured OpenAI `tool_calls`, or Hermes must translate pure/single Qwopus pseudo-tool text into validated tool calls before normal execution.
 
 ## Hermes-side textual tool-call compatibility — 2026-05-12
 
-Hermes now has a narrow Qwopus/RTX compatibility shim in `run_agent.py` for common textual tool-call outputs. It is scoped to Qwopus/RTX signals only (`qwopus` model, `custom:RTX`/`rtx` provider, or the RTX base URL) so normal providers are not affected.
+Hermes now has a narrow Qwopus/RTX compatibility shim in `run_agent.py` for common textual tool-call outputs. It is scoped to Qwopus/RTX signals only (`qwopus` model, `custom:atomic-qwopus`/`rtx` provider, or the Atomic Qwopus base URL) so normal providers are not affected.
 
 The shim promotes only pure/single textual calls after response normalization and before normal Hermes tool validation/execution. Supported shapes observed in live testing:
 
@@ -89,7 +89,7 @@ pytest -q \
 
 HERMES_HOME=/Users/Kosta/.hermes hermes -z \
   'Use the terminal tool to print QWOPUS_TOOL_OK, then reply with the exact printed text.' \
-  --provider custom:RTX -m qwopus-gpu -t terminal
+  --provider custom:atomic-qwopus -m qwopus-atomic -t terminal
 ```
 
 Expected live smoke result: final answer contains exactly `QWOPUS_TOOL_OK`. This proves the Hermes compatibility path executed a real tool, but it is still a shim; it does not mean the Qwopus proxy itself provides native OpenAI tool calls.

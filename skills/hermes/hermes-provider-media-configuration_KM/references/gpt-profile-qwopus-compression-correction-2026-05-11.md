@@ -4,7 +4,7 @@
 
 Kosta noticed a Telegram warning:
 
-> Compression model qwopus-gpu (custom:RTX) context is 131,072 tokens, but the main model gpt-5.5 compression threshold was 270,000 tokens. Auto-lowered this session's threshold...
+> Historical compression model qwopus-gpu (custom:RTX) context was 131,072 tokens; current Qwopus route is qwopus-atomic (custom:atomic-qwopus) at 32,768 tokens, but the main model gpt-5.5 compression threshold was 270,000 tokens. Auto-lowered this session's threshold...
 
 The GPT profile's main model was already correct, but active compression auxiliary routing was still pinned to Qwopus.
 
