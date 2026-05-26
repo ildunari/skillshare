@@ -11,6 +11,10 @@ description: Elite frontend image-direction skill for generating premium, conver
 metadata:
   source_repo: https://github.com/Leonxlnx/taste-skill
   creator: Leonxlnx
+  hermes:
+    command_aliases:
+    - tasteimg
+    command_priority: 949
 ---
 
 # HARD OUTPUT RULE — READ FIRST

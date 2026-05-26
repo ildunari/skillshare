@@ -12,7 +12,7 @@ metadata:
   creator: Leonxlnx
   hermes:
     command_aliases:
-    - tasteimg
+    - tastecode2img
     command_priority: 950
 ---
 
