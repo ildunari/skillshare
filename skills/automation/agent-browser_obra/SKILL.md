@@ -28,6 +28,23 @@ agent-browser wait --load networkidle
 agent-browser snapshot -i  # Check result
 ```
 
+## Durable task workspace
+
+For medium/complex browser work, create a Webwright-style artifact workspace before interacting. This prevents successful workflows from disappearing into transient browser state and gives you a checklist to verify before claiming completion.
+
+Use it for forms, filters, multi-step flows, authenticated workflows, extraction/scraping, downloads/uploads, benchmark tasks, or anything likely to recur. Skip it for trivial public-page reads.
+
+```bash
+web-task-scaffold \
+  --profile "${HERMES_PROFILE:-default}" \
+  --task "<user task>" \
+  --cp "<observable success condition>" \
+  --cp "<another required condition>" \
+  --init-run
+```
+
+The script prints JSON paths for `workspace_dir`, `plan`, `exploration_dir`, `run_dir`, `screenshots_dir`, `log_path`, and `script_path`. Save exploratory screenshots/snapshots under `exploration/`, final-run evidence under `final_runs/run_N/screenshots/`, and append constraint-relevant actions/results to `final_script_log.txt`. Before final response, verify every `plan.md` critical point with screenshot, DOM/text, URL/title, network/download evidence, or a log line.
+
 ## Command Chaining
 
 Commands can be chained with `&&` in a single shell invocation. The browser persists between commands via a background daemon, so chaining is safe and more efficient than separate calls.
