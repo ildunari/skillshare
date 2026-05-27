@@ -3,6 +3,8 @@ description: Use when executing phased implementation that needs build verificat
 metadata:
     targets:
         - antigravity
+        - codex
+        - xcode-codex
 name: agentic-loop-builder_KM
 ---
 # Agentic Loop Builder

@@ -3,6 +3,8 @@ description: 'Orchestrate phased document editing, data analysis, and knowledge 
 metadata:
     targets:
         - antigravity
+        - codex
+        - xcode-codex
 name: agentic-loop-productivity_KM
 ---
 # Agentic Loop — Productivity

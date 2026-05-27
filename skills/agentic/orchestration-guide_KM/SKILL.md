@@ -7,6 +7,8 @@ description: |-
 metadata:
     targets:
         - antigravity
+        - codex
+        - xcode-codex
 name: orchestration-guide_KM
 user-invocable: false
 ---
