@@ -77,7 +77,7 @@ Verify subagent findings yourself before editing or claiming success. If a dropp
 7. Verify in layers:
    - syntax/compile checks for touched Python files
    - focused tests for changed behavior
-   - `hermes version` and `hermes update --check` when safe; in Telegram, prefer direct `git fetch/status` for a pending-update check because the approval scanner may over-match harmless `hermes update --check` as gateway-disruptive
+   - `hermes version` and `hermes update --check` when safe; in Telegram, prefer direct `git fetch/status` for a pending-update check because the approval scanner may over-match harmless `hermes update --check` as gateway-disruptive. After a manual branch-first merge, clear stale profile update caches (`~/.hermes*/.update_check`, especially the active profile) before trusting `hermes version`; otherwise it may keep reporting the old behind count even when git is current.
    - service health endpoints for WebUI or other updated sidecars
    - after all tests/builds, run a final git cleanliness check for every touched repo; tests/builds can leave follow-up edits, so do not call the update clean from an earlier status check
    - if final validation produced legitimate durable fixes, commit them before the final report; otherwise explicitly report the dirty tree and why it is intentionally uncommitted
