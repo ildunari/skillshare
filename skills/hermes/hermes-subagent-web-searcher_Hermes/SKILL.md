@@ -2,7 +2,7 @@
 name: hermes-subagent-web-searcher_Hermes
 description: Spawn a focused Hermes web-search delegate for current facts, source
   triage, and concise cited answers.
-version: 0.3.0
+version: 0.4.0
 author: Hermes Agent
 license: MIT
 metadata:
@@ -42,36 +42,53 @@ Pick the minimum set. Decide before spawning — don't give `browser` or `termin
 
 | Condition | Add |
 |-----------|-----|
-| Default | `['web']` |
-| Page requires login or JS rendering | `'browser'` |
-| Delegate must read/write local files | `'file'` |
-| `curl`/`jq` or shell verification needed | `'terminal'` |
-| Task needs Hermes CLI operations | `'hermes-cli'` (rare) |
+| Default web research, docs, source triage, page Q&A | `['web']` |
+| X/Twitter/social-current facts, X posts, threads, X-native semantic search, image/video understanding on posts | add `'x_search'` for `grok_research` / `x_search` |
+| Exact X post/user JSON, media URLs, author IDs, authenticated X reads | prefer `x_twitter`/xurl when available; otherwise add `'terminal'` and use read-only `xurl` commands |
+| GitHub repo facts | add `'github'` or have parent use `github_repo_brief` before spawning |
+| Page requires login or JS rendering | add `'browser'` |
+| Delegate must read/write local files | add `'file'` |
+| `curl`/`jq`, API status checks, or shell verification needed | add `'terminal'` |
+| Task needs Hermes CLI operations | add `'hermes-cli'` (rare) |
+
+## Current search surfaces
+
+Use the best surface, not only generic web search:
+
+- `web` wrapper: search, fetch, focused page answers, summaries, JSON/link extraction, and curl.md fallback for readable markdown extraction.
+- `web_search`: quick Exa-backed search; good for semantic search, GitHub/domain/date/category scoped queries when available.
+- `grok_research` (`x_search` toolset): compact Grok/xAI router for X Search + Web Search; supports `source=auto|x|web`, X image/video understanding, web/image understanding, filters such as handles/domains/dates, and citations.
+- `x_search`: legacy/direct Grok X-only search; use when you specifically need X Search filters and not the broader router.
+- `x_twitter` / `xurl`: exact read-only X/Twitter fetches/search/user lookups when the exact post JSON, media URL, author ID, or authenticated X view matters. Never use write actions without explicit confirmation.
+- `github_repo_brief`: fastest first pass for a GitHub repo before opening browser/web extraction.
+- `browser`: only for JS/auth-heavy pages or interaction, not routine static research.
 
 ## Copyable delegate_task prompt template
 ```python
 delegate_task(
-    goal="Find current, credible information and return a compact, cited synthesis. Search broadly, extract only promising sources, note dates, avoid SEO filler, and separate confirmed facts from uncertainty. If you hit a dead end, note what you tried.",
+    goal="Lane: web-searcher. Find current, credible information and return a compact, cited synthesis. Choose the right search surface first: web/web_search for normal web docs, grok_research/x_search for X/Twitter or Grok-current search, x_twitter/xurl for exact X post/user JSON, github_repo_brief for GitHub repos, browser only for JS/auth-heavy pages. Extract only promising sources, note dates, avoid SEO filler, and separate confirmed facts from uncertainty. If you hit a dead end, note what you tried.",
     context="""
+Lane: web-searcher
 User/request: <paste the exact user ask>
 Kosta-specific constraints: concise, technical, Telegram-friendly; avoid noisy tables unless fenced.
 Known context: <paths, URLs, screenshots, constraints, prior findings, deadlines>
 Definition of done: <specific artifact — e.g. "current version number of X", "comparison of A vs B on metric M", "direct download URL for Y", "release date confirmed from official source">
 Recency requirement: <e.g. "must be from the past 7 days" | "within past 6 months is fine" | "stable fact, recency not critical">
+Preferred route: <web | grok_research/x_search | x_twitter/xurl | github_repo_brief | browser | auto>
 Do not assume parent conversation history; everything needed is in this context.
 
 Return using the Output Contract below.
 """,
-    toolsets=['web']
+    toolsets=['web', 'x_search']
 )
 ```
 
 ## Output contract
 Return a compact report with:
 1. **Answer/result** — the direct conclusion or completed action.
-2. **Evidence/actions** — links with dates. Minimum 2 independent sources for factual claims; 1 authoritative source is acceptable for niche or emerging topics with low coverage (flag this case explicitly).
+2. **Evidence/actions** — links with dates and the route used (`web`, `web_search`, `grok_research`, `x_search`, `x_twitter/xurl`, `github_repo_brief`, `browser`, or shell/API). Minimum 2 independent sources for factual claims; 1 authoritative source is acceptable for niche or emerging topics with low coverage (flag this case explicitly).
 3. **Recommendations/next steps** — only what matters.
-4. **Issues/blockers** — uncertainty, missing access, or confirmation needed.
+4. **Issues/blockers** — uncertainty, missing access, unavailable toolsets, auth/API limits, or confirmation needed.
 
 ## Parent-side output verification
 After receiving the delegate result, auto-check before accepting:

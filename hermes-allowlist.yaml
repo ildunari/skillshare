@@ -49,6 +49,7 @@ skills:
 - hermes/hermes-subagent-ui-polish_Hermes
 - hermes/hermes-subagent-voice-audio_Hermes
 - hermes/hermes-subagent-web-searcher_Hermes
+- hermes/hermes-subagents_Hermes
 - hermes/codex-image-gen-default_Hermes
 - hermes/exa-search
 - hermes/mac-shell-compression-hygiene_Hermes
