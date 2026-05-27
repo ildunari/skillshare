@@ -1,7 +1,7 @@
 ---
 name: hermes-subagents_Hermes
 description: "Umbrella router for spawning specialized Hermes subagents. Use whenever a task should be delegated to a focused lane: Hermes internals, macOS operations, browser/computer use, iOS/Swift, web/X search, papers, product finding, prompt design, UI polish, or voice/audio. Pick the lane, start child context with Lane: <lane-name>, and pass complete context."
-version: 0.2.0
+version: 0.3.0
 author: Hermes Agent
 license: MIT
 targets:
@@ -36,9 +36,9 @@ This makes subagent usage auditable in session history instead of showing up as 
 - **mac-operator**: local files, processes, launch agents, cron, logs, setup checks, macOS state.
 - **computer-use**: GUI/browser workflows, interaction-heavy websites, visual verification.
 - **ios-swift**: Swift, SwiftUI/UIKit, Xcode, TestFlight, App Store workflows.
-- **web-searcher**: current facts, source triage, concise cited web answers. Use modern surfaces: `web`, `web_search`, `grok_research`/`x_search` for Grok/X-current search, `x_twitter`/xurl for exact X post/user reads, `github_repo_brief` for GitHub repos, and browser only for JS/auth-heavy pages.
+- **web-searcher**: current facts, source triage, concise cited web answers. Use modern surfaces: `web`, `web_search`, `grok_research`/`x_search` for Grok/X-current search, `x_twitter`/xurl for exact X post/user reads, `github_repo_brief` for GitHub repos, and browser only for JS/auth-heavy pages. For deep research: broad map → targeted follow-ups → community/deep-thread checks → gaps vs confirmed negatives.
 - **paper-scout**: academic papers, methods, datasets, authors, citation trails.
-- **product-finder**: shopping/product research, pricing, availability, tradeoffs.
+- **product-finder**: shopping/product research, pricing, availability, tradeoffs. For products/tools: verify official specs/pricing, check real-user reports, include repo health for software, rank by fit not popularity, and include an underdog when credible.
 - **prompt-designer**: system prompts, skills, agent briefs, output contracts.
 - **ui-polish**: product surface critique, screenshots, CSS/SwiftUI/layout, UX copy.
 - **voice-audio**: TTS, transcripts, voice notes, speech workflow debugging.

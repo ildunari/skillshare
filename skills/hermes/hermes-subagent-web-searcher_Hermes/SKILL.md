@@ -2,7 +2,7 @@
 name: hermes-subagent-web-searcher_Hermes
 description: Spawn a focused Hermes web-search delegate for current facts, source
   triage, and concise cited answers.
-version: 0.4.0
+version: 0.5.0
 author: Hermes Agent
 license: MIT
 metadata:
@@ -63,10 +63,44 @@ Use the best surface, not only generic web search:
 - `github_repo_brief`: fastest first pass for a GitHub repo before opening browser/web extraction.
 - `browser`: only for JS/auth-heavy pages or interaction, not routine static research.
 
+## Research operating mode
+
+For broad product/tool/update/repo/technical research, run an iterative investigation instead of one search pass:
+
+1. Start broad to map entities, current names, official sources, and community terms.
+2. Follow with targeted searches on specific claims, repos, versions, prices, issues, authors, and quoted phrases.
+3. Go deep where signal lives: GitHub issues/discussions, changelogs, Reddit comment chains, HN comments, X quote/reply chains, Discord/forum snippets, YouTube descriptions/comments when relevant.
+4. Pivot when searches fail: problem/solution framing, alternative terminology, expert names, competing products, historical names, and related broader categories.
+5. Stop only when the defined question is answered or the useful paths are exhausted; report exhausted paths explicitly.
+
+Source priority, in order: official docs/blogs/changelogs, GitHub repos/issues/discussions, direct employee/maintainer posts, Reddit/niche forums, X/Twitter, Hacker News, conference talks, YouTube, Discord/community archives, then generic blogs/SEO pages. Use low-credibility sources only if they contain unique signal, and label them.
+
+Use these investigation checks when they matter:
+
+- **Novel term validation:** first verify unfamiliar product/release names before substituting a familiar term.
+- **Resist aggregation bias:** after finding the obvious popular answer, look for the underdog/contrarian/niche favorite and explain why it does or does not matter.
+- **Lateral source vetting:** for unfamiliar sources making non-trivial claims, quickly check the source/author.
+- **Gaps vs negatives:** distinguish “I couldn’t find this” from “credible sources confirm this does not exist.”
+- **Negative space:** note important things official pages omit: pricing, limits, platform support, privacy, roadmap, API access, maintenance.
+- **Follow the trail:** for repos/tools, check who built it, funding/company connection if relevant, GitHub activity, issues/PRs, and what changed after launch hype.
+- **Multiple hypotheses:** for ambiguous asks, pick the most likely interpretation and proceed, but note alternatives.
+
+For GitHub repos, always capture: stars, last commit date, open issues count, release/activity pattern, license if relevant, and a plain maintenance-status read. Prefer `github_repo_brief` first, then GitHub pages/issues/discussions if the decision depends on health.
+
+## Output modes
+
+Default to a compact answer. For deep research, organize into the sections that apply:
+
+- **Key takeaways** — most important findings first.
+- **Official** — direct source, changelog, docs, maintainers/employees.
+- **Community** — Reddit/X/HN/forums/user reports, including consensus and contrarian takes.
+- **Recommendations** — ranked picks for product/tool discovery; include best fit, limitations, and at least one underdog if a credible one exists.
+- **Open questions** — unclear, contested, unconfirmed, or exhausted search paths.
+
 ## Copyable delegate_task prompt template
 ```python
 delegate_task(
-    goal="Lane: web-searcher. Find current, credible information and return a compact, cited synthesis. Choose the right search surface first: web/web_search for normal web docs, grok_research/x_search for X/Twitter or Grok-current search, x_twitter/xurl for exact X post/user JSON, github_repo_brief for GitHub repos, browser only for JS/auth-heavy pages. Extract only promising sources, note dates, avoid SEO filler, and separate confirmed facts from uncertainty. If you hit a dead end, note what you tried.",
+    goal="Lane: web-searcher. Find current, credible information and return a compact, cited synthesis. Choose the right search surface first: web/web_search for normal web docs, grok_research/x_search for X/Twitter or Grok-current search, x_twitter/xurl for exact X post/user JSON, github_repo_brief for GitHub repos, browser only for JS/auth-heavy pages. Search iteratively: broad map first, then targeted follow-ups, then community/deep-thread checks when useful. Extract only promising sources, note dates, avoid SEO filler, distinguish confirmed/speculative/rumored, and separate gaps from confirmed negatives. If you hit a dead end, note what you tried.",
     context="""
 Lane: web-searcher
 User/request: <paste the exact user ask>
@@ -86,9 +120,9 @@ Return using the Output Contract below.
 ## Output contract
 Return a compact report with:
 1. **Answer/result** — the direct conclusion or completed action.
-2. **Evidence/actions** — links with dates and the route used (`web`, `web_search`, `grok_research`, `x_search`, `x_twitter/xurl`, `github_repo_brief`, `browser`, or shell/API). Minimum 2 independent sources for factual claims; 1 authoritative source is acceptable for niche or emerging topics with low coverage (flag this case explicitly).
-3. **Recommendations/next steps** — only what matters.
-4. **Issues/blockers** — uncertainty, missing access, unavailable toolsets, auth/API limits, or confirmation needed.
+2. **Evidence/actions** — links with dates and the route used (`web`, `web_search`, `grok_research`, `x_search`, `x_twitter/xurl`, `github_repo_brief`, `browser`, or shell/API). Minimum 2 independent sources for factual claims; 1 authoritative source is acceptable for niche or emerging topics with low coverage (flag this case explicitly). For GitHub repos include stars, last commit, open issues, and maintenance read.
+3. **Recommendations/next steps** — only what matters; for product/tool discovery, rank by quality/fit, not popularity, and include a credible underdog when one exists.
+4. **Issues/blockers** — uncertainty, missing access, unavailable toolsets, auth/API limits, exhausted search paths, or confirmation needed.
 
 ## Parent-side output verification
 After receiving the delegate result, auto-check before accepting:
