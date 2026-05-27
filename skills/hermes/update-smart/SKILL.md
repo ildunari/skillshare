@@ -6,7 +6,7 @@ description: >-
   create rollback branches, preserve and replay local git customizations, update
   Hermes/WebUI/non-Hermes sidecars carefully, run verification, and avoid
   restarting the live gateway from inside Telegram unless explicitly safe.
-version: 0.1.1
+version: 0.1.2
 author: Hermes Agent
 license: MIT
 targets: [hermes-default, hermes-gpt, claude-hermes]
@@ -117,6 +117,8 @@ End every successful or partially successful smart update with a compact change 
 - **Still needs attention:** only real follow-ups, blockers, safe restarts, machines that could not be reached, or warnings intentionally left.
 
 Keep the digest factual and evidence-backed. Do not pad it with every file touched; group related changes by user-visible effect. If nothing meaningful changed in a bucket, skip that bucket rather than saying “none.”
+
+After the digest, always include a short **Claude hybrid restart prompt** when any Hermes surface is updated but not restarted. Keep it copy-pasteable, 1 short paragraph plus commands if useful, and tailor it to the exact surfaces touched. The prompt should ask Claude to restart all relevant Hermes surfaces safely, verify post-restart health, run the miniapp/API regression probe, and report live PIDs/ports. Do not include secrets. If no restart is needed, omit the prompt.
 
 ## Built-in `/update` comparison
 
