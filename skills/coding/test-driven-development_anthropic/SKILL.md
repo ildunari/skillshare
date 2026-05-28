@@ -1,5 +1,5 @@
 ---
-name: "Test-Driven Development"
+name: "Test-Driven Development KM"
 description: "Use when implementing any feature or bugfix, before writing implementation code. This skill now also owns the broader verification workflow that was previously split into `testing-protocol`."
 ---
 

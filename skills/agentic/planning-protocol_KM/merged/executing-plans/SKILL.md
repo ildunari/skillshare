@@ -1,5 +1,5 @@
 ---
-name: "Executing Plans"
+name: "Executing Plans KM"
 description: "Use when you have a written implementation plan to execute in a separate session with review checkpoints"
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: skill-creator
+name: "skill-creator_KM"
 description: Load when creating, editing, auditing, maintaining, or optimizing agent skills; when users ask to turn a workflow into a skill, improve a SKILL.md, add gotchas/evals, benchmark skill behavior, tune routing descriptions, package/distribute skills, or apply skill-writing research such as Perplexity/Agent Skills guidance.
 ---
 

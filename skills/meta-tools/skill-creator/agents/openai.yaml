@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Creator KM"
+  short_description: "Create and maintain Kosta Skillshare skills"
+  default_prompt: "Use Kosta's Skillshare skill-creator workflow for this task."

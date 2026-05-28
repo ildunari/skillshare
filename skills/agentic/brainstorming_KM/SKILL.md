@@ -3,7 +3,7 @@ description: Use when the user wants to shape a new feature, component, workflow
 metadata:
     targets:
         - antigravity
-name: Brainstorming
+name: "brainstorming_KM"
 ---
 
 # Brainstorming Ideas Into Designs
