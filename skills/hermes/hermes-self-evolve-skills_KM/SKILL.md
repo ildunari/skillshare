@@ -71,6 +71,28 @@ Each loop should:
 5. Score against the rubric and update plateau state.
 6. Make the next benchmark harder if the current one has become too easy.
 
+## Evolution modes
+
+Choose the mode before the first loop; don't use one generic rubric for every target.
+
+- **Procedural skill mode** — for tool workflows, repo procedures, browser flows, release pipelines, and troubleshooting skills. Score behavior by task success, recovery from known failures, deterministic helpers, and verification evidence.
+- **Coding benchmark mode** — for language/framework skills such as Swift/SwiftUI, use an external or locally curated benchmark when available. Keep public benchmark tasks read-only, snapshot versions/dates, avoid training directly on held-out cases, and separate train/dev/holdout sets so the skill does not overfit the public answers.
+- **Personality/style mode** — for writing-voice skills, use a generator/judge split with fresh contexts every run. The generator sees only the candidate style skill and the task; the judge sees the rubric plus exemplar corpus and scores style fidelity, audience fit, factual constraint preservation, and non-imitation safety. For this mode, load `hermes__self-evolve-personality-skills_KM`.
+- **Routing/trigger mode** — for skill descriptions/frontmatter. Use `$skill-creator` description evals with positive and near-miss negative prompts; optimize recall without stealing adjacent tasks.
+- **Browser workflow mode** — use the dedicated browser workflow contract below.
+
+For every mode, preserve at least one held-out eval set that the worker never sees. Let the judge reference it; do not let the patcher optimize directly against its hidden examples.
+
+## Fresh-context evaluator pattern
+
+When the target involves subjective quality, prompt adherence, style, or reasoning behavior, run three separated lanes per loop:
+
+1. **Generator lane**: fresh context, reads only the candidate skill and one task batch, writes outputs.
+2. **Reviewer lane**: fresh context, reads the rubric, exemplar/reference corpus, and generated outputs, returns machine-readable scores plus concrete failure quotes.
+3. **Patcher lane**: reads only the candidate skill, aggregate reviewer findings, and allowed diffs; patches the skill without seeing hidden holdout exemplars directly.
+
+Restart or spawn fresh agents between loops instead of letting conversational memory accumulate. This prevents the generator from learning the benchmark through context rather than through the skill.
+
 ## Browser workflow evolution
 
 For browser-agent workflows, use an Autobrowse-style durable loop instead of only editing `SKILL.md` prose. Create or reuse the Webwright workspace from `web-task-scaffold`, preserve the live trace, and maintain a `strategy.md` file in the run root. Each iteration must read `strategy.md` first, run the real task or a faithful fixture, then append what worked, what failed, selectors/endpoints discovered, deterministic helpers worth keeping, and what to stop doing.
