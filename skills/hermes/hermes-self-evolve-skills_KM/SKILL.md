@@ -71,6 +71,12 @@ Each loop should:
 5. Score against the rubric and update plateau state.
 6. Make the next benchmark harder if the current one has become too easy.
 
+## Browser workflow evolution
+
+For browser-agent workflows, use an Autobrowse-style durable loop instead of only editing `SKILL.md` prose. Create or reuse the Webwright workspace from `web-task-scaffold`, preserve the live trace, and maintain a `strategy.md` file in the run root. Each iteration must read `strategy.md` first, run the real task or a faithful fixture, then append what worked, what failed, selectors/endpoints discovered, deterministic helpers worth keeping, and what to stop doing.
+
+Converge when 3–5 browser iterations stop improving reliability, turn count, or deterministic coverage. Graduate the result into a real skill only when it includes both human-readable procedure and reusable glue: selectors, CLI/API calls, scripts, screenshots/log evidence, and verification constraints. Browser skills should reduce rediscovery tax on the next run; if the artifact cannot be reused by another agent without re-exploring the site, it is not done.
+
 ## Rubric dimensions
 
 Score 0–100, with per-dimension sub-scores:
