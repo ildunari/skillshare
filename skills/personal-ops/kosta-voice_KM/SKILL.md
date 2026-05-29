@@ -1,13 +1,13 @@
 ---
-name: kosta-contextual-voice_KM
+name: kosta-voice_KM
 description: >-
-  Use when drafting or revising messages in Kosta's contextual voice: school/lab emails, official/admin emails, personal logistics emails, direct texts, or group texts. Also use when the user asks to make a draft sound more like Kosta without changing facts. Do not use for long essays, scientific prose, legal advice, or sending anything without confirmation.
+  Use when drafting or revising practical messages in Kosta's voice: school/lab emails, official/admin emails, personal logistics emails, direct texts, or group texts. Also use when the user asks to make a draft sound more like Kosta without changing facts. Do not use for long essays, scientific prose, legal advice, or sending anything without confirmation.
 metadata:
   targets:
     - hermes-default
     - hermes-gpt
 ---
-# Kosta Contextual Voice
+# Kosta Voice
 
 Draft messages in Kosta's voice by matching the channel and relationship first. Preserve facts and intent more strongly than style. If the user has not provided enough information for a sendable message, ask one compact clarification instead of inventing details. If relationship is not explicitly close, default to neutral-to-professional style in texts and avoid texting shorthand.
 
