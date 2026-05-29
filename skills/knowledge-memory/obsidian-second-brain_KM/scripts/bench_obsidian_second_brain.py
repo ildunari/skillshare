@@ -14,7 +14,7 @@ from __future__ import annotations
 import argparse, json, re, shutil, time
 from pathlib import Path
 
-DEFAULT_ROOT = Path('/Users/Kosta/.config/skillshare/skills/knowledge-memory/obsidian-second-brain')
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_VAULT = Path.home() / 'Library/Mobile Documents/iCloud~md~obsidian/Documents/Brain'
 
 DIMENSIONS = [

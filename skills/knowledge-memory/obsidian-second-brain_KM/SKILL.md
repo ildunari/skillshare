@@ -242,6 +242,10 @@ Tags follow a hierarchical namespace pattern:
 
 Then create the note and verify. No confirmation needed for new notes.
 
+### Images for curated entries
+
+For curated second-brain entries about tools, references, design resources, projects, or guides, generate a relevant image at the end of the workflow unless Kosta explicitly says not to. Save the image inside the Brain vault, normally under `assets/beautify/<section>/<slug>/hero.png`, and embed it in the note with an Obsidian-relative image link like `![](assets/beautify/<section>/<slug>/hero.png)`. Do not leave the note pointing at a Hermes cache path or external generated-image URL.
+
 ### Quick capture (unsorted)
 ```bash
 obsidian vault="Brain" create name="<descriptive-name>" path="inbox/quick/<name>.md" content="<content>" silent
