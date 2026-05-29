@@ -6,7 +6,7 @@
  * Safe to run repeatedly -- it is a no-op when nothing needs cleaning.
  *
  * Usage (from the project root):
- *   node <this skill directory>/scripts/cleanup-deprecated.mjs
+ *   node {{scripts_path}}/cleanup-deprecated.mjs
  *
  * What it does:
  *   1. Finds every harness-specific skills directory (.claude/skills,
@@ -25,7 +25,7 @@ import { join, resolve } from 'node:path';
 const DEPRECATED_NAMES = [
   // v2.0 renames
   'frontend-design',    // renamed to impeccable
-  'teach-impeccable',   // folded into /impeccable teach
+  'teach-impeccable',   // folded into /impeccable init
   // v2.1 merges
   'arrange',            // renamed to layout
   'normalize',          // merged into polish

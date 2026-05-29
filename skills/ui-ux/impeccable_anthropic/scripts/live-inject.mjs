@@ -2,23 +2,24 @@
  * CLI helper: insert/remove the live variant mode script tag in the project's
  * main HTML entry point.
  *
- * On first live run, the agent generates `config.json` in this script's
- * directory with the project's insertion target (framework-specific). On
+ * On first live run, the agent generates `.impeccable/live/config.json`
+ * with the project's insertion target (framework-specific). On
  * every subsequent run, this script handles insert/remove deterministically
  * with zero LLM involvement.
  *
  * Usage:
  *   node live-inject.mjs --port PORT   # Insert the live script tag
  *   node live-inject.mjs --remove      # Remove the live script tag
- *   node live-inject.mjs --check       # Check whether config.json exists
+ *   node live-inject.mjs --check       # Check whether live config exists
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { resolveLiveConfigPath } from './impeccable-paths.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATH = process.env.IMPECCABLE_LIVE_CONFIG || path.join(__dirname, 'config.json');
+const CONFIG_PATH = resolveLiveConfigPath({ cwd: process.cwd(), scriptsDir: __dirname });
 const MARKER_OPEN_TEXT = 'impeccable-live-start';
 const MARKER_CLOSE_TEXT = 'impeccable-live-end';
 
@@ -39,12 +40,12 @@ export async function injectCli() {
     console.log(`Usage: node live-inject.mjs [options]
 
 Insert or remove the live mode script tag in the project's HTML entry point.
-Reads configuration from config.json (in this same directory).
+Reads configuration from .impeccable/live/config.json.
 
 Modes:
   --port PORT   Insert script tag pointing at http://localhost:PORT/live.js
   --remove      Remove the script tag (if present)
-  --check       Print whether config.json exists and its content
+  --check       Print whether .impeccable/live/config.json exists and its content
 
 Output (JSON):
   { ok, file, inserted|removed, config? }`);
@@ -115,7 +116,7 @@ Output (JSON):
     if (!fs.existsSync(absFile)) return { file: relFile, error: 'file_not_found' };
     const content = fs.readFileSync(absFile, 'utf-8');
     const withoutOld = revertCspMeta(removeTag(content, config.commentSyntax));
-    const withTag = insertTag(withoutOld, config, port);
+    const withTag = insertTag(withoutOld, config, port, relFile);
     if (withTag === withoutOld) {
       return { file: relFile, error: 'insertion_point_not_found', anchor: config.insertBefore || config.insertAfter };
     }
@@ -255,18 +256,22 @@ function validateConfig(cfg) {
 function commentOpen(syntax) { return syntax === 'jsx' ? '{/*' : '<!--'; }
 function commentClose(syntax) { return syntax === 'jsx' ? '*/}' : '-->'; }
 
-function buildTagBlock(syntax, port) {
+function buildTagBlock(syntax, port, filePath) {
   const open = commentOpen(syntax);
   const close = commentClose(syntax);
+  // Astro processes <script> tags by default and rewrites src to its own
+  // bundled URL. is:inline opts out so the literal external src survives.
+  const isAstro = typeof filePath === 'string' && filePath.endsWith('.astro');
+  const scriptAttrs = isAstro ? 'is:inline ' : '';
   return (
     open + ' ' + MARKER_OPEN_TEXT + ' ' + close + '\n' +
-    '<script src="http://localhost:' + port + '/live.js"></script>\n' +
+    '<script ' + scriptAttrs + 'src="http://localhost:' + port + '/live.js"></script>\n' +
     open + ' ' + MARKER_CLOSE_TEXT + ' ' + close + '\n'
   );
 }
 
-function insertTag(content, config, port) {
-  const block = buildTagBlock(config.commentSyntax, port);
+function insertTag(content, config, port, filePath) {
+  const block = buildTagBlock(config.commentSyntax, port, filePath);
   // insertBefore: match the LAST occurrence. Anchors like `</body>` naturally
   // belong at the end, and the same literal can appear earlier in code blocks
   // within rendered documentation pages.
@@ -298,12 +303,21 @@ function insertTag(content, config, port) {
  */
 function removeTag(content, _syntax) {
   const patterns = [
-    /([ \t]*)<!--\s*impeccable-live-start\s*-->[\s\S]*?<!--\s*impeccable-live-end\s*-->[ \t]*\n/,
-    /([ \t]*)\{\/\*\s*impeccable-live-start\s*\*\/\}[\s\S]*?\{\/\*\s*impeccable-live-end\s*\*\/\}[ \t]*\n/,
+    /([ \t]*)<!--\s*impeccable-live-start\s*-->[\s\S]*?<!--\s*impeccable-live-end\s*-->([ \t]*(?:\n|$)?)/,
+    /([ \t]*)\{\/\*\s*impeccable-live-start\s*\*\/\}[\s\S]*?\{\/\*\s*impeccable-live-end\s*\*\/\}([ \t]*(?:\n|$)?)/,
   ];
   for (const pat of patterns) {
-    const next = content.replace(pat, '$1');
-    if (next !== content) return next;
+    let changed = false;
+    let next = content;
+    do {
+      content = next;
+      next = content.replace(pat, (_match, leadingIndent, trailing = '') => {
+        if (trailing.includes('\n')) return leadingIndent;
+        return leadingIndent || trailing || '';
+      });
+      if (next !== content) changed = true;
+    } while (next !== content);
+    if (changed) return next;
   }
   return content;
 }
@@ -388,7 +402,16 @@ export function patchCspMeta(content, port) {
 
     const newContentAttr = `content=${contentAttr.quote}${patched}${contentAttr.quote}`;
     const marker = `${CSP_MARKER_ATTR}="${Buffer.from(original, 'utf-8').toString('base64')}"`;
-    const newAttrs = attrs.replace(contentAttr.full, newContentAttr) + ' ' + marker;
+    // The tagRe captures any whitespace between the last attribute and the
+    // closing `/>` as part of `attrs`. Naively appending ` ${marker}` after
+    // a replace would land it BEFORE that trailing space, leaving a double
+    // space inside attrs and clobbering the space before `/>`. Split off
+    // the trailing whitespace, splice the marker into the attribute body,
+    // and re-append the original trailing whitespace so a self-closing
+    // `<meta … />` round-trips byte-for-byte.
+    const trailingWs = (attrs.match(/[ \t]*$/) || [''])[0];
+    const attrsBody = attrs.slice(0, attrs.length - trailingWs.length);
+    const newAttrs = attrsBody.replace(contentAttr.full, newContentAttr) + ' ' + marker + trailingWs;
     const newTag = tag.full.replace(attrs, newAttrs);
 
     result = result.slice(0, tag.start) + newTag + result.slice(tag.end);

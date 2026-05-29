@@ -16,6 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { isGeneratedFile } from './is-generated.mjs';
+import { readBuffer as readManualEditsBuffer, writeBuffer as writeManualEditsBuffer } from './live-manual-edits-buffer.mjs';
 
 const EXTENSIONS = ['.html', '.jsx', '.tsx', '.vue', '.svelte', '.astro'];
 
@@ -38,6 +39,9 @@ Modes:
 Required:
   --id SESSION_ID    Session ID of the variant wrapper
 
+Options:
+  --page-url URL     Current browser page URL; scopes staged copy-edit cleanup
+
 Output (JSON):
   { handled, file, carbonize }`);
     process.exit(0);
@@ -46,6 +50,7 @@ Output (JSON):
   const id = argVal(args, '--id');
   const variantNum = argVal(args, '--variant');
   const paramValuesRaw = argVal(args, '--param-values');
+  const pageUrl = argVal(args, '--page-url');
   const isDiscard = args.includes('--discard');
 
   if (!id) { console.error('Missing --id'); process.exit(1); }
@@ -86,14 +91,86 @@ Output (JSON):
     console.log(JSON.stringify({ handled: true, file: relFile, carbonize: false, ...result }));
   } else {
     const result = handleAccept(id, variantNum, lines, targetFile, paramValues);
+    const acceptedOriginalText = result.acceptedOriginalText || '';
+    delete result.acceptedOriginalText;
     // Single-line attention-grabber when cleanup is required. The full
     // five-step checklist lives in reference/live.md (loaded once per
     // session); repeating it per-event would waste tokens.
     if (result.carbonize) {
       result.todo = 'REQUIRED before next poll: carbonize cleanup in ' + relFile + '. See reference/live.md "Required after accept".';
     }
+    // Scrub stash entries whose text appeared inside the just-replaced
+    // original wrap block. The accept embodies those manual edits (wrap was
+    // buffer-aware), so only those scoped ops are redundant.
+    if (result.handled !== false) {
+      try {
+        scrubManualEditsAgainstOriginalBlock(acceptedOriginalText, process.cwd(), pageUrl);
+      } catch {
+        // Non-fatal; the buffer stays as-is and the user can discard later.
+      }
+    }
     console.log(JSON.stringify({ handled: true, file: relFile, ...result }));
   }
+}
+
+/**
+ * After a variant accept rewrites one wrapper, drop only buffer ops whose
+ * text appeared inside that wrapper's original block. The previous file-wide
+ * scrub dropped unrelated staged edits from other components/files whenever
+ * their originalText wasn't present in the just-accepted file.
+ *
+ * Match both originalText and newText because live-wrap rewrites the original
+ * preview block to reflect pending manual edits before variants are generated.
+ */
+function scrubManualEditsAgainstOriginalBlock(originalBlockText, cwd = process.cwd(), pageUrl = null) {
+  const originalBlock = String(originalBlockText || '');
+  if (!originalBlock) return;
+  if (!pageUrl) return;
+  const buffer = readManualEditsBuffer(cwd);
+  if (buffer.entries.length === 0) return;
+  let mutated = false;
+  for (const entry of buffer.entries) {
+    if (entry.pageUrl !== pageUrl) continue;
+    const before = entry.ops.length;
+    entry.ops = entry.ops.filter((op) => {
+      return !manualEditOpAppearsInBlock(op, originalBlock);
+    });
+    if (entry.ops.length !== before) mutated = true;
+  }
+  buffer.entries = buffer.entries.filter((entry) => entry.ops.length > 0);
+  if (mutated) writeManualEditsBuffer(cwd, buffer);
+}
+
+function manualEditOpAppearsInBlock(op, originalBlock) {
+  const candidates = [op?.newText, op?.originalText]
+    .filter((text) => typeof text === 'string' && text.length > 0);
+  return candidates.some((text) => originalBlockHasExactManualText(originalBlock, text));
+}
+
+function originalBlockHasExactManualText(originalBlock, text) {
+  const needle = normalizeManualEditText(text);
+  if (!needle) return false;
+  return manualEditTextSegments(originalBlock).some((segment) => segment === needle);
+}
+
+function manualEditTextSegments(source) {
+  return String(source || '')
+    .replace(/<[^>]*>/g, '\n')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '\n')
+    .replace(/<!--[\s\S]*?-->/g, '\n')
+    .split(/\n+/)
+    .map(normalizeManualEditText)
+    .filter(Boolean);
+}
+
+function normalizeManualEditText(text) {
+  return String(text || '').replace(/\s+/g, ' ').trim();
+}
+
+// Compatibility export for older tests/callers. The unsafe file-wide scrub was
+// removed; callers must pass accepted original-block text for scoped cleanup.
+function scrubManualEditsAgainstFile(_targetFile, cwd = process.cwd(), originalBlockText = '', pageUrl = null) {
+  return scrubManualEditsAgainstOriginalBlock(originalBlockText, cwd, pageUrl);
 }
 
 // ---------------------------------------------------------------------------
@@ -105,15 +182,22 @@ function handleDiscard(id, lines, targetFile) {
   if (!block) return { handled: false, error: 'Markers not found' };
 
   const original = extractOriginal(lines, block);
-  const indent = lines[block.start].match(/^(\s*)/)[1];
+  const isJsx = detectCommentSyntax(targetFile).open === '{/*';
+  const replaceRange = expandReplaceRange(block, lines, isJsx);
 
-  // De-indent the original content back to the marker's indentation level
+  // Restore at the line we're actually replacing FROM, not the marker line.
+  // For JSX wrappers the marker comments live INSIDE the outer `<div>`, so
+  // `block.start` sits 2 spaces deeper than the original element. Using that
+  // as the deindent base would push the restored content 2 spaces too far
+  // right on every JSX/TSX session. `replaceRange.start` is the outer wrapper
+  // line, which is at the original element's indent for both HTML and JSX.
+  const indent = lines[replaceRange.start].match(/^(\s*)/)[1];
   const restored = deindentContent(original, indent);
 
   const newLines = [
-    ...lines.slice(0, block.start),
+    ...lines.slice(0, replaceRange.start),
     ...restored,
-    ...lines.slice(block.end + 1),
+    ...lines.slice(replaceRange.end + 1),
   ];
   fs.writeFileSync(targetFile, newLines.join('\n'), 'utf-8');
   return {};
@@ -127,12 +211,19 @@ function handleAccept(id, variantNum, lines, targetFile, paramValues) {
   const block = findMarkerBlock(id, lines);
   if (!block) return { handled: false, error: 'Markers not found' };
 
-  const indent = lines[block.start].match(/^(\s*)/)[1];
   const commentSyntax = detectCommentSyntax(targetFile);
+  const isJsx = commentSyntax.open === '{/*';
+  // Anchor indent on the line we're replacing FROM (the outer wrapper),
+  // not on `block.start` — for JSX that's the marker comment 2 spaces
+  // deeper than the original element. See handleDiscard for the full
+  // rationale.
+  const replaceRange = expandReplaceRange(block, lines, isJsx);
+  const indent = lines[replaceRange.start].match(/^(\s*)/)[1];
 
   // Extract the chosen variant's inner content
   const variantContent = extractVariant(lines, block, variantNum);
   if (!variantContent) return { handled: false, error: 'Variant ' + variantNum + ' not found' };
+  const originalContent = extractOriginal(lines, block);
 
   // Extract CSS block if present
   const cssContent = extractCss(lines, block, id);
@@ -149,7 +240,6 @@ function handleAccept(id, variantNum, lines, targetFile, paramValues) {
   const replacement = [];
 
   if (cssContent) {
-    const isJsx = commentSyntax.open === '{/*';
     replacement.push(indent + commentSyntax.open + ' impeccable-carbonize-start ' + id + ' ' + commentSyntax.close);
     // JSX targets need the CSS body wrapped in a template literal so that the
     // `{` and `}` in CSS rules don't get parsed as JSX expressions.
@@ -177,7 +267,6 @@ function handleAccept(id, variantNum, lines, targetFile, paramValues) {
   // need the object form, otherwise React 19 throws "Failed to set indexed
   // property [0] on CSSStyleDeclaration" while parsing the string char-by-char.
   if (cssContent) {
-    const isJsx = commentSyntax.open === '{/*';
     const styleAttr = isJsx ? "style={{ display: 'contents' }}" : 'style="display: contents"';
     replacement.push(indent + '<div data-impeccable-variant="' + variantNum + '" ' + styleAttr + '>');
     replacement.push(...restored);
@@ -187,13 +276,13 @@ function handleAccept(id, variantNum, lines, targetFile, paramValues) {
   }
 
   const newLines = [
-    ...lines.slice(0, block.start),
+    ...lines.slice(0, replaceRange.start),
     ...replacement,
-    ...lines.slice(block.end + 1),
+    ...lines.slice(replaceRange.end + 1),
   ];
   fs.writeFileSync(targetFile, newLines.join('\n'), 'utf-8');
 
-  return { carbonize: needsCarbonize };
+  return { carbonize: needsCarbonize, acceptedOriginalText: originalContent.join('\n') };
 }
 
 // ---------------------------------------------------------------------------
@@ -215,7 +304,89 @@ function findMarkerBlock(id, lines) {
     if (lines[i].includes(endPattern)) { end = i; break; }
   }
 
-  return (start !== -1 && end !== -1) ? { start, end } : null;
+  return (start !== -1 && end !== -1) ? { start, end, id } : null;
+}
+
+/**
+ * Compute the line range to REPLACE (vs. just the marker range to extract
+ * from). For JSX/TSX wrappers, live-wrap places the marker comments INSIDE
+ * the `<div data-impeccable-variants="ID">` outer wrapper so the picked
+ * element's JSX slot keeps a single child — a Fragment `<></>` would have
+ * solved the multi-sibling case but failed inside `asChild` / cloneElement
+ * parents with "Invalid prop supplied to React.Fragment".
+ *
+ * That means the marker block is enclosed by the wrapper `<div>` opener
+ * (with `data-impeccable-variants="ID"`) and its matching `</div>`. We
+ * walk back to the opener and forward to the closer so accept/discard
+ * remove the entire scaffold, not just the inner markers.
+ *
+ * Marker lines themselves stay where they were so extractOriginal /
+ * extractVariant / extractCss continue to walk the same range.
+ */
+function expandReplaceRange(block, lines, isJsx) {
+  if (!isJsx) return { start: block.start, end: block.end };
+
+  let { start, end } = block;
+
+  // Walk back for the wrapper `<div data-impeccable-variants="..."` opener.
+  // The attr may sit on a continuation line of a multi-line opening tag, so
+  // also walk to the line that actually contains `<div`.
+  for (let i = start - 1; i >= 0; i--) {
+    if (isVariantEndMarkerLine(lines[i], block.id)) break;
+    if (hasVariantWrapperAttr(lines[i], block.id)) {
+      let opener = i;
+      while (opener > 0 && !/<div\b/.test(lines[opener]) && !isVariantEndMarkerLine(lines[opener], block.id)) {
+        opener--;
+      }
+      if (/<div\b/.test(lines[opener])) start = opener;
+      break;
+    }
+  }
+
+  // Walk forward to the matching `</div>` by div-depth tracking from the
+  // wrapper opener. Operate on JOINED text instead of per-line: a
+  // multi-line self-closing JSX `<div\n  className="spacer"\n/>` would
+  // fool per-line regex tracking (the `<div` line matches openRe but the
+  // `/>` line never matches selfCloseRe since it needs `<div` on the same
+  // line). That left depth permanently over-counted and the wrapper's
+  // outer `</div>` orphaned after accept/discard. Single regex with
+  // `[^>]*?` (which spans newlines in JS) handles either form correctly.
+  const joined = lines.slice(start).join('\n');
+  // Match either `<div … />` (self-close, group 1 is `/`), `<div … >`
+  // (open, group 1 is empty), or `</div>`.
+  const tagRe = /<div\b[^>]*?(\/?)>|<\/div\s*>/g;
+  let depth = 0;
+  let m;
+  while ((m = tagRe.exec(joined)) !== null) {
+    const isClose = m[0].startsWith('</');
+    const isSelfClose = !isClose && m[1] === '/';
+    if (isClose) depth--;
+    else if (!isSelfClose) depth++;
+    if (depth <= 0) {
+      // m.index is offset within `joined`; convert back to a file line.
+      const linesBefore = joined.slice(0, m.index + m[0].length).split('\n').length - 1;
+      const candidateEnd = start + linesBefore;
+      if (candidateEnd >= end) {
+        end = candidateEnd;
+        break;
+      }
+    }
+  }
+
+  return { start, end };
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function isVariantEndMarkerLine(line, id) {
+  return new RegExp('impeccable-variants-end\\s+' + escapeRegExp(id) + '(?:\\s|--|\\*/|$)').test(line);
+}
+
+function hasVariantWrapperAttr(line, id) {
+  const escaped = escapeRegExp(id);
+  return new RegExp(`data-impeccable-variants\\s*=\\s*(?:"${escaped}"|'${escaped}'|\\{["']${escaped}["']\\})`).test(line);
 }
 
 /**
@@ -345,7 +516,7 @@ function extractCss(lines, block, id) {
       // Same-line open + close: extract inner text.
       const sameLine = line.match(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/);
       if (sameLine) {
-        const inner = sameLine[1];
+        const inner = stripJsxTemplateWrap(sameLine[1]);
         return inner.length > 0 ? inner.split('\n') : null;
       }
       inStyle = true;
@@ -362,7 +533,60 @@ function extractCss(lines, block, id) {
     }
   }
 
-  return content.length > 0 ? content : null;
+  if (content.length === 0) return null;
+  return stripJsxTemplateLines(content);
+}
+
+/**
+ * Strip a JSX template-literal wrap (`{` … `}`) from CSS extracted out of a
+ * `<style>` element in a JSX/TSX file. The agent may write the wrap with
+ * `{` and `}` directly attached to the `<style>` tags, on their own lines,
+ * or attached to the first/last CSS lines — all three are JSX-legal.
+ *
+ * Stripping is required because handleAccept re-wraps the CSS itself when
+ * carbonizing. Without this, two consecutive accepts (or a previously-
+ * accepted variants block being carbonized) would produce nested
+ * `{` `{` … `}` `}`, which oxc rejects with "Expected `}` but found `@`".
+ */
+function stripJsxTemplateLines(content) {
+  const out = content.slice();
+
+  // Drop any leading blank lines so we don't miss a `{` line buried below
+  // them; same for trailing.
+  while (out.length > 0 && out[0].trim() === '') out.shift();
+  while (out.length > 0 && out[out.length - 1].trim() === '') out.pop();
+  if (out.length === 0) return null;
+
+  // Leading `{`: own line, or attached to the first CSS line.
+  const firstTrim = out[0].trimStart();
+  if (firstTrim === '{`') {
+    out.shift();
+  } else if (firstTrim.startsWith('{`')) {
+    const idx = out[0].indexOf('{`');
+    out[0] = out[0].slice(0, idx) + out[0].slice(idx + 2);
+    if (out[0].trim() === '') out.shift();
+  }
+  if (out.length === 0) return null;
+
+  // Trailing `` ` `` `}`: own line, or attached to the last CSS line.
+  const lastIdx = out.length - 1;
+  const lastTrim = out[lastIdx].trimEnd();
+  if (lastTrim === '`}') {
+    out.pop();
+  } else if (lastTrim.endsWith('`}')) {
+    const text = out[lastIdx];
+    const idx = text.lastIndexOf('`}');
+    out[lastIdx] = text.slice(0, idx) + text.slice(idx + 2);
+    if (out[lastIdx].trim() === '') out.pop();
+  }
+
+  return out.length > 0 ? out : null;
+}
+
+function stripJsxTemplateWrap(text) {
+  const lines = text.split('\n');
+  const stripped = stripJsxTemplateLines(lines);
+  return stripped ? stripped.join('\n') : '';
 }
 
 /**
@@ -462,4 +686,4 @@ if (_running?.endsWith('live-accept.mjs') || _running?.endsWith('live-accept.mjs
   acceptCli();
 }
 
-export { findMarkerBlock, extractOriginal, extractVariant, extractCss, deindentContent, detectCommentSyntax };
+export { findMarkerBlock, extractOriginal, extractVariant, extractCss, deindentContent, detectCommentSyntax, scrubManualEditsAgainstFile, scrubManualEditsAgainstOriginalBlock };
