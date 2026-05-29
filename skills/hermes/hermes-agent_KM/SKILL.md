@@ -10,6 +10,7 @@ metadata:
     - hermes-default
     - hermes-gpt
     - claude-hermes
+    - immigration-project
   hermes:
     command_priority: 410
 ---

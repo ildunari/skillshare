@@ -91,6 +91,28 @@ discord dm <user_id> "Hey, message here" --no-input
 - Rate limits: ~50 req/s general, ~1 req/s for search
 - Parse JSON output with `python3 -c "import json,sys; ..."` or `jq`
 
+## Server / forum administration fallback
+
+For Discord server config that the Hermes bot cannot change, prefer the user's validated Discord session over guessing through the GUI. The bot token can read forum channels but may fail writes with `Missing Permissions` / Discord code `50013`, especially for forum tag edits.
+
+Use this pattern for Hermes forum tag updates:
+
+1. Use the bot token only to read/diagnose if needed; do not assume it can PATCH channel settings.
+2. Extract candidate user tokens from local Discord/Chrome LevelDB, validate each with `GET https://discord.com/api/v10/users/@me`, and never print or save the token.
+3. For each forum channel, `GET /api/v10/channels/<channel_id>`, append missing objects to `available_tags` such as `{ "name": "immigration", "moderated": true }`, then `PATCH /api/v10/channels/<channel_id>` with the full updated `available_tags` array.
+4. Verify by re-reading the channel and checking the returned `available_tags` names.
+
+Known Hermes guild/forum context:
+
+```text
+guild: 1489303074970406912
+user: ildunari / 339622137826508802
+gpt-sessions forum: 1509294060572246257
+registry: ~/.hermes/profiles/gpt/discord/forum-profile-sessions-v1.yaml
+```
+
+When the workflow is non-trivial or authenticated, create a `web-task-scaffold` workspace and keep the final script/log there. Do not store auth state, cookies, tokens, or private page dumps in the artifact.
+
 ## User's Servers
 
 The user (ildunari, ID: 339622137826508802) has 22 servers including:
