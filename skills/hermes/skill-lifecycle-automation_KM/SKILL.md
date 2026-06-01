@@ -27,14 +27,16 @@ Do **not** route Hermes GPT/default/BrowserAgent through `skillclaw-model` unles
 
 Profile scripts live under `~/.hermes/profiles/gpt/scripts/`:
 
-- `hermes_skill_evolution_context.py` — read-only context collector for recent sessions, Skillshare status, git status, and pending proposals.
-- `hermes_skill_evolution_safe_apply.py` — mechanical guardrail applier for tiny staged JSON proposals.
+- `hermes_skill_evolution_context.py` — read-only context collector for recent sessions, Skillshare status, git status, and pending proposals. It should read `state.db` by last message timestamp, not only `session_*.json` files or session start time, so long-running Telegram sessions are not missed.
+- `hermes_skill_evolution_safe_apply.py` — mechanical guardrail applier for tiny staged JSON proposals. Backups belong under `~/.hermes/shared/skill-evolution/backups/`, not inside the Skillshare repo.
+- `hermes_skill_evolution_git_guard.py` — commit guard for the weekly lane. Use it to snapshot pre-run Skillshare git state and commit only paths owned by the current run.
 
 Run checks manually:
 
 ```bash
 ~/.hermes/profiles/gpt/scripts/hermes_skill_evolution_context.py --hours 24 --limit 12 --write-report
 ~/.hermes/profiles/gpt/scripts/hermes_skill_evolution_safe_apply.py --dry-run
+~/.hermes/profiles/gpt/scripts/hermes_skill_evolution_git_guard.py snapshot --output /tmp/skill-lifecycle-baseline.json
 ```
 
 ## Canonical source and sync
@@ -51,6 +53,17 @@ After any applied skill edit:
 git -C ~/.config/skillshare diff --check
 skillshare sync --json
 ```
+
+For commits from the weekly lane, use the guard instead of raw `git add -A`:
+
+```bash
+~/.hermes/profiles/gpt/scripts/hermes_skill_evolution_git_guard.py commit \
+  --baseline /tmp/skill-lifecycle-baseline.json \
+  --allowed relative/path/changed-by-this-run/SKILL.md \
+  --message "Concise commit message"
+```
+
+The guard should refuse paths that were already dirty before the run. If it refuses, leave the repo uncommitted and report why.
 
 Verify at least GPT sees the updated skill via `skill_view` or by checking the synced target file under `~/.hermes/profiles/gpt/skills/`.
 

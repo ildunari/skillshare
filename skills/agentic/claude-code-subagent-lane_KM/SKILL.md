@@ -17,6 +17,49 @@ Use this when the current agent wants Claude Code to act as a separate worker/la
 
 For subscription-quota conservation after the June 15, 2026 Agent SDK credit split, prefer interactive Claude Code with `--prefill` when a human or PTY controller can submit the prefilled prompt. `claude -p` / `--print` is Agent SDK/headless mode and should be reserved for truly unattended scripts, CI, structured JSON capture, or cases where no interactive lane is possible.
 
+**Detached tmux is a primary launch path (one of the main options).** Wrapping the interactive `--prefill` launch in a detached tmux session is a first-class option alongside foreground `--prefill`, PTY, and `--worktree --tmux`. Prefer it when the lane should survive the parent turn, be attachable/steerable, or run long — and as the way to avoid the `claude -p`/`--print` Agent SDK credit path. tmux keeps the run on normal interactive subscription usage (no Agent SDK credit draw) and is the path the Discord/Telegram `/cc` lanes already use. Because the `--print` headless path is being removed/changed under the June 15, 2026 credit split, reserve `claude -p` strictly for unattended machine-readable capture where no PTY/tmux submit path exists. For quick foreground calls a plain `--prefill` lane is still fine; tmux is not mandatory.
+
+Detached-tmux launch (use for lanes that should outlive the turn or run long):
+
+```bash
+cat > /tmp/claude-task.md <<'PROMPT'
+<task prompt>
+PROMPT
+
+# Unique, greppable session name so it can be tracked and torn down.
+SESSION="cc-lane-$(date +%s)-$$"
+tmux new-session -d -s "$SESSION" -c "<repo-or-workdir>" \
+  "exec '/Users/Kosta/.local/bin/claude' --permission-mode auto \
+     --append-system-prompt 'Return files changed, checks run, blockers, and exact verification commands.' \
+     --prefill \"$(cat /tmp/claude-task.md)\"; tmux wait-for -S \"$SESSION-done\""
+echo "lane: $SESSION"
+```
+
+Name every per-task lane `cc-lane-*` (or `agy-lane-*` for Antigravity) so the cleanup contract below can find and kill it. Do not reuse the standing daemon names `claude-hermes-remote` / `claude-hermes-telegram` / `agentglass-gateway` — those are intentional always-on services.
+
+### Per-task tmux lane cleanup contract
+
+Per-task lanes are ephemeral and MUST NOT outlive the work. Tear them down when the task finishes, is abandoned, or the controlling session ends/pauses:
+
+- **On completion**: `tmux kill-session -t "$SESSION"` as soon as the lane's result is captured. Do not leave a finished Claude Code session sitting in tmux.
+- **On pause/abandon/session end**: kill the lane before yielding. A paused or ended parent must not leave a live `cc-lane-*` session burning a slot.
+- **Sweep stale lanes** (safe to run any time — only touches `cc-lane-*` / `agy-lane-*`, never the daemons). Use the stable helper:
+
+  ```bash
+  /Users/Kosta/.hermes/bin/cc-lane-sweep.sh          # kill all per-task lanes
+  /Users/Kosta/.hermes/bin/cc-lane-sweep.sh --list   # list without killing
+  ```
+
+  Equivalent inline form if the helper is unavailable:
+
+  ```bash
+  tmux ls 2>/dev/null | awk -F: '/^(cc|agy)-lane-/ {print $1}' | while read -r s; do
+    tmux kill-session -t "$s" 2>/dev/null && echo "swept: $s"
+  done
+  ```
+
+- Before reporting a lane "done", confirm teardown: `tmux has-session -t "$SESSION" 2>/dev/null && echo "STILL ALIVE" || echo "cleaned"`.
+
 Canonical prefilled launch:
 
 ```bash
@@ -53,7 +96,7 @@ Use these defaults:
 - **Human/PTY-steered plan, review, or implementation**: foreground `claude --permission-mode auto --prefill "$(cat /tmp/claude-task.md)"` so the task opens in interactive Claude Code instead of spending Agent SDK / `-p` credits.
 - **Truly unattended one-shot read-only plan/review**: `claude -p --permission-mode auto --output-format json` only when you need machine-readable output and no human/PTY submit path exists.
 - **Truly unattended one-shot implementation with bounded scope**: `claude -p --permission-mode auto`; fall back to `acceptEdits` if auto is unavailable. Independently verify diffs/tests.
-- **Long-running implementation or test loop**: prefer an interactive PTY/tmux Claude Code lane with `--prefill`; use managed background `claude -p` only when the parent system must consume structured JSON without user interaction.
+- **Long-running implementation or test loop**: use an interactive `--prefill` Claude Code lane; a detached `cc-lane-*` tmux lane is a strong option here (survives the turn, attachable, avoids Agent SDK credits — see the detached-tmux launch and cleanup contract above). Use managed background `claude -p` only when the parent system must consume structured JSON without user interaction.
 - **Interactive back-and-forth**: run Claude Code in PTY mode or use Claude Code's native `--worktree --tmux` when the user wants to steer it manually across multiple turns.
 - **Configured specialist**: add `--agent <name>`.
 - **ACP subagent lane**: use the host's native delegation tool for isolated workers, not raw Claude Code ACP unless using a real ACP adapter.
