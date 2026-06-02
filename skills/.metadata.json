@@ -253,26 +253,6 @@
         "references/xcode-workflows.md": "sha256:f43407527c30bc1e346d32e4f54a5105a9c61bd071abfbfaa7b91107b4451c94"
       }
     },
-    "swiftdata-pro": {
-      "source": "https://github.com/twostraws/SwiftData-Agent-Skill/swiftdata-pro",
-      "type": "github-subdir",
-      "installed_at": "2026-05-30T10:11:53.88271-04:00",
-      "repo_url": "https://github.com/twostraws/SwiftData-Agent-Skill.git",
-      "subdir": "swiftdata-pro",
-      "version": "922d989",
-      "tree_hash": "640a87a8891c57e1682fb2a5086d8673222c47ef",
-      "file_hashes": {
-        "SKILL.md": "sha256:79164f3bc4942b8ca384057cbe951ca7715aecee4970bea38781d91ddb1c442e",
-        "agents/openai.yaml": "sha256:4293560a9ce8fe893a81c8d64b2b472b47b4c679023ade972f4129636dd406d5",
-        "assets/swiftdata-pro-icon.png": "sha256:6be448484728cd09655bd877e7b450fff8b12839e7fd281f1edc406748ebc51d",
-        "assets/swiftdata-pro-icon.svg": "sha256:876f9b502c4565f51a9ef1e57c15fb0821e3272d28da32d2d42e13ecd9992425",
-        "references/class-inheritance.md": "sha256:05b22c87e9864a47517ba095c9a870dc320f0e6f4cd85ff9f0b54c5ca356a41d",
-        "references/cloudkit.md": "sha256:52a549b1713d55be183b79af595d37729426af0abea36ed05f932b718d8ee11f",
-        "references/core-rules.md": "sha256:8bf45a2af28bfb0648303bb520d3d317d2794b56fcfabe599c4785ccdf02f80a",
-        "references/indexing.md": "sha256:909167e538461bf517f8fc6b00bfe70d1c8ea19b12a4749088823c275de52a82",
-        "references/predicates.md": "sha256:623c3195fccdec0ec95c0291223ced7491025b04e59c0b4f4fe5ffd23eb1019b"
-      }
-    },
     "xcode-build-benchmark": {
       "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/xcode-build-benchmark",
       "type": "github-subdir",

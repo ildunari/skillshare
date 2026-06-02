@@ -154,6 +154,21 @@ skillshare install user/repo --skip-audit            # Bypass scan entirely
 ```
 See [TROUBLESHOOTING.md](references/TROUBLESHOOTING.md) for more.
 
+### Duplicate Skill Triage
+Before installing or syncing Codex-facing skills from repos that contain nested
+`skills/` or `merged/` folders, check for semantic duplicates, not just duplicate
+paths. Codex may surface multiple entries when:
+- two source folders have the same `agents/openai.yaml` `display_name`
+- two `SKILL.md` files share the same `name:` and purpose
+- a parent skill is copied with a nested `SKILL.md`, while Skillshare also
+  flattens that nested skill into a separate target entry
+
+Prefer one canonical source entry. If duplicates are found, remove the duplicate
+with `skillshare uninstall <source/relative/path>` and then run
+`skillshare sync <target> --force`. Use `skillshare doctor` as a health check,
+but do not rely on it alone for Codex UI duplicates because it validates
+Skillshare path identity, not Codex display-name identity.
+
 ## Quick Lookup
 | Commands | Project? | `--json`? |
 |----------|:--------:|:---------:|
