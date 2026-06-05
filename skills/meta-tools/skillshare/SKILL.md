@@ -15,7 +15,7 @@ description: |
   `.agentignore` and `enable`/`disable` for per-agent toggles.
 argument-hint: "[command] [target] [--json] [--dry-run] [-p|-g]"
 metadata:
-  version: v0.19.24
+  version: v0.20.4
 ---
 
 # Skillshare CLI
@@ -61,11 +61,13 @@ skillshare extras remove rules                       # Remove from config (sourc
 skillshare extras init agents --target ~/.claude/agents --flatten  # Flatten subdirs into root
 skillshare extras rules --mode copy                  # Change sync mode of a target
 skillshare extras agents --flatten                   # Enable flatten on existing target
+skillshare extras rules --add-target ~/.cursor/rules            # Add a target to an existing extra
+skillshare extras rules --remove-target ~/.cursor/rules --prune # Remove a target (--prune deletes synced files)
 skillshare sync extras                               # Sync all extras to targets
 skillshare sync extras --dry-run --force             # Preview / overwrite conflicts
 skillshare sync --all                                # Sync skills + extras together
 ```
-See [extras.md](references/extras.md) for details.
+A target can set an `extension:` field in config.yaml to transform each source file during sync (e.g. markdown → TOML for Gemini/Codex); implies `copy` mode. See [extras.md](references/extras.md) for details.
 ### Creating & Discovering Skills
 ```bash
 skillshare new my-skill                          # Create with interactive pattern selection
@@ -102,6 +104,7 @@ skillshare pull                                           # Cross-machine: pull 
 ```bash
 skillshare hub add https://example.com/hub.json          # Save a hub source
 skillshare hub add https://example.com/hub.json --label my-hub  # With custom label
+skillshare hub add git@ghe.corp.com:team/skills.git --label ghe  # SSH/private/GHE hub source
 skillshare hub list                                      # List saved hubs
 skillshare hub default my-hub                            # Set default hub
 skillshare hub remove my-hub                             # Remove a hub
@@ -154,21 +157,6 @@ skillshare install user/repo --skip-audit            # Bypass scan entirely
 ```
 See [TROUBLESHOOTING.md](references/TROUBLESHOOTING.md) for more.
 
-### Duplicate Skill Triage
-Before installing or syncing Codex-facing skills from repos that contain nested
-`skills/` or `merged/` folders, check for semantic duplicates, not just duplicate
-paths. Codex may surface multiple entries when:
-- two source folders have the same `agents/openai.yaml` `display_name`
-- two `SKILL.md` files share the same `name:` and purpose
-- a parent skill is copied with a nested `SKILL.md`, while Skillshare also
-  flattens that nested skill into a separate target entry
-
-Prefer one canonical source entry. If duplicates are found, remove the duplicate
-with `skillshare uninstall <source/relative/path>` and then run
-`skillshare sync <target> --force`. Use `skillshare doctor` as a health check,
-but do not rely on it alone for Codex UI duplicates because it validates
-Skillshare path identity, not Codex display-name identity.
-
 ## Quick Lookup
 | Commands | Project? | `--json`? |
 |----------|:--------:|:---------:|
@@ -176,7 +164,7 @@ Skillshare path identity, not Codex display-name identity.
 | `sync`, `collect` | ✓ (auto) | ✓ |
 | `install`, `uninstall`, `update`, `check`, `search`, `new` | ✓ (`-p`) | ✓ (except new) |
 | `target`, `audit`, `analyze`, `trash`, `log`, `hub` | ✓ (`-p`) | ✓ (target list, audit, analyze, log) |
-| `extras init/list/remove/collect/source/mode` | ✓ (`-p`, except source) | ✓ (list, mode) |
+| `extras init/list/remove/collect/source` (+ `--mode`/`--add-target`/`--remove-target` flags on `extras <name>`) | ✓ (`-p`, except source) | ✓ (list, mode, targets) |
 | `enable`, `disable` | ✓ (auto) | ✗ |
 | `commit`, `push`, `pull`, `backup`, `restore` | ✗ | ✗ |
 | `tui`, `upgrade` | ✗ | ✗ |

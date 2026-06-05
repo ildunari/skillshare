@@ -26,7 +26,7 @@ Return a prompt package instead of calling the tool when the user asks for a reu
 
 - **Simple visual request:** write one concise, concrete prompt and call `image_generate`.
 - **Prompt/debug/API request:** return a prompt package with use case, prompt, parameters, iteration notes, and quality checks.
-- **Scientific figure, chart, infographic, UI, poster, product, sprite, or typography-heavy request:** read the matching GPT Image Craft reference first.
+- **Scientific figure, chart, infographic, UI, poster, product, sprite, or typography-heavy request:** read the matching GPT Image Craft reference first. If Kosta specifically wants the local RTX text/design lane, load `media/ideogram4-prompting` and use Ideogram 4 JSON captions rather than plain prose.
 - **Exact numeric charts, audited diagrams, legal/medical claims, or source-dependent factual graphics:** separate the factual artifact from the generated image. Use deterministic code/SVG/document tooling for exact data; use GPT Image 2 for styled explainers, covers, mockups, or visual companions. If Kosta explicitly asks GPT Image 2/Codex to clean up a chart image, label it as a model redraw and require visual checking of labels, bar heights, error bars, and geometry before grant/paper use.
 - **Image edits/reference workflows:** explicitly separate **Change** from **Preserve**. Do not promise reference-conditioned editing through Hermes `image_generate` unless the active provider/tool schema supports image inputs; use a direct script/API path if source images must be submitted.
 

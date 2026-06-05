@@ -14,9 +14,9 @@
       "branch": "main"
     },
     "app-creator": {
-      "source": "https://github.com/robertguss/claude-code-toolkit/skills/mobile-app-dev/ios-mac-app-creator/app-creator",
+      "source": "https://github.com/robertguss/claude-code-toolkit.git/skills/mobile-app-dev/ios-mac-app-creator/app-creator",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:11:24.235436-04:00",
+      "installed_at": "2026-06-02T11:47:43.880621-04:00",
       "repo_url": "https://github.com/robertguss/claude-code-toolkit.git",
       "subdir": "skills/mobile-app-dev/ios-mac-app-creator/app-creator",
       "version": "c31f3be",
@@ -75,7 +75,7 @@
       "source": "https://github.com/AvdLee/SwiftUI-Agent-Skill.git/swiftui-expert-skill",
       "type": "github-subdir",
       "group": "apple",
-      "installed_at": "2026-05-30T10:10:44.094452-04:00",
+      "installed_at": "2026-06-02T11:47:44.793299-04:00",
       "repo_url": "https://github.com/AvdLee/SwiftUI-Agent-Skill.git",
       "subdir": "swiftui-expert-skill",
       "version": "224e764",
@@ -122,9 +122,9 @@
       }
     },
     "core-data-expert": {
-      "source": "https://github.com/AvdLee/Core-Data-Agent-Skill/core-data-expert",
+      "source": "https://github.com/AvdLee/Core-Data-Agent-Skill.git/core-data-expert",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:45.46073-04:00",
+      "installed_at": "2026-06-02T11:47:45.306736-04:00",
       "repo_url": "https://github.com/AvdLee/Core-Data-Agent-Skill.git",
       "subdir": "core-data-expert",
       "version": "855ca7d",
@@ -152,13 +152,13 @@
       "source": "https://github.com/runkids/skillshare.git/skills/skillshare",
       "type": "github-subdir",
       "group": "meta-tools",
-      "installed_at": "2026-05-29T01:56:34.387859-04:00",
+      "installed_at": "2026-06-02T11:47:51.638947-04:00",
       "repo_url": "https://github.com/runkids/skillshare.git",
       "subdir": "skills/skillshare",
-      "version": "244f742",
-      "tree_hash": "d87fc46896238465f0d6a462aea27630cf86b102",
+      "version": "df0817c",
+      "tree_hash": "e7052e380dabef1e79832ea23291bebe8ff11782",
       "file_hashes": {
-        "SKILL.md": "sha256:0d46ff24935f49c4676bdb9093aa35c204bee573c4a008dd056c3f15422dc0fc",
+        "SKILL.md": "sha256:414f6a59cf1c2a117c40dbd613e3fa618aeb55c3e8897fc09d897fa0424b8401",
         "references/TROUBLESHOOTING.md": "sha256:14855dbd2f20ad7042941959f257c79f768d103e89e55d74d8c3b3d38f9ff5ee",
         "references/audit.md": "sha256:85a31c32f17f39ce2baa5189a8004c6adec506e5fcf7d20378caa103b015fd5d",
         "references/backup.md": "sha256:96e2e8d5e2d7cfb8765c2eebb4e6d733b79258de8b3d974fca8972557f7326a6",
@@ -174,9 +174,9 @@
       }
     },
     "simple-tasks": {
-      "source": "https://github.com/robertguss/claude-code-toolkit/skills/mobile-app-dev/ios-mac-app-creator/simple-tasks",
+      "source": "https://github.com/robertguss/claude-code-toolkit.git/skills/mobile-app-dev/ios-mac-app-creator/simple-tasks",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:11:24.392381-04:00",
+      "installed_at": "2026-06-02T11:47:43.990468-04:00",
       "repo_url": "https://github.com/robertguss/claude-code-toolkit.git",
       "subdir": "skills/mobile-app-dev/ios-mac-app-creator/simple-tasks",
       "version": "c31f3be",
@@ -189,9 +189,9 @@
       }
     },
     "spm-build-analysis": {
-      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/spm-build-analysis",
+      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git/skills/spm-build-analysis",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:56.995228-04:00",
+      "installed_at": "2026-06-02T11:47:41.903744-04:00",
       "repo_url": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git",
       "subdir": "skills/spm-build-analysis",
       "version": "6bd7b59",
@@ -205,9 +205,9 @@
       }
     },
     "swift-concurrency": {
-      "source": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill/swift-concurrency",
+      "source": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill.git/swift-concurrency",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:11:02.9287-04:00",
+      "installed_at": "2026-06-02T11:47:42.691601-04:00",
       "repo_url": "https://github.com/AvdLee/Swift-Concurrency-Agent-Skill.git",
       "subdir": "swift-concurrency",
       "version": "0d472de",
@@ -232,9 +232,9 @@
       }
     },
     "swift-testing-expert": {
-      "source": "https://github.com/AvdLee/Swift-Testing-Agent-Skill/swift-testing-expert",
+      "source": "https://github.com/AvdLee/Swift-Testing-Agent-Skill.git/swift-testing-expert",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:46.141034-04:00",
+      "installed_at": "2026-06-02T11:47:43.169439-04:00",
       "repo_url": "https://github.com/AvdLee/Swift-Testing-Agent-Skill.git",
       "subdir": "swift-testing-expert",
       "version": "798e9b1",
@@ -254,9 +254,9 @@
       }
     },
     "xcode-build-benchmark": {
-      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/xcode-build-benchmark",
+      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git/skills/xcode-build-benchmark",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:57.128206-04:00",
+      "installed_at": "2026-06-02T11:47:42.010329-04:00",
       "repo_url": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git",
       "subdir": "skills/xcode-build-benchmark",
       "version": "6bd7b59",
@@ -270,9 +270,9 @@
       }
     },
     "xcode-build-fixer": {
-      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/xcode-build-fixer",
+      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git/skills/xcode-build-fixer",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:57.269626-04:00",
+      "installed_at": "2026-06-02T11:47:41.44541-04:00",
       "repo_url": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git",
       "subdir": "skills/xcode-build-fixer",
       "version": "6bd7b59",
@@ -286,9 +286,9 @@
       }
     },
     "xcode-build-orchestrator": {
-      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/xcode-build-orchestrator",
+      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git/skills/xcode-build-orchestrator",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:57.43723-04:00",
+      "installed_at": "2026-06-02T11:47:41.58625-04:00",
       "repo_url": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git",
       "subdir": "skills/xcode-build-orchestrator",
       "version": "6bd7b59",
@@ -305,9 +305,9 @@
       }
     },
     "xcode-compilation-analyzer": {
-      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/xcode-compilation-analyzer",
+      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git/skills/xcode-compilation-analyzer",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:57.563916-04:00",
+      "installed_at": "2026-06-02T11:47:41.695676-04:00",
       "repo_url": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git",
       "subdir": "skills/xcode-compilation-analyzer",
       "version": "6bd7b59",
@@ -321,9 +321,9 @@
       }
     },
     "xcode-makefiles": {
-      "source": "https://github.com/robertguss/claude-code-toolkit/skills/mobile-app-dev/ios-mac-app-creator/xcode-makefiles",
+      "source": "https://github.com/robertguss/claude-code-toolkit.git/skills/mobile-app-dev/ios-mac-app-creator/xcode-makefiles",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:11:24.524224-04:00",
+      "installed_at": "2026-06-02T11:47:44.097322-04:00",
       "repo_url": "https://github.com/robertguss/claude-code-toolkit.git",
       "subdir": "skills/mobile-app-dev/ios-mac-app-creator/xcode-makefiles",
       "version": "c31f3be",
@@ -346,9 +346,9 @@
       }
     },
     "xcode-project-analyzer": {
-      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill/skills/xcode-project-analyzer",
+      "source": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git/skills/xcode-project-analyzer",
       "type": "github-subdir",
-      "installed_at": "2026-05-30T10:10:57.700878-04:00",
+      "installed_at": "2026-06-02T11:47:41.799537-04:00",
       "repo_url": "https://github.com/AvdLee/Xcode-Build-Optimization-Agent-Skill.git",
       "subdir": "skills/xcode-project-analyzer",
       "version": "6bd7b59",

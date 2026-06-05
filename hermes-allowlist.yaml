@@ -1,6 +1,7 @@
 skills:
 - ui-ux/gpt-image-2-uiux-prompting
 - media/image_Hermes
+- media/ideogram4-prompting
 - automation/agent-browser_obra
 - automation/autocli_anthropic
 - agentic/agentic-loop-builder_KM
