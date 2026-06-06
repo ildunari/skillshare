@@ -16,14 +16,16 @@ Use this for Kosta's opt-in high-quality TTS lane on the GamingPC RTX 4090. Koko
 ## Current local lane
 
 - Hermes provider name: `misotts_rtx`.
+- Provider output format is `ogg` in GPT and global config so Telegram voice notes use the wrapper’s own 64k Opus encode instead of a generic post-conversion path.
 - Default TTS provider remains `kokoro` in both global and GPT profile config.
 - Mac wrapper: `~/.hermes/bin/hermes-misotts-rtx.sh`.
 - GamingPC helper: `gamingpc misotts start|status|test|stop`.
 - GamingPC service path: `C:\Users\kosta\LocalAI\MisoTTS\serve_misotts_hermes.py`.
 - Known-good GamingPC access: `ssh-gamingpc` using the 1Password “Mac mini SSH Key” temp key with `IdentityAgent=none IdentitiesOnly=yes`.
 - Cold startup observed locally: about 90–100s to ready; latest measured `load_seconds` around 98s.
-- Warm generation observed locally: roughly 4.5x realtime on a normal 8s answer; quality is better than Kokoro, but latency and VRAM cost are high.
+- Warm generation observed locally: roughly 4.5x realtime. Keep Miso requests short; the wrapper now follows upstream’s short single-pass pattern instead of stitching independent chunks.
 - VRAM use after load can sit around 22–24 GB, so never leave it resident indefinitely by accident.
+- Miso is not a drop-in long-form narrator. Official docs show short `generator.generate(..., max_audio_length_ms=10_000)` calls and expose a 2,048-token max sequence length; long replies should use Kokoro or another long-form lane unless explicitly testing chunking.
 
 ## Voice-note prewarm behavior
 
@@ -34,6 +36,18 @@ Hermes repo now has a voice-message prewarm hook in `gateway/platforms/base.py`:
 - It never blocks message processing, never changes the selected TTS provider, and keeps Kokoro fallback intact.
 - Default idle TTL: `HERMES_MISOTTS_PREWARM_TTL_SECONDS=1800` (30 minutes), after which it runs `~/.hermes/bin/hermes-misotts-rtx-stop.sh`.
 - Disable with `HERMES_MISOTTS_PREWARM_ON_VOICE=0`.
+
+## Wait-for-ready (no premature Kokoro fallback)
+
+As of the wrapper rework, `hermes-misotts-rtx.sh` no longer falls back to Kokoro the instant `/health` reports not-ready. It polls and waits for the model to finish loading, so a cold/loading model produces a real Miso voice note instead of a Kokoro one (just later). Behavior:
+
+- If `/health` is reachable but `ready:false` (mid-load), it keeps polling until ready, up to `HERMES_MISOTTS_READY_WAIT_SECONDS` (default 150).
+- It also fires the loader itself once (idempotent `hermes-misotts-rtx-start.sh`) if the model isn't up — so it self-heals even outside the voice-note prewarm path. Disable with `HERMES_MISOTTS_AUTO_START=0`.
+- If the endpoint is genuinely unreachable (box off / service never answers) for `HERMES_MISOTTS_UNREACHABLE_GRACE_SECONDS` (default 25), it gives up early and falls back to Kokoro rather than burning the full wait.
+- Poll cadence: `HERMES_MISOTTS_READY_POLL_SECONDS` (default 3).
+- Fallback still respects `HERMES_MISOTTS_DISABLE_FALLBACK` and the explicit-voice-profile no-fallback rule.
+
+Net effect: loading is treated as "wait", off is treated as "fall back". The trade is latency — the first voice note after a cold start can take ~90-100s while Miso loads, instead of returning fast in Kokoro.
 
 Do not restart Telegram/Discord gateway from a Telegram-controlled session. If the hook was just changed, report that a safe gateway reload is needed before live messages use it.
 
@@ -49,13 +63,9 @@ Official Miso docs do not expose a named voice catalog in the local open-source 
 
 The official website preview exposes three UX presets: `friend`, `teacher`, and `voiceover`, but the GitHub/Python API currently documents only `speaker`, optional audio context, `temperature`, and `topk`. Treat the website preset names as style directions, not local API voice IDs.
 
-Current profile status: three Moss/reference profiles are enabled: `samantha-her-a`, `hernandez-stroud-rikers-ny1`, and `emily-blunt-narrative`. `hermes_narrator` was removed from the Miso lane because the reference was not useful. Miso needs both `reference.wav` and transcript text for each prompt-audio context profile.
+Default voice policy: use the base voice Miso ships with (`voice: default`, `speaker=0`, no `profile`) unless Kosta explicitly asks to test a prompt-audio profile. The enabled reference profiles are experimental only and should not be used for normal Hermes replies.
 
-Recommended style directions for Hermes replies:
-
-- Default Kosta assistant: friendly conversational / `friend` style. Short, warm, lightly expressive, not theatrical.
-- Explainers: `teacher` style. Clear, paced, a little slower, with commas and sentence breaks.
-- Announcements or longer summaries: `voiceover` style. More polished, but avoid hype.
+Recommended style direction for Hermes replies: plain conversational base voice. Short, clear, lightly warm, not theatrical. Do not use website preset names like `friend`, `teacher`, or `voiceover` as local voice IDs; the GitHub/Python API documents only `speaker`, optional audio context, `temperature`, and `topk`.
 
 ## Prompting / text shaping
 
@@ -64,7 +74,8 @@ Miso responds best to natural spoken prose, not markdown dumps.
 Before TTS:
 
 - Keep the text short: ideally 1–4 spoken sentences.
-- Use punctuation to control rhythm: commas for small pauses, periods for clean stops, line breaks only when intentional.
+- Use punctuation to control rhythm: short periods are more reliable than commas for Miso. Avoid colon/list syntax like “keep this simple: warm the model, use the profile…” because Miso can read it as a run-on sentence.
+- Keep generation short. The Mac wrapper defaults to one single-pass upstream-style call: about 180 characters max, `max_audio_length_ms=10000`, and 96k Opus output for Telegram voice notes. Chunking is opt-in with `HERMES_MISOTTS_ENABLE_CHUNKING=1` because stitched chunks sounded worse.
 - Avoid tables, code blocks, raw paths, long command output, URLs, and bullet inventories in voice output.
 - Spell acronyms or add spaces when pronunciation matters: `G P U`, `T T S`, `S S H`, `A P I`.
 - Convert file paths into speakable phrasing when possible: say “the Hermes config file” instead of `/Users/Kosta/.hermes/config.yaml`.
@@ -90,14 +101,13 @@ Bad voice text example:
 
 Use these as starting points, then benchmark by ear:
 
-- `speaker=0`: current safest default for the base Miso voice; unknown named identity.
-- `profile=samantha-her-a`: enabled voice-clone profile for a warmer assistant-style voice.
-- `profile=emily-blunt-narrative`: enabled narrative voice profile.
-- `profile=hernandez-stroud-rikers-ny1`: enabled authorized profile for Hernandez Stroud PowerPoint voice-over help; do not use for deceptive impersonation.
+- `speaker=0` / `voice=default`: use the base Miso voice that ships with the model. This is the normal lane.
+- Prompt-audio profiles such as `samantha-her-a`, `emily-blunt-narrative`, and `hernandez-stroud-rikers-ny1` are experimental; only use them when Kosta explicitly asks to test that profile.
 - `temperature=0.8–0.9`: stable natural speech.
 - `temperature=1.0–1.1`: more expressive, may get less predictable.
 - `topk=40–60`: default range; lower is steadier, higher is more varied.
-- `max_audio_length_ms=10000–12000`: enough for a short answer without hard clipping.
+- `max_audio_length_ms=10000`: upstream example default for short speech; pair with the 180-character cap so endings do not clip.
+- `HERMES_MISOTTS_OPUS_BITRATE=96k`: current Telegram voice-note default. Lower bitrates made already-rough Miso samples sound worse.
 
 Do not claim we have ten real “voices” just because `speaker` is clamped 0–9. Say we have ten speaker IDs available to test, but no official names.
 
