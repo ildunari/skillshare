@@ -11,6 +11,8 @@ metadata:
 ---
 # MisoTTS RTX TTS Lane
 
+> **DECOMMISSIONED 2026-06-10.** Kosta pulled the plug after a final A/B: MisoTTS is a Sesame-CSM *conversation* model and never met his bar on narration-style voice summaries despite chunk chaining, anchor voice gating, profile work, and a clean reinstall (upstream JSON/params verified correct — model-task mismatch, not configuration). The active voice lane is **Kokoro** (`tts.provider: kokoro`, only provider in both configs). All Mac-side scripts, voice refs, and the API token live in `~/.hermes/archive/misotts-decommissioned-20260610/`; the prewarm hook was removed from `gateway/platforms/base.py` (commit 781e91e43); the GamingPC install + ~40GB cache remain on disk at `C:\Users\kosta\LocalAI\MisoTTS` pending a wipe decision. Everything below is preserved as reference for any future revival or for applying the same techniques (chaining, anchor gating, profile hygiene) to a replacement model.
+
 Use this for Kosta's opt-in high-quality TTS lane on the GamingPC RTX 4090. Kokoro remains the safe default/fallback unless Kosta explicitly switches providers.
 
 ## Current local lane
