@@ -67,7 +67,15 @@ Official Miso docs do not expose a named voice catalog in the local open-source 
 
 The official website preview exposes three UX presets: `friend`, `teacher`, and `voiceover`, but the GitHub/Python API currently documents only `speaker`, optional audio context, `temperature`, and `topk`. Treat the website preset names as style directions, not local API voice IDs.
 
-Default voice policy: use the base voice Miso ships with (`voice: default`, `speaker=0`, no `profile`) unless Kosta explicitly asks to test a prompt-audio profile. The enabled reference profiles are experimental only and should not be used for normal Hermes replies.
+Default voice policy (REVERSED 2026-06-10 after forensic A/B): **always use a prompt-audio profile; never ship base-voice output to Kosta.** Miso is a Sesame-CSM-style dialogue model — upstream's own demo conditions every generation on prior audio, and bare `context=[]` calls produce an unanchored voice lottery with garbled words (whisper-verified: base voice rendered "chat lanes"→"chatlands", "schema cost"→"kidney cross"). Base voice is for diagnostics only.
+
+Profile quality IS output quality — the model clones the reference's *delivery*, not just its timbre:
+- `samantha-her-a` is flawed: 60s of spliced movie dialogue with 19 hard level-jumps (scene cuts) and a trailing SFX. Outputs inherit the splice chaos — erratic pacing (16 chars/s rushed), 25dB loudness swings. Kosta rated it 5/10.
+- `samantha-her-b-clean` (built 2026-06-10) fixes this: one continuous 18.1s monologue (21.65–39.80s of profile A), loudnorm I=-19, exact transcript. Measured: natural 12.5 chars/s pacing. Prefer it over `-a`.
+- Reference recipe: ONE continuous take, 15–30s, no cuts/music/SFX, loudness-normalized, transcript matching the audio exactly. Long references (60s+) also eat the 2,048-token sequence budget.
+- Known residual artifact: the first ~0.5s after a profile prompt can wobble (stray syllables like "catch…") — a CSM prompt-transition glitch. Mitigation: trim leading ~250ms or prepend a throwaway lead-in word; not yet in the wrapper.
+- Per-take word slips are random (same text clean in one take, "SEMA" in another). The robust fix is best-of-N: generate 2–3 takes, whisper-transcribe (`whisper-cli -m ggml-base.en.bin`), score WER against input, ship the best. Planned wrapper enhancement; viable once generation is faster than today's ~4.7× realtime.
+- Forensic verification loop that worked: `whisper-cli` transcript diff vs input + librosa RMS-envelope/pitch/level-jump stats (temp venv at /tmp/audioenv pattern). Use it instead of ear-only iteration.
 
 Recommended style direction for Hermes replies: plain conversational base voice. Short, clear, lightly warm, not theatrical. Do not use website preset names like `friend`, `teacher`, or `voiceover` as local voice IDs; the GitHub/Python API documents only `speaker`, optional audio context, `temperature`, and `topk`.
 
