@@ -103,6 +103,14 @@ For Ideogram self-improvement runs:
 4. Track prompt JSON, seed, preset, dimensions, image path, score, dominant failure, and prompt delta.
 5. Stop if two consecutive JSON-structured iterations mostly block; route away rather than retrying plain text.
 
+## Timing and lane management (measured 2026-06-11, RTX 4090, 1024×1024)
+
+- `default` (20 steps): **~35s** per image warm; ~38s on the first generation after model load.
+- `turbo` (12 steps): **~25s** including model load; roughly ~20s warm.
+- `quality` (48 steps): ~70–80s extrapolated from the per-step rate.
+- Lane boot: if `:8190` is down, start it with `ssh-gamingpc 'schtasks /run /tn HermesIdeogram4ComfyUI'` — it answers `/system_stats` within ~10–40s. Check `curl -m 5 http://100.93.10.54:8190/system_stats` before assuming the lane is broken; the VRAM watchdog or a crash can leave the port dead while Qwen `:8188` is fine.
+- Do NOT queue jobs back-to-back without waiting for completion: 5 rapid sequential submissions crashed the ComfyUI process mid-run (port stopped listening, GPU memory dropped to idle). Sequential generations with a few seconds of gap are stable. The runner script's poll uses a 30s per-request timeout — an exact-30s failure usually means the lane died, not a slow render.
+
 ## Sources checked
 
 - Ideogram 4 README: structured JSON prompting, model size/license, native 2k layout/color controls.
