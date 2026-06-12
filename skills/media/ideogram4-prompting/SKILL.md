@@ -110,6 +110,7 @@ For Ideogram self-improvement runs:
 - `quality` (48 steps): ~70–80s extrapolated from the per-step rate.
 - Lane boot: if `:8190` is down, start it with `ssh-gamingpc 'schtasks /run /tn HermesIdeogram4ComfyUI'` — it answers `/system_stats` within ~10–40s. Check `curl -m 5 http://100.93.10.54:8190/system_stats` before assuming the lane is broken; the VRAM watchdog or a crash can leave the port dead while Qwen `:8188` is fine.
 - Do NOT queue jobs back-to-back without waiting for completion: 5 rapid sequential submissions crashed the ComfyUI process mid-run (port stopped listening, GPU memory dropped to idle). Sequential generations with a few seconds of gap are stable. The runner script's poll uses a 30s per-request timeout — an exact-30s failure usually means the lane died, not a slow render.
+- The scheduled task runs as a **visible console window** in Kosta's desktop session — he will see terminals pop open on the GamingPC screen/stream. When the work is done, shut the lane down instead of leaving windows around: `ssh-gamingpc 'schtasks /end /tn HermesIdeogram4ComfyUI'`, then `taskkill /pid <pid> /f` any leftover Console-session `python.exe` (find via `tasklist /v /fi "imagename eq python.exe" /fo csv | findstr /i kosta`; the Qwen lane's pythons run as SYSTEM in Session 0 — leave those alone).
 
 ## Sources checked
 
